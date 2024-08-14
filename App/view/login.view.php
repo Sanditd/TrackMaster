@@ -46,23 +46,51 @@
         </span>
         <form>
             <div>
-                <span class="icon"><i class="fas fa-user"></i></span>
                 <input type="text" placeholder="Enter username">
             </div>
             <div>
-                <span class="icon"><i class="fas fa-lock"></i></span>
                 <input type="password" placeholder="Enter Password">
             </div>
             <button type="submit">LOGIN</button>
         </form>
         <div class="or">Or</div>
-        <div class="or"><a href="">Frogot Password</a></div>
-
+        <div class="or"><button id="frogetPW-button">Frogot Password</button></div>
 
     </div>
 
+    <div class="popup">
+        <div id="frogetPW-port">
+            <span id="login-port-logo">
+                <img src="../../public/assets/icon/logo-black.png" alt="trackmaster logo">
+            </span>
+            <form>
+                <div>
+                    Reset Froget Password
+                </div>
+                <div>
+                    <input type="text" placeholder="Enter Username">
+                </div>
+                <div>
+                    <input type="text" placeholder="Enter Email">
+                </div>
+                <div>
+                    <input type="text" placeholder="Enter PhoneNumber">
+                </div>
+                <button type="Submit">Submit</button>
+            </form>
+            <button class="close-popup">Close</button>
+        </div>
+    </div>
 
+    <script>
+        document.getElementById("frogetPW-button").addEventListener("click",function(){
+            document.querySelector(".popup").style.display="flex";
+        })
 
+        document.querySelector(".close-popup").addEventListener("click", function(){
+            document.querySelector(".popup").style.display = "none";
+        });
+    </script>
 
 </body>
 

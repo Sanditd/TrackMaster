@@ -87,9 +87,10 @@ body{
     width: 350px;
     text-align: center;
     position: absolute;
-    top: 25%;
+    top: 27%;
     right: 0;
-    margin-right: 170px
+    margin-right: 170px;
+    box-shadow: 6px 6px 29px -4px rgba(34, 34, 34, 0.75);
 }
 
 #login-port-logo img{
@@ -124,10 +125,45 @@ button:hover {
 }
 
 .or {
-    margin: 20px 0;
+    margin: 10px 0;
     color: #333;
 }
 
 .icon {
     margin-right: 10px;
 }
+
+
+/*froget password pop up window*/
+
+.popup {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    background-color: rgba(34, 33, 33, 0.5); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#frogetPW-port {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    align-items: center;
+    box-shadow: 6px 6px 29px -4px rgba(36, 36, 36, 0.75);
+    position: relative; /* Change from absolute to relative */
+    margin: auto; /* Add this to center the element horizontally */
+    top: 25%; /* Add this to center the element vertically */
+    transform: translateY(-50%);
+}
+
