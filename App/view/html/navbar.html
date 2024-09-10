@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/App/view/css/navbar.css">
 </head>
 <body>
 
@@ -12,7 +12,7 @@
     <div id="sidebar" class="sidebar">
         <span class="closebtn" onclick="closeNav()">×</span>
         <div class="profile">
-            <img src="/img/profile.jpeg" alt="Profile Picture">
+            <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
             <h2>T.H.E.G.THENUWARA</h2>
             <hr>
         </div>
@@ -29,11 +29,11 @@
     <!-- Main Content -->
     <div id="main">
         <header>
-            <button class="openbtn" onclick="openNav()">☰ </button>
+            <button class="openbtn" onclick="toggleNav()">☰ </button>
 
-            <nav class="navbar">
+            <nav class="navbar" id="navbar">
                 <div class="logo">
-                    <img src="/img/logo.png" alt="Logo"> 
+                    <img src="/App/view/assests/logo.png" alt="Logo"> 
                 </div>
                 <ul class="nav-links">
                     <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
@@ -49,7 +49,7 @@
 
     </div>
 
-    <script src="/js/sidebar.js"></script>
+    <script src="/App/view/js/sidebar.js"></script>
     
 
 </body>
