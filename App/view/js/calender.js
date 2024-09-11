@@ -8,10 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentYear = new Date().getFullYear();
 
     const events = {
-        '2024-08-03': 'Math HW Due',
-        '2024-08-05': 'Basketball Game',
-        '2024-08-10': 'Science Fair',
-        // Add more events as needed
+ 
     };
 
     function renderCalendar(month, year) {
