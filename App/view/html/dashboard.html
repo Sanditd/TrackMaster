@@ -10,64 +10,96 @@
 
     <!-- Main Content -->
     <div id="main">
-
-    <div class="main-content">
-        <div class="welcome-strip" id="welcomeStrip">
-            <p>Hi there ! </p>
-        </div>
-        
+        <div class="main-content">
+            <div class="welcome-strip" id="welcomeStrip">
+                <p>Hi there!</p>
+            </div>
+            
             <div class="intro">
                 <div class="profile_pic">
-                    <img src="/App/view/assests/profile.jpeg">
+                    <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
                     <p>Practicing...</p>
                 </div>
-
                 <div class="profile-info">
                     <h2>T.H.E.G.Thenuwara</h2>
                     <p>A passionate student with a love for Sports and a thirst for games.</p>
-                    <button class="view-more-btn">View More</button>
+                    <button class="profile-view-more-btn">View More</button>
                 </div>
             </div>
 
-        <div class="achievements">
-        </div>
-
-        <div class="calendar-section">
-            <hr><h2>SCHEDULE</h2><hr>
-                <div class="calendar">
-                    <div class="calendar-header">
-                        <button>&lt;</button>
-                        <span>August 2024</span>
-                        <button>&gt;</button>
+            <div class="achievements">
+                <h2>ACHIEVEMENTS</h2>
+                <hr class="achievements-hr">
+                <div class="card-slider">
+                    <button class="prev-btn">‹</button>
+                    <div class="slider-container">
+                        <div class="achievement-card">
+                            <h3>Best Athlete Award</h3>
+                            <p>Awarded for outstanding performance in basketball</p>
+                            <button class="view-more-btn">View More</button>
+                        </div>
+                        <div class="achievement-card">
+                            <h3>Best Athlete Award</h3>
+                            <p>Awarded for outstanding performance in basketball</p>
+                            <button class="view-more-btn">View More</button>
+                        </div>
+                        <div class="achievement-card">
+                            <h3>Best Athlete Award</h3>
+                            <p>Awarded for outstanding performance in basketball</p>
+                            <button class="view-more-btn">View More</button>
+                        </div>
+                        <div class="achievement-card">
+                            <h3>Best Athlete Award</h3>
+                            <p>Awarded for outstanding performance in basketball</p>
+                            <button class="view-more-btn">View More</button>
+                        </div>
+                        <div class="achievement-card">
+                            <h3>Best Athlete Award</h3>
+                            <p>Awarded for outstanding performance in basketball</p>
+                            <button class="view-more-btn">View More</button>
+                        </div>
                     </div>
-
-                    <div class="calendar-grid">
-                        <div class="day">Sun</div>
-                        <div class="day">Mon</div>
-                        <div class="day">Tue</div>
-                        <div class="day">Wed</div>
-                        <div class="day">Thu</div>
-                        <div class="day">Fri</div>
-                        <div class="day">Sat</div>
-
-                        <!-- Days of the month -->
-                        <div class="date">1</div>
-                        <div class="date">2</div>
-                        <div class="date event">3<br><span>Math HW Due</span></div>
-                        <div class="date">4</div>
-                        <div class="date event">5<br><span>Basketball Game</span></div>
-                        <div class="date">6</div>
-                        <div class="date">7</div>
-                        <!-- More dates... -->
-                    </div>
+                    <button class="next-btn">›</button>
                 </div>
+                <button class="view-all-achievements-btn">View All Achievements</button>
+            </div>
+            
+
+            <div class="calendar-container">
+                <h2>SCHEDULE</h2>
+                <hr class="calendar-container-hr">
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <button>&lt;</button>
+                            <span>August 2024</span>
+                            <button>&gt;</button>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="day">Sun</div>
+                            <div class="day">Mon</div>
+                            <div class="day">Tue</div>
+                            <div class="day">Wed</div>
+                            <div class="day">Thu</div>
+                            <div class="day">Fri</div>
+                            <div class="day">Sat</div>
+                            <!-- Days of the month -->
+                            <div class="date">1</div>
+                            <div class="date">2</div>
+                            <div class="date">3</div>
+                            <div class="date">4</div>
+                            <div class="date">5</div>
+                            <div class="date">6</div>
+                            <div class="date">7</div>
+                            <!-- More dates... -->
+                        </div>
+                    </div>
             </div>
 
-        </main>
         </div>
     </div>
 
     <script src="/App/view/js/calender.js"></script>
+    <script src="/App/view/js/achievements.js"></script>
     
 </body>
 </html>

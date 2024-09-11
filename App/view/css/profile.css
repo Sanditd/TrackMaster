@@ -1,38 +1,38 @@
-.profile_info {
-    justify-content: space-around;
-    width: 100%;
-    display: flex;
-    margin-left: 50px;
-    margin-top: 20px;
-    margin-bottom: 50px;
-}
-
-.profile_info .profile_pic{
-    width: 20%;
-}
-
-.profile_info .profile_pic img{
-    width: 100%;
-    object-fit: cover;
-}
-
-.profile_info  button{
+.profile-edit-btn {
     background-color: #000000;
+    width: 100%;
+    color: white;
     border: none;
-    color: white; 
-    padding: 15px 32px;
-    text-align: center; 
-    text-decoration: none; 
-    display: inline-block;
-    font-size: 16px; 
-    margin: 4px 2px; 
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
-    border-radius: 12px;
-    transition-duration: 0.4s;
-    }
-    
-    .profile_info button:hover {
-    background-color: rgb(0, 0, 0);
-    color: #3498db; 
+    font-size: 16px;
+    margin-top: 30px;
+    display: block;
+    text-align: center;
 }
 
+.profile-content {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-content h2 {
+    margin-top: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+}
+
+.personal-info-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}

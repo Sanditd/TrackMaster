@@ -3,106 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile</title>
-    <link rel="stylesheet" href="/css/dashboard.css">
-    <link rel="stylesheet" href="/css/profile.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="/App/view/css/dashboard.css">
+    <link rel="stylesheet" href="/App/view/css/profile.css">
 </head>
 <body>
 
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-        <span class="closebtn" onclick="closeNav()">×</span>
-        <div class="profile">
-            <img src="/img/profile.jpeg" alt="Profile Picture">
-            <h2>T.H.E.G.THENUWARA</h2>
-            <hr>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="/html/dashboard.html">Dashboard</a></li>
-                <li><a href="/html/studentprofile.html">My Profile</a></li>
-                <li><a href="#">My Performance</a></li>
-                <li><a href="#">Schedule</a></li>
-            </ul>
-        </nav>
-    </div>
-
     <!-- Main Content -->
     <div id="main">
-        <header>
-            <button class="openbtn" onclick="openNav()">☰ </button>
-
-            <nav class="navbar">
-                <div class="logo">
-                    <img src="/img/logo.png" alt="Logo"> 
-                </div>
-                <ul class="nav-links">
-                    <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Sign In</a></li>
-                    <li><a href="#">Log In</a></li>
-                </ul>
-            </nav>
-
-        </header>
-
         <div class="main-content">
- <main class="main-content">
-            <section class="profile_info">
+            <div class="intro">
                 <div class="profile_pic">
-                    <img src="/img/profile.jpeg" alt="dp"> 
+                    <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
+                    <p>Practicing...</p>
                 </div>
-                <div class="profile_content">
-                        <section class="experience">
-                            <h2><i class="fas fa-briefcase"></i> Work Experiences</h2>
-                            <div class="timeline">
-                                <div class="timeline-item">
-                                    <span class="year">2023 - Present</span>
-                                    <p><strong>Football Captain</strong> - Any School</p>
-                                    <p>Led the team to district championships. Developed leadership and teamwork skills.</p>
-                                </div>
-                                <div class="timeline-item">
-                                    <span class="year">2021 - 2023</span>
-                                    <p><strong>Assistant Coach</strong> - Youth Football Camp</p>
-                                    <p>Assisted in coaching young athletes, focusing on skill development and teamwork.</p>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="skills">
-                            <h2><i class="fas fa-tools"></i> Skills & Expertise</h2>
-                            <ul>
-                                <li>Leadership</li>
-                                <li>Teamwork</li>
-                                <li>Time Management</li>
-                            </ul>
-                        </section>
-                        <section class="education">
-                            <h2><i class="fas fa-graduation-cap"></i> Education</h2>
-                            <p>Any School - High School Diploma</p>
-                            <p>GPA: 3.8</p>
-                        </section>
-                        <section class="hobbies">
-                            <h2><i class="fas fa-heart"></i> Hobbies</h2>
-                            <p>Training, Coaching, Community Service</p>
-                        </section>
-                        <section class="achievement">
-                            <h2><i class="fas fa-trophy"></i> Achievement</h2>
-                            <p>2023 - District Football Champion</p>
-                            <p>2022 - MVP Award</p>
-                        </section>
-
-                        <button>See More...</button>
+                <div class="profile-info">
+                    <h2>T.H.E.G.Thenuwara</h2>
+                    <p>A passionate student with a love for Sports and a thirst for games.</p>
+                    <button class="profile-edit-btn">Edit Profile</button>
                 </div>
-            </section>
+            </div>
+            
+            <div class="profile-content">
+                <div class="personal-info">
+                    <h2>Personal Information</h2>
+                    <hr>
+                    <div class="personal-info-content">
+                        <p><strong>Name:</strong> T.H.E.G.Thenuwara</p>
+                        <p><strong>Birthday:</strong> 2000-01-01</p>
+                        <p><strong>Gender:</strong> Female</p>
+                        <p><strong>Phone:</strong> (123) 456-7890</p>
+                        <p><strong>School:</strong> University of Colombo School of Computing</p>
+                        <p><strong>Grade:</strong> 10</p>
+                    </div>
+                </div>
 
-        </main>
+                <div class="personal-info">
+                    <h2>Personal Information</h2>
+                    <hr>
+                    <div class="personal-info-content">
+                        <p><strong>Name:</strong> T.H.E.G.Thenuwara</p>
+                        <p><strong>Email:</strong> student@example.com</p>
+                        <p><strong>Phone:</strong> (123) 456-7890</p>
+                        <p><strong>Major:</strong> Computer Science</p>
+                        <p><strong>Year:</strong> Sophomore</p>
+                    </div>
+                </div>
+
+                <div class="personal-info">
+                    <h2>Personal Information</h2>
+                    <hr>
+                    <div class="personal-info-content">
+                        <p><strong>Email:</strong> student@example.com</p>
+                        <p><strong>Phone:</strong> (123) 456-7890</p>
+                        <p><strong>Major:</strong> Computer Science</p>
+                        <p><strong>Year:</strong> Sophomore</p>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
-
-    <script src="/js/sidebar.js"></script>
-
+    
 </body>
 </html>
