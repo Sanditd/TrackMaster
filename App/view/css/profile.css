@@ -1,3 +1,19 @@
+.body{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-content{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .profile-edit-btn {
     background-color: #000000;
     width: 100%;
