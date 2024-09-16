@@ -13,7 +13,19 @@
         <div class="intro">
             <div class="profile_pic">
                 <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
-                <p>Practicing...</p>
+                <div>
+                    <select id="status">
+                      <option value="rest">Rest</option>
+                      <option value="practicing">Practicing</option>
+                      <option value="meet">In a Meet</option>
+                      <option value="injury">Injury</option>
+                      <option value="studying">Studying</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="uploadProfilePic" class="upload-btn">Change Profile Picture</label>
+                    <input type="file" id="uploadProfilePic" accept="image/*" style="display:none;">
+                </div>
             </div>
             <div class="profile-info">
                 <h2>T.H.E.G.Thenuwara</h2>
@@ -149,5 +161,6 @@
     </div>
 
     <script src="/App/view/js/edit_studentprofile.js"></script>
+    <script src="/App/view/js/profile.js"></script>
 </body>
 </html>
