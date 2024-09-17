@@ -4,89 +4,231 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <link rel="stylesheet" href="/App/view/css/dashboard.css">
     <link rel="stylesheet" href="/App/view/css/profile.css">
+    <link rel="stylesheet" href="/App/view/css/navbar.css">
 </head>
 <body>
+     <!-- Sidebar -->
+     <div id="sidebar" class="sidebar">
+        <span class="close" onmouseleave="closeNav()">
+        <div class="profile">
+            <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
+            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
+            <br>
+            <div style="font-size:10px;white-space: nowrap;">Student Player</div>
+            <div>
+                <select id="status">
+                  <option value="rest">Rest</option>
+                  <option value="practicing">Practicing</option>
+                  <option value="meet">In a Meet</option>
+                  <option value="injury">Injury</option>
+                  <option value="studying">Studying</option>
+                </select>
+              </div>
+            <br>
+            <hr>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="/App/view/html/dashboard.html">Dashboard</a></li>
+                <li><a href="/App/view/html/studentprofile.html">My Profile</a></li>
+                <li><a href="/App/view/html/studentPerformance.html">My Performance</a></li>
+                <li><a href="#">My Schedule</a></li>
+                <li><a href="#">Reminders</a></li>
+            </ul>
+        </nav>
+        </span>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main">
+        <header>
+            <button class="openbtn" onclick="toggleNav()">☰ </button>
+
+            <nav class="navbar" id="navbar">
+                <div class="logo">
+                    <img src="/App/view/assests/logo.png" alt="Logo"> 
+                </div>
+                <ul class="nav-links">
+                    <li><a href="/App/view/html/dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Sign In</a></li>
+                    <li><a href="#">Log In</a></li>
+                </ul>
+            </nav>
+
+        </header>
 
         <div class="main-content">
             <div class="intro">
                 <div class="profile_pic">
                     <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
-                    <div>
-                        <select id="status">
-                          <option value="rest">Rest</option>
-                          <option value="practicing">Practicing</option>
-                          <option value="meet">In a Meet</option>
-                          <option value="injury">Injury</option>
-                          <option value="studying">Studying</option>
-                        </select>
-                      </div>
                 </div>
                 <div class="profile-info">
-                    <h2>T.H.E.G.Thenuwara</h2>
-                    <p>A passionate student with a love for Sports and a thirst for games.</p>
-                    <button class="profile-edit-btn" onclick="window.location.href='/App/view/html/edit_studentProfile.html'">Edit Profile</button>
+                    <h1>T.H.E.G.THENUWARA</h1>
+                    <p>Student Player</p>
                 </div>
             </div>
-            
-            <div class="profile-content">
 
-                <div class="student-profile-info">
-                    <h2>PERSONAL INFORMATION</h2>
-                    <hr class="profile-hr">
-                    <div class="student-profile-info-content">
-                        <p><strong>Name : </strong>T.H.E.G. Thenuwara</p>
-                        <p><strong>Birthday : </strong> January 1, 2000</p>
-                        <p><strong>Gender: </strong> Female</p>
-                        <p><strong>WhatsApp Number :</strong> 0712345678</p>
-                        <p><strong>School :</strong> University of Colombo School of Computing</p>
-                        <p><strong>Grade :</strong> 10</p>
-                        <p><strong>Address :</strong> 123 Main St, Colombo, Sri Lanka</p>
-                        <p><strong>Email:</strong> thenuwara@gmail.com</p>
-                    </div>
-                </div>
-
-                <div class="student-profile-info">
-                    <h2>GUARDIAN INFORMATION</h2>
-                    <hr class="profile-hr">
-                    <div class="student-profile-info-content">
+            <div class="profile-container">
+                <!-- Left Column-->
+                <div class="profile-section">
+                    <section class="user-details">
+                        <h2>PERSONAL DETAILS</h2>
+                        <hr>
+                            <p><strong>Name : </strong>T.H.E.G. Thenuwara</p>
+                            <p><strong>Birthday : </strong> January 1, 2000</p>
+                            <p><strong>Gender: </strong> Female</p>
+                            <p><strong>WhatsApp Number :</strong> 0712345678</p>
+                            <p><strong>School :</strong> University of Colombo School of Computing</p>
+                            <p><strong>Grade :</strong> 10</p>
+                            <p><strong>Address :</strong> 123 Main St, Colombo, Sri Lanka</p>
+                            <p><strong>Email:</strong> thenuwara@gmail.com</p>
+                    </section>
+                    <section class="guardian-details">
+                    <h2>GUARDIAN DETAILS</h2>
+                    <hr>
                         <p><strong> Guardian Name : </strong>T.H.C.Silva</p>
                         <p><strong> Guardian Relation : </strong>Father</p>
                         <p><strong> Guardian Contact Number : </strong> 0712345678</p>
                         <p><strong> Guardian Email : </strong> silva@gmail.com</p>
                         <p><strong> Guardian Address : </strong> 123 Main St, Colombo, Sri Lanka</p>
-                    </div>
+                    </section>
+                        <button class="profile-edit-btn" onclick="window.location.href='/App/view/html/edit_studentProfile.html'">Edit Profile</button>
                 </div>
-
-                <div class="student-profile-info">
-                    <h2>CURRENT MEDICAL STATUS</h2>
-                    <hr class="profile-hr">
-                    <div class="student-profile-info-content">
+    
+                <!-- Middle Column -->
+                <div>
+                    <div class="profile-section medical-status">
+                        <h2>MEDICAL STATUS</h2>
+                        <hr>
                         <p><strong> Blood Type : </strong>A+</p>
                         <p><strong> Allergies : </strong>None</p>
                         <p><strong> Medical Conditions : </strong>None</p>
                         <p><strong> Medication : </strong>None</p>
                         <p><strong> Emergency Contact : </strong> 0712345678</p>
-                        <button class="medical-history-btn" onclick="window.location.href='/App/view/html/medicalStatus.html'">View Medical History</button>
+                        <button class="medical-status-btn" onclick="window.location.href='/App/view/html/medicalStatus.html'">Update Medical History</button>
                     </div>
-                </div>
-
-                <div class="student-profile-info">
-                    <h2>FINANCIAL STATUS</h2>
-                    <hr class="profile-hr">
-                    <div class="student-profile-info-content">
+    
+                    <div class="profile-section financial-status">
+                        <h2>FINANCIAL STATUS</h2>
+                        <hr>
                         <p><strong> Financial Aid Status : </strong>Recieve Funds</p>
                         <p><strong> Registration Number : </strong>24/M/90</p>
                         <p><strong> Registration Date : </strong>2024-01-01</p>
-                        <button class="medical-history-btn"onclick="window.location.href='/App/view/html/financialStatus.html'">View Financial Reports</button>
+                        <button class="medical-status-btn"onclick="window.location.href='/App/view/html/financialStatus.html'">Update Financial Status</button>
                     </div>
                 </div>
+    
+                <!-- Right Column -->
+                <div class="profile-section sport-history">
+                    <h2>MY SPORTS</h2>
+                    <hr>
+                    <section class="guardian-details">
+                        <h3>- Football</h3>
+                        <p><strong> Level : </strong>Zonal</p>
+                        <p><strong> Position : </strong>Goal Keeper</p>
+                        <p><strong> Coach : </strong>Mr.Perera</p>
+                        <button class="medical-status-btn"onclick="window.location.href='/App/view/html/financialStatus.html'">Track My Performance</button>
+                    </section>
+                    <section class="guardian-details">
+                        <h3>- Rugby</h3>
+                        <p><strong> Level : </strong>Provincial</p>
+                        <p><strong> Position : </strong>Prop</p>
+                        <p><strong> Coach : </strong>Mr.Sumith</p>
+                        <button class="medical-status-btn"onclick="window.location.href='/App/view/html/financialStatus.html'">Track My Performance</button>
+                    </section>
+                </div>
+                </div>
 
+            <div class="carousel-container">
+                    <h2>ACHIEVEMENTS</h2>
+                    <button class="prev-btn">←</button>
+                <div class="carousel">
+            
+                        <div class="card">
+                            <div class="card-wapper">
+                            <img src="/App/view/assests/achievements.png" alt="Card image" class="card-img">
+                            <div class="card-content">
+                                <h3 class="card-title">Best Athlete</h3>
+                                <p class="card-text">Awarded as the best athlete in the school</p>
+                                <a href="#" class="card-btn">View More</a>
+                            </div>
+                          </div>
+                        </div>
+            
+                        <div class="card">
+                            <div class="card-wapper">
+                            <img src="/App/view/assests/achievements.png" alt="Card image" class="card-img">
+                            <div class="card-content">
+                                <h3 class="card-title">Best Athlete</h3>
+                                <p class="card-text">Awarded as the best athlete in the school</p>
+                                <a href="#" class="card-btn">View More</a>
+                            </div>
+                          </div>
+                        </div>
+            
+                        <div class="card">
+                            <div class="card-wapper">
+                            <img src="/App/view/assests/achievements.png" alt="Card image" class="card-img">
+                            <div class="card-content">
+                                <h3 class="card-title">Best Athlete</h3>
+                                <p class="card-text">Awarded as the best athlete in the school</p>
+                                <a href="#" class="card-btn">View More</a>
+                            </div>
+                          </div>
+                        </div>
+            
+                        <div class="card">
+                            <div class="card-wapper">
+                            <img src="/App/view/assests/achievements.png" alt="Card image" class="card-img">
+                            <div class="card-content">
+                                <h3 class="card-title">Best Athlete</h3>
+                                <p class="card-text">Awarded as the best athlete in the school</p>
+                                <a href="#" class="card-btn">View More</a>
+                            </div>
+                          </div>
+                        </div>
+            
+                        <div class="card">
+                            <div class="card-wapper">
+                            <img src="/App/view/assests/achievements.png" alt="Card image" class="card-img">
+                            <div class="card-content">
+                                <h3 class="card-title">Best Athlete</h3>
+                                <p class="card-text">Awarded as the best athlete in the school</p>
+                                <a href="#" class="card-btn">View More</a>
+                            </div>
+                          </div>
+                        </div>
+            
+            
+                        <div class="card">
+                            <div class="card-wapper">
+                            <img src="/App/view/assests/achievements.png" alt="Card image" class="card-img">
+                            <div class="card-content">
+                                <h3 class="card-title">Best Athlete</h3>
+                                <p class="card-text">Awarded as the best athlete in the school</p>
+                                <a href="#" class="card-btn">View More</a>
+                            </div>
+                          </div>
+                        </div>
+            
+                    </div>
+                    <button class="next-btn">→</button>
+                    <button class="profile-edit-btn" onclick="window.location.href=''">Add New Acheivement</button>
             </div>
 
-            </div>
+        </div>
+
+        </div>
+    </div>
 
             <script src="/App/view/js/profile.js"></script>
+            <script src="/App/view/js/sidebar.js"></script>
+            <script src="/App/view/js/carousel.js"></script>
+
 </body>
 </html>
