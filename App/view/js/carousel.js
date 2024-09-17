@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentIndex = 0;
     const totalCards = document.querySelectorAll('.card').length;
     const maxVisibleCards = 3;
-
     nextBtn.addEventListener('click', () => {
         if (currentIndex < totalCards - maxVisibleCards) {
             currentIndex++;

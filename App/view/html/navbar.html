@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,20 +11,25 @@
 
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
-        <span class="closebtn" onclick="closeNav()">×</span>
+        <span class="close" onmouseleave="closeNav()">
         <div class="profile">
             <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
-            <h2>T.H.E.G.THENUWARA</h2>
+            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
+            <br>
+            <div style="font-size:10px;white-space: nowrap;">Student Player</div>
+            <br>
             <hr>
         </div>
         <nav>
             <ul>
-                <li><a href="/App/view/html/dashboard.html">Dashboard</a></li>
-                <li><a href="/App/view/html/studentprofile.html">My Profile</a></li>
-                <li><a href="/App/view/html/studentPerformance.html">My Performance</a></li>
-                <li><a href="#">Schedule</a></li>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Create Account</a></li>
+                <li><a href="#">Manage Users</a></li>
+                <li><a href="#">Manage Sports</a></li>
+                <li><a href="#">Annoucments</a></li>
             </ul>
         </nav>
+        </span>
     </div>
 
     <!-- Main Content -->
@@ -51,6 +57,5 @@
 
     <script src="/App/view/js/sidebar.js"></script>
     
-
 </body>
 </html>

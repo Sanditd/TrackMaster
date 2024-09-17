@@ -10,97 +10,248 @@
     margin: 0px;
     padding: 0px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.profile-edit-btn {
-    background-color: #000000;
-    width: 100%;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 30px;
-    display: block;
-    text-align: center;
-}
-
-.profile-content {
-    width: 100%;
-    height: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.profile-content h2 {
-    margin-top: 50px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 36px;
-    font-weight: bold;
-    text-align: center;
-    color: #333;
-}
-
-.profile-hr {
-    width: 80%;
-    height: 1px;
-    background-color: #333;
-    margin: 20px 0;
-}
-
-.student-profile-info {
-    width: 100%;
-    height: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.student-profile-info-content {
-    width: 80%;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.student-profile-info-content p {
-    font-size: 16px;
-    color: #555;
-    margin: 8px 0;
-    line-height: 1.6;
-}
-
-.student-profile-info-content p strong {
-    font-weight: bold;
-    color: #333;
-}
-
-.student-profile-info-content p:nth-child(even) {
-    background-color: #ececec;
-    padding: 8px 10px;
-    border-radius: 5px;
-}
-
-.student-profile-info-content p:nth-child(odd) {
-    background-color: #f5f5f5;
-    padding: 8px 10px;
-    border-radius: 5px;
-}
-
-.medical-history-btn {
-    align-self: flex-end;
-    background-color: #535353;
-    margin-top: 20px;
+#status{
+    margin-top: 10px;
     width: 50%;
+    padding: 5px;
+    display: flexbox;
+    background-color: #000000;
     color: white;
+    text-align: center;
+    border-radius: 10%;
+}
+
+.intro{
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    color: white;
+    text-align: center;
+    background-color: #FFD700;
+}
+
+.profile_pic{
+    width: 40%;
+    height: auto;
+    padding-left: 20px;
+    padding-right: 0px;
+    padding-bottom: 20px;
+    margin-right: 0px;
+}
+.profile_pic img{   
+    width: 40%;
+    height: 40%;
+    object-fit: cover; 
+}
+
+.profile-container {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 30px;
+    padding: 30px;
+    background-color: black;
+    padding-bottom: 50px;
+}
+
+.profile-section {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color:whitesmoke;
+    margin-top: 20px;
+}
+
+.profile-section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.profile-section p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.profile-section hr {
     border: none;
+    border-top: 1px solid black;
+    margin: 10px 0;
+}
+
+.guardian-details {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.profile-edit-btn{
+    background-color: #FFD700;
+    width: 40%;
+    color: rgb(0, 0, 0);
+    border: 1px solid black;
+    margin: 15px;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display:flexbox;
+    text-align: center;
 }
+
+.medical-status-btn{
+    background-color: #FFD700;
+    width: 80%;
+    color: rgb(0, 0, 0);
+    border: 1px solid black;
+    margin: 15px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display:flexbox;
+    text-align: center;
+}
+
+.medical-status-btn:hover{
+    background-color: #FFB040;
+}
+
+.profile-edit-btn:hover{
+    background-color: #FFB040;
+}
+
+h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    color: #333;
+}
+
+/* carousel part */
+.carousel-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    width: 100%;
+    overflow: hidden;
+    position: relative; 
+    background-image: whitesmoke;
+}
+
+.carousel-container h2 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    color: #000000;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 95%;
+    
+}
+
+.card {
+    width: calc(100% / 3 - 10px); 
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    text-align: center;
+    display: grid;
+    place-content: center;
+}
+
+.prev-btn, .next-btn {
+    background-color: #000000; 
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 100%;
+    position: absolute; 
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100; 
+
+}
+
+.prev-btn {
+    left: 10px; /* Position the button inside the left edge of the container */
+}
+
+.next-btn {
+    right: 20px; /* Position the button inside the right edge of the container */
+}
+
+.prev-btn:hover, .next-btn:hover {
+    background-color: #080021;
+}
+
+.card-wapper {
+    background-color: #000000;
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 22px;
+    margin: 0 0 10px;
+    color: #FFB010;
+}
+
+.card-text {
+    font-size: 16px;
+    color: #777;
+    margin: 0 0 20px;
+}
+
+.card-btn {
+    display: inline-block;
+    background-color: #FFD700;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.card-btn:hover {
+    background-color: #FFB040;
+}
+
