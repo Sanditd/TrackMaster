@@ -3,42 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Status</title>
-    <link rel="stylesheet" href="/App/view/css/dashboard.css">
-    <link rel="stylesheet" href="/App/view/css/profile.css">
+    <title>Medical History</title>
+    <link rel="stylesheet" href="/App/view/css/medical_status.css">
+    <link rel="stylesheet" href="/App/view/css/navbar.css">
+
 </head>
 <body>
+    <div id="sidebar" class="sidebar">
+        <span class="close" onmouseleave="closeNav()">
+        <div class="profile">
+            <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
+            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
+            <br>
+            <div style="font-size:10px;white-space: nowrap;">Student Player</div>
+            <div>
+                <select id="status">
+                  <option value="rest">Rest</option>
+                  <option value="practicing">Practicing</option>
+                  <option value="meet">In a Meet</option>
+                  <option value="injury">Injury</option>
+                  <option value="studying">Studying</option>
+                </select>
+              </div>
+            <br>
+            <hr>
+        </div>
 
-        <div class="main-content">
-            <div class="intro">
-                <div class="profile_pic">
-                    <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
-                    <div>
-                        <select id="status">
-                          <option value="rest">Rest</option>
-                          <option value="practicing">Practicing</option>
-                          <option value="meet">In a Meet</option>
-                          <option value="injury">Injury</option>
-                          <option value="studying">Studying</option>
-                        </select>
-                      </div>
+        <nav>
+            <ul>
+                <li><a href="/App/view/html/dashboard.html">Dashboard</a></li>
+                <li><a href="/App/view/html/studentprofile.html">My Profile</a></li>
+                <li><a href="/App/view/html/studentPerformance.html">My Performance</a></li>
+                <li><a href="#">My Schedule</a></li>
+                <li><a href="#">Reminders</a></li>
+            </ul>
+        </nav>
+        </span>
+    </div>
+    <!-- Main Content -->
+    <div id="main">
+        <header>
+            <button class="openbtn" onclick="toggleNav()">☰ </button>
+
+            <nav class="navbar" id="navbar">
+                <div class="logo">
+                    <img src="/App/view/assests/logo.png" alt="Logo"> 
                 </div>
-                <div class="profile-info">
-                    <h2>T.H.E.G.Thenuwara</h2>
-                    <p>A passionate student with a love for Sports and a thirst for games.</p>
-                </div>
-            </div>
-            
-            <div class="medical-status">
-                <h2>Medical Status</h2>
+                <ul class="nav-links">
+                    <li><a href="/App/view/html/dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Sign In</a></li>
+                    <li><a href="#">Log In</a></li>
+                </ul>
+            </nav>
 
-                <div class="medical-status-content">
-                    
-                </div>
+        </header>
+
+        <div class="container">
+            <div class="title">
+            <h2>STUDENT PLAYER MEDICAL HISTORY</h2>
+            <hr>
+            </div>
+    
+            <div class="medical-history">
+                <table id="medical-history-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Medical Condition</th>
+                            <th>Medication</th>
+                            <th>Notes</th>
+                            <th>Reports</th>
+                        </tr>
+                    </thead>
+                    <tbody id="report-table-body"> 
+                    </tbody>
+                </table>
             </div>
 
-            </div>
+            <div class="medical-form">
+                <h3>UPDATE THE CURRENT MEDICAL STATUS</h3>
+                <form id="medical-report-form">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" required><br>
+    
+                    <label for="condition">Medical Condition:</label>
+                    <input type="text" id="condition" placeholder="Enter Medical Condition" required><br>
 
-            <script src="/App/view/js/profile.js"></script>
+                    <label for="medication">Medication:</label>
+                    <textarea id="medication" placeholder="Enter the Given Medications" required></textarea><br> <!-- Changed ID -->
+
+                    <label for="notes">Notes:</label>
+                    <textarea id="notes" placeholder="Enter Additional Notes" required></textarea><br>
+    
+                    <label for="report">Upload Medical Report (PDF):</label>
+                    <input type="file" id="report" accept=".pdf" required><br>
+    
+                    <center><button type="submit">Submit</button></center>
+                </form>
+            </div>
+    
+            <div id="message"></div>
+        </div>
+    
+    </div>
+    
+    <script src="/App/view/js/profile.js"></script>
+    <script src="/App/view/js/medical_status.js"></script>
+    <script src="/App/view/js/sidebar.js"></script>
 </body>
 </html>
