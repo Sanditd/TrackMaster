@@ -3,164 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
-    <link rel="stylesheet" href="/App/view/css/dashboard.css">
-    <link rel="stylesheet" href="/App/view/css/edit_studentProfile.css">
+    <title>Edit Student Profile</title>
+    <link rel="stylesheet" href="/App/view/css/profile.css">
+    <link rel="stylesheet" href="/App/view/css/navbar.css">
+    <link rel="stylesheet" href="/App/view/css/edit_studentProfile.css"
 </head>
-<body>
-    <div class="main-content">
 
-        <div class="intro">
-            <div class="profile_pic">
-                <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
-                <div>
-                    <select id="status">
-                      <option value="rest">Rest</option>
-                      <option value="practicing">Practicing</option>
-                      <option value="meet">In a Meet</option>
-                      <option value="injury">Injury</option>
-                      <option value="studying">Studying</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="uploadProfilePic" class="upload-btn">Change Profile Picture</label>
-                    <input type="file" id="uploadProfilePic" accept="image/*" style="display:none;">
-                </div>
-            </div>
-            <div class="profile-info">
-                <h2>T.H.E.G.Thenuwara</h2>
-                <p>A passionate student with a love for Sports and a thirst for games.</p>
-            </div>
+<body>
+     <!-- Sidebar -->
+     <div id="sidebar" class="sidebar">
+        <span class="close" onmouseleave="closeNav()">
+        <div class="profile">
+            <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
+            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
+            <br>
+            <div style="font-size:10px;white-space: nowrap;">Student Player</div>
+            <div>
+                <select id="status">
+                  <option value="rest">Rest</option>
+                  <option value="practicing">Practicing</option>
+                  <option value="meet">In a Meet</option>
+                  <option value="injury">Injury</option>
+                  <option value="studying">Studying</option>
+                </select>
+              </div>
+            <br>
+            <hr>
         </div>
 
-        <div class="profile-content">
-            <h2 class="profile-header">Edit Profile</h2>
+        <nav>
+            <ul>
+                <li><a href="/App/view/html/dashboard.html">Dashboard</a></li>
+                <li><a href="/App/view/html/studentprofile.html">My Profile</a></li>
+                <li><a href="/App/view/html/studentPerformance.html">My Performance</a></li>
+                <li><a href="#">My Schedule</a></li>
+                <li><a href="#">Reminders</a></li>
+            </ul>
+        </nav>
+        </span>
+    </div>
 
-        <form class="editProfileForm">
+    <!-- Main Content -->
+    <div id="main">
+        <header>
+            <button class="openbtn" onclick="toggleNav()">☰ </button>
 
-            <div class="edit-profile-content">
-                <h2 class="form-content">PERSONAL INFORMATION</h2>
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" value="T.H.E.G. Thenuwara" required>
+            <nav class="navbar" id="navbar">
+                <div class="logo">
+                    <img src="/App/view/assests/logo.png" alt="Logo"> 
                 </div>
-                <div class="form-group">
-                    <label for="birthday">Birthday:</label>
-                    <input type="date" id="birthday" name="birthday" value="2000-01-01" required>
-                </div>
-                <div class="form-group">
-                    <label for="gender">Gender:</label>
-                    <select id="gender" name="gender" required>
-                        <option value="Female" selected>Female</option>
-                        <option value="Male">Male</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="phone">WhatsApp Number:</label>
-                    <input type="text" id="phone" name="phone" value="0712345678" required>
-                </div>
-                <div class="form-group">
-                    <label for="name">School:</label>
-                    <input type="text" id="name" name="name" value="University of Colombo School of Computing" required>
-                </div>
-                <div class="form-group">
-                    <label for="name">Grade:</label>
-                    <input type="text" id="name" name="name" value="10" required>
-                </div>
-                <div class="form-group">
-                    <label for="address">Address:</label>
-                    <input type="text" id="address" name="address" value="123 Main St, Colombo, Sri Lanka" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="thenuwara@gmail.com" required>
-                </div>
-            </div>
+                <ul class="nav-links">
+                    <li><a href="/App/view/html/dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Sign In</a></li>
+                    <li><a href="#">Log In</a></li>
+                </ul>
+            </nav>
 
-            <div class="edit-profile-content">
-                <h2 class="form-content">GUARDIAN INFORMATION</h2>
-                <div class="form-group">
-                    <label for="GuardianName">Guardian Name:</label>
-                    <input type="text" id="GuardianName" name="GuardianName" value="T.H.C.Silva" required>
-                </div>
-                <div class="form-group">
-                    <label for="GuardianRelation">Guardian Relation:</label>
-                    <input type="text" id="GuardianRelation" name="GuardianRelation" value="Father" required>
-                </div>
-                <div class="form-group">
-                    <label for="GuardianPhone">Guardian Contact Number:</label>
-                    <input type="text" id="GuardianPhone" name="GuardianPhone" value="0712345678" required>
-                </div>
-                <div class="form-group">
-                    <label for="GuardianEmail">Guardian Email:</label>
-                    <input type="email" id="GuardianEmail" name="GuardianEmail" value="thenuwara@gmail.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="GuardianAddress">Guardian Address:</label>
-                    <input type="text" id="GuardianAddress" name="GuardianAddress" value="123 Main St, Colombo, Sri Lanka" required>
-                </div>
-            </div>
-        
-            <div class="edit-profile-content">
-                <h2 class="form-content">CURRENT MEDICAL STATUS </h2>
-                <div class="form-group">
-                    <label for="BloodType">Blood Type:</label>
-                    <select id="BloodType" name="BloodType" required>
-                        <option value="A+" selected>A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="AB-">AB-</option>
-                        <option value="O+">O+</option>
-                        <option value="O-">O-</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="Allergies">Allergies:</label>
-                    <input type="text" id="Allergies" name="Allergies" value="None" required>
-                </div>
-                <div class="form-group">
-                    <label for= "MedicalConditions">Medical Conditions:</label>
-                    <input type="text" id="MedicalConditions" name="MedicalConditions" value="None" required>
-                </div>
-                <div class="form-group">
-                    <label for="Medication">Medication:</label>
-                    <input type="text" id="Medication" name="Medication" value="None" required>
-                </div>
-                <div class="form-group">
-                    <label for="EmergencyContact">Emergency Contact:</label>
-                    <input type="text" id="EmergencyContact" name="EmergencyContact" value="0712345678" required>
-                </div>
-            </div>
+        </header>
 
-            <div class="edit-profile-content">
-                <h2 class="form-content">FINANCIAL STATUS </h2>
-                <div class="form-group">
-                    <label for="FinancialAid">Financial Aid Staus:</label>
-                    <select id="FinancialAid" name="FinancialAid" required>
-                        <option value="Yes" selected>Yes</option>
-                        <option value="No">No</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="RegistrationNumber">Registration Number:</label>
-                    <input type="text" id="RegistrationNumber" name="RegistrationNumber" value="24/M/90" required>
-                </div>
-                <div class="form-group">
-                    <label for= "RegistrationDate">Registration Date:</label>
-                    <input type="date" id="RegistrationDate" name="RegistrationDate" value="2024-01-01" required>
-                </div>
-            </div>
+        <div id="edit_container" class="container">
+                    <div class="edit-profile-box">
+                        <div class="edit-heading">
+                        <h2>EDIT STUDENT PROFILE</h2>
+                        <hr>
+                        </div>
+                        <div class="profile-edit-container">
+                            <h3>PERSONAL DETAILS</h3>
+                            
+                            <div class="profile-picture-section">
+                                <img src="/App/view/assests/profile.jpeg" alt="Profile Picture" id="profile-pic-preview">
+                                <input type="file" id="profile-pic-input" accept="image/*">
+                            </div>
+              
+                            <div class="form-section">
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" value="T.H.E.G. Thenuwara">
+                    
+                                <label for="birthday">Birthday:</label>
+                                <input type="date" id="birthday" value="2000-01-01">
+                    
+                                <label for="gender">Gender:</label>
+                                <select id="gender">
+                                    <option value="Female" selected>Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                    
+                                <label for="whatsapp">WhatsApp Number:</label>
+                                <input type="tel" id="whatsapp" value="0712345678">
+                    
+                                <label for="school">School:</label>
+                                <input type="text" id="school" value="University of Colombo School of Computing">
+                    
+                                <label for="grade">Grade:</label>
+                                <input type="text" id="grade" value="10">
+                    
+                                <label for="address">Address:</label>
+                                <input type="text" id="address" value="123 Main St, Colombo, Sri Lanka">
+                    
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" value="thenuwara@gmail.com">
+                            </div>
 
-        </form>
-
-        <button type="submit" class="profile-edit-btn">Save Changes</button>
-
+                            <h3>GUARDIAN DETAILS</h3>
+                            <div class="form-section">
+                                <label for="guardian-name">Guardian Name:</label>
+                                <input type="text" id="guardian-name" value="T.H.C. Silva">
+                    
+                                <label for="guardian-relation">Guardian Relation:</label>
+                                <input type="text" id="guardian-relation" value="Father">
+                    
+                                <label for="guardian-contact">Guardian Contact Number:</label>
+                                <input type="tel" id="guardian-contact" value="0712345678">
+                    
+                                <label for="guardian-email">Guardian Email:</label>
+                                <input type="email" id="guardian-email" value="silva@gmail.com">
+                    
+                                <label for="guardian-address">Guardian Address:</label>
+                                <input type="text" id="guardian-address" value="123 Main St, Colombo, Sri Lanka">
+                            </div>
+                    
+                            <!-- Buttons -->
+                            <div class="form-buttons">
+                                <button type="submit">Save Changes</button>
+                                <button type="button" class="cancel-btn" onclick="window.location.href='/App/view/html/studentProfile.html'">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
         </div>
     </div>
 
-    <script src="/App/view/js/edit_studentprofile.js"></script>
-    <script src="/App/view/js/profile.js"></script>
+            <script src="/App/view/js/profile.js"></script>
+            <script src="/App/view/js/sidebar.js"></script>
+            <script src="/App/view/js/edit_studentprofile.js"></script>
+
 </body>
 </html>

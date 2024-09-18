@@ -1,49 +1,44 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const profileImage = document.getElementById('profileImage');
-    const uploadProfilePic = document.getElementById('uploadProfilePic');
-    const form = document.querySelector(".editProfileForm");
-    const saveButton = document.querySelector(".profile-edit-btn");
+// Function to handle profile picture preview when uploading a new picture
+document.getElementById('profile-pic-input').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('profile-pic-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
 
-    // Preview profile picture before uploading
-    uploadProfilePic.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                profileImage.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+// Form validation before submitting
+document.querySelector('button[type="submit"]').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent form submission for validation
+    
+    // Validate form fields
+    const name = document.getElementById('name').value.trim();
+    const birthday = document.getElementById('birthday').value;
+    const whatsapp = document.getElementById('whatsapp').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const guardianName = document.getElementById('guardian-name').value.trim();
+    const guardianContact = document.getElementById('guardian-contact').value.trim();
+    const guardianEmail = document.getElementById('guardian-email').value.trim();
 
-    // Show success message when the form is submitted
-    saveButton.addEventListener("click", function(event) {
-        event.preventDefault(); // Prevent form submission
+    if (!name || !birthday || !whatsapp || !email || !guardianName || !guardianContact || !guardianEmail) {
+        alert('Please fill out all required fields.');
+        return;
+    }
 
-        let isValid = true;
-        const inputs = form.querySelectorAll("input, select");
+    const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    if (!emailPattern.test(email) || !emailPattern.test(guardianEmail)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+    
+    const guardianEmailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    if (!guardianEmailPattern.test(guardianEmail)) {
+        alert('Please enter a valid guardian email address.');
+        return;
+    }
 
-        inputs.forEach(input => {
-            if (!input.checkValidity()) {
-                isValid = false;
-                input.classList.add("error"); // Add error class for styling
-            } else {
-                input.classList.remove("error"); // Remove error class if valid
-            }
-        });
-
-        // Additional check for email validity for all email fields
-        const emailInputs = [emailInput, guardianEmailInput];
-        emailInputs.forEach(emailInput => {
-            if (emailInput && !emailInput.checkValidity()) {
-                isValid = false;
-                emailInput.classList.add("error");
-            }
-        });
-
-        // New code to show success message if valid
-        if (isValid) {
-            alert("Profile updated successfully!"); // Success message
-        }
-    });
+    alert('Form is valid and ready to submit!');
 });
