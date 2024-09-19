@@ -130,7 +130,7 @@ input[type="file"] {
     background-color: #dc3545;
 }
 
-button:hover {
+.form-buttons button:hover {
     background-color: #FFB040;
 }
 
