@@ -1,119 +1,153 @@
-body {
-    width: 100%;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+.body{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.main-content {
-    width: 100%;
-    height: auto;
+.main-content{
     margin: 0px;
     padding: 0px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-
-.welcome-strip {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 35px;
-    background-color: #000000;
-    color: white;
-    font-family: 'Courier New', Courier, monospace;
-    text-align: center;
-    padding: 10px;
-    font-size: 18px;
-    animation: slideDown 1s ease-out;
-    z-index: 1000; 
-}
-
-/* Sliding animation */
-@keyframes slideDown {
-    from {
-        top: -50px;
-    }
-    to {
-        top: 0;
-    }
-}
-
-/* Intro */
-.intro {
-    width: 100%;
-    height: 200px;
-    padding-top: 60px;
-    padding-left: 20px;
-    padding-right: 20px;    
-    padding-bottom: 70px;
-    margin: 0px;
-    display: flex;
     justify-content: center;
-    background-color: #c7ccd1;
-}
-
-.profile_pic {
-    text-align: center; 
-    width: 30%;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    border-left: 2px solid #333;
-    border-right: 2px solid #333;
-}   
-
-.profile_pic img {
-    width: 40%;
-    height: 200px;
-    border-radius: 50%;
-    margin-bottom: 20px;
+    background-color:whitesmoke;
 }
 
-.profile-info {
-    max-width: 60%;
+.intro{
+    width: 100%;
+    height: auto;
+    padding: 20px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 40px;
-    margin-left: 50px;
-    
+    justify-content:center;
+    color: white;
+    text-align: center;
+    background-image: url('/App/view/assests/bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position:center center;
 }
 
-.profile-info h2 {
-    margin-top: 20px;
-    margin-bottom: 20px;
+.student-profile {
+    width: 50%;
+    margin:40px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.336);
+    backdrop-filter: blur(5px); 
+}
+
+.profile-pic {
+    width: 100px; 
+    height: 100px;
+    border-radius: 50%; 
+    margin-right: 30px;
+}
+
+.student-name h2 {
+    color: black;
     font-size: 24px;
-    color: #333;
+    text-align: center;
+    margin: 10px;
+}
+
+.student-name p {
+    color: #222;
+    text-align:center;
+    font-size: 16px;
+    margin: 10px;
     font-weight: bold;
 }
 
-.profile-info p {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #666;
-}
-
-.profile-view-more-btn {
-    background-color: #000000;
+.profile-container {
     width: 100%;
     height: auto;
-    color: white;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 30px;
+    padding: 30px;
+    background-color: black;
+    padding-bottom: 50px;
+}
+
+.profile-section {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color:whitesmoke;
+    margin-top: 20px;
+}
+
+.profile-section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.profile-section p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.profile-section hr {
     border: none;
+    border-top: 1px solid black;
+    margin: 10px 0;
+}
+
+.guardian-details {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.profile-edit-btn{
+    background-color: #FFD700;
+    width: 40%;
+    color: rgb(0, 0, 0);
+    border: 1px solid black;
+    margin: 15px;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    margin-top: 30px;
-    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    display:flexbox;
     text-align: center;
 }
 
-.profile-view-more-btn:hover {
-    background-color: #4c89ca;
+.medical-status-btn{
+    background-color: #FFD700;
+    width: 80%;
+    color: rgb(0, 0, 0);
+    border: 1px solid black;
+    margin: 15px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display:flexbox;
+    text-align: center;
+}
+
+.medical-status-btn:hover{
+    background-color: #FFB040;
+}
+
+.profile-edit-btn:hover{
+    background-color: #FFB040;
+}
+
+h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    color: #333;
 }
 
 /* carousel part */
@@ -126,34 +160,26 @@ body {
     width: 100%;
     overflow: hidden;
     position: relative; 
-    background-color: #e9e7e2; 
-
+    background-image: whitesmoke;
 }
 
 .carousel-container h2 {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 36px;
+    font-size: 30px;
     font-weight: bold;
     text-align: center;
-    color: #333;
-}
-
-.carousel-container-hr {
-    width: 85%;
-    height: 1px;
-    margin: 50px;
-    background-color: #333;
+    color: #000000;
 }
 
 .carousel {
     display: flex;
     transition: transform 0.5s ease-in-out;
-    width: 95%;
+    width: 100%;
     
 }
 
 .card {
-    min-width: 280px;
+    width: calc(100% / 3 - 10px); 
     padding: 20px;
     margin: 10px;
     border-radius: 10px;
@@ -178,20 +204,19 @@ body {
 }
 
 .prev-btn {
-    left: 10px; /* Position the button inside the left edge of the container */
+    left: 35px;
 }
 
 .next-btn {
-    right: 20px; /* Position the button inside the right edge of the container */
+    right: 20px; 
 }
 
 .prev-btn:hover, .next-btn:hover {
     background-color: #080021;
 }
 
-/* card css*/
 .card-wapper {
-    background-color: #fff;
+    background-color: #000000;
     border-radius: 15px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -216,7 +241,7 @@ body {
 .card-title {
     font-size: 22px;
     margin: 0 0 10px;
-    color: #333;
+    color: #FFB010;
 }
 
 .card-text {
@@ -227,137 +252,19 @@ body {
 
 .card-btn {
     display: inline-block;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #FFD700;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid black;
     padding: 10px 20px;
     border-radius: 5px;
     text-decoration: none;
+    text-align: center;
     transition: background-color 0.3s ease;
 }
 
 .card-btn:hover {
-    background-color: #0056b3;
+    background-color: #FFB040;
 }
 
-.view-all-achievements-btn {
-    width: 50%;
-    background-color: #000000;
-    color: white;
-    border: none;
-    padding: 15px 20px;
-    border-radius: 5px;
-    margin-top: 30px;
-    cursor: pointer;
-}
-
-.view-all-btn:hover {
-    background-color: #4c89ca;
-}
-
-/* Calendar styles */
-.calendar-container {
-    width: 100%;
-    margin: 0px;
-    height: auto;
-    background-color: white;
-    padding: 30px;
-    padding-bottom: 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.calendar-container h2 {
-    margin-top: 50px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 36px;
-    font-weight: bold;
-    text-align: center;
-    color: #333;
-}
-
-.calendar-container-hr {
-    width: 85%;
-    height: 1px;
-    margin: 50px;
-    background-color: #333;
-}
-
-.calendar {
-    width: 60%;
-    margin: 20px 0;
-}
-
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;  
-    border: 4px solid #cce0ff;
-    border-radius: 8px;
-    background-color: 	#cce0ff;
-}
-
-.calendar-grid {
-    margin: 20px;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    background-color: #99c2ff;
-    border: 0.5px solid #99c2ff;
-    border-radius: 8px;
-}
-
-.day, .date {
-    padding: 10px;
-    background: #e0e0e0;
-    text-align: center;
-    border-radius: 4px;
-}
-
-/* Button styles */
-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    border: 1px solid white;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-    .profile_pic {
-        width: 100%; 
-        border-left: none; 
-        border-right: none; 
-    }
-
-    .profile-info {
-        max-width: 100%; 
-        margin-left: 0; 
-        padding: 20px; 
-    }
-
-    .carousel-container {
-        padding: 20px; 
-    }
-
-    .card {
-        min-width: 100%; 
-        margin: 10px 0; 
-    }
-
-    .calendar {
-        width: 100%; 
-    }
-
-    .calendar-grid {
-        grid-template-columns: repeat(2, 1fr); 
-    }
-}

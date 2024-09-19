@@ -1,0 +1,139 @@
+<div class="calendar-container">
+    <h2>SCHEDULE</h2>
+    <hr class="calendar-container-hr">
+        <div class="calendar">
+            <div class="calendar-header">
+                <button>&lt;</button>
+                <span>August 2024</span>
+                <button>&gt;</button>
+            </div>
+            <div class="calendar-grid">
+                <div class="day">Sun</div>
+                <div class="day">Mon</div>
+                <div class="day">Tue</div>
+                <div class="day">Wed</div>
+                <div class="day">Thu</div>
+                <div class="day">Fri</div>
+                <div class="day">Sat</div>
+                <!-- Days of the month -->
+                <div class="date">1</div>
+                <div class="date">2</div>
+                <div class="date">3</div>
+                <div class="date">4</div>
+                <div class="date">5</div>
+                <div class="date">6</div>
+                <div class="date">7</div>
+                <!-- More dates... -->
+            </div>
+        </div>
+</div>
+
+<script src="/App/view/js/calender.js"></script>
+
+/* Calendar styles */
+.calendar-container {
+    width: 100%;
+    margin: 0px;
+    height: auto;
+    background-color: white;
+    padding: 30px;
+    padding-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.calendar-container h2 {
+    margin-top: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+}
+
+.calendar-container-hr {
+    width: 85%;
+    height: 1px;
+    margin: 50px;
+    background-color: #333;
+}
+
+.calendar {
+    width: 60%;
+    margin: 20px 0;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;  
+    border: 4px solid #cce0ff;
+    border-radius: 8px;
+    background-color: 	#cce0ff;
+}
+
+.calendar-grid {
+    margin: 20px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    background-color: #99c2ff;
+    border: 0.5px solid #99c2ff;
+    border-radius: 8px;
+}
+
+.day, .date {
+    padding: 10px;
+    background: #e0e0e0;
+    text-align: center;
+    border-radius: 4px;
+}
+
+/* Button styles */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid white;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .profile_pic {
+        width: 100%; 
+        border-left: none; 
+        border-right: none; 
+    }
+
+    .profile-info {
+        max-width: 100%; 
+        margin-left: 0; 
+        padding: 20px; 
+    }
+
+    .carousel-container {
+        padding: 20px; 
+    }
+
+    .card {
+        min-width: 100%; 
+        margin: 10px 0; 
+    }
+
+    .calendar {
+        width: 100%; 
+    }
+
+    .calendar-grid {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
