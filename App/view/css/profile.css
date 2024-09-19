@@ -204,11 +204,11 @@ h3 {
 }
 
 .prev-btn {
-    left: 10px; /* Position the button inside the left edge of the container */
+    left: 10px;
 }
 
 .next-btn {
-    right: 20px; /* Position the button inside the right edge of the container */
+    right: 20px; 
 }
 
 .prev-btn:hover, .next-btn:hover {
