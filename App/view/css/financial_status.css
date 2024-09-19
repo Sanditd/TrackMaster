@@ -12,10 +12,10 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url('/App/view/assests/bg3.jpg');
+    background-image: url('/App/view/assests/bg4.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position:top center;
 }
 
 .title {
@@ -37,48 +37,46 @@ hr {
     margin-bottom: 10px;
 }
 
-.medical-history{
-    width: 70%;
-    padding:60px;
+.financial-status{
+    width: 36%;
+    padding:30px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.342);
-    backdrop-filter: blur(8px); 
-}
-
-table {
-    width: 80%;
-    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.2);
     margin-bottom: 20px;
 }
 
-table, th, td {
-    border: 2px solid #000000; 
+.content{
+    padding: auto;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
 }
 
-th, td {
-    padding: 10px;
-    text-align: left;
+.content strong {
+    font-size: 18px;
+    color: black ;
+    font-weight: bold;
 }
 
-th {
-    background-color:#FFD700 ;
+.content p {
+    margin-bottom: 10px;
+    color: #dbd193;
+    font-weight: bold;
 }
 
-td {
-    background-color: #444; 
-}
-
-.medical-form{
+.financial-form{
     background-color: black; 
     margin: 30px;
     padding: 30px;
     border: 3px solid  #FFD700; 
     border-radius: 10px; 
-    width: 60%; 
+    width: 50%; 
     color: white;
     position: relative;
 }
@@ -122,12 +120,6 @@ button {
     display: flexbox;
 }
 
-.medical-form button:hover {
+.financial-form button:hover {
     background-color: #FFA500;
-}
-
-#message {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 18px;
 }
