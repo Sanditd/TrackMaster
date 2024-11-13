@@ -1,0 +1,204 @@
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background-color: black;
+    justify-content:center;
+}
+
+.container{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    width:100%;
+}
+
+.profile{
+    grid-column: 1 / 2;
+    align-items:center;
+    padding:20px;
+    height: auto;
+    border-right: 2px solid white;
+    
+}
+
+.profile-image {
+    width: 50%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    display: block; 
+    margin: 0 auto;
+   
+}
+
+.profile-details{
+
+    text-align: left;
+    padding-top: 40px;
+    padding-left: 40px;
+    padding-right: 40px;
+    color: whitesmoke;
+}
+
+.highlight{
+    color: #87CEEB;
+}
+
+h1{
+    font-size: 24px;
+    color: #4319ec;
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+.options{
+    width:100%;
+    grid-column: 2/5;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    width:100%;
+}
+
+.profile_management{
+   grid-column: 1/2;
+   background-color: #4319ec;
+   border-radius: 50px;
+   margin-top: 20px;
+   margin-left: 20px;
+   margin-right: 20px;
+   margin-bottom: 20px;
+   
+}
+
+.profile_management-image {
+    width: 250px;
+    height: 250px;
+    display: block; 
+    margin: 0 auto;
+}
+
+.profile_management-details{
+    padding-bottom: 20px; 
+    text-align: center;
+    color: whitesmoke;
+}
+
+.performance_tracking{
+    grid-column: 2/3;
+    background-color: #4319ec;
+    border-radius: 50px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+ }
+ 
+ .performance_tracking-image {
+     width: 250px;
+     height: 250px;
+     display: block; 
+     margin: 0 auto;
+
+ }
+ 
+ .performance_tracking-details{
+     text-align: center;
+     color: whitesmoke;
+     padding-bottom: 20px;  
+ }
+
+ .profile_sharing{
+    grid-column: 3/4;
+    background-color: #4319ec;
+    border-radius: 50px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+ }
+ 
+ .profile_sharing-image {
+    width: 250px;
+    height: 250px;
+    display: block; 
+    margin: 0 auto;
+ }
+ 
+ .profile_sharing-details{
+     text-align: center;
+     color: white;
+     padding-bottom: 20px; 
+ }
+ 
+.team_management{
+    grid-column: 1/2;
+    background-color: #4319ec;
+    border-radius: 50px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+ }
+ 
+ .team_management-image {
+    width: 250px;
+    height: 250px;
+    display: block; 
+    margin: 0 auto;
+
+ }
+ 
+ .team_management-details{
+     text-align: center;
+     color: whitesmoke;
+     padding-bottom: 20px; 
+ }
+
+
+
+ .event_sheduling{
+    grid-column: 2/3;
+    background-color: #4319ec;
+    border-radius: 50px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+ }
+ 
+ .event_sheduling-image {
+    width: 250px;
+    height: 250px;
+    display: block; 
+    margin: 0 auto;
+ }
+ 
+ .event_sheduling-details{
+     text-align: center;
+     color: white;
+     padding-bottom: 20px; 
+ }
+
+ .player_requests{
+    grid-column: 3/4;
+    background-color: #4319ec;
+    border-radius: 50px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+ }
+ 
+ .player_requests-image {
+    width: 250px;
+    height: 250px;
+    display: block; 
+    margin: 0 auto;
+ }
+ 
+ .player_requests-details{
+     text-align: center;
+     padding-bottom: 20px; 
+     color: white;
+ }
+ 
+ 

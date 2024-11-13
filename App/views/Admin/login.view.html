@@ -1,5 +1,7 @@
 <?php
     require "../core/init.php";
+    require_once 'nav.php';
+    $nav = new Nav();
 ?>
 
 <!DOCTYPE html>
@@ -10,22 +12,10 @@
     <link rel="stylesheet" href="../../public/assets/css/style.css">
 </head>
 
-<body style="background-color: #36373f;">
+<body id="loginbody">
 
 
-    <div id="nav">
-        <header>
-            <div id="logo">
-                <img src="../../public/assets/icon/logo.png" alt="trackmaster logo">
-            </div>
-
-            <div id="nav-links">
-                <span id="navicon"><img src="../../public/assets/icon/use.png" alt="how to use"></span>
-                <span id="navicon"><img src="../../public/assets/icon/acc.png" alt="account icon"></span>
-
-            </div>
-        </header>
-    </div>
+<?php $nav->render(); ?>
 
     <div id="login-dis">
         <div id="wel-track">Welcome to TrackMaster</div>
