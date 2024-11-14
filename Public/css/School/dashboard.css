@@ -1,0 +1,184 @@
+/* Global styling for the body */
+body {
+    font-family: Arial, sans-serif; /* General font for the page */
+    background-color: #1e2a38; /* Dark background for the whole page */
+    color: #fff; /* White text color for readability */
+    margin: 0;
+    padding: 0;
+}
+
+/* Container styling */
+.container {
+    display: flex;
+    max-width: 1200px; /* Maximum width for the entire layout */
+    margin: 0 auto; /* Center the container */
+    padding: 20px; /* Add padding around the container */
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 250px; /* Fixed width for the sidebar */
+    background-color: #243447; /* Dark background for sidebar */
+    padding: 20px; /* Padding inside the sidebar */
+    border-radius: 10px; /* Rounded corners for sidebar */
+}
+
+/* Sidebar logo styling */
+.logo h1 {
+    color: #1C5B8F; /* Blue color for the logo */
+}
+
+/* Sidebar navigation styling */
+nav ul {
+    list-style: none; /* Remove default list styling */
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin-bottom: 10px; /* Space between menu items */
+}
+
+nav ul li a {
+    text-decoration: none; /* Remove underline from links */
+    color: #fff; /* White text color for links */
+    font-weight: bold; /* Bold text for links */
+}
+
+/* Main content styling */
+.main-content {
+    flex: 1; /* Allow main content to take up remaining space */
+    margin-left: 20px; /* Space between sidebar and main content */
+}
+
+/* Header styling */
+header {
+    display: flex;
+    justify-content: space-between; /* Space out header elements */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 20px;
+}
+
+header h2 {
+    color: #fff; /* White text color for the header */
+}
+
+/* Search bar styling */
+.search-bar {
+    display: flex;
+    align-items: center; /* Center items vertically */
+}
+
+.search-bar input[type="text"] {
+    padding: 10px;
+    border: 1px solid #1C5B8F; /* Blue border for the input */
+    border-radius: 5px; /* Rounded corners for the input */
+    background-color: #243447; /* Dark background for the input */
+    color: #fff; /* White text color for the input */
+}
+
+.search-bar select {
+    padding: 10px;
+    border: 1px solid #1C5B8F; /* Blue border for the select box */
+    border-radius: 5px; /* Rounded corners for the select box */
+    background-color: #243447; /* Dark background for the select box */
+    color: #fff; /* White text color for the select box */
+    margin-left: 10px; /* Space between input and select box */
+}
+
+/* Profile styling */
+.profile {
+    display: flex;
+    align-items: center; /* Center items vertically */
+}
+
+.profile img {
+    width: 40px; /* Fixed width for profile picture */
+    height: 40px; /* Fixed height for profile picture */
+    border-radius: 50%; /* Circular profile picture */
+    margin-left: 10px; /* Space between text and image */
+}
+
+/* Dashboard card styling */
+.dashboard-card {
+    background-color: #243447; /* Dark background for dashboard cards */
+    border-radius: 10px; /* Rounded corners for cards */
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.dashboard-card h3 {
+    margin-top: 0;
+    color: #fff; /* White text color for card headers */
+}
+
+/* Facility requests and extra class requests */
+.facility-requests, .extra-class-requests {
+    background-color: #243447; /* Dark background for the request sections */
+    border-radius: 10px; /* Rounded corners for sections */
+    padding: 20px;
+    color: #fff; /* White text color */
+}
+
+/* Calendar container styling */
+.calendar {
+    width: 100%; /* Full width of its parent */
+    max-width: 1000px; /* Optional maximum width */
+    margin: 0 auto; /* Center the calendar container */
+    padding: 20px; /* Add padding around the calendar */
+    background-color: #1e2a38; /* Dark background for the calendar container */
+    border-radius: 10px; /* Rounded corners for the container */
+}
+
+/* Calendar header styling */
+.calendar-header {
+    margin-bottom: 20px;
+    color: #fff; /* White text color for the calendar header */
+}
+
+/* Calendar grid layout */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for days of the week */
+    gap: 5px; /* Spacing between grid items */
+    margin-bottom: 20px;
+}
+
+/* Styling for day labels */
+.calendar-day {
+    text-align: center;
+    font-weight: bold;
+    color: #a0a0a0; /* Light gray color for day labels */
+    padding: 10px 0;
+    background-color: #2c3e50; /* Slightly darker background for day labels */
+    border-radius: 5px; /* Rounded corners for day labels */
+}
+
+/* Styling for date cells */
+.calendar-date {
+    text-align: center;
+    padding: 10px;
+    background-color: #243447; /* Dark background color for date cells */
+    border-radius: 5px; /* Rounded corners for date cells */
+    color: #fff; /* White text color */
+    box-sizing: border-box; /* Include padding in total width and height */
+}
+
+/* Highlighted date styling */
+.calendar-date.highlighted {
+    background-color: #1C5B8F; /* Blue background for highlighted dates */
+    font-weight: bold;
+}
+
+/* Facility schedule styling */
+.facility-schedule {
+    color: #fff; /* White text color */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+    .calendar-day, .calendar-date {
+        font-size: 0.9em; /* Reduce font size on smaller screens */
+        padding: 8px; /* Adjust padding for smaller screens */
+    }
+}
