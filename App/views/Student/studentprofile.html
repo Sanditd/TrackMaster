@@ -4,68 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Profile</title>
-    <link rel="stylesheet" href="/App/view/css/profile.css">
-    <link rel="stylesheet" href="/App/view/css/navbar.css">
+    <link rel="stylesheet" href="/Public/css/Student/profile.css">
+
 </head>
 <body>
-     <!-- Sidebar -->
-     <div id="sidebar" class="sidebar">
-        <span class="close" onmouseleave="closeNav()">
-        <div class="profile">
-            <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
-            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
-            <br>
-            <div style="font-size:10px;white-space: nowrap;">Student Player</div>
-            <div>
-                <select id="status">
-                  <option value="rest">Rest</option>
-                  <option value="practicing">Practicing</option>
-                  <option value="meet">In a Meet</option>
-                  <option value="injury">Injury</option>
-                  <option value="studying">Studying</option>
-                </select>
-              </div>
-            <br>
-            <hr>
-        </div>
 
-        <nav>
-            <ul>
-                <li><a href="/App/view/html/dashboard.html">Dashboard</a></li>
-                <li><a href="/App/view/html/studentprofile.html">My Profile</a></li>
-                <li><a href="/App/view/html/studentPerformance.html">My Performance</a></li>
-                <li><a href="/App/view/html/student_schedule.html">My Schedule</a></li>
-                <li><a href="/App/view/html/stu_notifications">Reminders</a></li>
-            </ul>
-        </nav>
-        </span>
-    </div>
-
-    <!-- Main Content -->
     <div id="main">
-        <header>
-            <button class="openbtn" onclick="toggleNav()">☰ </button>
-
-            <nav class="navbar" id="navbar">
-                <div class="logo">
-                    <img src="/App/view/assests/logo.png" alt="Logo"> 
-                </div>
-                <ul class="nav-links">
-                    <li><a href="/App/view/html/dashboard.html"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Sign In</a></li>
-                    <li><a href="#">Log In</a></li>
-                </ul>
-            </nav>
-
-        </header>
 
         <div class="main-content">
             <div class="intro">
             <div class="student-profile">
-                <img src="/App/view/assests/profile.jpeg" alt="Student Profile Picture" class="profile-pic">
+                <img src="/Public/img/profile.jpeg" alt="Student Profile Picture" class="profile-pic">
                 <div class="student-name">
                     <h2>T.H.E.G.Thenuwara</h2>
                     <p>Student Player</p>
@@ -97,7 +46,7 @@
                         <p><strong> Guardian Email : </strong> silva@gmail.com</p>
                         <p><strong> Guardian Address : </strong> 123 Main St, Colombo, Sri Lanka</p>
                     </section>
-                        <button class="profile-edit-btn" onclick="window.location.href='/App/view/html/edit_studentProfile.html'">Edit Profile</button>
+                        <button class="profile-edit-btn" onclick="window.location.href='/App/views/Student/edit_studentProfile.html'">Edit Profile</button>
                 </div>
     
                 <!-- Middle Column -->
@@ -110,7 +59,7 @@
                         <p><strong> Allergies : </strong>None</p>
                         <p><strong> Blood Type : </strong>A+</p>
                         <p><strong> Emergency Contact : </strong> 0712345678</p>
-                        <button class="medical-status-btn" onclick="window.location.href='/App/view/html/medicalStatus.html'">Update Medical History</button>
+                        <button class="medical-status-btn" onclick="window.location.href='/App/views/Student/medicalStatus.html'">Update Medical History</button>
                     </div>
     
                     <div class="profile-section financial-status">
@@ -119,7 +68,7 @@
                         <p><strong> Financial Aid Status : </strong>Recieve Funds</p>
                         <p><strong> Registration Number : </strong>24/M/90</p>
                         <p><strong> Registration Date : </strong>2024-01-01</p>
-                        <button class="medical-status-btn"onclick="window.location.href='/App/view/html/financialStatus.html'">Update Financial Status</button>
+                        <button class="medical-status-btn"onclick="window.location.href='/App/views/Student/financialStatus.html'">Update Financial Status</button>
                     </div>
                 </div>
     
@@ -132,14 +81,14 @@
                         <p><strong> Level : </strong>Zonal</p>
                         <p><strong> Position : </strong>Goal Keeper</p>
                         <p><strong> Coach : </strong>Mr.Perera</p>
-                        <button class="medical-status-btn"onclick="window.location.href='/App/view/html/studentPerformance.html'">Track My Performance</button>
+                        <button class="medical-status-btn"onclick="window.location.href='/App/views/Student/studentPerformance.html'">Track My Performance</button>
                     </section>
                     <section class="guardian-details">
                         <h3>- Rugby</h3>
                         <p><strong> Level : </strong>Provincial</p>
                         <p><strong> Position : </strong>Prop</p>
                         <p><strong> Coach : </strong>Mr.Sumith</p>
-                        <button class="medical-status-btn"onclick="window.location.href='/App/view/html/Stude.html'">Track My Performance</button>
+                        <button class="medical-status-btn"onclick="window.location.href='/App/views/Student/studentPerformance.html'">Track My Performance</button>
                     </section>
                 </div>
                 </div>
@@ -148,9 +97,6 @@
 
         </div>
     </div>
-
-            <script src="/App/view/js/profile.js"></script>
-            <script src="/App/view/js/sidebar.js"></script>
 
 </body>
 </html>
