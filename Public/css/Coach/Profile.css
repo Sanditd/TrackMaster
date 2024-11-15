@@ -1,0 +1,135 @@
+/* styles.css */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+}
+
+.container {
+    width: 60%;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.header h2 {
+    font-size: 1.5rem;
+    color: #4a4a4a;
+}
+
+.edit-button {
+    background-color: #00c853;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.profile-form {
+    display: flex;
+    gap: 2rem;
+}
+
+.left-section, .right-section {
+    flex: 1;
+}
+
+.profile-picture img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #4a4a4a;
+    margin-bottom: 0.5rem;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.change-password {
+    color: #00c853;
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.dob-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.payment-methods h4 {
+    font-size: 1rem;
+    color: #4a4a4a;
+    margin-bottom: 0.5rem;
+}
+
+.cards {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.card {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.card span {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.add-payment {
+    background-color: #00c853;
+    color: #fff;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.input-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    resize: none; /* Disable resizing */
+    text-align: justify;
+
+}
