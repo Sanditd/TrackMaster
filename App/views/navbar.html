@@ -5,21 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/App/view/css/navbar.css">
+    <link rel="stylesheet" href="/Public/css/navbar.css">
 </head>
 <body>
 
-    <!-- Sidebar -->
+    <!-- Side Bar -->
     <div id="sidebar" class="sidebar">
         <span class="close" onmouseleave="closeNav()">
         <div class="profile">
-            <img src="/App/view/assests/profile.jpeg" alt="Profile Picture">
+            <img src="/Public/img/profile.jpeg" alt="Profile Picture">
             <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
             <br>
             <div style="font-size:10px;white-space: nowrap;">Student Player</div>
+            <div>
+                <select id="status">
+                  <option value="rest">Rest</option>
+                  <option value="practicing">Practicing</option>
+                  <option value="meet">In a Meet</option>
+                  <option value="injury">Injury</option>
+                  <option value="studying">Studying</option>
+                </select>
+              </div>
             <br>
             <hr>
         </div>
+
         <nav>
             <ul>
                 <li><a href="/App/view/html/dashboard.html">Dashboard</a></li>
@@ -32,6 +42,7 @@
         </span>
     </div>
 
+
     <!-- Main Content -->
     <div id="main">
         <header>
@@ -39,7 +50,7 @@
 
             <nav class="navbar" id="navbar">
                 <div class="logo">
-                    <img src="/App/view/assests/logo.png" alt="Logo"> 
+                    <img src="/Public/img/logo.png" alt="Logo"> 
                 </div>
                 <ul class="nav-links">
                     <li><a href="/App/view/html/dashboard.html"><i class="fas fa-home"></i> Home</a></li>
@@ -55,7 +66,8 @@
 
     </div>
 
-    <script src="/App/view/js/sidebar.js"></script>
+    <script src="/Public/js/sidebar.js"></script>
+    <script src="/Public/js/profile.js"></script>
     
 </body>
 </html>

@@ -4,65 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Student Profile</title>
-    <link rel="stylesheet" href="../../../Public/css/Student/profile.css">
-    <link rel="stylesheet" href="../../../Public/css/Student/navbar.css">
-    <link rel="stylesheet" href="../../../Public/css/Student/edit_studentProfile.css"
+    <link rel="stylesheet" href="/Public/css/Student/profile.css">
+    <link rel="stylesheet" href="/Public/css/Student/edit_studentProfile.css">
 </head>
 
 <body>
-     <!-- Sidebar -->
-     <div id="sidebar" class="sidebar">
-        <span class="close" onmouseleave="closeNav()">
-        <div class="profile">
-            <img src="../../../Public/img/Student/profile.jpeg" alt="Profile Picture">
-            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
-            <br>
-            <div style="font-size:10px;white-space: nowrap;">Student Player</div>
-            <div>
-                <select id="status">
-                  <option value="rest">Rest</option>
-                  <option value="practicing">Practicing</option>
-                  <option value="meet">In a Meet</option>
-                  <option value="injury">Injury</option>
-                  <option value="studying">Studying</option>
-                </select>
-              </div>
-            <br>
-            <hr>
-        </div>
-
-        <nav>
-            <ul>
-                <li><a href="../Student/dashboard.html">Dashboard</a></li>
-                <li><a href="../Student/studentprofile.html">My Profile</a></li>
-                <li><a href="../Student/studentPerformance.html">My Performance</a></li>
-                <li><a href="../Student/student_schedule.html">My Schedule</a></li>
-                <li><a href="../Student/stu_notifications">Reminders</a></li>
-            </ul>
-        </nav>
-        </span>
-    </div>
 
     <!-- Main Content -->
     <div id="main">
-        <header>
-            <button class="openbtn" onclick="toggleNav()">☰ </button>
-
-            <nav class="navbar" id="navbar">
-                <div class="logo">
-                    <img src="../../..Public/img/Student/logo.png" alt="Logo"> 
-                </div>
-                <ul class="nav-links">
-                    <li><a href="../Student/dashboard.html"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Sign In</a></li>
-                    <li><a href="#">Log In</a></li>
-                </ul>
-            </nav>
-
-        </header>
 
         <div id="edit_container" class="container">
                     <div class="edit-profile-box">
@@ -74,7 +23,7 @@
                             <h3>PERSONAL DETAILS</h3>
                             
                             <div class="profile-picture-section">
-                                <img src="../../..Public/img/Student/profile.jpeg" alt="Profile Picture" id="profile-pic-preview">
+                                <img src="/Public/img/profile.jpeg" alt="Profile Picture" id="profile-pic-preview">
                                 <input type="file" id="profile-pic-input" accept="image/*">
                             </div>
               
@@ -129,16 +78,14 @@
                             <!-- Buttons -->
                             <div class="form-buttons">
                                 <button type="submit">Save Changes</button>
-                                <button type="button" class="cancel-btn" onclick="window.location.href='../Student/studentProfile.html'">Cancel</button>
+                                <button type="button" class="cancel-btn" onclick="window.location.href='/App/views/Student/studentprofile.html'">Cancel</button>
                             </div>
                         </div>
                     </div>
         </div>
     </div>
 
-            <script src="../../../Public/js/Student/profile.js"></script>
-            <script src="../../../Public/js/Student/sidebar.js"></script>
-            <script src="../../../Public/js/Student/edit_studentprofile.js"></script>
+            <script src="/Public/js/Student/edit_studentprofile.js"></script>
 
 </body>
 </html>

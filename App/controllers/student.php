@@ -6,8 +6,12 @@
         public function index(){
         }
 
-        public function about($name){
-            $this-> view('v_about');
+        public function about($name,$age){
+            $data = [
+                'userName' => $name,
+                'userAge' => $age
+            ];
+            $this->view('v_about', $data);
         }
     }
 

@@ -8,7 +8,7 @@
         }
 
     //To Load the View
-        public function view($view){
+        public function view($view ,$data = []){
             if(file_exists('../App/views/'.$view.'.php')){
                 require_once '../App/views/'. $view. '.php';
             }

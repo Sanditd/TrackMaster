@@ -6,6 +6,8 @@
     <title>Dashboard</title>
 </head>
 <body>
-    <h1>Hiiiiiii</h1>
+    <h1>Welcome</h1>
+    Hi <?php echo $data['userName']; ?>
+    I'm <?php echo $data['userAge']; ?> years old
 </body>
 </html>

@@ -22,7 +22,7 @@
     display: flex;
     align-items: center;
     justify-content:center;
-    background-image: url('/App/view/assests/bg2.jpg');
+    background-image: url('/Public/img/Student/bg2.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 }

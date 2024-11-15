@@ -13,7 +13,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: url('/App/view/assests/bg7.jpg');
+    background-image: url('/Public/img/Student/bg7.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 }
