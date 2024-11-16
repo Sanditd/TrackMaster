@@ -1,0 +1,79 @@
+/* General Reset */
+body, h1, h2, h3, h4, p {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #fff; /* White text for readability */
+  }
+  
+  body {
+    background-color: #000; /* Black background */
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Header Styling */
+  h1 {
+    color: #ffc107; /* Yellow for the title */
+    margin-bottom: 20px;
+  }
+  
+  /* Section Styling */
+  .intro, .vision, .mission, .users, .aims, .end {
+    margin: 20px 0;
+    background-color: #1a1a1a; /* Dark grey for sections */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+  h3 {
+    color: #ffc107; /* Yellow for section headings */
+    margin-bottom: 10px;
+  }
+  
+  p {
+    margin-bottom: 10px;
+    color: #fff; /* White text */
+  }
+  
+  /* Cards Section */
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .card {
+    flex: 1 1 calc(50% - 20px); /* Responsive 2-column layout */
+    background-color: #333; /* Dark grey for cards */
+    padding: 15px;
+    border: 2px solid #ffc107; /* Yellow border */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  }
+  
+  .card h4 {
+    margin-bottom: 10px;
+    color: #ffc107; /* Yellow card headings */
+  }
+  
+  .card p {
+    color: #fff; /* White text for descriptions */
+  }
+  
+  /* Footer Section */
+  .end {
+    text-align: center;
+    background-color: #111; /* Black footer */
+    color: #ffc107; /* Yellow text for emphasis */
+    padding: 10px 0;
+    margin-top: 20px;
+    border-top: 2px solid #ffc107;
+  }
+  
