@@ -1,13 +1,12 @@
-/* General Reset */
 body, h1, h2, h3, h4, p {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    color: #fff; /* White text for readability */
+    color: #fff; 
   }
   
   body {
-    background-color: #000; /* Black background */
+    background-color: #000;
     line-height: 1.6;
   }
   
@@ -17,23 +16,40 @@ body, h1, h2, h3, h4, p {
     padding: 20px;
   }
   
-  /* Header Styling */
   h1 {
-    color: #ffc107; /* Yellow for the title */
+    color: #ffc107; 
     margin-bottom: 20px;
   }
-  
-  /* Section Styling */
-  .intro, .vision, .mission, .users, .aims, .end {
-    margin: 20px 0;
-    background-color: #1a1a1a; /* Dark grey for sections */
-    padding: 20px;
+ 
+  .intro, .vision, .mission {
+    margin: 30px;
+    background-color: #1a1a1a; 
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    text-align: center;
+  }
+
+  .users{
+    margin:40px;
+    background-color: #1a1a1a; 
+    padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   }
+
+  .aims{
+    width: 50%;
+    margin:40px;
+    background-color: #1a1a1a; 
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    text-align: start;
+  }
   
   h3 {
-    color: #ffc107; /* Yellow for section headings */
+    color: #ffc107;
     margin-bottom: 10px;
   }
   
@@ -67,13 +83,33 @@ body, h1, h2, h3, h4, p {
     color: #fff; /* White text for descriptions */
   }
   
-  /* Footer Section */
+
   .end {
-    text-align: center;
-    background-color: #111; /* Black footer */
-    color: #ffc107; /* Yellow text for emphasis */
-    padding: 10px 0;
+    background-color: #111; 
+    padding: 40px;
     margin-top: 20px;
-    border-top: 2px solid #ffc107;
   }
   
+  .end p {
+    color: #ffc107; 
+    font-family: cursive;
+    text-align: center;
+  }
+
+  .end button {
+    width: 30%;
+    padding: 8px;
+    border: none;
+    background-color: #FFD700;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 20px;
+    margin-right: 10px;
+    display: flexbox;
+}
+
+.end button:hover {
+    background-color: #FFA500;
+}
