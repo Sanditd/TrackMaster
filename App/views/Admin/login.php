@@ -1,13 +1,10 @@
 <<<<<<< HEAD:App/views/Admin/login.php
 <?php
     //require "../../config/init.php";
-=======
-<!-- <?php
     require "../core/init.php";
->>>>>>> 810f0812bfec2c8a37d7c4a5498afd4ed2fb2c58:App/views/Admin/login.view.html
     require_once 'nav.php';
     $nav = new Nav();
-?> -->
+?>
 
 <!DOCTYPE html>
 <html>
