@@ -1,286 +1,149 @@
-.body{
-    margin: 0px;
-    padding: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-.main-content{
-    margin: 0px;
-    padding: 0px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color:whitesmoke;
-}
-
-.intro{
-    width: 100%;
-    height: 300px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content:center;
-    background-image: url('/Public/img/Student/bg6.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-}
-
-.intro h2 {
-    color: whitesmoke;
-    font-size: 40px;
-    text-align: center;
+body {
+    background-color: #f4f4f9; /* Light grey for a neutral background */
+    color: #333; /* Standard text color */
 }
 
 .dashboard-container {
-    width: 100%;
-    height: auto;
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 30px;
-    padding: 30px;
-    background-color: black;
-    padding-bottom: 50px;
-}
-
-.dashboard-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #ccc;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
-    border-radius: 10px;
-    background-color:whitesmoke;
-    margin-top: 20px;
 }
 
-.dashboard-section h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.dashboard-section p {
-    font-size: 14px;
-    margin: 5px 0;
-}
-
-.dashboard-section hr {
-    border: none;
-    border-top: 1px solid black;
-    margin: 10px 0;
-}
-
-.view-more-btn{
-    background-color: #FFD700;
-    width: 90%;
-    color: rgb(0, 0, 0);
-    border: 1px solid black;
-    margin:10px;
+.dashboard-header {
+    text-align: left;
     margin-bottom: 20px;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    display:flexbox;
-    text-align: center;
+    background-color: #00264d; 
+    color: #fff; 
+    padding: 15px;
+    border-radius: 8px;
 }
 
-.view-more-btn:hover{
-    background-color: #FFB040;
+.dashboard-header p {
+    margin-top: 10px;
 }
-/* Calendar styles */
-.calendar-container {
-    width: 100%;
-    margin: 0px;
-    height: auto;
-    background-color: white;
-    padding: 30px;
+
+.stats-cards {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.card {
+    flex: 1;
+    background-color: #ffa500;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.circle {
+    width: 120px;
+    height: 120px;
+    background: conic-gradient(#c70d0d 0%, #c70d0d 75%, #f0f0f3 75%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.inner-circle {
+    color: #ff0000;
+    font-size: 40px;
+    width: 100px;
+    height: 100px;
+    background-color: rgb(241, 241, 241);
+    border-radius: 50%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.calendar-container h2 {
-    margin-top: 50px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 36px;
-    font-weight: bold;
-    text-align: center;
-    color: #333;
-}
-
-.calendar {
-    width: 60%;
-    margin: 20px 0;
-}
-
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;  
-    border: 4px solid black;
-    border-radius: 8px;
-    background-color: 	#FFD700;
-}
-
-.calendar-grid {
-    margin: 10px;
-    padding: 20px;
+.main-content {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    background-color: #ffffb3;
-    border: 3px solid #000000;
-    border-radius: 8px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
 }
 
-.day, .date {
-    padding: 10px;
-    background: #e0e0e0;
-    border: 1px solid #000000;
-    text-align: center;
-    border-radius: 4px;
-}
-
-button {
-    background-color: black;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    border: 1px solid white;
-}
-
-
-.notification-message{
-    width: 100%;
-    height: auto;
-    border: 2px solid #333;
-    border-radius: 5px;
-    padding: 10px;
-    background-color:#ffffb3 ;
-    margin-top: 30px;
-    margin: 10px; 
-}
-
-.sender{
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 8px;
-}
-
-.message{
-    color: #000000;
-    text-align: center;
-}
-
-.notify-date{
-    margin: 5px;
-    color: #999;
-    text-align: right;
-}
-
-.carousel {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    padding:0px;
-}
-
-.carousel-inner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-left: 30px;
-    padding-right: 30px;
-    width: 95%;
-    height: auto;
-    transition: transform 0.5s ease;
-    margin: 20px;
-}
-
-.carousel-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #000000;
-    width: calc(100% / 3);
-    height: auto;
-    border: solid 2px #000000;
-    border-radius:10px;
-    margin: 20px;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-.carousel-item:hover {
-    transform: scale(1.15); 
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
-}
-
-.image-container{
-    width: 100%;
-    height: 50%;
-    margin: 0px;
-    padding: auto;
-    border-radius: 10px;
-}
-
-.image-container img{
-    width: 100%;
-    height:100%;
-    object-fit: cover;
-}
-
-.content-container{
-    width: 100%;
-    height: auto;
+.section {
+    background-color: #ffffff; /* White for clean sections */
+    color: #333; /* Text color */
     padding: 20px;
-    color: whitesmoke;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.content-container h3{
-    font-size: 20px;
+h2 {
+    font-size: 18px;
     margin-top: 10px;
     margin-bottom: 10px;
-    color: #FFB040;
+    color: #00264d; /* Deep blue for section headers */
+    border-bottom: 2px solid #ffa500; /* Orange underlines for emphasis */
+    display: inline-block;
+    padding-bottom: 3px;
 }
 
-.content-container p{
+.recent-clients ul,
+.activity-log ul,
+.quick-session ul {
+    list-style: none;
+    padding-left: 15px;
+}
+
+.recent-clients li,
+.activity-log li,
+.quick-session li {
+    margin-bottom: 8px;
     font-size: 14px;
-    margin-bottom: 20px;
+    position: relative;
+    padding-left: 10px;
+    color: #555;
 }
 
-.carousel-control {
+.recent-clients li::before,
+.activity-log li::before,
+.quick-session li::before {
+    content: "•";
     position: absolute;
-    top: 45%;
-    transform: translateY(-50%);
-    padding-top: 20px;
-    padding-bottom: 20px;
-    background-color: rgb(0, 0, 0);
-    border: none;
-    cursor: pointer;
+    left: 0;
+    color: #ffa500; /* Orange bullet points */
+    font-size: 18px;
 }
 
-.prev {
-    left: 10px;
+.recent-clients span,
+.activity-log span,
+.quick-session span {
+    float: right;
+    color: #888; /* Lighter color for timestamps */
+    font-size: 12px;
 }
 
-.next {
-    right: 10px;
+.coach-rating p {
+    font-size: 22px;
+    font-weight: bold;
+    color: #f39c12; /* Yellow for the rating */
+    text-align: center;
+    margin-top: 10px;
+}
+
+.upcoming-appointments .appointment {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.upcoming-appointments .appointment span {
+    font-weight: bold;
+    color: #ffa500; /* Orange for emphasis */
+    margin-right: 5px;
 }
