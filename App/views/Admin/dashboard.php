@@ -1,12 +1,11 @@
-<html>
 
-<head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="css/admindashboard.css">
-</head>
+<?php
+if (!defined('LOADED_FROM_MAIN')) {
+    require_once 'adminNav.php';
+}
+?>
 
-<body>
-    <div class="container">
+<div class="container">
         <div class="chart">
             <div id="topic">
                 Matrix
@@ -101,6 +100,3 @@
             </div>
         </div>
     </div>
-</body>
-
-</html>
