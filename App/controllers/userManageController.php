@@ -1,5 +1,5 @@
 <?php
-    class main extends Controller{
+    class userManageController extends Controller{
         public function __construct(){
           //O $this->pagesModel=$this->model('loginPage');
         }
@@ -8,11 +8,11 @@
 
         }
 
-        public function login($name){
+        public function userManage($name){
             $data=[
                 'username'=>$name
             ];
-            $this->view('login');
+            $this->view('userManage');
         }
 
     }

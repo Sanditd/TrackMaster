@@ -1,7 +1,7 @@
-<<<<<<< HEAD:App/views/Admin/login.php
+
 <?php
     //require "../../config/init.php";
-    require "../core/init.php";
+    //require "../core/init.php";
     require_once 'nav.php';
     $nav = new Nav();
 ?>

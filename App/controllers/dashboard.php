@@ -8,7 +8,7 @@
 
         }
 
-        public function dashboardPage(){
+        public function dashboard(){
             $data=[];
             $this->view('adminpanelview');
         }

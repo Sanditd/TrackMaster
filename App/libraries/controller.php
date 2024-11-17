@@ -2,20 +2,21 @@
     class controller{
         //To Load the Model
         public function model($model){
-            require_once '../App/models/'. $model. '.php';
+            require_once '../model/'. $model. '.php';
             //Instantiate the model and pass it to the controller member variable
             return new $model();
         }
 
     //To Load the View
-        public function view($view ,$data = []){
-            if(file_exists('../App/views/'.$view.'.php')){
-                require_once '../App/views/'. $view. '.php';
-            }
-            else{
-                die('Corresponding View does not exist');
-            }
+    public function view($view, $data = []) {
+        $path = __DIR__ . '/../views/Admin/' . $view . '.php';
+        if (file_exists($path)) {
+            require_once $path;
+        } else {
+            die("Corresponding View does not exist: $path");
         }
+    }
+    
     }
 
 ?>

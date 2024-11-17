@@ -24,11 +24,11 @@
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="adminpanel.view.php">Dashboard</a></li>
-                        <li><a href="#">Manage Users</a></li>
-                        <li><a href="#">Add Sports</a></li>
-                        <li><a href="#">Manage Sports</a></li>
-                        <li><a href="#">Announcements</a></li>
+                        <li><a href="<?php echo ROOT ?>/dashboard/dashboard/ads">Dashboard</a></li>
+                        <li><a href="<?php echo ROOT ?>/userManageController/userManage/asdasd">Manage Users</a></li>
+                        <li><a href="#" class="open-popup" data-popup="addSport">Add Sports</a></li>
+                        <li><a href="#" class="open-popup" data-popup="manageSport">Manage Sports</a></li>
+                        <li><a href="#" class="open-popup" data-popup="annoucements">Announcements</a></li>
                     </ul>
                 </nav>
             </span>
@@ -58,3 +58,26 @@
 </body>
 
 </html>
+
+<script>
+    document.getElementById('manageUsersLink').addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    const targetUrl = this.getAttribute('href'); // Get the href attribute of the link
+    const pageTitle = "Manage Users"; // Set the title of the page (optional)
+
+    // Update the URL without reloading the page
+    history.pushState(null, pageTitle, targetUrl);
+
+    // Optionally, load the content via AJAX
+    // Uncomment the following lines if you want to load the page content dynamically
+    /*
+    fetch(targetUrl)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('content').innerHTML = html; // Replace 'content' with your target div ID
+        });
+    */
+});
+
+</script>
