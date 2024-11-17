@@ -54,9 +54,6 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #0056b3;
-}
 
 /* Form Group */
 .form-group {

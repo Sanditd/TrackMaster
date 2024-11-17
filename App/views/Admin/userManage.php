@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
-    <link rel="stylesheet" href="../../../Public/css/Admin/userManage.css">
+    <link rel="stylesheet" href="../../Public/css/Admin/userManage.css">
+    <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
+    <script src="../../Public/js/Admin/sidebar.js"></script>
 </head>
+
 <body>
+    <?php require_once 'adminNav.php'?>
     <div class="container">
         <h1>Manage Users</h1>
 
@@ -39,7 +44,7 @@
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" placeholder="Enter Email">
                 </div>
-                <button type="submit">Update Information</button>
+                <button class="bt" type="submit">Update Information</button>
             </form>
         </div>
 
@@ -68,4 +73,5 @@
         </div>
     </div>
 </body>
+
 </html>
