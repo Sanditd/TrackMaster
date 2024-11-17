@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sport Tracking System - Help Page</title>
-    <link rel="stylesheet" href="..\..\Public\css\help.css">
+    <title>Help Page</title>
+    <link rel="stylesheet" href="/Public/css/help.css">
 </head>
 <body>
 
     <!-- Main Content -->
     <div id="main">
         <div class="header-container">
-            <h1>Sport Tracking Help</h1>
+            <h1>H E L P </h1>
+            <h2>for a Better Experience at Our Website</h2>
             <div class="search-bar">
                 <input type="text" placeholder="Try 'Update my account details'">
                 <button>Search</button>
@@ -114,6 +115,34 @@
                 </div>
             </div>
         </section>
+
+        <section class="contact-form">
+            <form id="helpContactForm" class="helpContactForm">
+                <h2>ADDITIONAL HELP</h2>
+
+                <label for="role">Your Role</label>
+                <select id="role" name="role">
+                    <option value="student">Student</option>
+                    <option value="coach">Coach</option>
+                    <option value="parent">Parent</option>
+                    <option value="school">School</option>
+                </select>
+
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+    
+                <label for="email">Your Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+    
+                <label for="description">Why do you need our help ?</label>
+                <textarea id="description" name="description" rows="4" placeholder="Describe the issue in detail..."></textarea>
+                
+                <h3>We'll get back to you as soon as possible.</h3>
+                <center><button type="submit">Submit</button></center>
+
+            </form>           
+        </section>
+    
     </div>
 
     <script>
