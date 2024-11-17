@@ -1,0 +1,79 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000; /* Black background */
+    color: #ffcc00; /* Yellow text */
+    margin: 0;
+    padding: 0;
+}
+
+/* Page Heading */
+h1 {
+    text-align: center;
+    color: #ffcc00; /* Yellow heading */
+    padding: 20px 0;
+    text-transform: uppercase;
+}
+
+/* Table Styling */
+.event-list {
+    margin: 20px auto;
+    max-width: 800px;
+    width: 90%;
+    border-collapse: collapse;
+    border: 1px solid #ffcc00; /* Yellow border */
+}
+
+.event-list th, .event-list td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ffcc00; /* Yellow border */
+}
+
+.event-list th {
+    background-color: #ffcc00; /* Yellow header */
+    color: #000; /* Black text for header */
+    text-transform: uppercase;
+}
+
+.event-list tr:nth-child(even) {
+    background-color: #333; /* Dark gray for even rows */
+}
+
+.event-list tr:nth-child(odd) {
+    background-color: #000; /* Black for odd rows */
+}
+
+/* Button Styling */
+.btn {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 5px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.approve-btn {
+    background-color: #ffcc00; /* Yellow button */
+    color: #000; /* Black text */
+    border: 1px solid #ffcc00;
+}
+
+.approve-btn:hover {
+    background-color: #ffd633; /* Slightly lighter yellow */
+}
+
+.decline-btn {
+    background-color: #000; /* Black button */
+    color: #ffcc00; /* Yellow text */
+    border: 1px solid #ffcc00;
+}
+
+.decline-btn:hover {
+    background-color: #333; /* Darker gray */
+}
