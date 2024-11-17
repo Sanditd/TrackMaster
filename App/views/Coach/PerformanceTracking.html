@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="../../../Public/css/Coach/PerformanceTracking.css">
+    <link rel="stylesheet" href="../../../Public/css/navbar.css">
+</head>
+<body>
+    <div id="sidebar" class="sidebar">
+        <span class="close" onmouseleave="closeNav()">
+        <div class="profile">
+            <img src="../../../Public/img/Student/practicing.png" alt="Profile Picture">
+            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
+            <br>
+            <div style="font-size:10px;white-space: nowrap;">Coach - Cricket</div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="../Student/dashboard.html">Dashboard</a></li>
+                <li><a href="../Student/coachprofile.html">My Profile</a></li>
+                <li><a href="../Student/performanceTracking.html">Performancce Tracking</a></li>
+                <li><a href="../Student/Teammanagement.html">Team Management</a></li>
+                <li><a href="../Student/EventManagement.html">Event Management</a></li>
+                <li><a href="../Student/Profile Management.html">Profile Management</a></li>
+                <li><a href="   /stu_notifications">Notifications</a></li>
+            </ul>
+        </nav>
+        </span>
+    </div>
+
+    <div id="main">
+        <header>
+            <button class="openbtn" onclick="toggleNav()">☰ </button>
+
+            <nav class="navbar" id="navbar">
+                <div class="logo">
+                    <img src="../../../Public/img/Student/logo.png" alt="Logo"> 
+                </div>
+                <ul class="nav-links">
+                    <li><a href="../Student/dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Sign In</a></li>
+                    <li><a href="#">Log In</a></li>
+                </ul>
+            </nav>
+
+        </header>
+    </div>
+
+    <div class="dashboard-container">
+    
+    <div class="header">
+        <h1>Cricket Performance Tracking</h1>
+        <p>Select an option to proceed:</p>
+    </div>
+    
+      <main class="options-container">
+        <!-- First Row -->
+        <div class="option-row">
+          <div class="option-card" onclick="navigateTo('team-tracking.html')">
+            <img src="team-icon.png" alt="Team Tracking" class="option-icon">
+            <h2>Track Team Performance</h2>
+          </div>
+    
+          <div class="option-card" onclick="navigateTo('player-tracking.html')">
+            <img src="player-icon.png" alt="Player Tracking" class="option-icon">
+            <h2>Track Player Performance</h2>
+          </div>
+        </div>
+    
+        <!-- Second Row -->
+        <div class="option-row">
+          <div class="option-card" onclick="navigateTo('update-team.html')">
+            <img src="update-icon.png" alt="Update Team Tracking" class="option-icon">
+            <h2>Update Team Performance</h2>
+          </div>
+    
+          <div class="option-card">
+            <img src="update-icon.png" alt="Update Player Tracking" class="option-icon">
+            <h2>Update Player Performance</h2>
+              <div class="update-player-performance">
+              
+              <form action="update-player.html" method="GET" onsubmit="return validateSearch()">
+                <input 
+                  type="text" 
+                  name="playerName" 
+                  placeholder="Enter Player Name" 
+                  class="search-input" 
+                  required>
+                <button type="submit" class="search-button">Search</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../../../Public/js/Student/carousel.js"></script>
+    <script src="../../../Public/js/Student/profile.js"></script>
+    <script src="../../../Public/js/sidebar.js"></script>
+    <script src="../../../Public/js/Student/calender.js"></script>
+
+</body>
