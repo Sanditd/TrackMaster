@@ -1,5 +1,5 @@
 <?php
-    require "../core/init.php";
+    //require "../../config/init.php";
     require_once 'nav.php';
     $nav = new Nav();
 ?>
@@ -9,13 +9,13 @@
 
 <head>
     <title>Login</title>
-    <link rel="stylesheet" href="../../public/assets/css/style.css">
+    <link rel="stylesheet" href="../..../../../Public/css/Admin/login.css">
 </head>
 
 <body id="loginbody">
 
 
-<?php $nav->render(); ?>
+<?php $nav->render(); ?> 
 
     <div id="login-dis">
         <div id="wel-track">Welcome to TrackMaster</div>
