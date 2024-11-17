@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sport Tracking System - Help Page</title>
+    <link rel="stylesheet" href="../../../Public/css/Contact/contact.css">
+    <link rel="stylesheet" href="../../../Public/css/Contact/navbar.css"> <!-- Add this line for the navbar styles -->
+</head>
+<body>
+    <!-- Navbar Section -->
+    <header>
+        <button class="openbtn" onclick="toggleNav()">☰ </button>
+
+        <nav class="navbar" id="navbar">
+            <div class="logo">
+                <img src="../../../Public/img/Contact/logo.png" alt="Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="/App/view/html/dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Sign In</a></li>
+                <li><a href="#">Log In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div id="main">
+        <div class="header-container">
+            <h1>Sport Tracking Help</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Try 'Update my account details'">
+                <button>Search</button>
+            </div>
+        </div>
+
+
+    <script src="/App/view/js/sidebar.js"></script>
+    <script>
+        function showTab(tabId) {
+            // Hide all sections
+            document.getElementById('students').style.display = 'none';
+            document.getElementById('coaches').style.display = 'none';
+            document.getElementById('parents').style.display = 'none';
+            document.getElementById('schools').style.display = 'none';
+            
+            // Show the selected section
+            document.getElementById(tabId).style.display = 'block';
+
+            // Remove active class from all buttons
+            let buttons = document.querySelectorAll('.tab-links button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Add active class to the clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
