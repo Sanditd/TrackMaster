@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="../../../Public/css/Coach/TeamManagement.css">
+    <link rel="stylesheet" href="../../../Public/css/navbar.css">
+</head>
+<body>
+    <div id="sidebar" class="sidebar">
+        <span class="close" onmouseleave="closeNav()">
+        <div class="profile">
+            <img src="../../../Public/img/Student/practicing.png" alt="Profile Picture">
+            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
+            <br>
+            <div style="font-size:10px;white-space: nowrap;">Coach - Cricket</div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="../Student/dashboard.html">Dashboard</a></li>
+                <li><a href="../Student/coachprofile.html">My Profile</a></li>
+                <li><a href="../Student/performanceTracking.html">Performancce Tracking</a></li>
+                <li><a href="../Student/Teammanagement.html">Team Management</a></li>
+                <li><a href="../Student/EventManagement.html">Event Management</a></li>
+                <li><a href="../Student/Profile Management.html">Profile Management</a></li>
+                <li><a href="   /stu_notifications">Notifications</a></li>
+            </ul>
+        </nav>
+        </span>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <span class="close" onmouseleave="closeNav()">
+        <div class="profile">
+            <img src="../../../Public/img/Student/practicing.png" alt="Profile Picture">
+            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
+            <br>
+            <div style="font-size:10px;white-space: nowrap;">Coach - Cricket</div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="../Student/dashboard.html">Dashboard</a></li>
+                <li><a href="../Student/coachprofile.html">My Profile</a></li>
+                <li><a href="../Student/performanceTracking.html">Performancce Tracking</a></li>
+                <li><a href="../Student/Teammanagement.html">Team Management</a></li>
+                <li><a href="../Student/EventManagement.html">Event Management</a></li>
+                <li><a href="../Student/Profile Management.html">Profile Management</a></li>
+                <li><a href="   /stu_notifications">Notifications</a></li>
+            </ul>
+        </nav>
+        </span>
+    </div>
+
+    <div id="main">
+        <header>
+            <button class="openbtn" onclick="toggleNav()">☰ </button>
+
+            <nav class="navbar" id="navbar">
+                <div class="logo">
+                    <img src="../../../Public/img/Student/logo.png" alt="Logo"> 
+                </div>
+                <ul class="nav-links">
+                    <li><a href="../Student/dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Sign In</a></li>
+                    <li><a href="#">Log In</a></li>
+                </ul>
+            </nav>
+
+        </header>
+    </div>
+    <!-- Table Section -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Contact Info</th>
+                    <th>Position</th>
+                    <th>Manager</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>14</td>
+                    <td><img src="https://via.placeholder.com/50" alt="Player Photo"></td>
+                    <td>Alex Catalonio</td>
+                    <td>
+                        <div>Mrs.Catalonio@dayrep.com</div>
+                        <div>816-435-6790 - Mom</div>
+                    </td>
+                    <td>Midfielder</td>
+                    <td>Mom</td>
+                    <td>
+                        <button class="btn small edit">Edit</button>
+                        <button class="btn small delete">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>28</td>
+                    <td><img src="https://via.placeholder.com/50" alt="Player Photo"></td>
+                    <td>Shirley Serious</td>
+                    <td>
+                        <div>Mr.Serious@armyspy.com</div>
+                        <div>520-451-2150 - Dad</div>
+                    </td>
+                    <td>Forward</td>
+                    <td>Dad</td>
+                    <td>
+                        <button class="btn small edit">Edit</button>
+                        <button class="btn small delete">Delete</button>
+                    </td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>
+
+
+    <script src="../../../Public/js/Student/carousel.js"></script>
+    <script src="../../../Public/js/Student/profile.js"></script>
+    <script src="../../../Public/js/Student/sidebar.js"></script>
+    <script src="../../../Public/js/Student/calender.js"></script>
+
+</body>
+</html>
