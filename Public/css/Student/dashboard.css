@@ -37,7 +37,7 @@ body {
 
 .card {
     flex: 1;
-    background-color: #ffa500;
+    background-color: whitesmoke;
     padding: 20px;
     text-align: center;
     border-radius: 8px;
