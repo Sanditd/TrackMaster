@@ -57,6 +57,17 @@ body {
     flex: 1;
 }
 
+.profile-picture{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+#profile-pic-input{
+    margin-left: 10px;
+}
+
 .profile-picture img {
     width: 150px;
     height: 150px;
@@ -80,6 +91,7 @@ body {
     font-size: 0.9rem;
     color: #4a4a4a;
     margin-bottom: 0.5rem;
+    margin-top: 0.8rem;
 }
 
 .input-group input,
@@ -91,52 +103,8 @@ body {
     font-size: 1rem;
 }
 
-.change-password {
-    color: #00c853;
-    font-size: 0.8rem;
-    cursor: pointer;
-    display: inline-block;
-    margin-top: 0.5rem;
-}
 
-.dob-group {
-    display: flex;
-    gap: 0.5rem;
-}
 
-.payment-methods h4 {
-    font-size: 1rem;
-    color: #4a4a4a;
-    margin-bottom: 0.5rem;
-}
-
-.cards {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.card {
-    background-color: #f0f0f0;
-    padding: 1rem;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.card span {
-    display: block;
-    font-size: 0.8rem;
-    color: #888;
-}
-
-.add-payment {
-    background-color: #00c853;
-    color: #fff;
-    border: none;
-    padding: 0.5rem;
-    border-radius: 5px;
-    cursor: pointer;
-}
 
 .input-group textarea {
     width: 100%;
@@ -147,4 +115,11 @@ body {
     resize: none; /* Disable resizing */
     text-align: justify;
 
+}
+
+.btns{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 40px;
 }

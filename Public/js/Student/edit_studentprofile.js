@@ -1,44 +1,75 @@
-// Function to handle profile picture preview when uploading a new picture
-document.getElementById('profile-pic-input').addEventListener('change', function(event) {
+// Preview profile picture functionality
+const profilePicInput = document.getElementById('profile-pic-input');
+const profilePicPreview = document.getElementById('profile-pic-preview');
+
+profilePicInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('profile-pic-preview').src = e.target.result;
+        reader.onload = () => {
+            profilePicPreview.src = reader.result; 
         };
         reader.readAsDataURL(file);
     }
 });
 
-// Form validation before submitting
-document.querySelector('button[type="submit"]').addEventListener('click', function(event) {
-    event.preventDefault(); // Prevent form submission for validation
-    
-    // Validate form fields
-    const name = document.getElementById('name').value.trim();
-    const birthday = document.getElementById('birthday').value;
-    const whatsapp = document.getElementById('whatsapp').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const guardianName = document.getElementById('guardian-name').value.trim();
-    const guardianContact = document.getElementById('guardian-contact').value.trim();
-    const guardianEmail = document.getElementById('guardian-email').value.trim();
+// Form validation
+const saveButton = document.querySelector('.edit-button[type="submit"]');
+saveButton.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevent the default form submission
 
-    if (!name || !birthday || !whatsapp || !email || !guardianName || !guardianContact || !guardianEmail) {
-        alert('Please fill out all required fields.');
+    const fields = {
+        firstName: document.getElementById('first-name').value.trim(),
+        lastName: document.getElementById('last-name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        school: document.getElementById('school').value.trim(),
+        grade: document.getElementById('grade').value.trim(),
+        guardian: document.getElementById('guardian').value.trim(),
+        birthday: document.getElementById('birthday').value.trim(),
+    };
+
+    // Basic validation
+    if (Object.values(fields).some(field => !field)) {
+        alert('Please fill in all fields.');
         return;
     }
 
-    const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (!emailPattern.test(email) || !emailPattern.test(guardianEmail)) {
+    // Email validation
+    if (!/^\S+@\S+\.\S+$/.test(fields.email)) {
         alert('Please enter a valid email address.');
         return;
     }
-    
-    const guardianEmailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (!guardianEmailPattern.test(guardianEmail)) {
-        alert('Please enter a valid guardian email address.');
+
+    // Phone number validation
+    if (!/^\d{10}$/.test(fields.phone)) {
+        alert('Please enter a valid 10-digit phone number.');
         return;
     }
 
-    alert('Form is valid and ready to submit!');
+    alert('Profile updated successfully!');
+    // Here you can send the data to the server or handle it as needed.
+});
+
+// Cancel button confirmation
+const cancelButton = document.querySelector('.edit-button[onclick]');
+cancelButton.addEventListener('click', (event) => {
+    const confirmCancel = confirm('Are you sure you want to cancel editing? Unsaved changes will be lost.');
+    if (!confirmCancel) {
+        event.preventDefault(); // Prevent navigation if the user cancels
+    }
+});
+
+// Autofill default data (if needed for debugging or testing)
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('first-name').value = 'Eraji';
+    document.getElementById('last-name').value = 'Thenuwara';
+    document.getElementById('email').value = 'thenuwara@gmail.com';
+    document.getElementById('phone').value = '0712345678';
+    document.getElementById('address').value = '55/4A, Pirivena Road, Ratmalana';
+    document.getElementById('school').value = 'Maliyadeva Balika Vidyalaya';
+    document.getElementById('grade').value = '11 - A';
+    document.getElementById('guardian').value = 'T.H.C.Silva';
+    document.getElementById('birthday').value = '2008-01-16';
 });
