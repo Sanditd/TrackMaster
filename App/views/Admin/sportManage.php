@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Sports</title>
-    <link rel="stylesheet" href="../../../Public/css/Admin/sportManage.css">
+    <link rel="stylesheet" href="../../Public/css/Admin/sportManage.css">
+    <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
+    <script src="../../Public/js/Admin/sidebar.js"></script>
 </head>
 <body>
+
+<?php require_once 'adminNav.php' ?>
     <div class="container">
         <h1>Manage Sports</h1>
 
