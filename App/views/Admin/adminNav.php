@@ -11,10 +11,11 @@
 
 <body>
         <!-- Sidebar -->
+        <span class="close" onmouseleave="closeNav()">
         <div id="sidebar" class="sidebar">
-            <span class="close" onmouseleave="closeNav()">
+            
                 <div class="profile">
-                    <img src="./assests/profile.jpeg" alt="Profile Picture">
+                    <img src="../../Public/img/profile.jpeg" alt="Profile Picture">
                     <div style="font-size:15px;font-weight:bold;white-space: nowrap;position:fix">T.H.E.G.THENUWARA
                     </div>
                     <br>
@@ -24,10 +25,10 @@
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="<?php echo ROOT ?>/dashboard/dashboard/ads">Dashboard</a></li>
-                        <li><a href="<?php echo ROOT ?>/userManageController/userManage/asdasd">Manage Users</a></li>
-                        <li><a href="#" class="open-popup" data-popup="addSport">Add Sports</a></li>
-                        <li><a href="#" class="open-popup" data-popup="manageSport">Manage Sports</a></li>
+                        <li><a href="<?php echo ROOT ?>/admin/dashboard/ads">Dashboard</a></li>
+                        <li><a href="<?php echo ROOT ?>/admin/userManage/asdasd">Manage Users</a></li>
+                        <li><a href="<?php echo ROOT ?>/admin/addSportForm/asdad" >Add Sports</a></li>
+                        <li><a href="<?php echo ROOT ?>/admin/sportManage/asdad" class="open-popup" data-popup="manageSport">Manage Sports</a></li>
                         <li><a href="#" class="open-popup" data-popup="annoucements">Announcements</a></li>
                     </ul>
                 </nav>
@@ -41,7 +42,7 @@
 
                 <nav class="navbar" id="navbar">
                     <div class="logo">
-                        <img src="./assests/logo.png" alt="Logo">
+                        <img src="../../Public/img/logo.png" alt="Logo">
                     </div>
                     <ul class="nav-links">
                         <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
@@ -58,26 +59,3 @@
 </body>
 
 </html>
-
-<script>
-    document.getElementById('manageUsersLink').addEventListener('click', function (event) {
-    event.preventDefault(); // Prevent the default link behavior
-
-    const targetUrl = this.getAttribute('href'); // Get the href attribute of the link
-    const pageTitle = "Manage Users"; // Set the title of the page (optional)
-
-    // Update the URL without reloading the page
-    history.pushState(null, pageTitle, targetUrl);
-
-    // Optionally, load the content via AJAX
-    // Uncomment the following lines if you want to load the page content dynamically
-    /*
-    fetch(targetUrl)
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('content').innerHTML = html; // Replace 'content' with your target div ID
-        });
-    */
-});
-
-</script>

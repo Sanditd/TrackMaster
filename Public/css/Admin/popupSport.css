@@ -1,0 +1,43 @@
+ /* Popup Modal Styles */
+ .popup-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+}
+
+.popup-content button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button a {
+    text-decoration: none; /* Removes underline */
+    color: inherit;        /* Optional: Keeps text color as parent element's color */
+    font-size: 16px;       /* Optional: Adjust text size */
+    /* padding: 10px 20px;    Optional: Add padding for a button-like appearance */
+    /* <!-- background-color: #007bff; Optional: Add background color --> */
+    color: white;          /* Optional: Set text color for contrast */
+    border-radius: 5px;    /* Optional: Round the corners */
+}
+
+.popup-content button:hover {
+    background-color: #f0f0f0;
+}
