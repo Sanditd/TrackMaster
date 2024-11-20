@@ -62,9 +62,9 @@
                 //input data
                 $data=[
                     'sportName' => trim($_POST['sportName']),
-                    'sportType' => trim($_POST['sportType']),
+                    'sportType' => 'teamSport',
                     'numPlayers' => trim($_POST['numPlayers']),
-                    'playerPositions' => trim($_POST['playerPositions']),
+                    'playerPositions' => json_encode(explode(',', trim($_POST['playerPositions']))),
                     'teamFormation' => trim($_POST['teamFormation']),
                     'gameDuration' => trim($_POST['gameDuration']),
                     'halftimeDuration' => trim($_POST['halftimeDuration']),
@@ -133,9 +133,20 @@
                 }
 
                 //validation is complete and no error
-                if(!empty($data['errorMsg'])){
-                    //add sport to the db
+                if (!empty($data['errorMsg'])) {
+                    $this->view('sportCreate', $data);
+                    return;
                 }
+                
+                // Add sport to the database
+                if ($this->sportModel->addSport($data)) {
+                    header('Location: ' . ROOT . '/admin/sportManage/asdad');
+                    exit;
+                } else {
+                    $data['errorMsg'] = 'Something went wrong while adding sport.';
+                    $this->view('sportCreate', $data);
+                }
+                
     
     
             }else{
