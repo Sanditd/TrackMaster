@@ -9,32 +9,31 @@
 </head>
 <body>
 
-    <div id="main">
+
+        <div class="title">
+            <h1>Student Player Financial Information</h1>
+        </div>
+    <div id="main"> 
+        <div class="current">
+            <h2>Current Financial Status</h2>
+            <p><strong> Last updated : </strong>2021-03-24</p>
+            <p><strong> Status : </strong>None</p>
+            <p><strong> Registration Number (if Recieve Funds) : </strong>None</p>
+            <p><strong> Registered Date : </strong> None</p>
+            <p><strong> Notes: </strong>None</p>
+        </div>
 
         <div class="container">
-            <div class="title">
-            <h2>STUDENT PLAYER FINANCIAL STATUS</h2>
-            <hr>
-            </div>
-    
-            <div class="financial-status">
-                <div class="content">
-                    <p><strong>Financial Aid Status : </strong>Recieve Funds</p>
-                    <p><strong>Registration Number : </strong>24/M/90</p>
-                    <p><strong>Registration Date : </strong>2024-01-01</p>
-                </div>
-            </div>
-
-            <div class="financial-form">
-                <h3>APPLY FOR FINANCIAL FUNDS</h3>
-                <form id="financial-status-form">
+            <div class="form-section">
+                <h2>Apply For Financial Funds</h2>
+                <form>    
                     <label for="studentName">Student Name:</label>
                     <input type="text" id="studentName" name="studentName" required>
                 
                     <label for="guardianName">Guardian Name:</label>
                     <input type="text" id="guardianName" name="guardianName" required>
                 
-                    <label for="annualIncome">Annual Income:</label>
+                    <label for="annualIncome">Annual Income (Rs.) :</label>
                     <input type="text" id="annualIncome" name="annualIncome" required>
                 
                     <label for="reason">Reason for Applying:</label>
@@ -48,12 +47,11 @@
 
                     <label for="financialReports">Upload Financial Reports (PDF):</label>
                     <input type="file" id="financialReports" name="financialReports" accept=".pdf" required>
-
-                    <center><button type="submit">Submit Application</button></center>
-                </form>
-            </div>
-        </div>
     
+                    <center><button class="edit-button" type="submit">Submit the Application</button></center>
+                </form>
+            </div>           
+        </div>
     </div>
  
     <script src="/Public/js/Student/financial_status.js"></script>
