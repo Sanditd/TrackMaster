@@ -10,7 +10,8 @@
         private $error;
 
         public function __construct(){
-            $dsn = 'mysql:host'.$this->host.';dbname='.$this->dbname;
+            $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
+
 
             $options = array(
                 PDO::ATTR_PERSISTENT => true,
@@ -74,6 +75,26 @@
         public function rowCount(){
             return $this->stmt->rowCount();
         }
+
+         // Function to generate a custom auto-incrementing sportId
+        public function generateSportId() {
+            // Query to get the last sportId
+            $this->query("SELECT sportId FROM sport ORDER BY sportId DESC LIMIT 1");
+            $lastSport = $this->single();
+
+            if ($lastSport) {
+                // Extract the numeric part of the last sportId and increment it
+                $lastId = (int) substr($lastSport->sportId, 2); // Assuming format is "TS001"
+                $newId = $lastId + 1;
+            } else {
+                // Start with TS001 if no records exist
+                $newId = 1;
+            }
+
+            // Return the new sportId in the desired format
+            return 'TS' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: TS001
+        }
+
     }
 
 ?>

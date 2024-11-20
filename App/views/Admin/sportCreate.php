@@ -19,14 +19,16 @@
             <h2>Select Sport Type</h2>
             <button id="teamSportBtn" onclick="showTeamSport()">Team Sport</button>
             <button id="individualSportBtn">Individual Sport</button>
-            <button id="close"><a href="<?php echo ROOT ?>/admin/dashboard/ads">Close</a></button>
+            <button id="close"><a href="<?php echo ROOT ?>/admin/dashboard/ads" >Close</a></button>
         </div>
     </div>
 
     <!-- <div id="mainContent" style="display: none;"> -->
         <div id="teamSport" style="display: none;">
             <div class="container">
-                <h1>Create a Sport</h1>
+
+                <h1>Create a Team Sport</h1>
+
 
                 <form id="createSportForm" action="<?php echo ROOT ?>/admin/addSportForm" method="post">
                     <!-- Sport Name -->
@@ -37,14 +39,17 @@
                     </div>
 
                     <!-- Sport Type -->
-                    <div class="form-group">
+
+                    <!-- <div class="form-group">
+
                         <label for="sportType">Sport Type:</label>
                         <select id="sportType" name="sportType" required value="<?php echo $data['sportType'] ?>">
                             <option value="">Select Type</option>
                             <option value="Individual">Individual</option>
                             <option value="Team">Team</option>
                         </select>
-                    </div>
+
+                    </div> -->
 
                     <!-- Number of Players -->
                     <div class="form-group">
