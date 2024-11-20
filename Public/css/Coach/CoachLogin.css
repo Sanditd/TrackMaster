@@ -1,0 +1,184 @@
+
+/*login page style*/
+
+
+body{
+    margin: 0%;
+}
+
+header {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to right, #000000ef, #242529, #000000ef);
+    z-index: 100;
+    box-shadow: 0 0.05rem 1rem #36373f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+header a {
+    font-family: "Merriweather", serif;
+    text-decoration: none;
+}
+
+#logo{ 
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+#logo img{
+    width: 150px;
+    height: 130px;
+}
+
+#nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#nav-links {
+    display: flex;
+    gap: 20px;
+    margin-left: auto;
+    color: aliceblue;
+}
+
+body{
+    background-image: url('../..//img/images/login/black_hex.jpg');
+    background-size: cover;
+    opacity: 50;
+}
+
+#login-dis {
+    font-family: Arial, Helvetica, sans-serif;
+    color: aliceblue;
+    width: 500px;
+    margin-left: 80px;
+    margin-top: 200px;
+    text-align: justify;
+}
+
+#wel-track{
+    font-size:xx-large;
+}
+
+#wel-dis{
+    font-size: medium;
+    margin-top: 20px;
+    line-height: 20px;
+}
+
+#navicon img {
+    width: 25px; /* Adjust the width as needed */
+    height: 25px; /* Adjust the height as needed */
+}
+
+#login-port {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+    position: absolute;
+    top: 27%;
+    right: 0;
+    margin-right: 170px;
+    box-shadow: 6px 6px 29px -4px rgba(34, 34, 34, 0.75);
+}
+
+#login-port-logo img{
+    width: 180px;
+    height: 60px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px 10px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #333;
+    color: white;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 4px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.or {
+    margin: 10px 0;
+    color: #333;
+}
+
+.icon {
+    margin-right: 10px;
+}
+
+
+/*froget password pop up window*/
+
+.popup {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    background-color: rgba(34, 33, 33, 0.5); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#frogetPW-port {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    align-items: center;
+    box-shadow: 6px 6px 29px -4px rgba(36, 36, 36, 0.75);
+    position: relative; /* Change from absolute to relative */
+    margin: auto; /* Add this to center the element horizontally */
+    top: 25%; /* Add this to center the element vertically */
+    transform: translateY(-50%);
+}
+
+.signup-link {
+    margin-top: 10px;
+    color: #333;
+    font-size: 14px;
+}
+
+.signup-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
