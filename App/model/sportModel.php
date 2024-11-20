@@ -10,6 +10,7 @@ require_once __DIR__ . '/../libraries/database.php';
         //check the sport already available in db
         public function findSportByName($sportName){
             $this->db->query('SELECT * FROM sport WHERE sportName = :sportName');
+
             $this->db->bind(':sportName', $sportName);
 
             $row=$this->db->single();
@@ -20,6 +21,7 @@ require_once __DIR__ . '/../libraries/database.php';
                 return false;
             }
         }
+
 
         public function addSport($data) {
             // Generate the new sportId for the sport table
@@ -64,7 +66,6 @@ require_once __DIR__ . '/../libraries/database.php';
             }
         }
         
-        
-        
+  
     }
 ?>
