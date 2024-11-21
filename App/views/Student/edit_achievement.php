@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Achievement</title>
-    <link rel="stylesheet" href="/Public/css/Student/achievements.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/achievements.css">
 
 </head>
 <body>
+
+    <?php include './../navbar.php'?>
+    <?php include './../sidebar.php'?>
  
     <center>    
     <div class="edit-section">
@@ -34,6 +37,8 @@
                     </center>
                 </form>
             </div></center>
+
+            <?php include './../footer.php'?>
 
     <script src="/Public/js/Student/achievements.js"></script>
 
