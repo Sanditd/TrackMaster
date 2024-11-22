@@ -217,3 +217,124 @@ h4 {
     background-color: yellow;
     font-weight: bold;
 }
+
+/* General Styling */
+
+#calendar {
+    width: 300px;
+    background-color: #ffffff; /* Full white background for calendar */
+    color: #ff6600; /* Orange text for dates */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    overflow: hidden;
+}
+
+/* Header Styles */
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f2f2f2; /* Light gray header */
+    color:#f39c12;; /* Orange text */
+    padding: 10px;
+    font-size: 18px;
+}
+
+#header button {
+    background: none;
+    border: none;
+    color: #f39c12;; /* Orange color */
+    font-size: 18px;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Days & Dates Grid */
+#days, #dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+}
+
+#days {
+    background-color: #f2f2f2; /* Light gray for the days row */
+    color:#f39c12;; /* Orange for the day labels */
+    padding: 10px 0;
+    font-size: 12px; /* Smaller font size for day labels */
+}
+
+#dates div {
+    padding: 8px;
+    border: 1px solid #f2f2f2; /* Light border for dates */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px; /* Smaller date numbers */
+    color: #ff6600; /* Orange text for dates */
+}
+
+/* Current Day Styles */
+#dates div.current {
+    background-color: #f39c12;; /* Orange background for current day */
+    color: white; /* White text for current day */
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+/* Hover Effects */
+#dates div.upcoming:hover,
+#dates div:not(.current):hover {
+    background-color:#f39c12;; /* Orange on hover */
+    color: white; /* White text on hover */
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+}
+
+button {
+    background-color: #f2f2f2; /* Light gray button */
+    color: #f39c12;; /* Orange text */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+button:hover {
+    background-color:#f39c12;; /* Orange background on hover */
+    color: white; /* White text on hover */
+}

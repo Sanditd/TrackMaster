@@ -35,11 +35,27 @@
 
             <div class="section activity-log">
                 <h2>Calander</h2>
-                <ul>
-                 
-                    <li>Hashan<span>Mathematics -  25%</span></li>
-                    <li>Dimuth  <span>Science - 30%</span></li>
-                </ul>
+                <div id="calendar">
+                    <div id="header">
+                        <button id="prevMonth">&lt;</button>
+                        <span id="monthYear"></span>
+                        <button id="nextMonth">&gt;</button>
+                    </div>
+                    <div id="days">
+                        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                    </div>
+                    <div id="dates"></div>
+                </div>
+            
+                <div id="noteModal" class="modal hidden">
+                    <div class="modal-content">
+                        <h3 id="noteTitle">Add Note</h3>
+                        <textarea id="noteInput" placeholder="Write your note here..."></textarea>
+                        <button id="saveNote">Save Note</button>
+                        <button id="closeModal">Close</button>
+                    </div>
+                </div>
+
             </div>
 
             <div class="section quick-session">
@@ -80,10 +96,7 @@
         </div>
     </div>
 
+    <script src="../../../Public/js/School/cal.js"></script>
 
-    <script src="../../../Public/js/Student/carousel.js"></script>
-    <script src="../../../Public/js/Student/profile.js"></script>
-    <script src="../../../Public/js/sidebar.js"></script>
-    <script src="../../../Public/js/Student/calender.js"></script>
 
 </body>
