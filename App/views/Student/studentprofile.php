@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Profile</title>
-    <link rel="stylesheet" href="/Public/css/Student/profile.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/profile.css">
 
 </head>
 <body>
+
+    <?php include './../navbar.php'?>
+    <?php include './../sidebar.php'?>
 
     <div id="main">
         
     <div class="container">
         <div class="header">
             <h2>My Profile</h2>
-            <a href="edit_studentProfile.html">
+            <a href="edit_studentProfile.php">
             <button class="edit-button">Edit My Profile</button>
 
             </a>
@@ -22,7 +25,7 @@
         <div class="profile-form">
             <div class="left-section">
                 <div class="profile-picture">
-                    <img src="/Public/img/profile.jpeg" alt="Profile Picture">
+                    <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture">
                 </div>
                 <div class="input-group">
                     <label for="first-name">First Name</label>
@@ -87,6 +90,8 @@
     </div>
 
     </div>
+
+    <?php include './../footer.php'?>
 
 </body>
 </html>

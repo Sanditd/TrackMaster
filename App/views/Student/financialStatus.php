@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial Status</title>
-    <link rel="stylesheet" href="/Public/css/Student/financial_status.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/financial_status.css">
 
 </head>
 <body>
 
+    <?php include './../navbar.php'?>
+    <?php include './../sidebar.php'?>
 
         <div class="title">
             <h1>Student Player Financial Information</h1>
@@ -53,7 +55,9 @@
             </div>           
         </div>
     </div>
+
+    <?php include './../footer.php'?>
  
-    <script src="/Public/js/Student/financial_status.js"></script>
+    <script src="/TrackMaster/Public/js/Student/financial_status.js"></script>
 </body>
 </html>

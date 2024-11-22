@@ -17,9 +17,9 @@
                 <img src="/TrackMaster/Public/img/logo.png" alt="Logo"> 
             </div>
             <ul class="nav-links">
-                <li><a href="/TrackMaster/App/views/Student/dashboard.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="/TrackMaster/App/views/aboutUs.html">About Us</a></li>
-                <li><a href="/TrackMaster/App/views/help.html">Help & Support</a></li>    
+                <li><a href="/TrackMaster/App/views/Student/dashboard.php"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/TrackMaster/App/views/aboutUs.php">About Us</a></li>
+                <li><a href="/TrackMaster/App/views/help.php">Help & Support</a></li>    
                 <li><button class="login" onclick="" >Log in</button></li>
                 <li><img src="/TrackMaster/Public/img/log in.png" alt="Logo"> </li>
                 <li><img src="/TrackMaster/Public/img/notification.png" alt="Logo"> </li>

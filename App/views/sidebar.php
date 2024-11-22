@@ -31,10 +31,10 @@
 
         <nav>
             <ul>
-                <li><a href="/TrackMaster/App/views/Student/dashboard.html">Dashboard</a></li>
-                <li><a href="/TrackMaster/App/views/Student/studentprofile.html">My Profile</a></li>
-                <li><a href="/TrackMaster/App/views/Coach/PlayerPerformance.html">My Performance</a></li>
-                <li><a href="/TrackMaster/App/views/Student/student_schedule.html">My Schedule</a></li>
+                <li><a href="/TrackMaster/App/views/Student/dashboard.php">Dashboard</a></li>
+                <li><a href="/TrackMaster/App/views/Student/studentprofile.php">My Profile</a></li>
+                <li><a href="/TrackMaster/App/views/Coach/PlayerPerformance.php">My Performance</a></li>
+                <li><a href="/TrackMaster/App/views/Student/student_schedule.php">My Schedule</a></li>
             </ul>
         </nav>
         </span>

@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical History</title>
-    <link rel="stylesheet" href="/Public/css/Student/medical_status.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/medical_status.css">
 
 </head>
 <body>
+
+    <?php include './../navbar.php'?>
+    <?php include './../sidebar.php'?>
 
     <div id="main">
         <div class="title">
@@ -93,8 +96,10 @@
         </div>
     
     </div>
+
+    <?php include './../footer.php'?>
     
-    <script src="/Public/js/Student/medical_status.js"></script>
+    <script src="/TrackMaster/Public/js/Student/medical_status.js"></script>
 
 </body>
 </html>
