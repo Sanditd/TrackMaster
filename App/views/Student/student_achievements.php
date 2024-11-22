@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Achievements</title>
-    <link rel="stylesheet" href="/Public/css/Student/achievements.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/achievements.css">
 
 </head>
 <body>
+
+<?php include './../navbar.php'?>
+<?php include './../sidebar.php'?>
 
     <div id="main">
         <div class="title">
@@ -20,7 +23,7 @@
           
                     <div class="carousel-item ">
                         <div class="image-container">
-                            <img src="/Public/img/Student/achievements.png">
+                            <img src="/TrackMaster/Public/img/Student/achievements.png">
                         </div>
                         <div class="content-container">
                             <h3>Place/Rank</h3>
@@ -32,7 +35,7 @@
 
                     <div class="carousel-item ">
                         <div class="image-container">
-                            <img src="/Public/img/Student/achievements.png">
+                            <img src="/TrackMaster/Public/img/Student/achievements.png">
                         </div>
                         <div class="content-container">
                             <h3>Place/Rank</h3>
@@ -44,7 +47,7 @@
 
                     <div class="carousel-item ">
                         <div class="image-container">
-                            <img src="/Public/img/Student/achievements.png">
+                            <img src="/TrackMaster/Public/img/Student/achievements.png">
                         </div>
                         <div class="content-container">
                             <h3>Place/Rank</h3>
@@ -56,7 +59,7 @@
 
                     <div class="carousel-item ">
                         <div class="image-container">
-                            <img src="/Public/img/Student/achievements.png">
+                            <img src="/TrackMaster/Public/img/Student/achievements.png">
                         </div>
                         <div class="content-container">
                             <h3>Place/Rank</h3>
@@ -68,7 +71,7 @@
 
                     <div class="carousel-item ">
                         <div class="image-container">
-                            <img src="/Public/img/Student/achievements.png">
+                            <img src="/TrackMaster/Public/img/Student/achievements.png">
                         </div>
                         <div class="content-container">
                             <h3>Place/Rank</h3>
@@ -80,7 +83,7 @@
 
                     <div class="carousel-item ">
                         <div class="image-container">
-                            <img src="/Public/img/Student/achievements.png">
+                            <img src="/TrackMaster/Public/img/Student/achievements.png">
                         </div>
                         <div class="content-container">
                             <h3>Place/Rank</h3>
@@ -101,7 +104,7 @@
             
             <div class="form-section">
                 <h2>Add a New Achievement</h2>
-                <form>  
+                <form action="/TrackMaster/App/controllers/student/save" method="POST">  
                     <label for="place"> Place/Rank : </label> 
                     <textarea id="description" required></textarea>  
 
@@ -118,7 +121,7 @@
                        
                     <center>
                         <button class="edit-button" type="submit"> Add </button>
-                        <button class="edit-button" type="submit" onclick="window.location.href='/App/views/Student/student_achievements.html'" > Cancel </button>
+                        <button class="edit-button" type="submit" onclick="window.location.href='/TrackMaster/App/views/Student/student_achievements.html'" > Cancel </button>
                     </center>
                 </form>
             </div>
@@ -141,7 +144,7 @@
                             <td>1st Place</td>
                             <td>Provincial</td>
                             <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button type="submit" class="Edit-button" onclick="window.location.href='/App/views/Student/edit_achievement.html'">Edit</button>
+                            <td><button type="submit" class="Edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/edit_achievement.html'">Edit</button>
                                 <button  type="submit" class="delete-button">Delete</button></td>
                             </td>
                         </tr>
@@ -184,8 +187,10 @@
     
     </div>
 
-    <script src="/Public/js/Student/carousel.js"></script>
-    <script src="/Public/js/Student/achievements.js"></script>
+    <?php include './../footer.php'?>
+
+    <script src="/TrackMaster/Public/js/Student/carousel.js"></script>
+    <script src="/TrackMaster/Public/js/Student/achievements.js"></script>
 
 </body>
 </html>

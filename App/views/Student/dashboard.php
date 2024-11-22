@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <link rel="stylesheet" href="/Public/css/Student/dashboard.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/stu_dashboard.css">
 </head>
 <body>
-
-    <div class="dashboard-container">
+    <?php include './../navbar.php'?>
+    <?php include './../sidebar.php'?>
+   <div class="dashboard-container">
         <div class="dashboard-header">
             <h1>Student Dashboard</h1>
             <p>Welcome, Eraji!</p>
@@ -48,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <center><button class="view-more-btn"onclick="window.location.href='/App/views/Coach/PlayerPerformance.html'">Track My Performance</button></center>
+        <center><button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.html'">Track My Performance</button></center>
 
         <div class="main-content">
 
@@ -81,7 +82,7 @@
                     <li><strong> Allergies : </strong>None</li>
                     <li><strong> Blood Type : </strong>A+</li>
                     <li><strong> Emergency Contact : </strong> 0712345678</li>
-                    <center><button class="view-more-btn" onclick="window.location.href='/App/views/Student/medicalStatus.html'">Update Medical History</button></center>
+                    <center><button class="view-more-btn" onclick="window.location.href='/TrackMaster/App/views/Student/medicalStatus.html'">Update Medical History</button></center>
                 </ul>
             </div>
             
@@ -91,7 +92,7 @@
                     <li><strong> Financial Aid Status : </strong>Recieve Funds</li>
                     <li><strong> Registration Number : </strong>24/M/90</li>
                     <li><strong>Registration Date : </strong>2024-01-01</li>
-                    <center><button class="view-more-btn" onclick="window.location.href='/App/views/Student/financialStatus.html'">Update Financial Status</button></center>
+                    <center><button class="view-more-btn" onclick="window.location.href='/TrackMaster/App/views/Student/financialStatus.html'">Update Financial Status</button></center>
                 </ul>              
             </div>
             
@@ -104,7 +105,7 @@
           
                     <div class="carousel-item ">
                         <div class="image-container">
-                            <img src="/Public/img/Student/achievements.png">
+                            <img src="/TrackMaster/Public/img/Student/achievements.png">
                         </div>
                         <div class="content-container">
                             <h3>Place/Rank</h3>
@@ -116,7 +117,7 @@
 
                     <div class="carousel-item ">
                         <div class="image-container">
-                            <img src="/Public/img/Student/achievements.png">
+                            <img src="/TrackMaster/Public/img/Student/achievements.png">
                         </div>
                         <div class="content-container">
                             <h3>Place/Rank</h3>
@@ -128,7 +129,7 @@
 
                     <div class="carousel-item ">
                         <div class="image-container">
-                            <img src="/Public/img/Student/achievements.png">
+                            <img src="/TrackMaster/Public/img/Student/achievements.png">
                         </div>
                         <div class="content-container">
                             <h3>Place/Rank</h3>
@@ -140,7 +141,7 @@
 
                     <div class="carousel-item ">
                         <div class="image-container">
-                            <img src="/Public/img/Student/achievements.png">
+                            <img src="/TrackMaster/Public/img/Student/achievements.png">
                         </div>
                         <div class="content-container">
                             <h3>Place/Rank</h3>
@@ -152,7 +153,7 @@
 
                     <div class="carousel-item ">
                         <div class="image-container">
-                            <img src="/Public/img/Student/achievements.png">
+                            <img src="/TrackMaster/Public/img/Student/achievements.png">
                         </div>
                         <div class="content-container">
                             <h3>Place/Rank</h3>
@@ -165,12 +166,14 @@
                 </div>
                 <button class="carousel-control prev" onclick="prevSlide()">❮</button>
                 <button class="carousel-control next" onclick="nextSlide()">❯</button>
-                <button class="view-more-btn"onclick="window.location.href='/App/views/Student/student_achievements.html'">View All Achievements</button>
+                <button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/Student/student_achievements.php'">View All Achievements</button>
             </div>
         </div>
         
     </div>
 
-    <script src="/Public/js/Student/carousel.js"></script>
+    <?php include './../footer.php'?>
+    
+    <script src="/TrackMaster/Public/js/Student/carousel.js"></script>
 
 </body>

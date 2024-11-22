@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Athlete Schedule</title>
-    <link rel="stylesheet" href="/Public/css/Student/schedule.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/schedule.css">
 </head>
 
 <body>
@@ -36,7 +36,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <center><button class="view-more-btn"onclick="window.location.href='/App/views/attendance.html'">View My Attendance</button></center>
+                        <center><button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/attendance.html'">View My Attendance</button></center>
                     </div>
         
                     <div>
@@ -94,7 +94,7 @@
                                     </section>
                                 </div>
                             </div>
-                            <center><button class="view-more-btn"onclick="window.location.href='/App/view/html/.html'">View All</button></center>
+                            <center><button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/view/html/.html'">View All</button></center>
                         </div>
                     </div>
     
@@ -146,7 +146,7 @@
             </div>
 
 
-    <script src="/Public/js/Student/calender.js"></script>
-    <script src="/Public/js/Student/schedule.js"></script>
+    <script src="/TrackMaster/Public/js/Student/calender.js"></script>
+    <script src="/TrackMaster/Public/js/Student/schedule.js"></script>
 </body>
 </html>
