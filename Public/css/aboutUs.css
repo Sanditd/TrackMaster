@@ -1,115 +1,151 @@
-body, h1, h2, h3, h4, p {
+/* General Reset */
+body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    color: #fff; 
+    background-color: #f5f5f5;
+    color: #333;
   }
-  
-  body {
-    background-color: #000;
-    line-height: 1.6;
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h1 {
-    color: #ffc107; 
-    margin-bottom: 20px;
-  }
- 
-  .intro, .vision, .mission {
-    margin: 30px;
-    background-color: #1a1a1a; 
-    padding: 30px;
+
+.about{
+    width: 100%;
+}
+
+h1 {
+    width: 80%;
+    background-color: #003366;
+    padding: 10px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 34px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+  
+  h3,h4 {
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #00264d; 
+    border-bottom: 2px solid #ffa500; 
+    display: inline-block;
+    padding-bottom: 3px;
     text-align: center;
   }
-
-  .users{
-    margin:40px;
-    background-color: #1a1a1a; 
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  }
-
-  .aims{
-    width: 50%;
-    margin:40px;
-    background-color: #1a1a1a; 
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    text-align: start;
+  
+  .intro {
+    width: 70%;
+    color: #000;
+    text-align: center;
+    font-size: 18px;
+    font-style: italic;
   }
   
-  h3 {
-    color: #ffc107;
-    margin-bottom: 10px;
-  }
-  
-  p {
-    margin-bottom: 10px;
-    color: #fff; /* White text */
-  }
-  
-  /* Cards Section */
   .cards {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    justify-content: space-around;
+    margin: 20px 10px;
   }
   
   .card {
-    flex: 1 1 calc(50% - 20px); /* Responsive 2-column layout */
-    background-color: #333; /* Dark grey for cards */
-    padding: 15px;
-    border: 2px solid #ffc107; /* Yellow border */
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    background-color: #fff;
+    border: 4px solid #ffc107; /* Yellow border */
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    width: calc(25% - 20px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
   }
   
-  .card h4 {
-    margin-bottom: 10px;
-    color: #ffc107; /* Yellow card headings */
+  .card:hover {
+    transform: translateY(-5px);
+    background-color: #fffbe0; /* Yellow hover effect */
   }
   
   .card p {
-    color: #fff; /* White text for descriptions */
+    margin: 10px 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .vision_mission{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .users{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    margin-top: 20px;
   }
   
-
+  .aims ul {
+    list-style-type: none;
+    padding: 0;
+    color: #000;
+  }
+  
+  .aims ul li {
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .aims ul li ul {
+    margin-top: 5px;
+    margin-left: 20px;
+    font-weight: normal;
+  }
+  
+  .aims ul li::before {
+    content: "✓ "; 
+    color: #ffc107;
+  }
+  
+  .achievements {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .achievements .card {
+    width: 30%;
+    margin: 15px;
+  }
+  
+  .achievements .card:hover {
+    background-color: #fffbe0; /* Yellow hover effect */
+  }
+  
+  button {
+    background-color: #ffc107;
+    border: none;
+    padding: 10px 20px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  button:hover {
+    background-color: #e0a800;
+  }
+ 
   .end {
-    background-color: #111; 
-    padding: 40px;
+    text-align: center;
     margin-top: 20px;
   }
   
   .end p {
-    color: #ffc107; 
-    font-family: cursive;
-    text-align: center;
+    color: #003366;
   }
-
+  
   .end button {
-    width: 30%;
-    padding: 8px;
-    border: none;
-    background-color: #FFD700;
-    color: black;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-top: 20px;
-    margin-right: 10px;
-    display: flexbox;
-}
-
-.end button:hover {
-    background-color: #FFA500;
-}
+    margin-top: 10px;
+  }
+  
