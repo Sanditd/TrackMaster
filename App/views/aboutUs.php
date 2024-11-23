@@ -4,14 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us</title>
-  <link rel="stylesheet" href="/TrackMaster/Public/css/AboutUs.css">
+  <link rel="stylesheet" href="/TrackMaster/Public/css/aboutus.css">
 </head>
+
 <body>
 
     <?php include './navbar.php'?>
     <?php include './sidebar.php'?>
 
-  <div class="about">
+<div class="about">
 
   <center><h1>Welcome to TRACKMASTER</h1><center>
 
@@ -31,10 +32,10 @@
                 <p>To simplify sports management through innovation, ensuring every student-athlete gets the guidance, structure, and support needed to reach their goals.</p>
             </section>  
         </div>
-        
+      
+        <h3>Who We Serve?</h3>
 
     <div class = "users">
-        <h3>Who We Serve?</h3>
                 <div class="box">
                     <h4>Coaches</h4>
                     <p>Gain valuable insights into your athletes’ progress with real-time performance data and history. Plan better training schedules, monitor student fitness, and focus on areas of improvement with ease.</p>
@@ -51,29 +52,21 @@
                     <h4>Schools</h4>
                     <p> Foster collaboration between coaches, students, and parents to create a thriving sports culture in your institution.</p>
                 </div>
-        </div>
+    </div>
     
-    <center><div class = "aims">
-        <h3>Why Choose TrackMaster?</h3>
+    <h3>Why Choose TrackMaster?</h3>
+    <div class = "users">
         <ul class="list-inline" id="features">
             <li>Comprehensive Features:</li>
-                <ul> 
-                    <li>From tracking progress to scheduling and communication, SportTrack has it all.</li>
-                </ul>
-            <li>User-Friendly Interface:</li>
-                <ul> 
-                    <li>Designed with simplicity and ease of use for all age groups.</li>
-                </ul>
+                <p>From tracking progress to scheduling and communication, SportTrack has it all.<p>
+            <li>User-Friendly Interface:</li> 
+                <p>Designed with simplicity and ease of use for all age groups.<p>
             <li>Secure & Reliable:</li>
-                <ul> 
-                    <li>Your data is safe with us, ensuring complete privacy and security.</li>
-                </ul>
-            <li>Empowering Every Stakeholder:</li>
-                <ul> 
-                    <li>Ensures students, coaches, parents, and schools work together seamlessly.</li>
-                </ul>
+                <p> Your data is safe with us, ensuring complete privacy and security.<p>
+            <li>Empowering Every Stakeholder:</li> 
+                <p>Ensures students, coaches, parents, and schools work together seamlessly.</p>
         </ul>
-    </div></center>
+    </div>
 
     <div class = "end">
         <p>Join Us Today and Start Tracking Success !</p>

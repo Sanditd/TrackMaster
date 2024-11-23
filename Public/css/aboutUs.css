@@ -1,15 +1,16 @@
-/* General Reset */
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
     color: #333;
+    overflow-x: hidden;
   }
 
-.about{
-    width: 100%;
+  * {
+    box-sizing: border-box;
 }
+
 
 h1 {
     width: 80%;
@@ -21,7 +22,7 @@ h1 {
     border-radius: 8px;
 }
   
-  h3,h4 {
+  h3 {
     font-size: 18px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -32,19 +33,26 @@ h1 {
     text-align: center;
   }
   
+  h4{
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #00264d;  
+    display: inline-block;
+    padding: 3px;
+    text-align: center;
+    background-color: #f5f5f5;
+    border: #00264d solid 1px;
+  }
+
   .intro {
     width: 70%;
     color: #000;
     text-align: center;
     font-size: 18px;
     font-style: italic;
-  }
-  
-  .cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin: 20px 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
   }
   
   .card {
@@ -72,53 +80,43 @@ h1 {
   .vision_mission{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content:center;
+    margin-bottom: 40px;
   }
 
   .users{
-    width: 100%;
+    width: 50%;
     display: flex;
-    justify-content: space-between;
-    align-items: left;
-    margin-top: 20px;
+    flex-direction: column;
+    text-align: left;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: #333  1px solid;
+    border-radius: 6px;
+    padding: 30px;
+    background-color: antiquewhite;
   }
   
-  .aims ul {
+  .users ul {
     list-style-type: none;
-    padding: 0;
+    padding: 10px;
     color: #000;
   }
   
-  .aims ul li {
+  .users ul li {
     margin-bottom: 15px;
     font-size: 16px;
     font-weight: bold;
   }
   
-  .aims ul li ul {
-    margin-top: 5px;
-    margin-left: 20px;
-    font-weight: normal;
+  .users ul p {
+    font-size: 16px;
+    margin-left: 40px;
   }
-  
-  .aims ul li::before {
+
+  .users ul li::before {
     content: "✓ "; 
     color: #ffc107;
-  }
-  
-  .achievements {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .achievements .card {
-    width: 30%;
-    margin: 15px;
-  }
-  
-  .achievements .card:hover {
-    background-color: #fffbe0; /* Yellow hover effect */
   }
   
   button {
@@ -139,13 +137,11 @@ h1 {
   .end {
     text-align: center;
     margin-top: 20px;
+    margin: 40px;
   }
   
   .end p {
     color: #003366;
-  }
-  
-  .end button {
-    margin-top: 10px;
+    font-size: 24px;
   }
   
