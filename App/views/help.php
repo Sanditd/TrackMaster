@@ -8,6 +8,9 @@
 </head>
 <body>
 
+    <?php include './navbar.php'?>
+    <?php include './sidebar.php'?>
+
     <!-- Main Content -->
     <div id="main">
         <div class="header-container">
@@ -144,6 +147,8 @@
         </section>
     
     </div>
+
+    <?php include './footer.php'?>
 
     <script>
         function showTab(tabId) {

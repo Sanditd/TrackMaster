@@ -121,7 +121,7 @@
                        
                     <center>
                         <button class="edit-button" type="submit"> Add </button>
-                        <button class="edit-button" type="submit" onclick="window.location.href='/TrackMaster/App/views/Student/student_achievements.html'" > Cancel </button>
+                        <button class="edit-button" type="submit" onclick="window.location.href='/TrackMaster/App/views/Student/student_achievements.php'" > Cancel </button>
                     </center>
                 </form>
             </div>
@@ -144,7 +144,7 @@
                             <td>1st Place</td>
                             <td>Provincial</td>
                             <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button type="submit" class="Edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/edit_achievement.html'">Edit</button>
+                            <td><button type="submit" class="Edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/edit_achievement.php'">Edit</button>
                                 <button  type="submit" class="delete-button">Delete</button></td>
                             </td>
                         </tr>
@@ -154,7 +154,7 @@
                             <td>1st Place</td>
                             <td>Provincial</td>
                             <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button class="Edit-button">Edit</button>
+                            <td><button class="Edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/edit_achievement.php'">Edit</button>
                                 <button class="delete-button">Delete</button></td>
                             </td>
                         </tr>
@@ -164,7 +164,7 @@
                             <td>1st Place</td>
                             <td>Provincial</td>
                             <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button class="Edit-button">Edit</button>
+                            <td><button class="Edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/edit_achievement.php'">Edit</button>
                                 <button class="delete-button">Delete</button></td>
                             </td>
                         </tr>
@@ -174,7 +174,7 @@
                             <td>1st Place</td>
                             <td>Provincial</td>
                             <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button class="Edit-button">Edit</button>
+                            <td><button class="Edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/edit_achievement.php'">Edit</button>
                                 <button class="delete-button">Delete</button></td>
                             </td>
                         </tr>
