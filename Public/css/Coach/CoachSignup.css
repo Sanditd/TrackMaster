@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background-image: url('../..//img/images/login/black_hex.jpg');
+    background-image: url('../../img/images/login/black_hex.jpg'); /* Ensure the path is correct */
     background-size: cover;
     display: flex;
     justify-content: center;
@@ -16,7 +16,7 @@ body {
     padding: 30px;
     border-radius: 20px;
     box-shadow: 6px 6px 29px -4px rgba(34, 34, 34, 0.75);
-    width: 600px; /* Increased width */
+    width: 600px;
     text-align: center;
     margin-top: 20px;
 }
@@ -60,6 +60,7 @@ input[type="text"],
 input[type="email"],
 input[type="tel"],
 input[type="date"],
+input[type="password"], /* Added for password input */
 textarea,
 select {
     width: 100%;

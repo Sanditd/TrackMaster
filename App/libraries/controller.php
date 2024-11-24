@@ -1,5 +1,5 @@
 <?php
-    class controller{
+    class Controller{
         //To Load the Model
         public function model($model){
             $path=__DIR__ .'/../model/'. $model. '.php';
@@ -14,7 +14,7 @@
 
     //To Load the View
     public function view($view, $data = []) {
-        $path = __DIR__ . '/../views/Admin/' . $view . '.php';
+        $path = __DIR__ . '/../views/' . $view . '.php';
         if (file_exists($path)) {
             require_once $path;
         } else {
