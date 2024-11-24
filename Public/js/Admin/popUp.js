@@ -9,6 +9,14 @@ function showTeamSport() {
     closePopup();
 }
 
+// Handle "Individual Sport" button click
+function showIndSport() {
+    // Display the team sport form
+    document.getElementById('indSports').style.display = 'block';
+    // Hide the popup
+    closePopup();
+}
+
 // Close the popup
 function closePopup() {
     document.getElementById('popup').style.display = 'none';

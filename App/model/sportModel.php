@@ -64,7 +64,51 @@ require_once __DIR__ . '/../libraries/database.php';
             }
         }
         
+        public function getSports(){
+            $this->db->query('SELECT sportName,sportType FROM sport;');
+            $result = $this->db->resultset();
+            return $result;
+        }
         
-        
+        public function addindSportForm($idata) {
+            // Generate the new sportId for the sport table
+            $newSportId = $this->db->generateSportId();
+            
+            // Insert into sport table first
+            $this->db->query('INSERT INTO sport (sportId, sportName, sportType) VALUES(:sportId, :sportName, :sportType)');
+            $this->db->bind(':sportId', $newSportId);
+            $this->db->bind(':sportName', $idata['sportName']);
+            $this->db->bind(':sportType', 'Individual Sport');
+            
+            // Check if the sport insertion was successful
+            if ($this->db->execute()) {
+                // If sport was successfully added, insert into teamsport
+                $this->db->query('INSERT INTO indsport (sportId, durationMinutes, isIndoor, equipment, categories, scoringSystem, rulesLink, created_at, updated_at) 
+                                  VALUES(:sportId, :durationMinutes, :isIndoor, :equipment, :category, :scoringSystem, :rulesLink, :created_at, :updated_at)');
+                
+                // Bind the parameters for the teamsport table
+                $this->db->bind(':sportId', $newSportId);
+                $this->db->bind(':durationMinutes', $idata['gameDuration']);
+                $this->db->bind(':isIndoor', $idata['locationType']);
+                $this->db->bind(':equipment', $idata['equipment']);
+                $this->db->bind(':category', $idata['category']);
+                $this->db->bind(':scoringSystem', $idata['scoring']);
+                $this->db->bind(':rulesLink', $idata['rulesURL']);
+                $this->db->bind(':created_at', date('Y-m-d H:i:s'));
+                $this->db->bind(':updated_at', date('Y-m-d H:i:s'));
+                
+                // Insert into teamsport table and return result
+                try {
+                    return $this->db->execute();
+                } catch (PDOException $e) {
+                    error_log("Add Sport Error: " . $e->getMessage());
+                    echo "Error: " . $e->getMessage(); // For debugging
+                    return false;
+                }
+            } else {
+                // If sport insertion fails, return false
+                return false;
+            }
+        }
     }
 ?>

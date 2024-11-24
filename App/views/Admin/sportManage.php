@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +9,10 @@
     <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
     <script src="../../Public/js/Admin/sidebar.js"></script>
 </head>
+
 <body>
 
-<?php require_once 'adminNav.php' ?>
+    <?php require_once 'adminNav.php' ?>
     <div class="container">
         <h1>Manage Sports</h1>
 
@@ -23,38 +25,46 @@
                         <th>#</th>
                         <th>Sport Name</th>
                         <th>Type</th>
-                        <th>Players</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Example Sport -->
+                    <?php if (!empty($data) && is_array($data)): ?>
+                    <?php foreach ($data as $index => $sport): ?>
+                    <?php if (is_array($sport)): ?>
                     <tr>
-                        <td>1</td>
-                        <td>Soccer</td>
-                        <td>Team</td>
-                        <td>11</td>
+                        <td><?= $index + 1 ?></td>
+                        <td><?= htmlspecialchars($sport['sportName']) ?></td>
+                        <td><?= htmlspecialchars($sport['sportType']) ?></td>
                         <td>
                             <button class="view-btn">View</button>
                             <button class="edit-btn">Edit</button>
                             <button class="delete-btn">Delete</button>
                         </td>
                     </tr>
+                    <?php elseif (is_object($sport)): ?>
                     <tr>
-                        <td>2</td>
-                        <td>Basketball</td>
-                        <td>Team</td>
-                        <td>5</td>
+                        <td><?= $index + 1 ?></td>
+                        <td><?= htmlspecialchars($sport->sportName) ?></td>
+                        <td><?= htmlspecialchars($sport->sportType) ?></td>
                         <td>
                             <button class="view-btn">View</button>
                             <button class="edit-btn">Edit</button>
                             <button class="delete-btn">Delete</button>
                         </td>
                     </tr>
-                    <!-- Add more sports dynamically -->
+                    <?php endif; ?>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <tr>
+                        <td colspan="4">No sports available.</td>
+                    </tr>
+                    <?php endif; ?>
+
                 </tbody>
             </table>
         </div>
     </div>
 </body>
+
 </html>
