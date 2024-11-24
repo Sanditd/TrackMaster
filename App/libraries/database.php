@@ -95,6 +95,10 @@
             return 'TS' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: TS001
         }
 
+        public function lastInsertId() {
+            return $this->dbh->lastInsertId();
+        }
+
     }
 
 ?>
