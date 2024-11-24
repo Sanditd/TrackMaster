@@ -1,7 +1,7 @@
-<<<<<<< HEAD:App/views/Admin/login.php
+
 <?php
     //require "../../config/init.php";
-    require "../core/init.php";
+    //require "../core/init.php";
     require_once 'nav.php';
     $nav = new Nav();
 ?>
@@ -11,7 +11,7 @@
 
 <head>
     <title>Login</title>
-    <link rel="stylesheet" href="../..../../../Public/css/Admin/login.css">
+    <link rel="stylesheet" href="../../../Public/css/Admin/login.css">
 </head>
 
 <body id="loginbody">

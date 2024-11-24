@@ -11,10 +11,11 @@
 
 <body>
         <!-- Sidebar -->
+        <span class="close" onmouseleave="closeNav()">
         <div id="sidebar" class="sidebar">
-            <span class="close" onmouseleave="closeNav()">
+            
                 <div class="profile">
-                    <img src="./assests/profile.jpeg" alt="Profile Picture">
+                    <img src="../../Public/img/profile.jpeg" alt="Profile Picture">
                     <div style="font-size:15px;font-weight:bold;white-space: nowrap;position:fix">T.H.E.G.THENUWARA
                     </div>
                     <br>
@@ -24,11 +25,11 @@
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="adminpanel.view.php">Dashboard</a></li>
-                        <li><a href="#">Manage Users</a></li>
-                        <li><a href="#">Add Sports</a></li>
-                        <li><a href="#">Manage Sports</a></li>
-                        <li><a href="#">Announcements</a></li>
+                        <li><a href="<?php echo ROOT ?>/admin/dashboard/ads">Dashboard</a></li>
+                        <li><a href="<?php echo ROOT ?>/admin/userManage/asdasd">Manage Users</a></li>
+                        <li><a href="<?php echo ROOT ?>/admin/addSportForm/asdad" >Add Sports</a></li>
+                        <li><a href="<?php echo ROOT ?>/admin/sportManage/asdad" class="open-popup" data-popup="manageSport">Manage Sports</a></li>
+                        <li><a href="#" class="open-popup" data-popup="annoucements">Announcements</a></li>
                     </ul>
                 </nav>
             </span>
@@ -41,7 +42,7 @@
 
                 <nav class="navbar" id="navbar">
                     <div class="logo">
-                        <img src="./assests/logo.png" alt="Logo">
+                        <img src="../../Public/img/logo.png" alt="Logo">
                     </div>
                     <ul class="nav-links">
                         <li><a href="#"><i class="fas fa-home"></i> Home</a></li>

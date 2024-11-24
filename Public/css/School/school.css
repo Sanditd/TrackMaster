@@ -338,3 +338,18 @@ button:hover {
     background-color:#f39c12;; /* Orange background on hover */
     color: white; /* White text on hover */
 }
+.edit-button {
+    background-color: #ffa500; /* Green theme */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background-color: #ffa500; /* Dark green on hover */
+    transform: scale(1.05);
+}
