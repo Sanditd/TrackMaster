@@ -26,7 +26,6 @@
             <a href="<?php echo ROOT ?>/admin/dashboard" style="text-decoration: none; color: inherit;">Close</a>
         </button>
     </div>
-</div>
 
 
 </body>

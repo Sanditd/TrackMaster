@@ -12,6 +12,7 @@
         public function __construct(){
             $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
 
+
             $options = array(
                 PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
@@ -93,6 +94,7 @@
             // Return the new sportId in the desired format
             return 'TS' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: TS001
         }
+
     }
 
 ?>

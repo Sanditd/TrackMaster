@@ -137,6 +137,7 @@
                 }
 
                 //validation is complete and no error
+
                 if (!empty($data['errorMsg'])) {
                     $this->view('teamSportForm', $data);
                     return;
@@ -150,7 +151,6 @@
                     $idata['errorMsg'] = 'Something went wrong while adding sport.';
                     $this->view('teamSportForm', $data);
                 }
-                
     
     
             }else{

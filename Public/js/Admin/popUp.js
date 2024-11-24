@@ -1,3 +1,4 @@
+
 // Ensure popup is visible initially
 document.getElementById('popup').style.display = 'block'; 
 
@@ -24,3 +25,4 @@ function closePopup() {
 
 // Optional: Hide the "teamSport" section initially
 document.getElementById('teamSport').style.display = 'none';
+
