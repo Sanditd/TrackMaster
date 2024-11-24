@@ -86,24 +86,20 @@ body {
 
 h2 {
     font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     color: #00264d; 
     border-bottom: 2px solid #ffa500; 
     display: inline-block;
     padding-bottom: 3px;
 }
 
-.recent-clients ul,
-.activity-log ul,
-.quick-session ul {
+.upcoming-appointments ul {
     list-style: none;
     padding-left: 15px;
 }
 
-.recent-clients li,
-.activity-log li,
-.quick-session li {
+.upcoming-appointments li {
     margin-bottom: 8px;
     font-size: 14px;
     position: relative;
@@ -111,9 +107,7 @@ h2 {
     color: #555;
 }
 
-.recent-clients li::before,
-.activity-log li::before,
-.quick-session li::before {
+.upcoming-appointments li::before {
     content: "•";
     position: absolute;
     left: 0;
@@ -121,20 +115,10 @@ h2 {
     font-size: 18px;
 }
 
-.recent-clients span,
-.activity-log span,
-.quick-session span {
+.upcoming-appointments span {
     float: right;
     color: #888; 
     font-size: 12px;
-}
-
-.coach-rating p {
-    font-size: 22px;
-    font-weight: bold;
-    color: #f39c12; 
-    text-align: center;
-    margin-top: 10px;
 }
 
 .upcoming-appointments .appointment {
@@ -247,23 +231,115 @@ h2 {
     right: 10px;
 }
 
-
-.view-more-btn{
+.view-more-btn {
     background-color: #ffa500;
-    width: 40%;
-    color: #00264d;
+    color: #fff;
     border: none;
-    margin:10px;
-    margin-bottom: 20px;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    display:flexbox;
+    transition: all 0.3s ease-in-out;
+    margin: 10px;
+}
+
+.view-more-btn:hover {
+    background-color: #cc8400;
+    transform: scale(1.05);
+}
+
+.current-day {
+    background-color: yellow;
+    font-weight: bold;
+}
+
+#calendar {
+    width: 300px;
+    background-color: #ffffff; 
+    color: #ff6600; 
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    overflow: hidden;
+    padding: 20px;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f2f2f2; 
+    color:#f39c12;
+    padding: 10px;
+    font-size: 18px;
+}
+
+#header button {
+    background: none;
+    border: none;
+    color: #f39c12;
+    font-size: 18px;
+    cursor: pointer;
+    outline: none;
+}
+
+#days, #dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     text-align: center;
 }
 
-.view-more-btn:hover{
-    background-color: #FFB040;
+#days {
+    background-color: #f2f2f2; 
+    color:#f39c12;; 
+    padding: 10px 0;
+    font-size: 12px; 
+}
+
+#dates div {
+    padding: 8px;
+    border: 1px solid #f2f2f2; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px; 
+    color: #ff6600; 
+}
+
+#dates div.current {
+    background-color: #f39c12;
+    color: white; 
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+#dates div.upcoming:hover,
+#dates div:not(.current):hover {
+    background-color:#f39c12;
+    color: white; 
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
