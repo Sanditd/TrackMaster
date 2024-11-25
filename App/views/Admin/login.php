@@ -11,7 +11,9 @@
 
 <head>
     <title>Login</title>
-    <link rel="stylesheet" href="../../../Public/css/Admin/login.css">
+
+    <link rel="stylesheet" href="../Public/css/Admin/login.css">
+
 </head>
 
 <body id="loginbody">
@@ -34,19 +36,20 @@
 
     <div id="login-port">
         <span id="login-port-logo">
-            <img src="../../public/assets/icon/logo-black.png" alt="trackmaster logo">
+        <img src="../../img\icon\logo-black.png" alt="Logo">
         </span>
-        <form>
+        <form action="<?php echo ROOT ?>/loginController/login/sasa" method="POST">
             <div>
-                <input type="text" placeholder="Enter username">
+                <input type="text" placeholder="Enter username" name="username">
             </div>
             <div>
-                <input type="password" placeholder="Enter Password">
+                <input type="password" placeholder="Enter Password" name="password">
             </div>
-            <button type="submit">LOGIN</button>
+            <button type="submit">LOGIN / SIGN UP</button>
         </form>
         <div class="or">Or</div>
         <div class="or"><button id="frogetPW-button">Frogot Password</button></div>
+        <div class="or"><a href="<?php echo ROOT ?>/signUpController/signUp/asds">Register Here</a></div>
 
     </div>
 
@@ -55,7 +58,7 @@
             <span id="login-port-logo">
                 <img src="../../public/assets/icon/logo-black.png" alt="trackmaster logo">
             </span>
-            <form>
+            <form method="POST">
                 <div>
                     Reset Froget Password
                 </div>

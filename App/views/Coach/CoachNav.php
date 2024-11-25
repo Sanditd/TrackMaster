@@ -9,11 +9,11 @@
 
         <nav>
             <ul>
-                <li><a href="<?php echo URLROOT ?>/coach/dashboard">Dashboard</a></li>
-                <li><a href="<?php echo URLROOT ?>/coach/viewprofile">My Profile</a></li>
-                <li><a href="<?php echo URLROOT ?>/coach/performancetracking">Performancce Tracking</a></li>
-                <li><a href="<?php echo URLROOT ?>/coach/teammanagement">Team Management</a></li>
-                <li><a href="<?php echo URLROOT ?>/coach/eventmanagement">Event Management</a></li>
+                <li><a href="<?php echo ROOT ?>/coach/dashboard">Dashboard</a></li>
+                <li><a href="<?php echo ROOT ?>/coach/viewprofile">My Profile</a></li>
+                <li><a href="<?php echo ROOT ?>/coach/performancetracking">Performancce Tracking</a></li>
+                <li><a href="<?php echo ROOT ?>/coach/teammanagement">Team Management</a></li>
+                <li><a href="<?php echo ROOT ?>/coach/eventmanagement">Event Management</a></li>
                 <li><a href="../Student/Profile Management.html">Profile Management</a></li>
                 <li><a href="   /stu_notifications">Notifications</a></li>
             </ul>

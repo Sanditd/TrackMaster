@@ -10,17 +10,23 @@
         }
 
         //to load sportCrete.php
-        public function sportCreate($name){
-            $data=[
-                'username'=>$name
-            ];
-            $this->view('sportCreate');
+        public function sportCreate(){
+            $this->view('/Admin/sportCreate');
+        }
+
+        public function teamSportForm(){
+            $this->view('/Admin/teamSportForm');
+        }
+
+        public function indSportForm(){
+            $idata=[];
+            $this->view('/Admin/indSportForm',$idata);
         }
 
         //to load dashbaord.php
         public function dashboard(){
             $data=[];
-            $this->view('adminpanelview');
+            $this->view('Admin/adminpanelview');
         }
 
         //to load userManage.php
@@ -28,15 +34,13 @@
             $data=[
                 'username'=>$name
             ];
-            $this->view('userManage');
+            $this->view('/Admin/userManage');
         }
 
         //to load sportManege.php
-        public function sportManage($name){
-            $data=[
-                'username'=>$name
-            ];
-            $this->view('sportManage');
+        public function sportManage(){
+            $data=$this->sportModel->getSports();
+            $this->view('/Admin/sportManage',$data);
         }
 
         //handle sport adding to database
@@ -135,7 +139,7 @@
                 //validation is complete and no error
 
                 if (!empty($data['errorMsg'])) {
-                    $this->view('sportCreate', $data);
+                    $this->view('/Admin/teamSportForm', $data);
                     return;
                 }
                 
@@ -144,8 +148,8 @@
                     header('Location: ' . ROOT . '/admin/sportManage/asdad');
                     exit;
                 } else {
-                    $data['errorMsg'] = 'Something went wrong while adding sport.';
-                    $this->view('sportCreate', $data);
+                    $idata['errorMsg'] = 'Something went wrong while adding sport.';
+                    $this->view('/Admin/teamSportForm', $data);
                 }
     
     
@@ -164,11 +168,142 @@
                     'rulesURL'=> '',
                 ];
 
-                $this->view('sportCreate',$data);
+                $this->view('/Admin/teamSportForm',$data);
             }
         }
 
+        public function addindSportForm(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                // Sanitize inputs
+                $filters = [
+                    'sportName' => FILTER_SANITIZE_STRING,
+                    'gameDuration' => FILTER_SANITIZE_NUMBER_FLOAT,
+                    'locationType' => FILTER_SANITIZE_STRING,
+                    'equipment' => FILTER_SANITIZE_STRING,
+                    'category' => FILTER_SANITIZE_STRING,
+                    'scoring' => FILTER_SANITIZE_STRING,
+                    'rulesURL' => FILTER_SANITIZE_STRING,
+                ];
+        
+                $_POST = filter_input_array(INPUT_POST, $filters);
+        
+                // Prepare data
+                $idata = [
+                    'sportName' => trim($_POST['sportName']),
+                    'sportType' => 'indSport',
+                    'gameDuration' => trim($_POST['gameDuration']),
+                    'locationType' => trim($_POST['locationType']),
+                    'equipment' => trim($_POST['equipment']),
+                    'category' => json_encode(explode(',', trim($_POST['playerPositions']))),
+                    'scoring' => trim($_POST['scoring']),
+                    'rulesURL' => trim($_POST['rulesURL']),
+                    'errorMsg' => ''
+                ];
+        
+                // Validation
+                if (empty($idata['sportName'])) {
+                    $idata['errorMsg'] = 'Please enter sport name';
+                } elseif ($this->sportModel->findSportByName($idata['sportName'])) {
+                    $idata['errorMsg'] = 'Sport is already in the database';
+                }
+        
+                if (empty($idata['gameDuration'])) {
+                    $idata['errorMsg'] = 'Please enter game duration';
+                }
+        
+                if (empty($idata['locationType'])) {
+                    $idata['errorMsg'] = 'Please enter location type';
+                }
+        
+                if (empty($idata['equipment'])) {
+                    $idata['errorMsg'] = 'Please name equipment';
+                }
+        
+                if (empty($idata['category'])) {
+                    $idata['errorMsg'] = 'Please enter category';
+                }
+        
+                if (empty($idata['scoring'])) {
+                    $idata['errorMsg'] = 'Please describe scoring system';
+                }
+        
+                if (empty($idata['rulesURL'])) {
+                    $idata['errorMsg'] = 'Please provide URL for rules';
+                }
+        
+                // If errors exist, reload the form
+                if (!empty($idata['errorMsg'])) {
+                    $this->view('/Admin/addindSportForm', $idata);
+                    return;
+                }
+        
+                // Add sport to the database
+                if ($this->sportModel->addindSportForm($idata)) {
+                    header('Location: ' . ROOT . '/admin/sportManage/sasd');
+                    exit;
+                } else {
+                    $idata['errorMsg'] = 'Something went wrong while adding sport.';
+                    $this->view('/Admin/addindSportForm', $idata);
+                }
+            } else {
+                // Initial form load
+                $idata = [
+                    'sportName' => '',
+                    'sportType' => '',
+                    'gameDuration' => '',
+                    'locationType' => '',
+                    'equipment' => '',
+                    'category' => '',
+                    'scoring' => '',
+                    'rulesURL' => '',
+                    'errorMsg' => 'nothing'
+                ];
+        
+                $this->view('/Admin/indSportForm', $idata);
+            }
+        }
+        
 
+        //load sport view
+        public function sportView($sportId) {
+            try {
+                // Get the sport data by ID (associative array)
+                $sport = $this->sportModel->getSportById($sportId);
+                
+                if (!$sport) {
+                    throw new Exception("Sport not found!");
+                }
+        
+                // Check if it's a team or individual sport
+                if ($sport['sportType'] === 'teamSport') {
+                    // Call the appropriate method for team sports
+                    $details = $this->sportModel->getTeamSportDetails($sportId);
+                } else {
+                    // Call the appropriate method for individual sports
+                    $details = $this->sportModel->getIndSportDetails($sportId);
+                }
+        
+                // Combine data into a single array
+                $data = [
+                    'sport' => $sport,
+                    'details' => $details
+                ];
+        
+                // Load the view with the data
+                $this->view('/Admin/sportView', $data);
+        
+            } catch (Exception $e) {
+                // Log the error message (optional, depending on your logging mechanism)
+                error_log($e->getMessage());
+                
+                // Show an error message to the user
+                echo "<p>Error: " . $e->getMessage() . "</p>";
+                exit;
+            }
+        }
+        
+        
+        
 
     }
 ?>

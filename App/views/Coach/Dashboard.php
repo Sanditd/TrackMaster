@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
+
     <link rel="stylesheet" href="../Public/css/Coach/dashboard.css">
     <link rel="stylesheet" href="../Public/css/navbar.css">
     <link rel="stylesheet" href="../Public/css/sidebar.css">
+
 </head>
 <body>
     <?php require 'CoachNav.php'; ?>

@@ -10,7 +10,7 @@
 
         public function dashboard(){
             $data=[];
-            $this->view('adminpanelview');
+            $this->view('/Admin/adminpanelview');
         }
     }
 ?>
