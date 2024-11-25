@@ -4,77 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/stu_dashboard.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/Dashboard_Stu.css">
 </head>
 <body>
     <?php include './../navbar.php'?>
     <?php include './../sidebar.php'?>
+    
    <div class="dashboard-container">
         <div class="dashboard-header">
             <h1>Student Dashboard</h1>
             <p>Welcome, Eraji!</p>
         </div>
 
-        <h2>Performance</h2>
-        <div class="stats-cards">
-            <div class="card">Endurance<br><br>
-                <div id="strengthCircle" class="circle">
-                    <div class="inner-circle">
-                      <p><span id="strengthValue">75</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">Speed<br><br>
-                <div id="strengthCircle" class="circle">
-                    <div class="inner-circle">
-                      <p><span id="strengthValue">75</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">Strength<br><br>
-                <div id="strengthCircle" class="circle">
-                    <div class="inner-circle">
-                      <p><span id="strengthValue">75</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">Attendance<br><br>
-                <div id="attendanceCircle" class="circle">
-                    <div class="inner-circle">
-                      <p><span id="attendanceValue">75</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <center><button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.html'">Track My Performance</button></center>
-
         <div class="main-content">
 
             <div class="section upcoming-appointments">
                 <h2>Upcoming Sessions</h2>
-                <div class="appointment">
-                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
+                <center>
+                <div id="calendar">
+                    <div id="header">
+                        <button id="prevMonth">&lt;</button>
+                        <span id="monthYear"></span>
+                        <button id="nextMonth">&gt;</button>
+                    </div>
+                <div id="days">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                 </div>
+                <div id="dates"> </div>
             </div>
 
-            <div class="section quick-session">
+            <div id="noteModal" class="modal hidden">
+                <div class="modal-content">
+                    <h3 id="noteTitle">Add Note</h3>
+                    <textarea id="noteInput" placeholder="Write your note here..."></textarea>
+                    <button class="view-more-btn" id="saveNote">Save Note</button>
+                    <button class="view-more-btn" id="closeModal">Close</button>
+                </div>
+            </div>
+            </center>
+            </div>
+
+            <div class="section upcoming-appointments">
                 <h2>Registered Sports</h2>
                 <ul>
                     <li>Cricket</li>
-                    <li>Rugby</li>
+                    <button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/Coach/ViewProfile.html'">View My Coach</button>
+                    <button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.html'">Track My Performance</button>
                 </ul>
             </div>
 
-            <div class="section recent-clients">
+            <div class="section upcoming-appointments">
                 <h2>Current Medical Status</h2>
                 <ul>
                     <li><strong> Medical Conditions : </strong>None</li>
@@ -82,17 +61,17 @@
                     <li><strong> Allergies : </strong>None</li>
                     <li><strong> Blood Type : </strong>A+</li>
                     <li><strong> Emergency Contact : </strong> 0712345678</li>
-                    <center><button class="view-more-btn" onclick="window.location.href='/TrackMaster/App/views/Student/medicalStatus.html'">Update Medical History</button></center>
+                    <center><button class="view-more-btn" onclick="window.location.href='/TrackMaster/App/views/Student/medicalStatus.php'">Update Medical History</button></center>
                 </ul>
             </div>
             
-            <div class="section activity-log">
+            <div class="section upcoming-appointments">
                 <h2>Financial Status</h2>
                 <ul>
                     <li><strong> Financial Aid Status : </strong>Recieve Funds</li>
                     <li><strong> Registration Number : </strong>24/M/90</li>
                     <li><strong>Registration Date : </strong>2024-01-01</li>
-                    <center><button class="view-more-btn" onclick="window.location.href='/TrackMaster/App/views/Student/financialStatus.html'">Update Financial Status</button></center>
+                    <center><button class="view-more-btn" onclick="window.location.href='/TrackMaster/App/views/Student/financialStatus.php'">Update Financial Status</button></center>
                 </ul>              
             </div>
             
@@ -171,9 +150,13 @@
         </div>
         
     </div>
+</div>
 
     <?php include './../footer.php'?>
     
     <script src="/TrackMaster/Public/js/Student/carousel.js"></script>
+    <script src="/TrackMaster/Public/js/Student/calender.js"></script>
+
+
 
 </body>

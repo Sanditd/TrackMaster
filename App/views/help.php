@@ -4,22 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Help Page</title>
-    <link rel="stylesheet" href="/Public/css/help.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Helpp.css">
 </head>
 <body>
 
-    <!-- Main Content -->
+    <?php include './navbar.php'?>
+    <?php include './sidebar.php'?>
+
     <div id="main">
-        <div class="header-container">
-            <h1>H E L P </h1>
-            <h2>for a Better Experience at Our Website</h2>
-            <div class="search-bar">
-                <input type="text" placeholder="Try 'Update my account details'">
-                <button>Search</button>
-            </div>
-        </div>
+            <center>
+            <h1>HELP for a Better Experience at Our Website</h1>
+            </center>
 
         <section class="tabs">
+        <p>Select Your Role :</p>
             <div class="tab-links">
                 <button class="active" onclick="showTab('students')">Student</button>
                 <button onclick="showTab('coaches')">Coach</button>
@@ -29,7 +27,7 @@
         </section>
 
         <section id="students" class="topics">
-            <h2>Popular Topics for Students</h2>
+            <h2>Frequently Asked Topics for Students</h2>
             <div class="topic-grid">
                 <div class="topic">
                     <img src="../../Public/img/help/user.png" alt="User Management">
@@ -51,7 +49,7 @@
         </section>
 
         <section id="coaches" class="topics" style="display: none;">
-            <h2>Popular Topics for Coaches</h2>
+            <h2>Frequently Asked Topics for Coaches</h2>
             <div class="topic-grid">
                 <div class="topic">
                     <img src="../../Public/img/help/team.png" alt="Team Management">
@@ -73,7 +71,7 @@
         </section>
 
         <section id="parents" class="topics" style="display: none;">
-            <h2>Popular Topics for Parents</h2>
+            <h2>Frequently Asked Topics for Parents</h2>
             <div class="topic-grid">
                 <div class="topic">
                     <img src="../../Public/img/help/progress.png" alt="Student Progress">
@@ -95,7 +93,7 @@
         </section>
 
         <section id="schools" class="topics" style="display: none;">
-            <h2>Popular Topics for Schools</h2>
+            <h2>Frequently Asked Topics for Schools</h2>
             <div class="topic-grid">
                 <div class="topic">
                     <img src="../../Public/img/help/report.jpg" alt="Reports">
@@ -116,34 +114,36 @@
             </div>
         </section>
 
-        <section class="contact-form">
-            <form id="helpContactForm" class="helpContactForm">
+        <div class="container">
+        <section class="form-section">
                 <h2>ADDITIONAL HELP</h2>
+            <form id="helpContactForm" class="helpContactForm">
 
-                <label for="role">Your Role</label>
-                <select id="role" name="role">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+            <label for="role">Your Role</label>
+            <select id="role" name="role">
                     <option value="student">Student</option>
                     <option value="coach">Coach</option>
                     <option value="parent">Parent</option>
                     <option value="school">School</option>
-                </select>
+            </select>
 
-                <label for="name">Your Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name" required>
-    
-                <label for="email">Your Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
-    
-                <label for="description">Why do you need our help ?</label>
-                <textarea id="description" name="description" rows="4" placeholder="Describe the issue in detail..."></textarea>
-                
-                <h3>We'll get back to you as soon as possible.</h3>
-                <center><button type="submit">Submit</button></center>
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="description">Why do you need our help ?</label>
+            <textarea id="description" name="description" rows="4" placeholder="Describe the issue in detail..."></textarea>
+
+            <h3>We'll get back to you as soon as possible.</h3>
+            <center><button type="submit">Submit</button></center>
 
             </form>           
         </section>
-    
-    </div>
+        </div>
+
+    <?php include './footer.php'?>
 
     <script>
         function showTab(tabId) {

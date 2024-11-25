@@ -1,55 +1,46 @@
 <?php
-class Product {
+class achievement {
     private $db;
 
     public function __construct() {
         $this->db = new Database();
     }
 
-    public function getProducts() {
-        $this->db->query("SELECT * FROM products");
+    public function getAchievements() {
+        $this->db->query("SELECT * FROM achievement");
         return $this->db->resultSet();
     }
 
-    public function getProduct($product_id) {
-        $this->db->query("SELECT * FROM products WHERE product_id = :product_id");
+    public function getAchievement($id) {
+        $this->db->query("SELECT * FROM achievement WHERE id = :id");
         $this->db->bind(':product_id', $product_id);
         return $this->db->single();
     }
 
-    public function addProduct($data) {
-        $this->db->query("INSERT INTO products (product_name, category, price, stock, description, image) VALUES (:product_name, :category, :price, :stock, :description, :image)");
-        $this->db->bind(':product_name', $data['product_name']);
-        $this->db->bind(':category', $data['category']);
-        $this->db->bind(':price', $data['price']);
-        $this->db->bind(':stock', $data['stock']);
+    public function addAchievement($data) {
+        $this->db->query("INSERT INTO achievement ( place, level, description, date) VALUES (:place, :level, :description, :date)");
+        $this->db->bind(':place', $data['place']);
+        $this->db->bind(':level', $data['level']);
         $this->db->bind(':description', $data['description']);
-        $this->db->bind(':image', $data['image']);
+        $this->db->bind(':date', $data['date']);
         return $this->db->execute();
     }
 
-    public function updateProduct($data) {
-        $this->db->query("UPDATE products SET product_name = :product_name, category = :category, price = :price, stock = :stock, description = :description, image = :image WHERE product_id = :id");
+    public function updateAchievement($data) {
+        $this->db->query("UPDATE achievement SET place = :place, level = :level, description = :description, date = :date WHERE id = :id");
         $this->db->bind(':id', $data['id']);
-        $this->db->bind(':product_name', $data['product_name']);
-        $this->db->bind(':category', $data['category']);
-        $this->db->bind(':price', $data['price']);
-        $this->db->bind(':stock', $data['stock']);
+        $this->db->bind(':place', $data['place']);
+        $this->db->bind(':level', $data['level']);
         $this->db->bind(':description', $data['description']);
-        $this->db->bind(':image', $data['image']);
+        $this->db->bind(':date', $data['date']);
         return $this->db->execute();
     }
 
     public function deleteProduct($product_id) {
-        $this->db->query("DELETE FROM products WHERE product_id = :product_id");
-        $this->db->bind(':product_id', $product_id);
+        $this->db->query("DELETE FROM achievement WHERE id = :id");
+        $this->db->bind(':id', $id);
         return $this->db->execute();
     }
 
-    public function getProductsByCategory($category) {
-        $this->db->query("SELECT * FROM products WHERE category = :category");
-        $this->db->bind(':category', $category);
-        return $this->db->resultSet();
-    }
 }
 ?>

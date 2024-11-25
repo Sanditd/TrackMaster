@@ -8,102 +8,54 @@
 </head>
 
 <body>
-    
-        <!-- Main Content -->
-        <div id="main">
+    <?php include './../navbar.php'?>
+    <?php include './../sidebar.php'?>
 
-            <div class="main-content">
-                <div class="title">
-                    <h2>STUDENT PLAYER SCHEDULE</h2>
-                    <hr>
-                </div>
-    
-                <div class="schedule-container">
+            <center><h1>Student Player Schedule</h1></center>
 
-                    <div class="schedule-section">
-                        <div class="schedule_table">
-                            <table id="schedule-table">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Event</th>
-                                        <th>Time</th>
-                                        <th>Location</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="schedule-body">
-                                    <!-- Schedule rows will be populated here via JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <center><button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/attendance.html'">View My Attendance</button></center>
+        <div class="main-content">
+
+        <div class="section upcoming-appointments">
+        <div id="calendar">
+                    <div id="header">
+                        <button id="prevMonth">&lt;</button>
+                        <span id="monthYear"></span>
+                        <button id="nextMonth">&gt;</button>
                     </div>
-        
-                    <div>
-                        <div class="schedule-section calender">
-                                        <div class="calendar-header">
-                                            <button>&lt;</button>
-                                            <span>August 2024</span>
-                                            <button>&gt;</button>
-                                        </div>
-                                        <div class="calendar-grid">
-                                            <div class="day">Sun</div>
-                                            <div class="day">Mon</div>
-                                            <div class="day">Tue</div>
-                                            <div class="day">Wed</div>
-                                            <div class="day">Thu</div>
-                                            <div class="day">Fri</div>
-                                            <div class="day">Sat</div>
-                                            <!-- Days of the month -->
-                                            <div class="date">1</div>
-                                            <div class="date">2</div>
-                                            <div class="date">3</div>
-                                            <div class="date">4</div>
-                                            <div class="date">5</div>
-                                            <div class="date">6</div>
-                                            <div class="date">7</div>
-                                            <!-- More dates... -->
-                                        </div>
-                                
-                        </div>
-        
-                        <div class="schedule-section notifications">
-                            <center><h2>NOTIFICATIONS</h2></center>
-                            <div class="notification">
-                                <div class="notification-message">
-                                    <section class="sender">
-                                        <p>From System Admin ,</p>
-                                    </section>
-                                    <section class="message">
-                                        <p>Your profile has been updated.</p>
-                                    </section>
-                                    <section class="notify-date">
-                                        <p>2024/09/14 - 10:00 AM</p>
-                                    </section>
-                                </div>
-        
-                                <div class="notification-message">
-                                    <section class="sender">
-                                        <p>From Coach Mr.Perera ,</p>
-                                    </section>
-                                    <section class="message">
-                                        <p>Your Performance was outstanding. Keep up the Good Game!!!!</p>
-                                    </section>
-                                    <section class="notify-date">
-                                        <p>2024/09/15 - 08:00 AM</p>
-                                    </section>
-                                </div>
-                            </div>
-                            <center><button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/view/html/.html'">View All</button></center>
-                        </div>
-                    </div>
-    
+                <div id="days">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                 </div>
+                <div id="dates"> </div>
+            </div>
 
-                <div class="forms">
-                    <div class="form-container">
+            <div id="noteModal" class="modal hidden">
+                <div class="modal-content">
+                    <h3 id="noteTitle">Add Note</h3>
+                    <textarea id="noteInput" placeholder="Write your note here..."></textarea>
+                    <button class="view-more-btn" id="saveNote">Save Note</button>
+                    <button class="view-more-btn" id="closeModal">Close</button>
+                </div>
+            </div>
+            </div>
+            
+            <div class="section upcoming-appointments">
+                <h2>Upcoming Sessions</h2>
+                <div class="appointment">
+                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
+                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
+                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
+                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
+                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
+                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
+                <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
+                </div>
+                <button class="view-more-btn"> View Session Details</button>
+            </div>  
+            
+            <div class="section upcoming-appointments">
+            <h2>Request Schedule Change</h2>
+            <div class="form-container">
                         <form id="scheduleEditForm" class="schedule-form">
-                            <h3>REQUEST SCHEDULE CHANGE</h3>
                             <label for="stu_name">Student Name:</label>
                             <input type="text" id="stu_name" required>
 
@@ -119,13 +71,15 @@
                             <label for="reschedule_reason">Reason for the Request:</label>
                             <textarea id="reschedule_reason" required></textarea>
                                 
-                            <button type="submit">Submit Request</button>
+                            <button type="submit" class="view-more-btn">Submit Request</button>
                         </form>
                     </div>
+            </div>
 
-                    <div class="form-container">
+            <div class="section upcoming-appointments">
+            <h2>Request Extra Classes</h2>
+            <div class="form-container">
                         <form id="scheduleExtraClassForm" class="schedule-form">
-                            <h3>REQUEST EXTRA CLASSES</h3>
                             <label for="stu_name">Student Name:</label>
                             <input type="text" id="stu_name" required>
 
@@ -138,15 +92,31 @@
                             <label for="notes">Notes:</label>
                             <textarea id="notes" required></textarea>
                                 
-                            <button type="submit">Submit Request</button>
+                            <button type="submit" class="view-more-btn">Submit Request</button>
                         </form>
                     </div>
-                </div>
-
+            </div>
             </div>
 
+            <div class="section upcoming-appointments">
+            <h2>Recently Attended Sessions</h2>
+                <div class="appointment">
+                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
+                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
+                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
+                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
+                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
+                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
+                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
+                 </div>
+                 <button class="view-more-btn"> View My Attendance</button>
+            </div>
+        
+    </div>
+</div>
+
+        <?php include './../footer.php'?>
 
     <script src="/TrackMaster/Public/js/Student/calender.js"></script>
-    <script src="/TrackMaster/Public/js/Student/schedule.js"></script>
 </body>
 </html>
