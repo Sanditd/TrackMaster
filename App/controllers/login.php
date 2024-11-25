@@ -12,7 +12,7 @@
             $data=[
                 'username'=>$name
             ];
-            $this->view('Admin/login');
+            $this->view('/Admin/login');
         }
 
 

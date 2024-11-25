@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/TrackMaster/Public/css/Student/Dashboard_Stu.css">
 </head>
 <body>
-    <?php include './../navbar.php'?>
+    <?php include '../navbar.php'?>
     <?php include './../sidebar.php'?>
     
    <div class="dashboard-container">

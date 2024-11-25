@@ -3,6 +3,16 @@
 if (!defined('LOADED_FROM_MAIN')) {
     require_once 'adminNav.php';
 }
+
+session_start();
+
+// Check if the session variables are set
+if (!isset($_SESSION['user_id'])) {
+    // User is not logged in, redirect to the login page
+    header('Location: ' . ROOT . '/loginController/login');
+    exit;
+}
+
 ?>
 
 <div class="container">
