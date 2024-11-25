@@ -264,9 +264,46 @@
         }
         
 
-        public function showSport(){
-            
+        //load sport view
+        public function sportView($sportId) {
+            try {
+                // Get the sport data by ID (associative array)
+                $sport = $this->sportModel->getSportById($sportId);
+                
+                if (!$sport) {
+                    throw new Exception("Sport not found!");
+                }
+        
+                // Check if it's a team or individual sport
+                if ($sport['sportType'] === 'teamSport') {
+                    // Call the appropriate method for team sports
+                    $details = $this->sportModel->getTeamSportDetails($sportId);
+                } else {
+                    // Call the appropriate method for individual sports
+                    $details = $this->sportModel->getIndSportDetails($sportId);
+                }
+        
+                // Combine data into a single array
+                $data = [
+                    'sport' => $sport,
+                    'details' => $details
+                ];
+        
+                // Load the view with the data
+                $this->view('sportView', $data);
+        
+            } catch (Exception $e) {
+                // Log the error message (optional, depending on your logging mechanism)
+                error_log($e->getMessage());
+                
+                // Show an error message to the user
+                echo "<p>Error: " . $e->getMessage() . "</p>";
+                exit;
+            }
         }
+        
+        
+        
 
     }
 ?>

@@ -23,7 +23,7 @@
         <button id="individualSportBtn" ><a href="<?php echo ROOT ?>/admin/addindSportForm/asdad" >Individual Sports</a></button>
         <!-- Close button -->
         <button id="close">
-            <a href="<?php echo ROOT ?>/admin/dashboard" style="text-decoration: none; color: inherit;">Close</a>
+            <a href="<?php echo ROOT ?>/admin/dashboard/asdad" style="text-decoration: none; color: inherit;">Close</a>
         </button>
     </div>
 

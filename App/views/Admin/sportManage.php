@@ -48,7 +48,11 @@
                         <td><?= htmlspecialchars($sport->sportName) ?></td>
                         <td><?= htmlspecialchars($sport->sportType) ?></td>
                         <td>
-                            <button class="view-btn">View</button>
+                        <button 
+                class="view-btn" 
+                onclick="viewSport(<?= htmlspecialchars(json_encode($sport->sportId)) ?>)">
+                View
+            </button>
                             <button class="edit-btn">Edit</button>
                             <button class="delete-btn">Delete</button>
                         </td>
@@ -66,5 +70,14 @@
         </div>
     </div>
 </body>
+
+<script>
+    function viewSport(sportId) {
+        // Navigate to the URL dynamically with sportId
+        const root = <?= json_encode(ROOT) ?>; // Echo ROOT as a safe JavaScript string
+        window.location.href = `${root}/admin/sportView/${sportId}`;
+    }
+</script>
+
 
 </html>

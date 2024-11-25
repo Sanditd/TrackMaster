@@ -67,7 +67,7 @@ require_once __DIR__ . '/../libraries/database.php';
         }
         
         public function getSports(){
-            $this->db->query('SELECT sportName,sportType FROM sport;');
+            $this->db->query('SELECT * FROM sport;');
             $result = $this->db->resultset();
             return $result;
         }
@@ -111,6 +111,27 @@ require_once __DIR__ . '/../libraries/database.php';
                 // If sport insertion fails, return false
                 return false;
             }
+        }
+
+        //get sport by id
+        public function getSportById($sportId) {
+            $this->db->query("SELECT * FROM sport WHERE sportId = :sportId");
+            $this->db->bind(':sportId', $sportId);
+            return $this->db->singleArray(); // Fetch single record
+        }
+    
+        //get team sport details
+        public function getTeamSportDetails($sportId) {
+            $this->db->query("SELECT * FROM teamsport WHERE sportId = :sportId");
+            $this->db->bind(':sportId', $sportId);
+            return $this->db->singleArray();
+        }
+    
+        //get ind sport details
+        public function getIndSportDetails($sportId) {
+            $this->db->query("SELECT * FROM indsport WHERE sportId = :sportId");
+            $this->db->bind(':sportId', $sportId);
+            return $this->db->singleArray();
         }
 
     }
