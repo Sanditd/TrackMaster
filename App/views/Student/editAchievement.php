@@ -9,8 +9,8 @@
 </head>
 <body>
 
-    <?php include './../navbar.php'?>
-    <?php include './../sidebar.php'?>
+<?php require 'navbar.php'?>
+<?php require 'sidebar.php'?>
  
     <center>    
     <div class="edit-section">
@@ -33,12 +33,12 @@
                        
                     <center>
                         <button class="edit-button" type="submit"> Save Changes </button>
-                        <button class="edit-button" type="submit" onclick="window.location.href='/App/views/Student/student_achievements.html'" > Cancel </button>
+                        <button class="edit-button" type="submit" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAchievements'"> Cancel </button>
                     </center>
                 </form>
             </div></center>
 
-            <?php include './../footer.php'?>
+            <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
 
     <script src="/Public/js/Student/achievements.js"></script>
 

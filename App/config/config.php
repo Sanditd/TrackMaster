@@ -1,6 +1,6 @@
 <?php
 
-define('URLROOT','http://localhost/TrackMaster/TrackMaster/');
+define('URLROOT','http://localhost/TrackMaster/');
 
 define('SITENAME', 'TrackMaster');
 

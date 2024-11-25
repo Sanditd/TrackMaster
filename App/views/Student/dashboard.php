@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="/TrackMaster/Public/css/Student/Dashboard_Stu.css">
 </head>
 <body>
-    <?php include './../navbar.php'?>
-    <?php include './../sidebar.php'?>
+
+    <?php require 'navbar.php'?>
+    <?php require 'sidebar.php'?>
     
    <div class="dashboard-container">
         <div class="dashboard-header">
@@ -48,8 +49,8 @@
                 <h2>Registered Sports</h2>
                 <ul>
                     <li>Cricket</li>
-                    <button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/Coach/ViewProfile.html'">View My Coach</button>
-                    <button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.html'">Track My Performance</button>
+                    <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Coach/ViewProfile'">View My Coach</button>
+                    <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Coach/PlayerPerformance'">Track My Performance</button>
                 </ul>
             </div>
 
@@ -61,7 +62,7 @@
                     <li><strong> Allergies : </strong>None</li>
                     <li><strong> Blood Type : </strong>A+</li>
                     <li><strong> Emergency Contact : </strong> 0712345678</li>
-                    <center><button class="view-more-btn" onclick="window.location.href='/TrackMaster/App/views/Student/medicalStatus.php'">Update Medical History</button></center>
+                    <center><button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/medicalStatus'">Update Medical History</button></center>
                 </ul>
             </div>
             
@@ -71,7 +72,7 @@
                     <li><strong> Financial Aid Status : </strong>Recieve Funds</li>
                     <li><strong> Registration Number : </strong>24/M/90</li>
                     <li><strong>Registration Date : </strong>2024-01-01</li>
-                    <center><button class="view-more-btn" onclick="window.location.href='/TrackMaster/App/views/Student/financialStatus.php'">Update Financial Status</button></center>
+                    <center><button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/financialStatus'">Update Financial Status</button></center>
                 </ul>              
             </div>
             
@@ -145,14 +146,14 @@
                 </div>
                 <button class="carousel-control prev" onclick="prevSlide()">❮</button>
                 <button class="carousel-control next" onclick="nextSlide()">❯</button>
-                <button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/Student/student_achievements.php'">View All Achievements</button>
+                <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAchievements'">View All Achievements</button>
             </div>
         </div>
         
     </div>
 </div>
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
     
     <script src="/TrackMaster/Public/js/Student/carousel.js"></script>
     <script src="/TrackMaster/Public/js/Student/calender.js"></script>

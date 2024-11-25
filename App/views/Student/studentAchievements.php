@@ -9,8 +9,8 @@
 </head>
 <body>
 
-<?php include './../navbar.php'?>
-<?php include './../sidebar.php'?>
+<?php require 'navbar.php'?>
+<?php require 'sidebar.php'?>
 
     <div id="main">
         <div class="title">
@@ -121,7 +121,7 @@
                        
                     <center>
                         <button class="edit-button" type="submit"> Add </button>
-                        <button class="edit-button" type="submit" onclick="window.location.href='/TrackMaster/App/views/Student/student_achievements.php'" > Cancel </button>
+                        <button class="edit-button" type="submit" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAchievements'"> Cancel </button>
                     </center>
                 </form>
             </div>
@@ -144,7 +144,7 @@
                             <td>1st Place</td>
                             <td>Provincial</td>
                             <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button type="submit" class="Edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/edit_achievement.php'">Edit</button>
+                            <td><button type="submit" class="Edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/editAchievement'">Edit</button>
                                 <button  type="submit" class="delete-button">Delete</button></td>
                             </td>
                         </tr>
@@ -154,7 +154,7 @@
                             <td>1st Place</td>
                             <td>Provincial</td>
                             <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button class="Edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/edit_achievement.php'">Edit</button>
+                            <td><button class="Edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/editAchievement'">Edit</button>
                                 <button class="delete-button">Delete</button></td>
                             </td>
                         </tr>
@@ -164,7 +164,7 @@
                             <td>1st Place</td>
                             <td>Provincial</td>
                             <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button class="Edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/edit_achievement.php'">Edit</button>
+                            <td><button class="Edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/editAchievement'">Edit</button>
                                 <button class="delete-button">Delete</button></td>
                             </td>
                         </tr>
@@ -174,7 +174,7 @@
                             <td>1st Place</td>
                             <td>Provincial</td>
                             <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button class="Edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/edit_achievement.php'">Edit</button>
+                            <td><button class="Edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/editAchievement'">Edit</button>
                                 <button class="delete-button">Delete</button></td>
                             </td>
                         </tr>
@@ -187,7 +187,7 @@
     
     </div>
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
 
     <script src="/TrackMaster/Public/js/Student/carousel.js"></script>
     <script src="/TrackMaster/Public/js/Student/achievements.js"></script>
