@@ -11,22 +11,22 @@
 
         //to load sportCrete.php
         public function sportCreate(){
-            $this->view('sportCreate');
+            $this->view('/Admin/sportCreate');
         }
 
         public function teamSportForm(){
-            $this->view('teamSportForm');
+            $this->view('/Admin/teamSportForm');
         }
 
         public function indSportForm(){
             $idata=[];
-            $this->view('indSportForm',$idata);
+            $this->view('/Admin/indSportForm',$idata);
         }
 
         //to load dashbaord.php
         public function dashboard(){
             $data=[];
-            $this->view('adminpanelview');
+            $this->view('Admin/adminpanelview');
         }
 
         //to load userManage.php
@@ -34,13 +34,13 @@
             $data=[
                 'username'=>$name
             ];
-            $this->view('userManage');
+            $this->view('/Admin/userManage');
         }
 
         //to load sportManege.php
         public function sportManage(){
             $data=$this->sportModel->getSports();
-            $this->view('sportManage',$data);
+            $this->view('/Admin/sportManage',$data);
         }
 
         //handle sport adding to database
@@ -139,7 +139,7 @@
                 //validation is complete and no error
 
                 if (!empty($data['errorMsg'])) {
-                    $this->view('teamSportForm', $data);
+                    $this->view('/Admin/teamSportForm', $data);
                     return;
                 }
                 
@@ -149,7 +149,7 @@
                     exit;
                 } else {
                     $idata['errorMsg'] = 'Something went wrong while adding sport.';
-                    $this->view('teamSportForm', $data);
+                    $this->view('/Admin/teamSportForm', $data);
                 }
     
     
@@ -168,7 +168,7 @@
                     'rulesURL'=> '',
                 ];
 
-                $this->view('teamSportForm',$data);
+                $this->view('/Admin/teamSportForm',$data);
             }
         }
 
@@ -233,7 +233,7 @@
         
                 // If errors exist, reload the form
                 if (!empty($idata['errorMsg'])) {
-                    $this->view('addindSportForm', $idata);
+                    $this->view('/Admin/addindSportForm', $idata);
                     return;
                 }
         
@@ -243,7 +243,7 @@
                     exit;
                 } else {
                     $idata['errorMsg'] = 'Something went wrong while adding sport.';
-                    $this->view('addindSportForm', $idata);
+                    $this->view('/Admin/addindSportForm', $idata);
                 }
             } else {
                 // Initial form load
@@ -259,7 +259,7 @@
                     'errorMsg' => 'nothing'
                 ];
         
-                $this->view('indSportForm', $idata);
+                $this->view('/Admin/indSportForm', $idata);
             }
         }
         
@@ -290,7 +290,7 @@
                 ];
         
                 // Load the view with the data
-                $this->view('sportView', $data);
+                $this->view('/Admin/sportView', $data);
         
             } catch (Exception $e) {
                 // Log the error message (optional, depending on your logging mechanism)

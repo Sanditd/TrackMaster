@@ -76,7 +76,7 @@
         
                 // If errors exist, reload the form with the error message
                 if (!empty($data['error'])) {
-                    $this->view('signUp', $data);
+                    $this->view('/Admin/signUp', $data);
                     return;
                 }
         
@@ -86,7 +86,7 @@
                     exit;
                 } else {
                     $data['error'] = 'Something went wrong while adding your information.';
-                    $this->view('signUp', $data);
+                    $this->view('/Admin/signUp', $data);
                 }
             } else {
                 // Initial form
@@ -103,7 +103,7 @@
                     'error' => '',
                 ];
         
-                $this->view('signUp', $data);
+                $this->view('/Admin/signUp', $data);
             }
         }
         
@@ -176,7 +176,7 @@
         
                     // If validation fails, reload the page with error message
                     if (!empty($data['error'])) {
-                        $this->view('addinfo', $data);
+                        $this->view('/Admin/addinfo', $data);
                         return;
                     }
         
@@ -184,13 +184,13 @@
                     if ($this->signUp->addAdditionalInfo($data)) {
                         // Redirect based on the user's role after successfully adding the info
                         if ($data['role'] == 'coach') {
-                            header('Location: ' . ROOT . '/coachController/coachDashboard');
+                            header('Location: ' . ROOT . '/Admin//coachController/coachDashboard');
                         } elseif ($data['role'] == 'player') {
-                            header('Location: ' . ROOT . '/playerController/playerDashboard');
+                            header('Location: ' . ROOT . '/Admin//playerController/playerDashboard');
                         } elseif ($data['role'] == 'school') {
-                            header('Location: ' . ROOT . '/schoolController/schoolDashboard');
+                            header('Location: ' . ROOT . '/Admin//schoolController/schoolDashboard');
                         } elseif ($data['role'] == 'parent') {
-                            header('Location: ' . ROOT . '/parentController/parentDashboard');
+                            header('Location: ' . ROOT . '//Admin/parentController/parentDashboard');
                         }
                         exit;
                     } else {

@@ -1,85 +1,120 @@
-/* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+/* Container and Table */
+.container {
+    margin: 20px;
 }
 
-/* Body Styling */
-body {
-    background-color: #f4f6f9;
-    color: #333;
-    font-size: 16px;
+.action-buttons {
+    margin-bottom: 20px;
+    
 }
 
-
-/* Table Container */
-.table-container {
-    margin: 0 auto;
-    width: 90%;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+.action-buttons .btn.create-team {
+    width: 100%; /* Full width */
+    background-color: rgba(255, 140, 0, 0.8); /* Slightly transparent */
+    backdrop-filter: blur(5px); /* Blur effect */
+    padding: 15px;
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: bold;
 }
 
-/* Table Styling */
-table {
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    background-color: #ff8c00; /* Orange color */
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #e67600; /* Darker orange */
+}
+
+.team-name {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    padding: 10px;
+    background-color: #add8e6; /* Light blue */
+    font-weight: bold;
+    color: #000;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.team-list table {
     width: 100%;
     border-collapse: collapse;
-    text-align: left;
+    margin: 20px 0;
 }
 
-thead {
-    background-color: #004c99;
+.team-list table thead tr {
+    background-color: #003366; /* Dark blue */
     color: #fff;
 }
 
-thead th {
+.team-list table th, 
+.team-list table td {
+    border: 1px solid #ddd;
     padding: 10px;
+    text-align: center;
 }
 
-tbody tr {
-    border-bottom: 1px solid #ddd;
-}
-
-tbody tr:nth-child(even) {
+.team-list table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-tbody td {
-    padding: 10px;
-    vertical-align: middle;
-}
 
-tbody img {
+.team-list table img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    object-fit: cover;
 }
 
-/* Button Styling in Table */
-.btn.small {
-    font-size: 12px;
-    padding: 5px 10px;
-    border-radius: 3px;
+.team-list table thead tr {
+    background-color: #003366; /* Dark blue */
+    color: #fff;
+}
+
+.team-list table th, 
+.team-list table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.team-list table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Align team name and action buttons */
+
+
+.team-title {
+    margin: 0;
+    text-align: left; /* Align name to the right */
+    font-size: 1.5rem;
+    flex: 1; /* Push buttons to the right */
+}
+
+.team-actions {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    justify-content: flex-end;
+}
+
+.team-actions .btn {
+    padding: 8px 12px;
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.btn.edit {
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-}
-
-.btn.delete {
-    background-color: #f44336;
-    color: #fff;
-    border: none;
-}
-
-.btn.small:hover {
-    opacity: 0.8;
+.team-actions .btn:hover {
+    background-color: #e67600;
 }

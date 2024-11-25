@@ -40,11 +40,11 @@
                             case 'Admin':
                                 header('Location: ' . ROOT . '/admin/dashboard/ads');
                                 break;
-                            case 'coach':
-                                header('Location: ' . ROOT . '/coachController/dashboard');
+                            case 'Coach':
+                                header('Location: ' . ROOT . '/Coach/Dashboard/sasad');
                                 break;
-                            case 'player':
-                                header('Location: ' . ROOT . '/playerController/dashboard');
+                            case 'Player':
+                                header('Location: ' . ROOT . '/student/dashboard/sadss');
                                 break;
                             case 'school':
                                 header('Location: ' . ROOT . '/schoolController/dashboard');
@@ -70,7 +70,17 @@
         }
         
         
-    
+        public function logout() {
+            // Start session and destroy it
+            session_start();
+            session_unset(); // Unset all session variables
+            session_destroy(); // Destroy the session
+        
+            // Redirect to the login page
+            header('Location: ' . ROOT . '/loginController/login');
+            exit;
+        }
+        
   
     
     
