@@ -1,5 +1,5 @@
 // Manually set the new strength value
-const newStrength = 65; // Change this value to update the circle
+const newStrength = 50; // Change this value to update the circle
 const maxStrength = 100; // Maximum strength value for calculation
 const strengthValueElement = document.getElementById("strengthValue");
 const strengthCircle = document.getElementById("strengthCircle");
@@ -18,7 +18,7 @@ strengthCircle.style.background = `conic-gradient(
 )`;
 
 // Manually set the new strength value
-const newattendance = 60; // Change this value to update the circle
+const newattendance = 70; // Change this value to update the circle
 const maxattendance = 100; // Maximum strength value for calculation
 const attendanceValueElement = document.getElementById("attendanceValue");
 const attendanceCircle = document.getElementById("attendanceCircle");
@@ -37,7 +37,7 @@ attendanceCircle.style.background = `conic-gradient(
 )`;
 
 // Simulate the last 20 averages
-const averages = [45, 80, 48, 55, 60, 45, 50, 48, 55, 60, 45, 50, 48, 55, 60, 45, 50, 48, 55, 60];
+const averages = [90, 80, 48, 55, 60, 45, 50, 48, 55, 60, 45, 50, 48, 55, 60, 45, 50, 48, 55, 60];
 
 // Get canvas and context
 const canvas = document.getElementById('lineChart');
