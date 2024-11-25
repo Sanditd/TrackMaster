@@ -9,7 +9,7 @@
 
     //To Load the View
     public function view($view, $data = []) {
-        $path = __DIR__ . '/../views/' . $view . '.php';
+        $path = __DIR__ . '/../views/Admin/' . $view . '.php';
         if (file_exists($path)) {
             require_once $path;
         } else {
