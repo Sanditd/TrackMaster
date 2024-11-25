@@ -27,8 +27,8 @@
                     <ul>
                         <li><a href="<?php echo ROOT ?>/admin/dashboard/ads">Dashboard</a></li>
                         <li><a href="<?php echo ROOT ?>/admin/userManage/asdasd">Manage Users</a></li>
-                        <li><a href="<?php echo ROOT ?>/admin/addSportForm/asdad" >Add Sports</a></li>
-                        <li><a href="<?php echo ROOT ?>/admin/sportManage/asdad" class="open-popup" data-popup="manageSport">Manage Sports</a></li>
+                        <li><a href="<?php echo ROOT ?>/admin/sportCreate/asdad" >Add Sports</a></li>
+                        <li><a href="<?php echo ROOT ?>/admin/sportManage/asdad" >Manage Sports</a></li>
                         <li><a href="#" class="open-popup" data-popup="annoucements">Announcements</a></li>
                     </ul>
                 </nav>

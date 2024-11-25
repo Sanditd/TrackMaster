@@ -4,7 +4,7 @@
 
     RewriteEngine on
 
-    RewriteBase /TrackMaster/TrackMaster/Public
+    RewriteBase /TrackMaster/Public
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]

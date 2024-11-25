@@ -1,8 +1,8 @@
 /* General Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #000; /* Black background */
-    color: #ffcc00; /* Yellow text */
+    background-color: #f4f4f4; /* Light gray background */
+    color: #333; /* Neutral black text */
     margin: 0;
     padding: 0;
 }
@@ -10,70 +10,80 @@ body {
 /* Page Heading */
 h1 {
     text-align: center;
-    color: #ffcc00; /* Yellow heading */
+    color: black; /* Dark gray for heading */
     padding: 20px 0;
     text-transform: uppercase;
+    font-weight: bold;
 }
 
 /* Table Styling */
-.event-list {
-    margin: 20px auto;
-    max-width: 800px;
+table {
     width: 90%;
+    margin: 20px auto;
     border-collapse: collapse;
-    border: 1px solid #ffcc00; /* Yellow border */
+    border: 1px solid #ddd; /* Light border for the table */
+    font-size: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.event-list th, .event-list td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ffcc00; /* Yellow border */
+th, td {
+    border: 1px solid #ddd; /* Light border between cells */
+    padding: 14px;
+    text-align: center;
 }
 
-.event-list th {
-    background-color: #ffcc00; /* Yellow header */
-    color: #000; /* Black text for header */
+th {
+    background-color: gray; /* Dark gray header */
+    color: #f4f4f4; /* White text for header */
     text-transform: uppercase;
+    font-weight: bold;
 }
 
-.event-list tr:nth-child(even) {
-    background-color: #333; /* Dark gray for even rows */
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Very light gray for even rows */
 }
 
-.event-list tr:nth-child(odd) {
-    background-color: #000; /* Black for odd rows */
+tr:nth-child(odd) {
+    background-color: #fff; /* White for odd rows */
 }
 
 /* Button Styling */
-.btn {
-    padding: 5px 10px;
+button {
+    padding: 8px 14px;
+    background-color: #008cba; /* Blue button */
+    color: #fff; /* White text */
     border: none;
-    cursor: pointer;
+    border-radius: 5px;
     font-size: 14px;
-    margin: 0 5px;
-    transition: transform 0.2s ease, background-color 0.3s ease;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.btn:hover {
-    transform: scale(1.05);
+button:hover {
+    background-color: #005f8b; /* Darker blue on hover */
 }
 
+/* Specialized Buttons */
 .approve-btn {
-    background-color: #ffcc00; /* Yellow button */
-    color: #000; /* Black text */
-    border: 1px solid #ffcc00;
+    background-color: #28a745; /* Green button */
+    color: #fff; /* White text */
+    border: none;
+    border-radius: 5px;
+    padding: 8px 14px;
 }
 
 .approve-btn:hover {
-    background-color: #ffd633; /* Slightly lighter yellow */
+    background-color: #218838; /* Darker green on hover */
 }
 
 .decline-btn {
-    background-color: #000; /* Black button */
-    color: #ffcc00; /* Yellow text */
-    border: 1px solid #ffcc00;
+    background-color: #dc3545; /* Red button */
+    color: #fff; /* White text */
+    border: none;
+    border-radius: 5px;
+    padding: 8px 14px;
 }
 
 .decline-btn:hover {
-    background-color: #333; /* Darker gray */
+    background-color: #c82333; /* Darker red on hover */
 }
