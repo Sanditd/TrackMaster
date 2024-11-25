@@ -10,7 +10,7 @@
 <body>
 
         <?php include './../navbar.php'?>
-        <?php include './../schoolSidebar.php'?>
+        <?php include 'sidebar.php'?>
         
     <div class="dashboard-container">
         <div class="dashboard-header">
@@ -107,5 +107,5 @@
 
     <script src="../../../Public/js/School/cal.js"></script>
 
-
+    <?php include './../footer.php'?>
 </body>

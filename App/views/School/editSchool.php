@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit School Profile</title>
-    <link rel="stylesheet" href="/Public/css/School/Editprofile.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/School/editSchool.css">
 </head>
 
 <body>
+<?php include './../navbar.php'?>
+<?php include 'sidebar.php'?>
 
     <!-- Main Content -->
     <div id="main">
@@ -21,7 +23,7 @@
             <div class="profile-form">
                 <div class="left-section">
                     <div class="profile-picture">
-                        <img src="/Public/img/profile.jpeg" alt="Profile Picture" id="profile-pic-preview">
+                        <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture" id="profile-pic-preview">
                         <input type="file" id="profile-pic-input" accept="image/*">
                     </div>
                     <div class="input-group">

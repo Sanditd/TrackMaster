@@ -8,7 +8,8 @@
  
 </head>
 <body>
-    
+<?php include './../navbar.php'?>
+<?php include 'sidebar.php'?>
 
     <div class="dashboard-container">
         <div class="dashboard-header">
@@ -77,15 +78,15 @@
             <div class="section coach-rating">
     <h2>Actions</h2>
     <center><div class="button-container">
-        <div class="left-buttons">
-            <button>View Student Profile</button>
-            <button>View School Profile</button>
-            <button>View Coach Profile</button>
-        </div>
-        <div class="right-buttons">
-            <button>View Student Achievements</button>
-            <button>View Student Marks</button>
-            <button>View Student Performance</button>
+    <div class="left-buttons">
+    <button onclick="window.location.href='/TrackMaster/App/views/Student/dashboard.php';">View Student Profile</button>
+    <button onclick="window.location.href='/TrackMaster/App/views/School/school.php';">View School Profile</button>
+    <button onclick="window.location.href='/TrackMaster/App/views/Coach/Dashboard.html';">View Coach Profile</button>
+</div>
+<div class="right-buttons">
+    <button onclick="window.location.href='/TrackMaster/App/views/Student/student_achievements.php';">View Student Achievements</button>
+    <button onclick="window.location.href='/TrackMaster/App/views/Student/studentMarks.php';">View Student Marks</button>
+    <button onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.html';">View Student Performance</button>
         </div>
     </div></center>
 </div>
@@ -113,6 +114,8 @@
 
   
 
+    <?php include './../footer.php'?>
+    
   
 
 </body>

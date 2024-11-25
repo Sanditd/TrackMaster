@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/TrackMaster/Public/css/School/schoolStudentlData.css">
 </head>
 <body>
+<?php include './../navbar.php'?>
+<?php include 'sidebar.php'?>
+
     <h1>Student Data Table</h1>
     <table>
         <thead>
@@ -53,5 +56,7 @@
             </tr>
         </tbody>
     </table>
+    
+    <?php include './../footer.php'?>
 </body>
 </html>

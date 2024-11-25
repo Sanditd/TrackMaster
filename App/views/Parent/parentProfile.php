@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parent Profile</title>
-    <link rel="stylesheet" href="/Public/css/Parent/editParent.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Parent/editParent.css">
 
 </head>
 <body>
@@ -14,7 +14,7 @@
     <div class="container">
         <div class="header">
             <h2>My Profile</h2>
-            <a href="editParent.html">
+            <a href="editParent.php">
             <button class="edit-button">Edit My Profile</button>
 
             </a>
@@ -22,7 +22,7 @@
         <div class="profile-form">
             <div class="left-section">
                 <div class="profile-picture">
-                    <img src="/Public/img/profile.jpeg" alt="Profile Picture">
+                    <img src="/TrackMaster/Public/img/profile.jpeg"" alt="Profile Picture">
                 </div>
                 <div class="input-group">
                     <label for="first-name">First Name</label>
