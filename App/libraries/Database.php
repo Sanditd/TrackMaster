@@ -102,6 +102,6 @@
             // Return the new sportId in the desired format
             return 'TS' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: TS001
         }
-    }
+}
 
 ?>
