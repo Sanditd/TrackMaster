@@ -1,4 +1,5 @@
 <?php
+define('ROOT','http://localhost/TrackMaster');
 
 define('URLROOT','http://localhost/TrackMaster/');
 

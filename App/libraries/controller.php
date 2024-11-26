@@ -16,6 +16,7 @@
     public function view($view, $data = []) {
         $path = __DIR__ . '/../views/' . $view . '.php';
         if (file_exists($path)) {
+            extract($data);
             require_once $path;
         } else {
             die("Corresponding View does not exist: $path");
