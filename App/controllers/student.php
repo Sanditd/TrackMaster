@@ -1,32 +1,68 @@
 <?php
-class student extends Controller {
-    private $db;
+
+class Student extends Controller{
+    private $studentModel;
 
     public function __construct() {
-        $this->db = new database();
+        $this->studentModel = $this->model('StudentModel');
     }
 
-    // public function addData() {
-    //     if (isset($_POST['place']) && isset($_POST['level']) && isset($_POST['description']) && isset($_POST['date'])) {
-    //         $place = $_POST['place'];
-    //         $level = $_POST['level'];
-    //         $description = $_POST['description'];
-    //         $date = $_POST['date'];
-    //         $student_id = $_SESSION['id'];
-    //         $conn = $this->db->getConnection(); // Assuming there's a method to get the DB connection
-    //         $achievement = $this->model('achievement');
-    //         $result = $achievement::addAchievement($conn, $student_id, $place, $level, $description, $date);
-    //         if ($result) {
-    //             echo "Achievement added successfully";
-    //         } else {
-    //             echo "Failed to add achievement";
-    //         }
-    //     }
-    // }
 
     public function dashboard(){
-        $data=[];
-        $this->view('/Student/dashboard');
+        $data = [];
+
+        $this->view('Student/dashboard');
+
     }
 
+    public function editStudentProfile(){
+        $data = [];
+
+        $this->view('Student/editStudentProfile');
+
+    }
+
+    public function editAchievement(){
+        $data = [];
+
+        $this->view('Student/editAchievement');
+
+    }
+
+    public function financialStatus(){
+        $data = [];
+
+        $this->view('Student/financialStatus');
+
+    }
+
+    public function medicalStatus(){
+        $data = [];
+
+        $this->view('Student/medicalStatus');
+
+    }
+
+    public function studentAchievements(){
+        $data = [];
+
+        $this->view('Student/studentAchievements');
+
+    }
+
+    public function studentprofile(){
+        $data = [];
+
+        $this->view('Student/studentprofile');
+
+    }
+
+    public function studentSchedule(){
+        $data = [];
+
+        $this->view('Student/studentSchedule');
+
+    }  
+    
+    
 }

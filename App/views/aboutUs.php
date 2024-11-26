@@ -9,8 +9,8 @@
 
 <body>
 
-    <?php include './navbar.php'?>
-    <?php include './sidebar.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/Student/navbar.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/Student/sidebar.php'?>
 
 <div class="about">
 
@@ -75,7 +75,7 @@
 
 </div>
 
-  <?php include './footer.php'?>
+<?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
 
 </body>
 </html>
