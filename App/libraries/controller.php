@@ -14,7 +14,7 @@
 
     //To Load the View
     public function view($view, $data = []) {
-        $path = __DIR__ . '/../views' . $view . '.php';
+        $path = __DIR__ . '/../views/' . $view . '.php';
         if (file_exists($path)) {
             extract($data);
             require_once $path;
