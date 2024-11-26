@@ -93,7 +93,10 @@
                             <label><input type="checkbox" name="facilities" value="other"> Other</label>
                         </div>
                     
-               
+                        <div class="btns">
+                        <button  type="submit" class="edit-button">Save Changes</button>
+                        <button class="edit-button" onclick="window.location.href='/TrackMaster/App/views/School/schoolProfile.php'">Cancel</button></center>
+                    </div>
 
                 </div>
             </div>

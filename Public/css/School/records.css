@@ -1,0 +1,153 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f9; /* Light grey for a neutral background */
+    color: #333; /* Standard text color */
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.dashboard-header {
+    text-align: left;
+    margin-bottom: 20px;
+    background-color: #00264d; /* Deep blue for the header */
+    color: #fff; /* White for text contrast */
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.section {
+    background-color: #ffffff; /* White for clean sections */
+    color: #333; /* Text color */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #00264d; /* Deep blue for section headers */
+    border-bottom: 2px solid #ffa500; /* Orange underlines for emphasis */
+    display: inline-block;
+    padding-bottom: 3px;
+}
+.formcontent ul {
+    list-style: none; /* Remove default list bullets */
+    padding: 0;
+}
+
+.formcontent li {
+    display: flex; /* Align label and input horizontally */
+    align-items: center; /* Vertically align label and input */
+    margin-bottom: 15px;
+    gap: 15px; /* Space between label and input */
+}
+
+label {
+    width: 30%; /* Consistent width for labels */
+    font-weight: bold;
+    text-align: left; /* Align labels to the right */
+}
+
+input, select {
+    flex: 1; /* Input fields take up remaining space */
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    align-self: center;
+    padding: 10px 20px;
+    background-color: #ffa500;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #ffa500;
+}
+
+#studentTable {
+    list-style: none;
+    padding-left: 15px;
+}
+
+#studentTable {
+    margin-bottom: 8px;
+    font-size: 12px;
+    position: relative;
+    padding-left: 10px;
+    color: #555;
+}
+#studentTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+    text-align: left;
+    color: #555;
+}
+
+#studentTable th, #studentTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#studentTable th {
+    background-color: #ffa500; /* Orange header */
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+#studentTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#studentTable tr:hover {
+    background-color: #f1f1f1;
+}
+
+.activity {
+    background-color: #ffffff; /* White for clean sections */
+    color: #333; /* Text color */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+}/* Style for the input fields inside the table to ensure they fit */
+.cell-input {
+    width: 100%; /* Take up full width of the cell */
+    border: none;
+    background-color: #f9f9f9;
+    padding: 5px;
+    text-align: center;
+    box-sizing: border-box;
+    font-family: inherit; /* Keep the font consistent with the table */
+    font-size: inherit; /* Ensure the font size remains the same */
+}
+

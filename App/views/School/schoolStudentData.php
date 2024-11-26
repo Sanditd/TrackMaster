@@ -10,7 +10,11 @@
 <?php include './../navbar.php'?>
 <?php include 'sidebar.php'?>
 
-    <h1>Student Data Table</h1>
+<div class="dashboard-container">
+        <div class="dashboard-header">
+           <center> <h1>Student data table </h1> </center><br> 
+
+        </div>
     <table>
         <thead>
             <tr>

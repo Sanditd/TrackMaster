@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Dashboard</title>
-    <link rel="stylesheet" href="../../../Public/css/School/school.css">
+    <link rel="stylesheet" href="../Public/css/School/school.css">
 
 </head>
 <body>
 
-        <?php include './../navbar.php'?>
-        <?php include 'sidebar.php'?>
+<?php require 'navbar.php'; ?>
+<?php require 'sidebar.php'; ?>
         
     <div class="dashboard-container">
         <div class="dashboard-header">
@@ -34,11 +34,6 @@
                     <li>Paul Hewmatt </li>
                     <li>Sheen Estevez </li>
                     <li>John Does </li>
-                    <center>
-                        <button class="edit-button" onclick="window.location.href='/TrackMaster/App/views/School/schoolStudentData.php'">View List</button>
-                    </center>
-                    
-                    
                 </ul>
             </div>
 
@@ -105,7 +100,7 @@
         </div>
     </div>
 
-    <script src="../../../Public/js/School/cal.js"></script>
+    <script src="../Public/js/School/cal.js"></script>
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </body>
