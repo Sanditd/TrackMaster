@@ -16,7 +16,7 @@
 
         <div class="container">
             <div class="header">
-                <h2>My profile › Edit Profile</h2>
+                <h2>Parent profile › Edit Profile</h2>
     
                 </a>
             </div>
@@ -77,7 +77,10 @@
                     <label for="Student">Student</label>
                     <input type="text" id="Student" value="E.Thenuwara" >
                 </div>
-               
+                <div class="btns">
+                        <button  type="submit" class="edit-button">Save Changes</button>
+                        <button class="edit-button" onclick="window.location.href='/TrackMaster/App/views/Parent/parentProfile.php'">Cancel</button></center>
+                    </div>
 
                 </div>
             </div>

@@ -26,7 +26,8 @@
                 <li><a href="/TrackMaster/App/views/School/school.php">Dashboard</a></li>
                 <li><a href="/TrackMaster/App/views/School/schoolProfile.php">My Profile</a></li>
                 <li><a href="/TrackMaster/App/views/School/schoolStudentData.php">Student Records</a></li>
-                <li><a href="/TrackMaster/App/views/Parent/parentProfile.php">Request Management</a></li>
+                <li><a href="/TrackMaster/App/views/School/records.php">Acedemic Records</a></li>
+                <li><a href="/TrackMaster/App/views/School/event.php">Request Management</a></li>
                 
             </ul>
         </nav>

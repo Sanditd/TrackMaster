@@ -74,8 +74,7 @@
                     <label for="Student">Student</label>
                     <input type="text" id="Student" value="E.Thenuwara" readonly>
                 </div>
-                <center><button class="edit-button">View Student Profile</button></center>
-
+                <center><button class="edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/studentprofile.php'">View Student Profile</button></center>
         </div>
     </div>
 

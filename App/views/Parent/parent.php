@@ -81,12 +81,12 @@
     <div class="left-buttons">
     <button onclick="window.location.href='/TrackMaster/App/views/Student/dashboard.php';">View Student Profile</button>
     <button onclick="window.location.href='/TrackMaster/App/views/School/school.php';">View School Profile</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/Coach/Dashboard.html';">View Coach Profile</button>
+    <button onclick="window.location.href='/TrackMaster/App/views/Coach/Dashboard.php';">View Coach Profile</button>
 </div>
 <div class="right-buttons">
     <button onclick="window.location.href='/TrackMaster/App/views/Student/student_achievements.php';">View Student Achievements</button>
     <button onclick="window.location.href='/TrackMaster/App/views/Student/studentMarks.php';">View Student Marks</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.html';">View Student Performance</button>
+    <button onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.php';">View Student Performance</button>
         </div>
     </div></center>
 </div>

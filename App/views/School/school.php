@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Dashboard</title>
-    <link rel="stylesheet" href="../Public/css/School/school.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/School/school.css">
 
 </head>
 <body>
@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    <script src="../Public/js/School/cal.js"></script>
+    <script src="/TrackMaster/Public/js/School/cal.js"></script>
 
     <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </body>

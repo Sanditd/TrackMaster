@@ -17,7 +17,7 @@
         
     <div class="container">
         <div class="header">
-            <h2>My Profile</h2>
+            <h2>School Profile</h2>
             <a href="editSchool.php">
             <button class="edit-button">Edit My Profile</button>
          </a>
