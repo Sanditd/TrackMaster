@@ -126,65 +126,38 @@
                 </form>
             </div>
 
+           
             <div class="table-section">
-                <h2>All Achievements</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Place/Rank</th>
-                            <th>Level</th>
-                            <th>Description</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>08/11/2024</td>
-                            <td>1st Place</td>
-                            <td>Provincial</td>
-                            <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button type="submit" class="Edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/editAchievement'">Edit</button>
-                                <button  type="submit" class="delete-button">Delete</button></td>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>08/11/2024</td>
-                            <td>1st Place</td>
-                            <td>Provincial</td>
-                            <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button class="Edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/editAchievement'">Edit</button>
-                                <button class="delete-button">Delete</button></td>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>08/11/2024</td>
-                            <td>1st Place</td>
-                            <td>Provincial</td>
-                            <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button class="Edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/editAchievement'">Edit</button>
-                                <button class="delete-button">Delete</button></td>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>08/11/2024</td>
-                            <td>1st Place</td>
-                            <td>Provincial</td>
-                            <td>Cricket Tournament held at Welagedara Stadium</td>
-                            <td><button class="Edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/editAchievement'">Edit</button>
-                                <button class="delete-button">Delete</button></td>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-    
-            </div>
-        </div>
-    
+                    <h2>All Achievements</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Place/Rank</th>
+                                <th>Level</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($data['achievements'] as $achievement): ?>
+                                <tr>
+                                    <td><?php echo $achievement->place; ?></td>
+                                    <td><?php echo $achievement->level; ?></td>
+                                    <td><?php echo $achievement->description; ?></td>
+                                    <td><?php echo $achievement->date; ?></td>
+                                    <td>
+                                        <a href="<?php echo URLROOT; ?>/Student/editAchievement/<?php echo $achievement->id; ?>">Edit</a>
+                                        <form action="<?php echo URLROOT; ?>/Student/deleteAchievement/<?php echo $achievement->id; ?>" method="POST" style="display:inline;">
+                                            <button type="submit">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>           
+        </div>   
     </div>
 
     <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>

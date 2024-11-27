@@ -49,8 +49,8 @@
                 <h2>Registered Sports</h2>
                 <ul>
                     <li>Cricket</li>
-                    <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Coach/ViewProfile'">View My Coach</button>
-                    <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Coach/PlayerPerformance'">Track My Performance</button>
+                    <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/coachProfile'">View My Coach</button>
+                    <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/PlayerPerformance'">Track My Performance</button>
                 </ul>
             </div>
 

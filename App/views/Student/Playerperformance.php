@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
-    <link rel="stylesheet" href="../Public/css/Coach/BowlerPerformance.css">
-    <link rel="stylesheet" href="../Public/css/navbar.css">
-</head>
+    <title>Performance</title>
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/stu_performance.css">
 
-<?php require 'CoachNav.php'; ?>
+</head>
 <body>
 
-<center><h1>Student Player Performance</h1></center>
+<?php require 'navbar.php'?>
+<?php require 'sidebar.php'?>
+
+            <h1>Student Player Performance</h1>
 
 <div class="main">       
         <div class="stats-cards">
@@ -191,9 +192,8 @@
     </div>
 </div>
 
-    
-    
-    <script src="../Public/js/Coach/BowlerPerformance.js"></script>
-    <script src="../Public/js/sidebar.js"></script>
+                <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
+ 
+        <script src="/TrackMaster/Public/js/Coach/BowlerPerformance.js"></script>
 </body>
 </html>

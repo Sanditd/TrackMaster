@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
-    <link rel="stylesheet" href="../Public/css/Coach/Profile.css">
-    <link rel="stylesheet" href="../Public/css/navbar.css">
+    <title>Coach Profile</title>
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/profile.css">
+
 </head>
 <body>
-    <?php require 'CoachNav.php'; ?>
 
+<?php require 'navbar.php'?>
+<?php require 'sidebar.php'?>
+
+    <div id="main">
+        
     <div class="container">
         <div class="header">
-            <h2>My Profile</h2>
-
-            <button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/coach/editprofile'">Edit My Profile</button>
-            
+            <h2>Coach Profile</h2>
         </div>
         <div class="profile-form">
             <div class="left-section">
@@ -111,10 +112,9 @@ BCCI High-Performance Coaching Diploma
         </div>
     </div>
 
-    <script src="../Public/js/Student/carousel.js"></script>
-    <script src="../Public/js/Student/profile.js"></script>
-    <script src="../Public/js/sidebar.js"></script>
-    <script src="../Public/js/Student/calender.js"></script>
+    </div>
+
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
 
 </body>
 </html>
