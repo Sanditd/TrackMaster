@@ -18,8 +18,6 @@
         <div class="container">
             <div class="header">
                 <h2>My profile › Edit Profile</h2>
-    
-                </a>
             </div>
             <div class="profile-form">
                 <div class="left-section">

@@ -16,7 +16,7 @@
         
     <div class="container">
         <div class="header">
-            <h2>Student Profile</h2>
+            <h2>My Profile</h2>
             <button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/editStudentProfile'">Edit My Profile</button>
 
             </a>
@@ -76,13 +76,13 @@
                     <label for="Grade">Grade</label>
                     <input type="text" id="grade" value="11 - A" readonly>
                 </div>
-                <center><button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/School/schoolProfile'">View School Profile</button></center>
+                <center><button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/schoolProfile'">View School Profile</button></center>
 
                 <div class="input-group">
                     <label for="Guardian">Guardian</label>
                     <input type="text" id="guardian" value="T.H.C.Silva" readonly>
                 </div>
-                <center><button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Parent/parentProfile'">View Guardian Profile</button></center>
+                <center><button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/parentProfile'">View Guardian Profile</button></center>
 
             </div>
         </div>

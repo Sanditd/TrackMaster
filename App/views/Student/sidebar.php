@@ -33,7 +33,7 @@
             <ul>
                 <li><a href="<?php echo URLROOT ?>/Student/dashboard">Dashboard</a></li>
                 <li><a href="<?php echo URLROOT ?>/Student/studentprofile">My Profile</a></li>
-                <li><a href="<?php echo URLROOT ?>/Coach/performancetracking">My Performance</a></li>
+                <li><a href="<?php echo URLROOT ?>/Student/PlayerPerformance">My Performance</a></li>
                 <li><a href="<?php echo URLROOT ?>/Student/studentSchedule">My Schedule</a></li>
             </ul>
         </nav>
