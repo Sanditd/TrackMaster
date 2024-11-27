@@ -1,0 +1,125 @@
+/* styles.css */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+}
+
+.container {
+    width: 60%;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.header h2 {
+    font-size: 1.5rem;
+    color: #4a4a4a;
+}
+
+.edit-button {
+    background-color: #ffa500;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+.edit-button:hover {
+    background-color: #cc8400;
+    transform: scale(1.05);
+}
+
+.profile-form {
+    display: flex;
+    gap: 2rem;
+}
+
+.left-section, .right-section {
+    flex: 1;
+}
+
+.profile-picture{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+#profile-pic-input{
+    margin-left: 10px;
+}
+
+.profile-picture img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid #ffa500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.profile-picture img:hover {
+    transform: scale(1.1);
+}
+
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #4a4a4a;
+    margin-bottom: 0.5rem;
+    margin-top: 0.8rem;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+
+
+
+.input-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    resize: none; /* Disable resizing */
+    text-align: justify;
+
+}
+
+.btns{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 40px;
+}

@@ -1,41 +1,3 @@
-// Function to handle submitting the form and adding a new row to the table
-function addStudentRow(studentName, grade, term, average, rank) {
-    const tableBody = document.getElementById('studentTableBody');
-    
-    // Create a new row
-    const row = tableBody.insertRow();
-
-    // Insert cells with student data
-    row.insertCell(0).innerText = studentName;
-    row.insertCell(1).innerText = grade;
-    row.insertCell(2).innerText = term;
-    row.insertCell(3).innerText = average;
-    row.insertCell(4).innerText = rank;
-
-    // Add action buttons to the last cell
-    const actionCell = row.insertCell(5);
-
-    // Create Edit button
-    const editButton = document.createElement('button');
-    editButton.innerText = 'Edit';
-    editButton.classList.add('action-btn', 'edit-btn');
-    editButton.onclick = function() {
-        editRow(editButton);
-    };
-
-    // Create Delete button
-    const deleteButton = document.createElement('button');
-    deleteButton.innerText = 'Delete';
-    deleteButton.classList.add('action-btn', 'delete-btn');
-    deleteButton.onclick = function() {
-        deleteRow(deleteButton);
-    };
-
-    // Append buttons to the action cell
-    actionCell.appendChild(editButton);
-    actionCell.appendChild(deleteButton);
-}
-
 // Function to handle editing a row
 function editRow(button) {
     const row = button.closest('tr');
@@ -77,5 +39,40 @@ function deleteRow(button) {
     row.remove();
 }
 
-// Example of how to add a new row dynamically
-addStudentRow('Mark Taylor', 'A', 'Term 3', '95', '2');
+// Function to add a new student row to the table dynamically
+function addStudentRow(studentName, grade, term, average, rank) {
+    const tableBody = document.getElementById('studentTableBody');
+    
+    // Create a new row
+    const row = tableBody.insertRow();
+
+    // Insert cells with student data
+    row.insertCell(0).innerText = studentName;
+    row.insertCell(1).innerText = grade;
+    row.insertCell(2).innerText = term;
+    row.insertCell(3).innerText = average;
+    row.insertCell(4).innerText = rank;
+
+    // Add action buttons to the last cell
+    const actionCell = row.insertCell(5);
+
+    // Create Edit button
+    const editButton = document.createElement('button');
+    editButton.innerText = 'Edit';
+    editButton.classList.add('action-btn', 'edit-btn');
+    editButton.onclick = function() {
+        editRow(editButton);
+    };
+
+    // Create Delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.innerText = 'Delete';
+    deleteButton.classList.add('action-btn', 'delete-btn');
+    deleteButton.onclick = function() {
+        deleteRow(deleteButton);
+    };
+
+    // Append buttons to the action cell
+    actionCell.appendChild(editButton);
+    actionCell.appendChild(deleteButton);
+}

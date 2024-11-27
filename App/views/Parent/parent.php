@@ -27,7 +27,7 @@
                     <li><strong>School:</strong> Maliyadeva Collage, Kurunagala </li>
                     <li><strong>Sport:</strong> Cricket 
                 </div>
-
+                <center><button class="edit-button" onclick="window.location.href='/TrackMaster/App/views/Parent/viewStudent.php'">View Student Profile</button></center>
                 </ul>
             </div>
 
@@ -79,13 +79,13 @@
     <h2>Actions</h2>
     <center><div class="button-container">
     <div class="left-buttons">
-    <button onclick="window.location.href='/TrackMaster/App/views/Student/dashboard.php';">View Student Profile</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/School/school.php';">View School Profile</button>
+    <button onclick="window.location.href='/TrackMaster/App/views/Parent/viewStudent.php';">View Student Profile</button>
+    <button onclick="window.location.href='/TrackMaster/App/views/Parent/viewSchool.php';">View School Profile</button>
     <button onclick="window.location.href='/TrackMaster/App/views/Coach/Dashboard.php';">View Coach Profile</button>
 </div>
 <div class="right-buttons">
-    <button onclick="window.location.href='/TrackMaster/App/views/Student/student_achievements.php';">View Student Achievements</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/Student/studentMarks.php';">View Student Marks</button>
+    <button onclick="window.location.href='/TrackMaster/App/views/Parent/studentAch.php';">View Student Achievements</button>
+    <button onclick="window.location.href='/TrackMaster/App/views/Parent/studentRec.php';">View Student Records</button>
     <button onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.php';">View Student Performance</button>
         </div>
     </div></center>

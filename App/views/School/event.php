@@ -17,7 +17,7 @@
 
 <div class="dashboard-container">
         <div class="dashboard-header">
-           <center> <h1>School Event Requests</h1> </center><br> 
+           <center> <h1>Facilities Requests</h1> </center><br> 
         </div>
 
 <table class="event-list">
