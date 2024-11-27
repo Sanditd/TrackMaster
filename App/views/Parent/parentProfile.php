@@ -64,10 +64,10 @@
                     <label for="occupation">Occupation</label>
                     <input type="text" id="occupation" value="Accountant Manager" readonly>
                 </div>
-                <div class="input-group">
-                    <label for="address"><Address></Address></label>
-                    <input type="text" id="occupation" value="No 15- Kurunagala" readonly>
-                </div>
+               <div class="input-group">
+                    <label for="occu-address">Occupation Address</label>
+                    <input type="text" id="occu-address" value="No 15- Kurunagala" readonly>
+                </div>
 
 
                

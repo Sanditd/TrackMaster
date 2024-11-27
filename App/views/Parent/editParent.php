@@ -66,13 +66,9 @@
                     <input type="text" id="occupation" value="Accountant Manager" >
                 </div>
                 <div class="input-group">
-                    <label for="address"><Address></Address></label>
-                    <input type="text" id="occupation" value="No 15- Kurunagala" >
-                </div>
-
-
-               
-              
+                    <label for="occu-address">Occupation Address</label>
+                    <input type="text" id="occu-address" value="No 15- Kurunagala" readonly>
+          </div>
                 <div class="input-group">
                     <label for="Student">Student</label>
                     <input type="text" id="Student" value="E.Thenuwara" >
