@@ -9,16 +9,15 @@
 </head>
 <body>
 
-    <?php include './../navbar.php'?>
-    <?php include './../sidebar.php'?>
+<?php require 'navbar.php'?>
+<?php require 'sidebar.php'?>
 
     <div id="main">
         
     <div class="container">
         <div class="header">
             <h2>My Profile</h2>
-            <a href="edit_studentProfile.php">
-            <button class="edit-button">Edit My Profile</button>
+            <button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/editStudentProfile'">Edit My Profile</button>
 
             </a>
         </div>
@@ -77,13 +76,13 @@
                     <label for="Grade">Grade</label>
                     <input type="text" id="grade" value="11 - A" readonly>
                 </div>
-                <center><button class="edit-button">View School Profile</button></center>
+                <center><button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/schoolProfile'">View School Profile</button></center>
 
                 <div class="input-group">
                     <label for="Guardian">Guardian</label>
                     <input type="text" id="guardian" value="T.H.C.Silva" readonly>
                 </div>
-                <center><button class="edit-button">View Guardian Profile</button></center>
+                <center><button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/parentProfile'">View Guardian Profile</button></center>
 
             </div>
         </div>
@@ -91,7 +90,7 @@
 
     </div>
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
 
 </body>
 </html>

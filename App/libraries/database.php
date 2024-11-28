@@ -71,6 +71,17 @@
             return $this->stmt->fetch(PDO::FETCH_OBJ);
         }
 
+<<<<<<< HEAD
+=======
+        // Assuming this is part of your database class
+        public function singleArray() {
+            // Execute the query
+            $this->execute();
+            // Fetch the result as an associative array
+            return $this->stmt->fetch(PDO::FETCH_ASSOC); // Fetches a single record as an associative array
+        }
+        
+>>>>>>> 0480fafee9a60f93495989c46502a2d7a39733df
         //get row count
         public function rowCount(){
             return $this->stmt->rowCount();
@@ -94,7 +105,14 @@
             // Return the new sportId in the desired format
             return 'TS' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: TS001
         }
+}
 
+<<<<<<< HEAD
     }
 
 ?>
+=======
+
+?>
+
+>>>>>>> 0480fafee9a60f93495989c46502a2d7a39733df

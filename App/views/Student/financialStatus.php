@@ -9,8 +9,8 @@
 </head>
 <body>
 
-    <?php include './../navbar.php'?>
-    <?php include './../sidebar.php'?>
+<?php require 'navbar.php'?>
+<?php require 'sidebar.php'?>
 
         <div class="title">
             <h1>Student Player Financial Information</h1>
@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
  
     <script src="/TrackMaster/Public/js/Student/financial_status.js"></script>
 </body>

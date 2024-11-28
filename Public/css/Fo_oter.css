@@ -1,0 +1,80 @@
+/* General footer styling */
+.footer {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text color */
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+/* Logo styling */
+.footer img {
+    max-width: 100px;
+    margin-bottom: 10px;
+}
+
+/* Center-aligned caption text */
+.fig {
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* Horizontal line styling */
+.fig hr {
+    border: 0;
+    border-top: 1px solid #555; /* Subtle border */
+    margin: 10px 0;
+}
+
+/* Links styling */
+.info a {
+    color: #f90; /* Highlighted orange link color */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.info a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Unordered list inside info */
+.info ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+}
+
+.info ul li {
+    margin: 5px 0;
+    color: #ccc; /* Slightly lighter text color */
+}
+
+/* Info container styling */
+.info {
+    flex: 1;
+    max-width: 200px;
+    margin: 10px;
+    font-size: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .info {
+        max-width: none;
+        text-align: center;
+    }
+
+    .info ul li {
+        font-size: 12px;
+    }
+}

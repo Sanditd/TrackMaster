@@ -17,10 +17,10 @@
                 <img src="/TrackMaster/Public/img/logo.png" alt="Logo"> 
             </div>
             <ul class="nav-links">
-                <li><a href="/TrackMaster/App/views/Student/dashboard.php"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="/TrackMaster/App/views/aboutUs.php">About Us</a></li>
-                <li><a href="/TrackMaster/App/views/help.php">Help & Support</a></li>    
-                <li><button class="login" onclick="" >Log in</button></li>
+                <li><a href="<?php echo URLROOT ?>/home">Home</a></li>
+                <li><a href="<?php echo URLROOT ?>/aboutus">About Us</a></li>
+                <li><a href="<?php echo URLROOT ?>/help">Help & Support</a></li>    
+                <li><button class="login" onclick="window.location.href='<?php echo URLROOT ?>/login'">Log in</button></li>
                 <li><img src="/TrackMaster/Public/img/log in.png" alt="Logo"> </li>
                 <li><img src="/TrackMaster/Public/img/notification.png" alt="Logo"> </li>
             </ul>
