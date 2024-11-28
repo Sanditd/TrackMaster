@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../Public/css/Coach/dashboard.css">
     <link rel="stylesheet" href="../Public/css/navbar.css">
     <link rel="stylesheet" href="../Public/css/sidebar.css">
+    <link rel="stylesheet" href="../Public/css/footer.css">
 
 </head>
 <body>
@@ -93,6 +94,7 @@
 
         </div>
     </div>
+
 
 
     <script src="../Public/js/Student/carousel.js"></script>

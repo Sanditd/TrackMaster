@@ -12,8 +12,8 @@
 
 <head>
     <title>Login</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/login.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/signUp.css">
+    <link rel="stylesheet" href="../Public/css/Admin/login.css">
+    <link rel="stylesheet" href="../Public/css/Admin/signUp.css">
 </head>
 
 <body id="loginbody">
