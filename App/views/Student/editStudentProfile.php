@@ -9,8 +9,8 @@
 
 <body>
 
-    <?php include './../navbar.php'?>
-    <?php include './../sidebar.php'?>
+<?php require 'navbar.php'?>
+<?php require 'sidebar.php'?>
 
     <!-- Main Content -->
     <div id="main">
@@ -18,8 +18,6 @@
         <div class="container">
             <div class="header">
                 <h2>My profile › Edit Profile</h2>
-    
-                </a>
             </div>
             <div class="profile-form">
                 <div class="left-section">
@@ -86,7 +84,7 @@
 
                     <div class="btns">
                         <button  type="submit" class="edit-button">Save Changes</button>
-                        <button class="edit-button" onclick="window.location.href='/TrackMaster/App/views/Student/studentprofile.php'">Cancel</button></center>
+                        <button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentprofile'">Cancel</button></center>
                     </div>
 
                 </div>
@@ -95,7 +93,7 @@
 
     </div>
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
 
             <script src="/TrackMaster/Public/js/Student/edit_studentprofile.js"></script>
 

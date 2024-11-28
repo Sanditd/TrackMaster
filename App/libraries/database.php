@@ -80,8 +80,6 @@
             return $this->stmt->fetch(PDO::FETCH_ASSOC); // Fetches a single record as an associative array
         }
         
-
-
         //get row count
         public function rowCount(){
             return $this->stmt->rowCount();
@@ -105,33 +103,8 @@
             // Return the new sportId in the desired format
             return 'TS' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: TS001
         }
+}
 
-
-        public function generateUserId() {
-            // Query to get the last userId
-            $this->query("SELECT userId FROM users ORDER BY userId DESC LIMIT 1");
-            $lastUser = $this->single();
-        
-            if ($lastUser) {
-                // Extract the numeric part of the last userId and increment it
-                $lastId = (int) substr($lastUser->userId, 2); // Assuming format is "US001"
-                $newId = $lastId + 1;
-            } else {
-                // Start with US001 if no records exist
-                $newId = 1;
-            }
-        
-            // Return the new userId in the desired format
-            return 'US' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: US001
-        }
-        
-
-        public function lastInsertId() {
-            return $this->dbh->lastInsertId();
-        }
-
-
-    }
 
 ?>
 
