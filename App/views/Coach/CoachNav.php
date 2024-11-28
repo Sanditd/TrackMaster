@@ -15,7 +15,6 @@
                 <li><a href="<?php echo ROOT ?>/coach/teammanagement">Team Management</a></li>
                 <li><a href="<?php echo ROOT ?>/coach/eventmanagement">Event Management</a></li>
                 <li><a href="../Student/Profile Management.html">Profile Management</a></li>
-                <li><a href="   /stu_notifications">Notifications</a></li>
             </ul>
         </nav>
         </span>
@@ -27,7 +26,7 @@
 
             <nav class="navbar" id="navbar">
                 <div class="logo">
-                    <img src="../../Public/img/Student/logo.png" alt="Logo"> 
+                    <img src="../Public/img/logo.png" alt="Logo"> 
                 </div>
                 <ul class="nav-links">
                     <li><a href="../Student/dashboard.html"><i class="fas fa-home"></i> Home</a></li>

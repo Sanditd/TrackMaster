@@ -15,7 +15,7 @@
             <h2>My Profile</h2>
            
             <button id = "editprofile" class="edit-button">
-            <a href="<?php echo URLROOT; ?>/coach/editprofile">Edit Profile</a>
+            <a href="<?php echo ROOT; ?>/coach/editprofile">Edit Profile</a>
             </button>
             
         </div>

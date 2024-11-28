@@ -13,7 +13,7 @@
     <div class="container">
         <div class="action-buttons">
             <button id = "createteam" class="create-team">
-            <a href="<?php echo URLROOT; ?>/coach/creataddplayers">Create Team</a>
+            <a href="<?php echo ROOT; ?>/coach/creataddplayers">Create Team</a>
             </button>
         </div>
     </div>
