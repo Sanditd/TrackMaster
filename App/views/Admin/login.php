@@ -38,7 +38,7 @@
         <span id="login-port-logo">
         <img src="../../img\icon\logo-black.png" alt="Logo">
         </span>
-        <form action="<?php echo ROOT ?>/loginController/login/sasa" method="POST">
+        <form action="<?php echo ROOT ?>/loginController/login" method="POST">
             <div>
                 <input type="text" placeholder="Enter username" name="username">
             </div>
@@ -49,7 +49,7 @@
         </form>
         <div class="or">Or</div>
         <div class="or"><button id="frogetPW-button">Frogot Password</button></div>
-        <div class="or"><a href="<?php echo ROOT ?>/signUpController/signUp/asds">Register Here</a></div>
+        <div class="or"><a href="<?php echo ROOT ?>/signUpController/signupview">Register Here</a></div>
 
     </div>
 
