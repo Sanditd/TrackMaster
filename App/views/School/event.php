@@ -4,16 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Event Requests</title>
-    <link rel="stylesheet" href="../../../Public/css/Event/event.css">
-    <script>
-        function handleRequest(action, eventName) {
-            alert(`You have ${action} the request for the event: ${eventName}`);
-        }
-    </script>
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Event/event.css">
+
 </head>
 <body>
-<?php include './../navbar.php'?>
-<?php include 'sidebar.php'?>
+
+<?php require 'navbar.php'; ?>
+<?php require 'sidebar.php'; ?>
 
 <div class="dashboard-container">
         <div class="dashboard-header">
@@ -25,24 +22,27 @@
             <tr>
                 <th>Event Name</th>
                 <th>Coach Name</th>
+                <th>Date and Time</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Football Championship</td>
+                <td>Cricket Championship</td>
                 <td>Coach John Doe</td>
+                <td>2024-09-15 : 9.00 a.m.</td>
                 <td>
-                    <button class="btn approve-btn" onclick="handleRequest('approved', 'Football Championship')">Approve</button>
-                    <button class="btn decline-btn" onclick="handleRequest('declined', 'Football Championship')">Decline</button>
+                    <button class="btn approve-btn">Approve</button>
+                    <button class="btn decline-btn">Decline</button>
                 </td>
             </tr>
             <tr>
-                <td>Basketball Tournament</td>
-                <td>Coach Jane Smith</td>
+                <td>Cricket Championship</td>
+                <td>Coach John Doe</td>
+                <td>2024-09-15 : 9.00 a.m.</td>
                 <td>
-                    <button class="btn approve-btn" onclick="handleRequest('approved', 'Basketball Tournament')">Approve</button>
-                    <button class="btn decline-btn" onclick="handleRequest('declined', 'Basketball Tournament')">Decline</button>
+                    <button class="btn approve-btn">Approve</button>
+                    <button class="btn decline-btn">Decline</button>
                 </td>
             </tr>
         </tbody>
@@ -50,35 +50,41 @@
 
     <div class="dashboard-container">
         <div class="dashboard-header">
-           <center> <h1>School Event Requests</h1> </center><br> 
+           <center> <h1>Extra Class Requests</h1> </center><br> 
         </div>
     <table class="event-list">
         <thead>
             <tr>
-                <th>Class Name</th>
-                <th>Instructor Name</th>
-                <th>Action</th>
+                <th>Student Name</th>
+                <th>Subject Name</th>
+                <th>Notes</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Mathematics Revision</td>
-                <td>Instructor Mark Allen</td>
+                <td>Eraji Thenuwara</td>
+                <td>Mathematics</td>
+                <td>Revision needed for yesterday double periods</td>
                 <td>
-                    <button class="btn approve-btn" onclick="handleRequest('approved', 'Mathematics Revision')">Approve</button>
-                    <button class="btn decline-btn" onclick="handleRequest('declined', 'Mathematics Revision')">Decline</button>
+                    <button class="btn approve-btn" >Approve</button>
+                    <button class="btn decline-btn" >Decline</button>
                 </td>
             </tr>
             <tr>
-                <td>Physics Lab</td>
-                <td>Instructor Emma Taylor</td>
+                <td>Eraji Thenuwara</td>
+                <td>Science</td>
+                <td>Revision needed for today missed class</td>
                 <td>
-                    <button class="btn approve-btn" onclick="handleRequest('approved', 'Physics Lab')">Approve</button>
-                    <button class="btn decline-btn" onclick="handleRequest('declined', 'Physics Lab')">Decline</button>
+                    <button class="btn approve-btn" >Approve</button>
+                    <button class="btn decline-btn" >Decline</button>
                 </td>
             </tr>
         </tbody>
     </table>
+    </div>
+</div>
+
     <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </body>
 </html>

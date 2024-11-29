@@ -9,7 +9,7 @@
 
 </head>
 <body>
-<?php include './../navbar.php'?>
+<?php include 'navbar.php'?>
 <?php include 'sidebar.php'?>
 
 
@@ -18,8 +18,7 @@
     <div class="container">
         <div class="header">
             <h2>School Profile</h2>
-            <a href="editSchool.php">
-            <button class="edit-button">Edit My Profile</button>
+            <button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/School/EditProfile'">Edit My Profile</button>
          </a>
         </div>
         <div class="profile-form">
@@ -113,7 +112,7 @@
     </div>
 
     
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 
 </body>
 </html>

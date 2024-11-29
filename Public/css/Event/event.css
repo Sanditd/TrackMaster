@@ -1,8 +1,7 @@
-/* General Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Light gray background */
-    color: #333; /* Neutral black text */
+    background-color: #f4f4f4; 
+    color: #333; 
     margin: 0;
     padding: 0;
 }
@@ -15,9 +14,9 @@ body {
 .dashboard-header {
     text-align: left;
     margin-bottom: 20px;
-    background-color: #00264d; /* Deep blue for the header */
-    color: #fff; /* White for text contrast */
-    padding: 15px;
+    background-color: #00264d; 
+    color: #fff; 
+    padding: 10px;
     border-radius: 8px;
 }
 
@@ -27,64 +26,47 @@ table {
     width: 90%;
     margin: 20px auto;
     border-collapse: collapse;
-    border: 1px solid #ddd; /* Light border for the table */
+    border: 1px solid #ddd;
     font-size: 15px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
-    border: 1px solid #ddd; /* Light border between cells */
+    border: 1px solid #ddd; 
     padding: 14px;
     text-align: center;
 }
 
 th {
-    background-color: gray; /* Dark gray header */
-    color: #f4f4f4; /* White text for header */
+    background-color: #ffa500; 
+    color: #f4f4f4;
     text-transform: uppercase;
     font-weight: bold;
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9; /* Very light gray for even rows */
+    background-color: #f9f9f9; 
 }
 
 tr:nth-child(odd) {
-    background-color: #fff; /* White for odd rows */
+    background-color: #fff;
 }
 
-/* Button Styling */
-button {
-    padding: 8px 14px;
-    background-color: #008cba; /* Blue button */
-    color: #fff; /* White text */
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #005f8b; /* Darker blue on hover */
-}
-
-/* Specialized Buttons */
 .approve-btn {
-    background-color: #28a745; /* Green button */
-    color: #fff; /* White text */
+    background-color: #28a745;
+    color: #fff;
     border: none;
     border-radius: 5px;
     padding: 8px 14px;
 }
 
 .approve-btn:hover {
-    background-color: #218838; /* Darker green on hover */
+    background-color: #218838; /
 }
 
 .decline-btn {
-    background-color: #dc3545; /* Red button */
-    color: #fff; /* White text */
+    background-color: #dc3545; 
+    color: #fff; 
     border: none;
     border-radius: 5px;
     padding: 8px 14px;

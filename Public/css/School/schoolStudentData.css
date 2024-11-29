@@ -6,32 +6,24 @@
 }
 
 body {
-    background-color: #f4f4f9; /* Light grey for a neutral background */
-    color: #333; /* Standard text color */
+    background-color: #f4f4f9; 
+    color: #333; 
 }
 
 .dashboard-container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 10px;
     padding: 20px;
 }
 
 .dashboard-header {
     text-align: left;
     margin-bottom: 20px;
-    background-color: #00264d; /* Deep blue for the header */
-    color: #fff; /* White for text contrast */
-    padding: 15px;
+    background-color: #00264d;
+    color: #fff;
+    padding: 10px;
     border-radius: 8px;
 }
-
-.main-content {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-
-
 
 table {
     width: 80%;
@@ -40,6 +32,7 @@ table {
     font-size: 14px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-color:#f4f4f4 ;
+    padding: 10px;
 }
 
 th, td {
@@ -62,9 +55,6 @@ button {
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #ffa500;
+    margin: 10px;
 }
 

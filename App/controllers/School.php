@@ -6,7 +6,6 @@ class School extends Controller{
         
     }
 
-
     public function Dashboard(){
         $data = [];
 
@@ -37,6 +36,17 @@ public function requests(){
     $this->view('School/event');
 }
 
+public function editRecord(){
+    $data = [];
+    $this->view('School/editRecord');
+
 }
 
+public function viewStudent(){
+    $data = [];
+    $this->view('School/viewStudent');
+
+}
+
+}
 ?>
