@@ -22,7 +22,7 @@
                     <label for="numPlayers">Number of Players:</label>
                     <input type="number" id="numPlayers" name="numPlayers" placeholder="Enter number of players" required>
                     
-                    <button type="button" class="btn create-team" onclick="createTeamAndShowPlayerFilter()">Creat & Add Player</button>
+                    <button type="button" class="btn create-team" onclick="createTeamAndShowPlayerFilter()">Create & Add Player</button>
                 </form>
             </div>
 
@@ -33,16 +33,16 @@
                     <option value="" disabled selected>Please select a role</option>
                     <option value="batsman">Batsman (Ordered by Batting Avg)</option>
                     <option value="bowler">Bowler (Ordered by Bowling Avg)</option>
-                    <option value="allrounder">allrounders</option>
+                    <option value="allrounder">Allrounders</option>
                     <option value="wicketkeeper">Wicketkeeper (Ordered by Batting Avg)</option>
                 </select>
 
                 <label for="genderFilter">Filter by Gender:</label>
-            <select id="genderFilter" name="genderFilter" onchange="filterPlayers()">
-                <option value="" disabled selected>Please select a gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
+                <select id="genderFilter" name="genderFilter" onchange="filterPlayers()">
+                    <option value="" disabled selected>Please select a gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
 
                 <ul id="playerList" class="player-list"></ul>
                 <button type="button" class="btn compare-players" onclick="comparePlayers()">Compare Players</button>
@@ -52,13 +52,11 @@
             <div class="section hidden" id="selectedPlayersStats">
                 <h3>Selected Players' Stats</h3>
                 <div id="statsContainer" class="stats-grid"></div>
-                
             </div>
         </div>
     </div>
 
     <script>
-
     let currentTeamId = null;
 
     function createTeamAndShowPlayerFilter() {        
@@ -86,103 +84,77 @@
             }
         };
         xhr.send(`teamName=${teamName}&numPlayers=${numPlayers}`);
-
     }
-        
+
     function filterPlayers() {
         const roleFilter = document.getElementById('filterBy').value;
         const genderFilter = document.getElementById('genderFilter').value;
-        const playerList = document.getElementById('playerList');
 
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'filterPlayers');
+        xhr.open('POST', 'filterPlayers', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 const players = JSON.parse(xhr.responseText);
-                updatePlayerList(players, roleFilter, genderFilter)
+                updatePlayerList(players);
             }
         };
         xhr.send(`role=${roleFilter}&gender=${genderFilter}`);
-
-        function updatePlayerList(players, roleFilter) {
-            const playerList = document.getElementById('playerList');
-            playerList.innerHTML = '';
-
-            const filteredPlayers = players.filter(player => {
-                    return (!roleFilter || player.role === roleFilter) && 
-                    (!genderFilter || player.gender === genderFilter);
-            });
-
-            filteredPlayers.sort((a, b) => {
-                if (roleFilter === 'batsman' || roleFilter === 'wicketkeeper') {
-                    return b.batting_avg - a.batting_avg;
-                }
-                if (roleFilter === 'bowler') {
-                    return b.bowling_avg - a.bowling_avg;
-                }
-                return 0;
-            });
-
-        filteredPlayers.forEach(player => {
-            const li = document.createElement('li');
-            li.innerHTML = `<input type="checkbox" name="player" value="${player.name}"> 
-            ${player.name} - ${roleFilter === 'bowler' ? `Bowling Avg: ${player.bowling_avg}` : `Batting Avg: ${player.batting_avg}`}`;
-            playerList.appendChild(li);
-        });
-
-        }
-
-        playerList.innerHTML = '';
-        if (!roleFilter && !genderFilter) return;
-
-        const filteredPlayers = players.filter(player => 
-            (!roleFilter || player.role === roleFilter) &&
-            (!genderFilter || player.gender === genderFilter)
-        );
-
     }
 
-function comparePlayers() {
-    const selectedPlayers = document.querySelectorAll('input[name="player"]:checked');
-    const selectedPlayerNames = Array.from(selectedPlayers).map(player => player.value);
+    function updatePlayerList(players) {
+        const playerList = document.getElementById('playerList');
+        playerList.innerHTML = '';
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'comparePlayers', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            const players = JSON.parse(xhr.responseText);
-            displayPlayerStats(players);
-        }
-    };
-    xhr.send(`selectedPlayers=${JSON.stringify(selectedPlayerNames)}`);
-}
+        players.forEach(player => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <input type="checkbox" name="player" value="${player.player_id}"> 
+                ${player.name} - Matches: ${player.matches}, Batting Avg: ${player.batting_avg}, Bowling Avg: ${player.bowling_avg}`;
+            playerList.appendChild(li);
+        });
+    }
 
-function displayPlayerStats(players) {
-    const statsContainer = document.getElementById('statsContainer');
-    const selectedPlayersStats = document.getElementById('selectedPlayersStats');
-    statsContainer.innerHTML = '';
+    function comparePlayers() {
+        const selectedPlayers = document.querySelectorAll('input[name="player"]:checked');
+        const selectedPlayerIds = Array.from(selectedPlayers).map(player => player.value);
 
-    players.forEach(player => {
-        const playerStatsContainer = document.createElement('div');
-        playerStatsContainer.classList.add('player-stats-container');
-        playerStatsContainer.innerHTML = `
-            <h4>${player.name} (${player.gender.toUpperCase()}) - ${player.role.charAt(0).toUpperCase() + player.role.slice(1)}</h4>
-            <p>Matches: ${player.matches}</p>
-            <p>Batting Average: ${player.batting_avg}</p>
-            <p>Strike Rate: ${player.strike_rate}</p>
-            <p>50s: ${player.fifties}, 100s: ${player.hundreds}</p>
-            <p>Wickets Taken: ${player.wickets}</p>
-            <p>Bowling Average: ${player.bowling_avg}</p>
-            <p>Bowling Strike Rate: ${player.bowling_strike_rate}</p>
-            <p>Economy Rate: ${player.economy_rate}</p>
-            <button type="button" class="btn add-player" onclick="addPlayerToTeam(${player.player_id})">Add Player</button>        `;
-        statsContainer.appendChild(playerStatsContainer);
-    });
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'comparePlayers', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const players = JSON.parse(xhr.responseText);
+                displayPlayerStats(players);
+            }
+        };
+        xhr.send(`selectedPlayers=${JSON.stringify(selectedPlayerIds)}`);
+    }
 
-    selectedPlayersStats.classList.remove('hidden');
-}
+    function displayPlayerStats(players) {
+        const statsContainer = document.getElementById('statsContainer');
+        const selectedPlayersStats = document.getElementById('selectedPlayersStats');
+        statsContainer.innerHTML = '';
+
+        players.forEach(player => {
+            const playerStatsContainer = document.createElement('div');
+            playerStatsContainer.classList.add('player-stats-container');
+            playerStatsContainer.innerHTML = `
+                <h4>${player.name}</h4>
+                <p>Matches: ${player.matches}</p>
+                <p>Batting Average: ${player.batting_avg}</p>
+                <p>Strike Rate: ${player.strike_rate}</p>
+                <p>50s: ${player.fifties}, 100s: ${player.hundreds}</p>
+                <p>Wickets Taken: ${player.wickets}</p>
+                <p>Bowling Average: ${player.bowling_avg}</p>
+                <p>Bowling Strike Rate: ${player.bowling_strike_rate}</p>
+                <p>Economy Rate: ${player.economy_rate}</p>
+                <button type="button" class="btn add-player" onclick="addPlayerToTeam(${player.player_id})">Add Player</button>`;
+            statsContainer.appendChild(playerStatsContainer);
+        });
+
+        selectedPlayersStats.classList.remove('hidden');
+    }
 
     function addPlayerToTeam(playerId) {
         const xhr = new XMLHttpRequest();
@@ -200,10 +172,8 @@ function displayPlayerStats(players) {
         };
         xhr.send(`teamId=${currentTeamId}&playerId=${playerId}`);
     }
+    </script>
 
-
-</script>
-
-<script src="../Public/js/sidebar.js"></script>
+    <script src="../Public/js/sidebar.js"></script>
 </body>
 </html>
