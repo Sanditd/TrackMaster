@@ -13,7 +13,7 @@
     <div class="container">
         <div class="action-buttons">
             <button id = "createteam" class="create-team">
-            <a href="<?php echo URLROOT; ?>/coach/creataddplayers">Create Team</a>
+            <a href="<?php echo ROOT; ?>/coach/creataddplayers">Create Team</a>
             </button>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <?php else: ?>
             <?php foreach($data['teams'] as $team): ?>
                 <div class="team-name">
-                    <h2 class="team-title">Team Name: <?= $team->name; ?></h2>
+                    <h2 class="team-title">Team Name: <?= $team->team; ?></h2>
                         <div class="team-actions">
                             <button class="btn edit-team">Edit Team</button>
                             <button class="btn delete-team">Delete Team</button>
@@ -46,10 +46,10 @@
                             <?php foreach($team->players as $player): ?>
                                 <tr>
                                     <td><?= $player->player_id; ?></td>
-                                    <td><img src="data:image/jpeg;base64,<?= base64_encode($player->photo); ?>" alt="Player Photo"></td>
-                                    <td><?= $player->name; ?></td>
-                                    <td><?= nl2br($player->contact_info); ?></td>
-                                    <td><?= $player->role; ?></td>
+                                    <td><img src="data:image/jpeg;base64,<?= base64_encode($player->photo); ?>" alt="Player Photo" style="max-width:50px;"></td>                                    <td><?= $player->name; ?></td>
+                                    <td><?= $player->phonenumber; ?>
+                                        <br>  <?= $player->email; ?></td>
+                                        <td><?= $player->role; ?></td>   
                                     <td>
                                         <button class="btn replace">Replace Player</button>
                                     </td>

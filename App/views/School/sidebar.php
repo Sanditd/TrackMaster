@@ -13,9 +13,9 @@
         <span class="close" onmouseleave="closeNav()">
         <div class="profile">
             <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture">
-            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">S.THENUWARA</div>
+            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">MALIYADEVA BALIKA <br>VIDYALAYA</div>
             <br>
-            <div style="font-size:10px;white-space: nowrap;">Parentr</div>
+            <div style="font-size:10px;white-space: nowrap;">School</div>
             
             <br>
             <hr>
@@ -23,10 +23,11 @@
 
         <nav>
             <ul>
-                <li><a href="/TrackMaster/App/views/School/school.php">Dashboard</a></li>
-                <li><a href="/TrackMaster/App/views/School/schoolProfile.php">My Profile</a></li>
-                <li><a href="/TrackMaster/App/views/Parent/parentProfile.php">Student Management</a></li>
-                <li><a href="/TrackMaster/App/views/Parent/parentProfile.php">Request Management</a></li>
+                <li><a href="<?php echo URLROOT ?>/School/Dashboard">Dashboard</a></li>
+                <li><a href="<?php echo URLROOT ?>/School/Profile">My Profile</a></li>
+                <li><a href="<?php echo URLROOT ?>/School/StudentsData">Student Records</a></li>
+                <li><a href="<?php echo URLROOT ?>/School/records">Acedemic Records</a></li>
+                <li><a href="<?php echo URLROOT ?>/School/requests">Request Management</a></li>
                 
             </ul>
         </nav>

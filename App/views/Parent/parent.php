@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parent Dashboard</title>
-    <link rel="stylesheet" href="../../../Public/css/Parent/parent.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Parent/parent_dashboard.css">
  
 </head>
 <body>
-<?php include './../navbar.php'?>
+<?php include 'navbar.php'?>
 <?php include 'sidebar.php'?>
 
     <div class="dashboard-container">
@@ -27,7 +27,7 @@
                     <li><strong>School:</strong> Maliyadeva Collage, Kurunagala </li>
                     <li><strong>Sport:</strong> Cricket 
                 </div>
-
+              
                 </ul>
             </div>
 
@@ -72,21 +72,21 @@
                     <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
                     <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
                 </div>
-                <center><button class="edit-button">Get Notified</button></center>
+               
             </div>
 
             <div class="section coach-rating">
     <h2>Actions</h2>
     <center><div class="button-container">
     <div class="left-buttons">
-    <button onclick="window.location.href='/TrackMaster/App/views/Student/dashboard.php';">View Student Profile</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/School/school.php';">View School Profile</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/Coach/Dashboard.html';">View Coach Profile</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/viewStudent'">View Student Profile</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/viewSchool'">View School Profile</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/viewCoach'">View Coach Profile</button>
 </div>
 <div class="right-buttons">
-    <button onclick="window.location.href='/TrackMaster/App/views/Student/student_achievements.php';">View Student Achievements</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/Student/studentMarks.php';">View Student Marks</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.html';">View Student Performance</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/studentAch'">View Student Achievements</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/studentRec'">View Student Records</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/Student/PlayerPerformance'">View Student Performance</button>
         </div>
     </div></center>
 </div>
@@ -114,7 +114,7 @@
 
   
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
     
   
 

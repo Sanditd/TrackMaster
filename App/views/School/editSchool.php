@@ -8,20 +8,22 @@
 </head>
 
 <body>
-<?php include './../navbar.php'?>
-<?php include 'sidebar.php'?>
+
+<?php require 'navbar.php'; ?>
+<?php require 'sidebar.php'; ?>
+        
 
     <!-- Main Content -->
     <div id="main">
 
         <div class="container">
             <div class="header">
-                <h2>My profile › Edit Profile</h2>
+                <h2>School Profile › Edit Profile</h2>
     
                 </a>
             </div>
             <div class="profile-form">
-                <div class="left-section">
+                <div class="left-section"> 
                     <div class="profile-picture">
                         <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture" id="profile-pic-preview">
                         <input type="file" id="profile-pic-input" accept="image/*">
@@ -67,7 +69,6 @@
                     <div class="input-group">
                         <label for="province">Select Province</label>
                         <select id="province" name="province" >
-                            <option value="" disabled selected>Select a province</option>
                             <option value="central">Central</option>
                             <option value="eastern">Eastern</option>
                             <option value="northern">Northern</option>
@@ -76,9 +77,9 @@
                             <option value="north-central">North Central</option>
                             <option value="uva">Uva</option>
                             <option value="sabaragamuwa">Sabaragamuwa</option>
-                            <option value="north-western">North Western</option>
+                            <option value="north-western" selected>North Western</option>
                         </select>
-                    </div>
+                    </div> 
                     
     
                     
@@ -86,14 +87,17 @@
                         <label for="facilities">Facilities Available</label>
                     </div>
                         <div class="checkbox-container">
-                            <label><input type="checkbox" name="facilities" value="track"> Track</label>
+                            <label><input type="checkbox" name="facilities" value="track" checked> Track</label>
                             <label><input type="checkbox" name="facilities" value="indoor"> Indoor</label>
-                            <label><input type="checkbox" name="facilities" value="ground"> Ground</label>
+                            <label><input type="checkbox" name="facilities" value="ground"checked> Ground</label>
                             <label><input type="checkbox" name="facilities" value="swimming-pool"> Swimming Pool</label>
                             <label><input type="checkbox" name="facilities" value="other"> Other</label>
                         </div>
                     
-               
+                        <div class="btns">
+                        <button  type="submit" class="edit-button">Save Changes</button>
+                        <button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/School/Profile'">Cancel</button></center>
+                    </div>
 
                 </div>
             </div>
@@ -102,7 +106,7 @@
     </div>
 
 
-           
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 
 </body>
 </html>

@@ -12,7 +12,7 @@
 <head>
     <title>Login</title>
 
-    <link rel="stylesheet" href="../../Public/css/Admin/login.css">
+    <link rel="stylesheet" href="../Public/css/Admin/login.css">
 
 </head>
 

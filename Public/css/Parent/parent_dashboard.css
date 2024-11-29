@@ -6,8 +6,8 @@
 }
 
 body {
-    background-color: #f4f4f9; /* Light grey for a neutral background */
-    color: #333; /* Standard text color */
+    background-color: #f4f4f9; 
+    color: #333; 
 }
 
 .dashboard-container {
@@ -19,8 +19,8 @@ body {
 .dashboard-header {
     text-align: left;
     margin-bottom: 20px;
-    background-color: #00264d; /* Deep blue for the header */
-    color: #fff; /* White for text contrast */
+    background-color: #00264d;
+    color: #fff;
     padding: 15px;
     border-radius: 8px;
 }
@@ -32,8 +32,8 @@ body {
 }
 
 .section {
-    background-color: #ffffff; /* White for clean sections */
-    color: #333; /* Text color */
+    background-color: #ffffff; 
+    color: #333; 
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -48,15 +48,9 @@ body {
     font-size: 12px;
     font-weight: bold;
     position: absolute; 
-    right: 10px; /* Aligns button to the right */
-    top: 10px; /* Places the button at the top-right */
+    right: 10px;
+    top: 10px; 
     transition: all 0.3s ease-in-out;
-}
-
-/* Hover effect for buttons */
-.profile-button:hover {
-    background-color: #cc8400;
-    transform: scale(1.05);
 }
 
 h2 {
@@ -69,12 +63,12 @@ h2 {
 }
 
 
-ul {
+.dashboard-container ul {
     list-style: none;
     padding-left: 15px;
 }
 
-li {
+.dashboard-container li {
     margin-bottom: 8px;
     font-size: 14px;
     position: relative;
@@ -82,23 +76,23 @@ li {
     color: #555;
 }
 
-li::before {
+.dashboard-container li::before {
     content: "•";
     position: absolute;
     left: 0;
-    color: #ffa500; /* Orange bullets */
+    color: #ffa500;
     font-size: 18px;
 }
 
 span {
     float: right;
-    color: #888; /* Light gray timestamps */
+    color: #888; 
     font-size: 12px;
 }
 
-/* Button Styles */
+
 .edit-button {
-    background-color: #ffa500; /* Green theme */
+    background-color: #ffa500; 
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -108,15 +102,6 @@ span {
     cursor: pointer;
 }
 
-.edit-button:hover {
-    background-color: #ffa500; /* Dark green on hover */
-    transform: scale(1.05);
-}
-
-
-
-
-
 .appointment {
     font-size: 14px;
     color: #555;
@@ -125,12 +110,10 @@ span {
 
 .appointment span {
     font-weight: bold;
-    color: #ffa500; /* Orange emphasis */
+    color: #ffa500; 
 }
 
 
-
-/* Fee Rating Section */
 .fee-rating {
     background-color: white;
     color: #333;
@@ -151,7 +134,7 @@ span {
 }
 
 .fee-rating strong {
-    color: #00264d; /* Deep blue */
+    color: #00264d; 
 }
 
 .fee-rating input[type="number"] {
@@ -183,7 +166,7 @@ span {
 .fee-rating p {
     font-size: 22px;
     font-weight: bold;
-    color: #f39c12; /* Yellow */
+    color: #f39c12;
     text-align: center;
     margin-top: 10px;
     letter-spacing: 1px;
@@ -257,8 +240,4 @@ button {
     font-size: 12px;
     cursor: pointer;
     transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #f39c12;
 }

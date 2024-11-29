@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Dashboard</title>
-    <link rel="stylesheet" href="../../../Public/css/School/school.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/School/school.css">
 
 </head>
 <body>
 
-        <?php include './../navbar.php'?>
-        <?php include 'sidebar.php'?>
+<?php require 'navbar.php'; ?>
+<?php require 'sidebar.php'; ?>
         
     <div class="dashboard-container">
         <div class="dashboard-header">
@@ -34,16 +34,12 @@
                     <li>Paul Hewmatt </li>
                     <li>Sheen Estevez </li>
                     <li>John Does </li>
-                    <center>
-                        <button class="edit-button" onclick="window.location.href='/TrackMaster/App/views/School/schoolStudentData.php'">View List</button>
-                    </center>
-                    
-                    
                 </ul>
             </div>
 
             <div class="section activity-log">
                 <h2>Calander</h2>
+                <center>
                 <div id="calendar">
                     <div id="header">
                         <button id="prevMonth">&lt;</button>
@@ -65,7 +61,7 @@
                     </div>
                 </div>
 
-            </div>
+            </div></center>
 
             <div class="section quick-session">
                 <h2 onclick="window.location.href='/TrackMaster/App/views/Event/event.php'" style="cursor: pointer; "> Facility Requests </h2>
@@ -89,8 +85,8 @@
                 <h2>Study performance</h2>
                 <ul>
                  
-                    <li>Hashan<span>Mathematics -  25%</span></li>
-                    <li>Dimuth  <span>Science - 30%</span></li>
+                    <li>Hashan<span>Average -  25%</span></li>
+                    <li>Dimuth  <span>Average - 30%</span></li>
                 </ul>
             </div>
 
@@ -105,7 +101,7 @@
         </div>
     </div>
 
-    <script src="../../../Public/js/School/cal.js"></script>
+    <script src="/TrackMaster/Public/js/School/cal.js"></script>
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </body>

@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Performance Table</title>
-    <link rel="stylesheet" href="/TrackMaster/Public/css/School/schoolStudentlData.css">
+    <title>School Dashboard</title>
+    <link rel="stylesheet" href="/TrackMaster/Public/css/School/schoolStudentData.css">
+
 </head>
 <body>
-<?php include './../navbar.php'?>
-<?php include 'sidebar.php'?>
 
-    <h1>Student Data Table</h1>
+<?php require 'navbar.php'; ?>
+<?php require 'sidebar.php'; ?>
+        
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+          <center>  <h1>Student Records</h1><br> </center>
+        </div>
+
     <table>
         <thead>
             <tr>
@@ -24,39 +30,41 @@
             <tr>
                 <td>Eraji Thenuwara</td>
                 <td>11-A</td>
-                <td>Basketball</td>
+                <td>Cricket</td>
                 <td>
-                    <button>View Profile</button>
+                    <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/School/viewStudent'">View Profile</button>
                     <button>View Attendance</button>
-                    <button>View Performance</button>
-                    <button>View Marks</button>
+                    <button class="view-more-btn"onclick="window.location.href='<?php echo URLROOT ?>/Student/PlayerPerformance'">View Performance</button>
+               
                 </td>
             </tr>
             <tr>
                 <td>Hashini Chamlka</td>
                 <td>11-B</td>
-                <td>Swimming</td>
+                <td>Cricket</td>
                 <td>
                     <button>View Profile</button>
                     <button>View Attendance</button>
                     <button>View Performance</button>
-                    <button>View Marks</button>
+                   
                 </td>
             </tr>
             <tr>
                 <td>Janith Induwara</td>
                 <td>11-A</td>
-                <td>Soccer</td>
+                <td>Cricket</td>
                 <td>
                     <button>View Profile</button>
                     <button>View Attendance</button>
                     <button>View Performance</button>
-                    <button>View Marks</button>
-                </td>
+                
             </tr>
         </tbody>
-    </table>
+</table>
+    </div>
+    <center><button class="view-more-btn">Add a New Student</button><center>
+    <br>   
     
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </body>
 </html>

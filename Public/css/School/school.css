@@ -6,8 +6,8 @@
 }
 
 body {
-    background-color: #f4f4f9; /* Light grey for a neutral background */
-    color: #333; /* Standard text color */
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 .dashboard-container {
@@ -19,8 +19,8 @@ body {
 .dashboard-header {
     text-align: left;
     margin-bottom: 20px;
-    background-color: #00264d; /* Deep blue for the header */
-    color: #fff; /* White for text contrast */
+    background-color: #00264d;
+    color: #fff; 
     padding: 15px;
     border-radius: 8px;
 }
@@ -33,8 +33,8 @@ body {
 
 .card {
     flex: 1;
-    background-color: #ffa500; /* Orange for cards */
-    color: #fff; /* White text for contrast */
+    background-color: #ffa500;
+    color: #fff; 
     padding: 20px;
     text-align: center;
     border-radius: 10px;
@@ -55,8 +55,8 @@ body {
 }
 
 .section {
-    background-color: #ffffff; /* White for clean sections */
-    color: #333; /* Text color */
+    background-color: #ffffff; 
+    color: #333; 
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -65,8 +65,8 @@ body {
 h2 {
     font-size: 18px;
     margin-bottom: 10px;
-    color: #00264d; /* Deep blue for section headers */
-    border-bottom: 2px solid #ffa500; /* Orange underlines for emphasis */
+    color: #00264d;
+    border-bottom: 2px solid #ffa500; 
     display: inline-block;
     padding-bottom: 3px;
 }
@@ -94,7 +94,7 @@ h2 {
     content: "•";
     position: absolute;
     left: 0;
-    color: #ffa500; /* Orange bullet points */
+    color: #ffa500; 
     font-size: 18px;
 }
 
@@ -102,16 +102,8 @@ h2 {
 .activity-log span,
 .quick-session span {
     float: right;
-    color: #888; /* Lighter color for timestamps */
+    color: #888;
     font-size: 12px;
-}
-
-.coach-rating p {
-    font-size: 22px;
-    font-weight: bold;
-    color: #f39c12; /* Yellow for the rating */
-    text-align: center;
-    margin-top: 10px;
 }
 
 .upcoming-appointments .appointment {
@@ -122,66 +114,23 @@ h2 {
 
 .upcoming-appointments .appointment span {
     font-weight: bold;
-    color: #ffa500; /* Orange for emphasis */
+    color: #ffa500;
     margin-right: 5px;
 }
-/* Calendar Styles */
+
 .calendar {
     margin-top: 20px;
 }
 
 .months-container {
     display: flex;
-    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-x: auto; 
     padding: 10px;
-    gap: 15px; /* Space between months */
+    gap: 15px;
 }
 
 .month {
-    flex-shrink: 0; /* Prevent the month container from shrinking */
-    width: 250px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-}
-
-th {
-    background-color: #f0f0f0;
-}
-
-h4 {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.appointment {
-    margin-bottom: 20px;
-}
-/* Calendar Styles */
-.calendar {
-    margin-top: 20px;
-}
-
-.months-container {
-    display: flex;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    padding: 10px;
-    gap: 15px; /* Space between months */
-}
-
-.month {
-    flex-shrink: 0; /* Prevent the month container from shrinking */
+    flex-shrink: 0; 
     width: 250px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -212,30 +161,70 @@ h4 {
     margin-bottom: 20px;
 }
 
-/* Current Day Highlight */
+.calendar {
+    margin-top: 20px;
+}
+
+.months-container {
+    display: flex;
+    overflow-x: auto; 
+    padding: 10px;
+    gap: 15px; 
+}
+
+.month {
+    flex-shrink: 0;
+    width: 250px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+h4 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.appointment {
+    margin-bottom: 20px;
+}
+
+
 .current-day {
     background-color: yellow;
     font-weight: bold;
 }
 
-/* General Styling */
-
 #calendar {
     width: 300px;
-    background-color: #ffffff; /* Full white background for calendar */
-    color: #ff6600; /* Orange text for dates */
+    background-color: #ffffff;
+    color: #ff6600;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     overflow: hidden;
 }
 
-/* Header Styles */
 #header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #f2f2f2; /* Light gray header */
-    color:#f39c12;; /* Orange text */
+    background-color: #f2f2f2;
+    color:#f39c12;
     padding: 10px;
     font-size: 18px;
 }
@@ -243,13 +232,12 @@ h4 {
 #header button {
     background: none;
     border: none;
-    color: #f39c12;; /* Orange color */
+    color: #f39c12;
     font-size: 18px;
     cursor: pointer;
     outline: none;
 }
 
-/* Days & Dates Grid */
 #days, #dates {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -257,25 +245,24 @@ h4 {
 }
 
 #days {
-    background-color: #f2f2f2; /* Light gray for the days row */
-    color:#f39c12;; /* Orange for the day labels */
+    background-color: #f2f2f2;
+    color:#f39c12;
     padding: 10px 0;
-    font-size: 12px; /* Smaller font size for day labels */
+    font-size: 12px; 
 }
 
 #dates div {
     padding: 8px;
-    border: 1px solid #f2f2f2; /* Light border for dates */
+    border: 1px solid #f2f2f2; 
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 14px; /* Smaller date numbers */
-    color: #ff6600; /* Orange text for dates */
+    font-size: 14px; 
+    color: #ff6600; 
 }
 
-/* Current Day Styles */
 #dates div.current {
-    background-color: #f39c12;; /* Orange background for current day */
-    color: white; /* White text for current day */
+    background-color: #f39c12;
+    color: white; 
     font-weight: bold;
     border-radius: 50%;
 }
@@ -283,8 +270,8 @@ h4 {
 /* Hover Effects */
 #dates div.upcoming:hover,
 #dates div:not(.current):hover {
-    background-color:#f39c12;; /* Orange on hover */
-    color: white; /* White text on hover */
+    background-color:#f39c12;
+    color: white; 
 }
 
 /* Modal Styles */
@@ -325,8 +312,8 @@ textarea {
 }
 
 button {
-    background-color: #f2f2f2; /* Light gray button */
-    color: #f39c12;; /* Orange text */
+    background-color: #f2f2f2;
+    color: #f39c12;
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -334,12 +321,8 @@ button {
     margin: 5px;
 }
 
-button:hover {
-    background-color:#f39c12;; /* Orange background on hover */
-    color: white; /* White text on hover */
-}
 .edit-button {
-    background-color: #ffa500; /* Green theme */
+    background-color: #ffa500; 
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -349,7 +332,3 @@ button:hover {
     cursor: pointer;
 }
 
-.edit-button:hover {
-    background-color: #ffa500; /* Dark green on hover */
-    transform: scale(1.05);
-}

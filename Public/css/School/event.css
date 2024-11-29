@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; 
+    color: #333; 
+    margin: 0;
+    padding: 0;
+}
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: #00264d; 
+    color: #fff; 
+    padding: 8px;
+    border-radius: 8px;
+}
+
+
+/* Table Styling */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-size: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    border: 1px solid #ddd; 
+    padding: 14px;
+    text-align: center;
+}
+
+th {
+    background-color: #ffa500; 
+    color: #f4f4f4;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; 
+}
+
+tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.approve-btn {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 14px;
+}
+
+.approve-btn:hover {
+    background-color: #218838;
+}
+
+.decline-btn {
+    background-color: #dc3545; 
+    color: #fff; 
+    border: none;
+    border-radius: 5px;
+    padding: 8px 14px;
+}
+
+.decline-btn:hover {
+    background-color: #c82333;
+}
+

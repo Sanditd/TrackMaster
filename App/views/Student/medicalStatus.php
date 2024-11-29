@@ -9,8 +9,8 @@
 </head>
 <body>
 
-    <?php include './../navbar.php'?>
-    <?php include './../sidebar.php'?>
+<?php require 'navbar.php'?>
+<?php require 'sidebar.php'?>
 
     <div id="main">
         <div class="title">
@@ -97,7 +97,7 @@
     
     </div>
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
     
     <script src="/TrackMaster/Public/js/Student/medical_status.js"></script>
 

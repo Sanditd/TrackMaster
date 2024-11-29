@@ -7,6 +7,7 @@
 <html>
 
 <head>
+
     <title>Signup</title>
     <link rel="stylesheet" href="<?php echo ROOT ?>/Public/css/Admin/login.css">
     <link rel="stylesheet" href="<?php echo ROOT ?>/Public/css/Admin/signup.css">
@@ -43,6 +44,7 @@
         margin-top: 10px;
     }
     </style>
+
 </head>
 
 <body>

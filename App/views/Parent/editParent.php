@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<?php include './../navbar.php'?>
+<?php include 'navbar.php'?>
 <?php include 'sidebar.php'?>
 
     <!-- Main Content -->
@@ -16,7 +16,7 @@
 
         <div class="container">
             <div class="header">
-                <h2>My profile › Edit Profile</h2>
+                <h2>Parent profile › Edit Profile</h2>
     
                 </a>
             </div>
@@ -66,18 +66,17 @@
                     <input type="text" id="occupation" value="Accountant Manager" >
                 </div>
                 <div class="input-group">
-                    <label for="address"><Address></Address></label>
-                    <input type="text" id="occupation" value="No 15- Kurunagala" >
-                </div>
-
-
-               
-              
+                    <label for="occu-address">Occupation Address</label>
+                    <input type="text" id="occu-address" value="No 15- Kurunagala" readonly>
+          </div>
                 <div class="input-group">
                     <label for="Student">Student</label>
                     <input type="text" id="Student" value="E.Thenuwara" >
                 </div>
-               
+                <div class="btns">
+                        <button  type="submit" class="edit-button">Save Changes</button>
+                        <button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/guardian/parentProfile'">Cancel</button></center>
+                    </div>
 
                 </div>
             </div>
@@ -91,5 +90,5 @@
 
 </body>
 
-<?php include './../footer.php'?>
+<?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </html>
