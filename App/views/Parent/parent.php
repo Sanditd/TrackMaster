@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parent Dashboard</title>
-    <link rel="stylesheet" href="../../../Public/css/Parent/parent.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Parent/parent_dashboard.css">
  
 </head>
 <body>
-<?php include './../navbar.php'?>
+<?php include 'navbar.php'?>
 <?php include 'sidebar.php'?>
 
     <div class="dashboard-container">
@@ -79,14 +79,14 @@
     <h2>Actions</h2>
     <center><div class="button-container">
     <div class="left-buttons">
-    <button onclick="window.location.href='/TrackMaster/App/views/Parent/viewStudent.php';">View Student Profile</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/Parent/viewSchool.php';">View School Profile</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/Parent/viewCoach.php';">View Coach Profile</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/viewStudent'">View Student Profile</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/viewSchool'">View School Profile</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/viewCoach'">View Coach Profile</button>
 </div>
 <div class="right-buttons">
-    <button onclick="window.location.href='/TrackMaster/App/views/Parent/studentAch.php';">View Student Achievements</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/Parent/studentRec.php';">View Student Records</button>
-    <button onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.php';">View Student Performance</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/studentAch'">View Student Achievements</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/studentRec'">View Student Records</button>
+    <button onclick="window.location.href='<?php echo URLROOT ?>/Student/PlayerPerformance'">View Student Performance</button>
         </div>
     </div></center>
 </div>
@@ -114,7 +114,7 @@
 
   
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
     
   
 

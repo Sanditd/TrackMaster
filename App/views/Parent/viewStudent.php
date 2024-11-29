@@ -8,7 +8,7 @@
 
 </head>
 <body>
-<?php include './../navbar.php'?>
+<?php include 'navbar.php'?>
 <?php include 'sidebar.php'?>
 
     
@@ -84,7 +84,7 @@
 
     </div>
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 
 </body>
 </html>

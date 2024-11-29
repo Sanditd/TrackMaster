@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<?php include './../navbar.php'?>
+<?php include 'navbar.php'?>
 <?php include 'sidebar.php'?>
 
     <!-- Main Content -->
@@ -75,7 +75,7 @@
                 </div>
                 <div class="btns">
                         <button  type="submit" class="edit-button">Save Changes</button>
-                        <button class="edit-button" onclick="window.location.href='/TrackMaster/App/views/Parent/parentProfile.php'">Cancel</button></center>
+                        <button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/guardian/parentProfile'">Cancel</button></center>
                     </div>
 
                 </div>
@@ -90,5 +90,5 @@
 
 </body>
 
-<?php include './../footer.php'?>
+<?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </html>
