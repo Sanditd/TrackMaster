@@ -51,6 +51,7 @@
                         <button 
                 class="view-btn" 
                 onclick="viewSport(<?= htmlspecialchars(json_encode($sport->sportId)) ?>)">
+        
                 View
             </button>
                             <button class="edit-btn">Edit</button>
@@ -73,10 +74,16 @@
 
 <script>
     function viewSport(sportId) {
-        // Navigate to the URL dynamically with sportId
-        const root = <?= json_encode(ROOT) ?>; // Echo ROOT as a safe JavaScript string
-        window.location.href = `${root}/admin/sportView/${sportId}`;
-    }
+    // Ensure the ROOT is properly encoded for use in JavaScript
+    const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
+    
+    // Construct the URL dynamically based on the required format
+    const url = `${root}/admin/sportView/${encodeURIComponent(sportId)}`;
+    
+    // Redirect the browser to the constructed URL
+    window.location.href = url;
+}
+
 </script>
 
 

@@ -33,7 +33,7 @@
                         session_start();
                         $_SESSION['user_id'] = $user->userId; // Corrected to object access
                         $_SESSION['username'] = $user->userName; // Corrected to object access
-                        $_SESSION['role'] = $user->role; // Storing the user's role in session
+                        // $_SESSION['role'] = $user->role; // Storing the user's role in session
         
                         // Redirect to the appropriate dashboard based on the role
                         switch ($user->role) {
@@ -66,7 +66,7 @@
             }
         
             // Load the login view (HTML)
-            $this->view('login', ['error' => $error]);
+            $this->view('/Admin/login', ['error' => $error]);
         }
         
         
