@@ -32,7 +32,7 @@
                 <td>11-A</td>
                 <td>Basketball</td>
                 <td>
-                <button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/Student/studentprofile.php'">View Profile</button>
+                <button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/School/viewStudent.php'">View Profile</button>
                     <button>View Attendance</button>
                     <button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.php'">View Performance</button>
                
@@ -60,7 +60,7 @@
                 
             </tr>
         </tbody>
-    </table>
+</table>
     
     <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </body>

@@ -27,7 +27,7 @@
                     <li><strong>School:</strong> Maliyadeva Collage, Kurunagala </li>
                     <li><strong>Sport:</strong> Cricket 
                 </div>
-                <center><button class="edit-button" onclick="window.location.href='/TrackMaster/App/views/Parent/viewStudent.php'">View Student Profile</button></center>
+              
                 </ul>
             </div>
 
@@ -72,7 +72,7 @@
                     <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
                     <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
                 </div>
-                <center><button class="edit-button">Get Notified</button></center>
+               
             </div>
 
             <div class="section coach-rating">

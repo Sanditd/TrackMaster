@@ -84,8 +84,8 @@
                 <h2>Study performance</h2>
                 <ul>
                  
-                    <li>Hashan<span>Mathematics -  25%</span></li>
-                    <li>Dimuth  <span>Science - 30%</span></li>
+                    <li>Hashan<span>Average -  25%</span></li>
+                    <li>Dimuth  <span>Average - 30%</span></li>
                 </ul>
             </div>
 

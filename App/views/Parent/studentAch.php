@@ -10,8 +10,7 @@
 <body>
 
 <?php include './../navbar.php'?>
-<?php include './../sidebar.php'?>
-
+<?php include 'sidebar.php'?>
     <div id="main">
         <div class="title">
             <h1>Student Player Achievements</h1>
