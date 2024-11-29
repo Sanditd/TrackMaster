@@ -12,11 +12,11 @@ body {
 }
 
 .dashboard-header {
-    text-align: left;
-    margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 30px;
     background-color: #00264d; 
     color: #fff; 
-    padding: 10px;
+    padding: 8px;
     border-radius: 8px;
 }
 
@@ -61,7 +61,7 @@ tr:nth-child(odd) {
 }
 
 .approve-btn:hover {
-    background-color: #218838; /
+    background-color: #218838;
 }
 
 .decline-btn {
@@ -73,6 +73,6 @@ tr:nth-child(odd) {
 }
 
 .decline-btn:hover {
-    background-color: #c82333; /* Darker red on hover */
+    background-color: #c82333;
 }
 

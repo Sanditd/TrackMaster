@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Event Requests</title>
-    <link rel="stylesheet" href="/TrackMaster/Public/css/Event/event.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/School/event.css">
 
 </head>
 <body>
@@ -30,7 +30,7 @@
             <tr>
                 <td>Cricket Championship</td>
                 <td>Coach John Doe</td>
-                <td>2024-09-15 : 9.00 a.m.</td>
+                <td>2024-09-15 : 9.00 a.m. - 12.30 p.m.</td>
                 <td>
                     <button class="btn approve-btn">Approve</button>
                     <button class="btn decline-btn">Decline</button>
@@ -39,7 +39,7 @@
             <tr>
                 <td>Cricket Championship</td>
                 <td>Coach John Doe</td>
-                <td>2024-09-15 : 9.00 a.m.</td>
+                <td>2024-09-15 : 9.00 a.m. - 12.30 p.m.</td>
                 <td>
                     <button class="btn approve-btn">Approve</button>
                     <button class="btn decline-btn">Decline</button>

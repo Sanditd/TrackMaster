@@ -62,7 +62,7 @@
 
         <div class="main-content">
             <div class="section recent-clients">
-                <h2>Sumbit a New Record</h2>
+                <h2>Submit a New Record</h2>
                 <form class="formcontent" >
                     <ul>
                         <li>
