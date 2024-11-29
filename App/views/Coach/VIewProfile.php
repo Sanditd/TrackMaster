@@ -14,7 +14,9 @@
         <div class="header">
             <h2>My Profile</h2>
 
+
             <button class="edit-button" onclick="window.location.href='<?php echo URLROOT ?>/coach/editprofile'">Edit My Profile</button>
+
             
         </div>
         <div class="profile-form">

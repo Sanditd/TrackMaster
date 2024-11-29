@@ -71,6 +71,13 @@ h1, h2, p {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
+.option-card img {
+    max-width: 200px;
+    height: 1000px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
 /* Option Card Image Styling */
 .option-icon {
     width: 120px;

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <link rel="stylesheet" href="../Public/css/Coach/Performance.css">
+    <link rel="stylesheet" href="../Public/css/Coach/PerformanceTracking.css">
     <link rel="stylesheet" href="../Public/css/navbar.css">
 </head>
 <body>
@@ -20,12 +20,13 @@
           <!-- First Row -->
           <div class="option-row">
               <div class="option-card" onclick="navigateTo('update-team.html')">
-                  <img src="../../../Public/img/Coach/team.png" alt="Team Tracking" class="option-icon">
+                  <img src="../Public/img/Coach/girlsteam.png" alt="Team Tracking" class="option-icon">
                   <h2>Track Team Performance</h2>
               </div>
+              
   
-              <div class="option-card" onclick="navigateTo('<?php echo URLROOT; ?>/coach/playerperformance')">
-                  <img src="../../../Public/img/Coach/netballgirl.jpg" alt="Player Tracking" class="option-icon">
+              <div class="option-card" onclick="navigateTo('<?php echo ROOT; ?>/coach/playerperformance')">
+                  <img src="../Public/img/Coach/runninggirl.png" alt="Player Tracking" class="option-icon">
                   <h2>Track Player Performance</h2>
               </div>
           </div>
@@ -33,12 +34,12 @@
           <!-- Second Row -->
           <div class="option-row">
               <div class="option-card" onclick="navigateTo('update-team.html')">
-                  <img src="update-icon.png" alt="Update Team Tracking" class="option-icon">
+                  <img src="../Public/img/Coach/coach.png" alt="Update Team Tracking" class="option-icon">
                   <h2>Update Team Performance</h2>
               </div>
   
               <div class="option-card" onclick="showSearchPopup()">
-                  <img src="update-icon.png" alt="Update Player Tracking" class="option-icon">
+                  <img src="../Public/img/Coach/boysteam.png" alt="Update Player Tracking" class="option-icon">
                   <h2>Update Player Performance</h2>
               </div>
           </div>

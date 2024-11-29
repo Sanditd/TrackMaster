@@ -1,3 +1,4 @@
+
 <?php
     class database{
         private $host = DB_HOST;
@@ -104,4 +105,6 @@
         }
 }
 
+
 ?>
+
