@@ -7,14 +7,13 @@
     <link rel="stylesheet" href="../Public/css/Coach/BowlerPerformance.css">
     <link rel="stylesheet" href="../Public/css/navbar.css">
 </head>
-<body>
+
 <?php require 'CoachNav.php'; ?>
+<body>
 
-    <div class="bowler-performance-container">
-        <div class="bowler-performance-header">
-            <h1>Sandith's Performance</h1>
-        </div>
+<center><h1>Student Player Performance</h1></center>
 
+<div class="main">       
         <div class="stats-cards">
             <div class="card">Endurance<br><br>
                 <div id="strengthCircle" class="circle">
@@ -49,10 +48,10 @@
             </div>
         </div>
 
-    
+    <div class="charts">
                 <div class="section recent-clients">
                     <header class="linechart-header">
-                        <h1>Batting Averages Over Time (Last 20 games)</h1>
+                        <h2>Batting Averages Over Time (Last 20 games)</h2>
                       </header>
                     
                     
@@ -63,11 +62,9 @@
                       
                 </div>
 
-                
-
-                <div class="section player-roles">
+                <div class="section recent-clients">
                     <header class="linechart-header">
-                        <h1>Player Roles</h1>
+                        <h2>Player Roles</h2>
                       </header>
                     
                       <div class="chart-container">
@@ -78,8 +75,10 @@
                       
                       
                 </div>
+    </div>
 
-                <div class="section player-roles">
+    <div class="stats">
+                <div class="player-roles">
                     <div class="header">
                         <h2>BATTING STATUS</h2>
                         
@@ -128,7 +127,7 @@
                     </div>
                 </div>
             
-                <div class="section player-roles">
+                <div class="player-roles">
                     <div class="header">
                         <h2>BOWLING STATS</h2>
                         
@@ -165,7 +164,7 @@
                     </div>
                 </div>
             
-                <div class="section player-roles">
+                <div class="player-roles">
                     <div class="header">
                         <h2>FIELDING STATS</h2>
                         
@@ -189,7 +188,8 @@
                         </div>
                     </div>
                 </div>
-
+    </div>
+</div>
 
     
     

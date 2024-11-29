@@ -8,8 +8,8 @@
 </head>
 
 <body>
-    <?php include './../navbar.php'?>
-    <?php include './../sidebar.php'?>
+<?php require 'navbar.php'?>
+<?php require 'sidebar.php'?>
 
             <center><h1>Student Player Schedule</h1></center>
 
@@ -49,7 +49,6 @@
                 <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
                 <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
                 </div>
-                <button class="view-more-btn"> View Session Details</button>
             </div>  
             
             <div class="section upcoming-appointments">
@@ -72,6 +71,7 @@
                             <textarea id="reschedule_reason" required></textarea>
                                 
                             <button type="submit" class="view-more-btn">Submit Request</button>
+                            <button type="submit" class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentSchedule'">Cancel Request</button>
                         </form>
                     </div>
             </div>
@@ -93,6 +93,7 @@
                             <textarea id="notes" required></textarea>
                                 
                             <button type="submit" class="view-more-btn">Submit Request</button>
+                            <button type="submit" class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentSchedule'">Cancel Request</button>
                         </form>
                     </div>
             </div>
@@ -109,13 +110,13 @@
                     <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
                     <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
                  </div>
-                 <button class="view-more-btn"> View My Attendance</button>
+                 <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAttendance'"> View My Attendance</button>
             </div>
         
     </div>
 </div>
 
-        <?php include './../footer.php'?>
+<?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
 
     <script src="/TrackMaster/Public/js/Student/calender.js"></script>
 </body>

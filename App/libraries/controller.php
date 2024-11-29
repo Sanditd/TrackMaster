@@ -1,5 +1,5 @@
 <?php
-    class Controller{
+    class controller{
         //To Load the Model
         public function model($model){
             $path=__DIR__ .'/../model/'. $model. '.php';

@@ -1,13 +1,37 @@
-body {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
-    margin: 20px;
-    line-height: 1.6;
 }
 
-h1 {
-    text-align: center;
-    color: #333;
+body {
+    background-color: #f4f4f9; /* Light grey for a neutral background */
+    color: #333; /* Standard text color */
 }
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.dashboard-header {
+    text-align: left;
+    margin-bottom: 20px;
+    background-color: #00264d; /* Deep blue for the header */
+    color: #fff; /* White for text contrast */
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+
 
 table {
     width: 80%;
@@ -43,3 +67,4 @@ button {
 button:hover {
     background-color: #ffa500;
 }
+
