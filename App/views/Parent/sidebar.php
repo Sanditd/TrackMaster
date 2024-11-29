@@ -23,8 +23,8 @@
 
         <nav>
             <ul>
-                <li><a href="/TrackMaster/App/views/Parent/parent.php">Dashboard</a></li>
-                <li><a href="/TrackMaster/App/views/Parent/parentProfile.php">My Profile</a></li>
+                <li><a href="<?php echo URLROOT ?>/guardian/dashboard">Dashboard</a></li>
+                <li><a href="<?php echo URLROOT ?>/guardian/parentProfile">My Profile</a></li>
                 
             </ul>
         </nav>

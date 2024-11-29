@@ -8,7 +8,7 @@
 
 </head>
 <body>
-<?php include './../navbar.php'?>
+<?php include 'navbar.php'?>
 <?php include 'sidebar.php'?>
 
     <div id="main">
@@ -16,7 +16,7 @@
     <div class="container">
         <div class="header">
             <h2>Parent Profile</h2>
-            <a href="editParent.php">
+            <a href="<?php echo URLROOT ?>/guardian/editParent">
             <button class="edit-button">Edit My Profile</button>
 
             </a>
@@ -82,7 +82,7 @@
 
     </div>
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 
 </body>
 </html>
