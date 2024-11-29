@@ -9,8 +9,9 @@
 
 </head>
 <body>
-<?php include './../navbar.php'?>
-<?php include 'sidebar.php'?>
+    <?php include './../navbar.php'?>
+    <?php include 'sidebar.php'?>
+    
 
 
     <div id="main">
@@ -18,8 +19,7 @@
     <div class="container">
         <div class="header">
             <h2>School Profile</h2>
-            <a href="editSchool.php">
-            <button class="edit-button">Edit My Profile</button>
+           
          </a>
         </div>
         <div class="profile-form">

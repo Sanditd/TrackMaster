@@ -134,5 +134,17 @@ require_once __DIR__ . '/../libraries/database.php';
             return $this->db->singleArray();
         }
 
+        public function updateIndField($sportId, $fieldName, $fieldValue){
+            $allowedFields = ['sportType', 'durationMinutes', 'isIndoor', 'created_at', 'updated_at', 'equipment', 'categories', 'scoringSystem', 'rulesLink'];
+            if (in_array($fieldName, $allowedFields)) {
+                $this->db->query("UPDATE indsport SET fieldName = :fieldValue WHERE sportId= :sportId");
+                $this->db->bind(':fieldValue', $fieldValue);
+                $this->db->bind(':sportId', $sportId);
+                return true;
+            }
+            return false;
+}
+
+
     }
 ?>

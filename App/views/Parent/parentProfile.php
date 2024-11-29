@@ -8,12 +8,14 @@
 
 </head>
 <body>
+<?php include './../navbar.php'?>
+<?php include 'sidebar.php'?>
 
     <div id="main">
         
     <div class="container">
         <div class="header">
-            <h2>My Profile</h2>
+            <h2>Parent Profile</h2>
             <a href="editParent.php">
             <button class="edit-button">Edit My Profile</button>
 
@@ -62,10 +64,10 @@
                     <label for="occupation">Occupation</label>
                     <input type="text" id="occupation" value="Accountant Manager" readonly>
                 </div>
-                <div class="input-group">
-                    <label for="address"><Address></Address></label>
-                    <input type="text" id="occupation" value="No 15- Kurunagala" readonly>
-                </div>
+               <div class="input-group">
+                    <label for="occu-address">Occupation Address</label>
+                    <input type="text" id="occu-address" value="No 15- Kurunagala" readonly>
+                </div>
 
 
                
@@ -74,8 +76,7 @@
                     <label for="Student">Student</label>
                     <input type="text" id="Student" value="E.Thenuwara" readonly>
                 </div>
-                <center><button class="edit-button">View Student Profile</button></center>
-
+             
         </div>
     </div>
 
