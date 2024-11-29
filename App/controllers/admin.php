@@ -267,21 +267,37 @@
         //load sport view
         public function sportView($sportId) {
             try {
-                // Get the sport data by ID (associative array)
+                // $sportId = 'TS001';
+                // Validate input
+                if (empty($sportId)) {
+                    throw new Exception("Invalid sport ID!");
+                }
+        
+                // Debug: Display the passed sportId
+                // echo "Debug: Passed sportId = " . htmlspecialchars($sportId) . "<br>";
+        
+                // Get the sport data by ID
                 $sport = $this->sportModel->getSportById($sportId);
-                
+        
+                // Debug: Check if sport data is returned
                 if (!$sport) {
+                    echo "Debug: Query returned no results for sportId = " . htmlspecialchars($sportId) . "<br>";
                     throw new Exception("Sport not found!");
                 }
         
-                // Check if it's a team or individual sport
+                // Determine sport type and fetch additional details
+                $details = null;
                 if ($sport['sportType'] === 'teamSport') {
-                    // Call the appropriate method for team sports
                     $details = $this->sportModel->getTeamSportDetails($sportId);
-                } else {
-                    // Call the appropriate method for individual sports
+                } elseif ($sport['sportType'] === 'Individual Sport') {
                     $details = $this->sportModel->getIndSportDetails($sportId);
+                } else {
+                    throw new Exception("Unknown sport type!");
                 }
+        
+                // Debug: Display fetched data
+                // echo "Debug: Sport data: <pre>" . print_r($sport, true) . "</pre>";
+                // echo "Debug: Details: <pre>" . print_r($details, true) . "</pre>";
         
                 // Combine data into a single array
                 $data = [
@@ -293,14 +309,36 @@
                 $this->view('/Admin/sportView', $data);
         
             } catch (Exception $e) {
-                // Log the error message (optional, depending on your logging mechanism)
-                error_log($e->getMessage());
-                
-                // Show an error message to the user
-                echo "<p>Error: " . $e->getMessage() . "</p>";
+                // Log the error message for debugging
+                error_log("[sportView] Error: " . $e->getMessage());
+        
+                // Display a user-friendly error message
+                echo "<p>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
+                http_response_code(500); // Send appropriate HTTP error code
                 exit;
             }
         }
+        
+        public function updateIndSportDetail(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $fieldName = $_POST['fieldName'] ?? null;
+            $fieldValue = $_POST['fieldValue'] ?? null;
+            $sportId = $_POST['sportId'] ?? null;
+
+            if ($fieldName && $fieldValue) {
+                // Assuming you have a Sport model to interact with the database
+                if ($sportId) {
+                    $success = $this->sportModel->updateIndField($sportId, $fieldName, $fieldValue);
+                    if ($success) {
+                        $this->sportView($sportId);
+                        exit();
+                    }
+                }
+            }
+        }
+            echo "Error updating sport detail.";
+        }
+
         
         
         

@@ -13,6 +13,7 @@
                 //if the controller exists then load it
                 $this->currentController = ucwords($url[0]);
                 //unset the controller in the URL
+                unset($url[0]);
                 //call the controller
                 require_once '../app/controllers/'.$this->currentController.'.php';
                 //Instantiate the controller
