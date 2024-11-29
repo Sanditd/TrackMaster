@@ -17,12 +17,53 @@
            <center> <h1>Acedemic records </h1> </center><br> 
         </div>
 
-        
+        <div class="section recent-clients">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Grade</th>
+                            <th>Term</th>
+                            <th>Average</th>
+                            <th>Rank</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        <!-- Dynamically added rows will appear here -->
+                        <tr>
+                            <td>John Doe</td>
+                            <td class="editable">11-A</td>
+                            <td class="editable">Term 1</td>
+                            <td class="editable">90</td>
+                            <td class="editable">1</td>
+                            <td class="editable">Well Done on Academics</td>
+                            <td>
+                            <button class="action-btn edit-btn" type="submit" onclick="window.location.href='<?php echo URLROOT ?>/School/editRecord'">Edit</button>
+                            <button class="action-btn delete-btn" type="submit">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Jane Smith</td>
+                            <td class="editable">10-B</td>
+                            <td class="editable">Term 2</td>
+                            <td class="editable">85</td>
+                            <td class="editable">3</td>
+                            <td class="editable">Good Progress</td>
+                            <td>
+                                <button class="action-btn edit-btn" type="submit" onclick="window.location.href='<?php echo URLROOT ?>/School/editRecord'">Edit</button>
+                                <button class="action-btn delete-btn" type="submit">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>   
 
         <div class="main-content">
             <div class="section recent-clients">
-                <h2>Student List</h2>
-                <form class="formcontent" onsubmit="" >
+                <h2>Sumbit a New Record</h2>
+                <form class="formcontent" >
                     <ul>
                         <li>
                             <label for="studentName">Student Name:</label>
@@ -50,55 +91,14 @@
                             <label for="rank">Rank:</label>
                             <input type="number" id="rank" placeholder="Enter rank">
                         </li>
+                        <li>
+                        <label for="notes">Additional Notes:</label>
+                        <textarea id="notes" name="notes"></textarea>
+                        </li>
                     </ul>
                     <button type="submit">Submit</button>
                 </form>
             </div>
-
-            
-            <div class="section recent-clients">
-                <h2>Students</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Grade</th>
-                            <th>Term</th>
-                            <th>Average</th>
-                            <th>Rank</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="studentTableBody">
-                        <!-- Dynamically added rows will appear here -->
-                        <tr>
-                            <td>John Doe</td>
-                            <td class="editable">A</td>
-                            <td class="editable">Term 1</td>
-                            <td class="editable">90</td>
-                            <td class="editable">1</td>
-                            <td>
-                                <button class="action-btn edit-btn" onclick="editRow(this)">Edit</button>
-                                <button class="action-btn delete-btn" onclick="deleteRow(this)">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jane Smith</td>
-                            <td class="editable">B</td>
-                            <td class="editable">Term 2</td>
-                            <td class="editable">85</td>
-                            <td class="editable">3</td>
-                            <td>
-                                <button class="action-btn edit-btn" onclick="editRow(this)">Edit</button>
-                                <button class="action-btn delete-btn" onclick="deleteRow(this)">Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-        
-            
 
         </div>
     </div>
@@ -106,5 +106,5 @@
     <script src="/Public/js/School/record.js"></script>
     <script src="/Public/js/School/submit.js"></script>
 
-    <?php include './../footer.php'?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </body>

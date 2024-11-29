@@ -30,18 +30,18 @@
             <tr>
                 <td>Eraji Thenuwara</td>
                 <td>11-A</td>
-                <td>Basketball</td>
+                <td>Cricket</td>
                 <td>
-                <button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/School/viewStudent.php'">View Profile</button>
+                    <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/School/viewStudent'">View Profile</button>
                     <button>View Attendance</button>
-                    <button class="view-more-btn"onclick="window.location.href='/TrackMaster/App/views/Coach/PlayerPerformance.php'">View Performance</button>
+                    <button class="view-more-btn"onclick="window.location.href='<?php echo URLROOT ?>/Student/PlayerPerformance'">View Performance</button>
                
                 </td>
             </tr>
             <tr>
                 <td>Hashini Chamlka</td>
                 <td>11-B</td>
-                <td>Swimming</td>
+                <td>Cricket</td>
                 <td>
                     <button>View Profile</button>
                     <button>View Attendance</button>
@@ -52,7 +52,7 @@
             <tr>
                 <td>Janith Induwara</td>
                 <td>11-A</td>
-                <td>Soccer</td>
+                <td>Cricket</td>
                 <td>
                     <button>View Profile</button>
                     <button>View Attendance</button>
@@ -61,6 +61,9 @@
             </tr>
         </tbody>
 </table>
+    </div>
+    <center><button class="view-more-btn">Add a New Student</button><center>
+    <br>   
     
     <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </body>

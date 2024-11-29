@@ -6,8 +6,8 @@
 }
 
 body {
-    background-color: #f4f4f9; /* Light grey for a neutral background */
-    color: #333; /* Standard text color */
+    background-color: #f4f4f9;
+    color: #333; 
 }
 
 .dashboard-container {
@@ -19,32 +19,21 @@ body {
 .dashboard-header {
     text-align: left;
     margin-bottom: 20px;
-    background-color: #00264d; /* Deep blue for the header */
-    color: #fff; /* White for text contrast */
-    padding: 15px;
+    background-color: #00264d; 
+    color: #fff; 
+    padding: 10px;
     border-radius: 8px;
 }
 
-.main-content {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+.section {
+    background-color: #ffffff;
+    color: #333; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 30px;
 }
 
-.section {
-    background-color: #ffffff; /* White for clean sections */
-    color: #333; /* Text color */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.section {
-    background-color: #ffffff; /* White for clean sections */
-    color: #333; /* Text color */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 .recent-clients ul {
     list-style: none;
     padding-left: 15px;
@@ -62,12 +51,10 @@ body {
     content: "•";
     position: absolute;
     left: 0;
-    color: #ffa500; /* Orange bullet points */
+    color: #ffa500;
     font-size: 18px;
     text-align: left;
 }
-
-
 
 h2 {
     text-align: center;
@@ -76,25 +63,25 @@ h2 {
 }
 
 .formcontent ul {
-    list-style: none; /* Remove default list bullets */
+    list-style: none; 
     padding: 0;
 }
 
 .formcontent li {
-    display: flex; /* Align label and input horizontally */
-    align-items: center; /* Vertically align label and input */
+    display: flex; 
+    align-items: center; 
     margin-bottom: 15px;
-    gap: 15px; /* Space between label and input */
+    gap: 15px; 
 }
 
 label {
-    width: 30%; /* Consistent width for labels */
+    width: 30%; 
     font-weight: bold;
-    text-align: left; /* Align labels to the right */
+    text-align: left; 
 }
 
-input, select {
-    flex: 1; /* Input fields take up remaining space */
+input, select , textarea{
+    flex: 1; 
     padding: 8px;
     font-size: 1rem;
     border: 1px solid #ddd;
@@ -112,16 +99,11 @@ button {
     margin-top: 20px;
 }
 
-button:hover {
-    background-color: #ffa500;
-}
-
-
 h2 {
     font-size: 18px;
     margin-bottom: 10px;
-    color: #00264d; /* Deep blue for section headers */
-    border-bottom: 2px solid #ffa500; /* Orange underlines for emphasis */
+    color: #00264d; 
+    border-bottom: 2px solid #ffa500;
     display: inline-block;
     padding-bottom: 3px;
 }
@@ -139,13 +121,13 @@ th, td {
 
 th {
     background-color: #ffa500;
+    color: white;
 }
 
 td.editable {
     background-color: #f9f9f9;
 }
 
-/* Button Styles */
 .action-btn {
     margin-right: 5px;
     padding: 5px 10px;
@@ -153,21 +135,15 @@ td.editable {
 }
 
 .edit-btn, .save-btn {
-    background-color: #ffa500;
+    background-color: #70c549;
     color: white;
 }
 
 .delete-btn, .confirm-btn {
-    background-color: #ffa500;
+    background-color: #ff4800;
     color: white;
 }
 
-.cancel-btn {
-    background-color: #FFC107;
-    color: white;
-}
-
-/* Input Styles */
 .editable input {
     width: 100%;
     padding: 5px;
@@ -176,8 +152,8 @@ td.editable {
 
 .records {
     width : 75%;
-    background-color: #ffffff; /* White for clean sections */
-    color: #333; /* Text color */
+    background-color: #ffffff; 
+    color: #333; 
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -199,7 +175,7 @@ td.editable {
     content: "•";
     position: absolute;
     left: 0;
-    color: #ffa500; /* Orange bullet points */
+    color: #ffa500; 
     font-size: 18px;
     text-align: left;
 }

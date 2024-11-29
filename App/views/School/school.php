@@ -39,6 +39,7 @@
 
             <div class="section activity-log">
                 <h2>Calander</h2>
+                <center>
                 <div id="calendar">
                     <div id="header">
                         <button id="prevMonth">&lt;</button>
@@ -60,7 +61,7 @@
                     </div>
                 </div>
 
-            </div>
+            </div></center>
 
             <div class="section quick-session">
                 <h2 onclick="window.location.href='/TrackMaster/App/views/Event/event.php'" style="cursor: pointer; "> Facility Requests </h2>
