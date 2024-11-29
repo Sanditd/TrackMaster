@@ -8,20 +8,22 @@
 </head>
 
 <body>
-<?php include './../navbar.php'?>
-<?php include 'sidebar.php'?>
+
+<?php require 'navbar.php'; ?>
+<?php require 'sidebar.php'; ?>
+        
 
     <!-- Main Content -->
     <div id="main">
 
         <div class="container">
             <div class="header">
-                <h2>My profile › Edit Profile</h2>
+                <h2>School Profile › Edit Profile</h2>
     
                 </a>
             </div>
             <div class="profile-form">
-                <div class="left-section">
+                <div class="left-section"> 
                     <div class="profile-picture">
                         <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture" id="profile-pic-preview">
                         <input type="file" id="profile-pic-input" accept="image/*">
@@ -78,7 +80,7 @@
                             <option value="sabaragamuwa">Sabaragamuwa</option>
                             <option value="north-western">North Western</option>
                         </select>
-                    </div>
+                    </div> 
                     
     
                     
@@ -93,7 +95,10 @@
                             <label><input type="checkbox" name="facilities" value="other"> Other</label>
                         </div>
                     
-               
+                        <div class="btns">
+                        <button  type="submit" class="edit-button">Save Changes</button>
+                        <button class="edit-button" onclick="window.location.href='/TrackMaster/App/views/School/schoolProfile.php'">Cancel</button></center>
+                    </div>
 
                 </div>
             </div>
@@ -102,7 +107,7 @@
     </div>
 
 
-           
+    <?php include './../footer.php'?>
 
 </body>
 </html>
