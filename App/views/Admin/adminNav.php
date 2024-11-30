@@ -5,12 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="../../../Public/css/Admin/navbar.css">
-    <script src="../../../Public/js/Admin/sidebar.js"></script>
+    <link rel="stylesheet" href="/TrackMaster/Public/css/navbar.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/sidebar.css">
+
 </head>
 
 <body>
-        <!-- Sidebar -->
+
+<header>
+        <button class="openbtn" onclick="toggleNav()">☰ </button>
+
+        <nav class="navbar" id="navbar">
+            <div class="logo">
+                <img src="/TrackMaster/Public/img/logo.png" alt="Logo"> 
+            </div>
+            <ul class="nav-links">
+                <li><a href="<?php echo URLROOT ?>/loginController/login">Home</a></li>
+                <li><a href="<?php echo URLROOT ?>/common/aboutUs">About Us</a></li>
+                <li><a href="<?php echo URLROOT ?>/common/help">Help & Support</a></li>    
+                <li><button class="login" onclick="window.location.href='<?php echo URLROOT ?>/login'">Log in</button></li>
+                <li><img src="/TrackMaster/Public/img/log in.png" alt="Logo"> </li>
+                <li><img src="/TrackMaster/Public/img/notification.png" alt="Logo"> </li>
+            </ul>
+        </nav>
+    </header>
+
         <span class="close" onmouseleave="closeNav()">
         <div id="sidebar" class="sidebar">
             
@@ -34,27 +53,7 @@
                 </nav>
             </span>
         </div> 
-
-        <!-- Main Content -->
-        <div id="main">
-            <header>
-                <button class="openbtn" onclick="toggleNav()">☰ </button>
-
-                <nav class="navbar" id="navbar">
-                    <div class="logo">
-                        <img src="../../Public/img/logo.png" alt="Logo">
-                    </div>
-                    <ul class="nav-links">
-                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Account</a></li>
-                    </ul>
-                </nav>
-            </header>
-        </div>
-
+    <script src="/TrackMaster/Public/js/sidebar.js"></script>
        
 </body>
 

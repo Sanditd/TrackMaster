@@ -46,7 +46,7 @@
                             <?php foreach($team->players as $player): ?>
                                 <tr>
                                     <td><?= $player->player_id; ?></td>
-                                    <td><img src="data:image/jpeg;base64,<?= base64_encode($player->photo); ?>" alt="Player Photo" style="max-width:50px;"></td>                                    <td><?= $player->name; ?></td>
+                                    <td><img src="data:image/jpeg;base64,<?= base64_encode($player->photo); ?>" alt="Player Photo" style="max-width:50px;"></td>                                        <td><?= $player->name; ?></td>
                                     <td><?= $player->phonenumber; ?>
                                         <br>  <?= $player->email; ?></td>
                                         <td><?= $player->role; ?></td>   
