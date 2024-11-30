@@ -218,6 +218,7 @@
         public function lastInsertId() {
             return $this->dbh->lastInsertId();
         }
+        
 }
 
 

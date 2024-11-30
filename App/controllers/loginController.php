@@ -11,6 +11,7 @@ class loginController extends Controller {
         // Placeholder for the default method
     }
 
+
         public function login() {
             $error = ''; // Error message if login fails
         
@@ -37,17 +38,17 @@ class loginController extends Controller {
         
                         // Redirect to the appropriate dashboard based on the role
                         switch ($user->role) {
-                            case 'Admin':
+                            case 'admin':
                                 header('Location: ' . ROOT . '/admin/dashboard/ads');
                                 break;
-                            case 'Coach':
-                                header('Location: ' . ROOT . '/Coach/Dashboard/sasad');
+                            case 'coach':
+                                header('Location: ' . ROOT . '/Coach/Dashboard');
                                 break;
-                            case 'Player':
-                                header('Location: ' . ROOT . '/student/dashboard/sadss');
+                            case 'student':
+                                header('Location: ' . ROOT . '/student/dashboard');
                                 break;
                             case 'school':
-                                header('Location: ' . ROOT . '/schoolController/dashboard');
+                                header('Location: ' . ROOT . '/school/dashboard');
                                 break;
                             case 'parent':
                                 header('Location: ' . ROOT . '/parentController/dashboard');
@@ -63,8 +64,8 @@ class loginController extends Controller {
                         exit;
 
                     }
-
-              
+                    
+                }
             }
 
         
@@ -72,17 +73,7 @@ class loginController extends Controller {
             $this->view('/Admin/login', ['error' => $error]);
 
         }
+
     }
 
-    public function logout() {
-        // Start session and destroy it
-        session_start();
-        session_unset(); // Unset all session variables
-        session_destroy(); // Destroy the session
-
-        // Redirect to the login page
-        header('Location: ' . ROOT . '/loginController/login');
-        exit;
-    }
-}
 ?>

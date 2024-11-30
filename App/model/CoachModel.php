@@ -26,46 +26,6 @@ class CoachModel {
         return $this->db->resultSet();
     }
 
-    public function getFilteredPlayers($role = '') {
-        $query = 'SELECT up.player_id, u.firstname AS name, s.matches, s.batting_avg, s.strike_rate,
-                         s.fifties, s.hundreds, s.wickets, s.bowling_avg, s.bowling_strike_rate, s.economy_rate
-                  FROM user_player up
-                  JOIN users u ON up.user_id = u.userid
-                  JOIN stats s ON up.player_id = s.player_id
-                  WHERE 1=1';
-    
-        if (!empty($role)) {
-            $query .= ' AND up.zone = :role';
-        }
-    
-            
-        $this->db->query($query);
-    
-        if (!empty($role)) {
-            $this->db->bind(':role', $role);
-        }
-    
-       
-    
-        return $this->db->resultSet();
-    }
-    
-
-    public function getPlayersByName($names) {
-        $inQuery = implode(',', array_fill(0, count($names), '?'));
-        $query = "SELECT up.player_id, u.firstname AS name, u.photo, u.contact_info, up.zone AS role
-                  FROM user_player up
-                  JOIN users u ON up.user_id = u.user_id 
-                  WHERE u.firstname IN ($inQuery)";
-        $this->db->query($query);
-
-        foreach ($names as $index => $name) {
-            $this->db->bind($index + 1, $name);
-        }
-
-        return $this->db->resultSet();
-    }
-
     public function createTeam($name, $numPlayers) {
         $query = 'INSERT INTO team (team_name, number_of_players) VALUES (:name, :numPlayers)';
         $this->db->query($query);
@@ -75,11 +35,54 @@ class CoachModel {
         return $this->db->lastInsertId();
     }
 
-    public function addPlayerToTeam($teamId, $playerId) {
-        $query = 'INSERT INTO cricket_team (team_id, player_id) VALUES (:teamId, :playerId)';
-        $this->db->query($query);
-        $this->db->bind(':teamId', $teamId);
-        $this->db->bind(':playerId', $playerId);
-        return $this->db->execute();
+    public function getFilteredPlayers($role, $gender) {
+        $query = "SELECT 
+                    u.userid AS player_id, 
+                    CONCAT(u.firstname, ' ', u.lname) AS name, 
+                    p.zone, 
+                    p.gender, 
+                    a.matches, 
+                    a.batting_avg, 
+                    a.bowling_avg 
+                  FROM 
+                    user_player AS p
+                  INNER JOIN 
+                    users AS u ON u.userid = p.user_id
+                  LEFT JOIN 
+                    player_stats AS a ON a.player_id = p.player_id
+                  WHERE 1 = 1";
+    
+        if (!empty($role)) {
+            $query .= " AND a.role = :role";
+        }
+    
+        if (!empty($gender)) {
+            $query .= " AND p.gender = :gender";
+        }
+    
+        $query .= " ORDER BY 
+                    CASE 
+                      WHEN :role = 'batsman' THEN a.batting_avg 
+                      WHEN :role = 'bowler' THEN a.bowling_avg 
+                    END DESC";
+    
+        $stmt = $this->db->prepare($query);
+    
+        if (!empty($role)) {
+            $stmt->bindValue(':role', $role, PDO::PARAM_STR);
+        }
+        if (!empty($gender)) {
+            $stmt->bindValue(':gender', $gender, PDO::PARAM_STR);
+        }
+    
+        $stmt->bindValue(':role', $role, PDO::PARAM_STR); // For ordering
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }
+
+
+    
+?>
