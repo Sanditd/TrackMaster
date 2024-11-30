@@ -48,7 +48,7 @@ class loginController extends Controller {
                                 header('Location: ' . ROOT . '/student/dashboard');
                                 break;
                             case 'school':
-                                header('Location: ' . ROOT . '/schoolController/dashboard');
+                                header('Location: ' . ROOT . '/school/dashboard');
                                 break;
                             case 'parent':
                                 header('Location: ' . ROOT . '/parentController/dashboard');

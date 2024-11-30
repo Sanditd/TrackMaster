@@ -8,9 +8,6 @@
             $this->userModel = $this->model('User');
         }
 
-        public function signupview() {
-            $this->view('SignUp/CoachSignup');
-        }
 
         public function studentsignupview() {
     
@@ -26,43 +23,44 @@
             $this->view('SignUp/StudentSignup', $data);
         }
 
-        public function signup() {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // Ensure a user model instance is used
-                $userModel = new User();
+        public function coachsignupview() {
+    
 
-                // Handling the photo upload
-                $photo = null;
-                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-                    $photo = file_get_contents($_FILES['photo']['tmp_name']);
-                }
+            $sports = $this->userModel->getSports();
 
-                $passwordHash = password_hash($_POST['password'], PASSWORD_BCRYPT);
+            $data = [
+                'sports' => $sports,
+            ];
 
-                $data = [
-                    'firstname' => $_POST['firstname'],
-                    'lname' => $_POST['lastname'],
-                    'phonenumber' => $_POST['phone'],
-                    'address' => $_POST['address'],
-                    'email' => $_POST['email'],
-                    'password' => $passwordHash,
-                    'username' => $_POST['username'],
-                    'photo' => $photo,
-                    'age' => $_POST['age'],
-                    'dob' => $_POST['dob'],
-                    'gender' => $_POST['gender']
-                ];
-
-                if ($userModel->createUser($data)) {
-                    header('Location: ' . ROOT . '/logincontroller/login');
-                    exit;
-                } else {
-                    echo "Error: Could not sign up.";
-                }   
-            } else {
-                $this->signupview();
-            }
+            $this->view('SignUp/CoachSignup', $data);
         }
+
+        public function schoolsignupview() {
+
+            $data = [];
+            
+
+            $this->view('SignUp/SchoolSignup');
+        }
+
+        public function parentsignupview() {
+
+            $data = [];
+            
+
+            $this->view('SignUp/ParentSignup');
+        }
+
+        public function selectrole() {
+
+            $data = [];
+            
+
+            $this->view('SignUp/SelectRole');
+        }
+        
+
+
 
         public function studentsignup() {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -125,6 +123,132 @@
                     // Handle error in user insertion
                     $_SESSION['error'] = "An error occurred during signup!";
                     header('Location: ' . ROOT . '/signupcontroller/studentsignupview');
+                    exit;
+                }
+            }
+        }
+
+        public function coachsignup() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                // Collect and sanitize form data
+                $firstname = trim($_POST['firstname']);
+                $lastname = trim($_POST['lastname']);
+                $email = trim($_POST['email']);
+                $username = trim($_POST['username']);
+                $password = trim($_POST['password']);
+                $confirmPassword = trim($_POST['confirm-password']);
+                $phone = trim($_POST['phone']);
+                $address = trim($_POST['address']);
+                $dob = $_POST['dob'];
+                $gender = $_POST['gender'];
+                $age = trim($_POST['age']);
+                $zone = trim($_POST['zone']);
+                $sportName = trim($_POST['sport']); 
+                $coach_type =trim($_POST['coach_type']);
+                $educational_qualifications = trim($_POST['educational_qualifications']);
+                $professional_playing_experience = trim($_POST['professional_playing_experience']);
+                $coaching_experience = trim($_POST['coaching_experience']);
+                $technical_specializations = trim($_POST['technical_specializations']);
+                $key_achievements = trim($_POST['key_achievements']);
+                $bio = trim($_POST['bio']);
+                $photo = $_FILES['photo'];
+
+    
+                // Validate password match
+                if ($password !== $confirmPassword) {
+                    // Handle password mismatch (redirect with error)
+                    $_SESSION['error'] = "Passwords do not match!";
+                    header('Location: ' . ROOT . '/signupcontroller/coachsignupview');
+                    exit;
+                }
+    
+                // Handle file upload (photo)
+                $photoData = null;
+                if ($photo['size'] > 0) {
+                    $photoData = file_get_contents($photo['tmp_name']);
+                }
+
+                $sportId = $this->userModel->getSportIdByName($sportName);
+
+                
+        
+                if (!$sportId) {
+                    $_SESSION['error'] = "Selected sport is invalid.";
+                    header('Location: ' . ROOT . '/signupcontroller/coachsignupview');
+                    exit;
+                }
+                // Insert user data
+                if ($this->userModel->insertUser($firstname, $lastname, $email, $username, $password, $phone, $address, $dob, $gender, $age, $photoData, 'coach')) {
+                    // Get the user_id of the newly inserted user
+                    $userId = $this->userModel->lastInsertId();
+    
+                    // Insert player data
+                    $this->userModel->insertCoach($userId, $sportId, $zone, $coach_type, $educational_qualifications, $professional_playing_experience, $coaching_experience, $technical_specializations, $key_achievements, $bio);
+    
+                    // Redirect or display success message
+                    $_SESSION['success'] = "Sign up successful!";
+                    header('Location: ' . ROOT . '/logincontroller/login'); // Redirect to login page
+                    exit;   
+                } else {
+                    // Handle error in user insertion
+                    $_SESSION['error'] = "An error occurred during signup!";
+                    header('Location: ' . ROOT . '/signupcontroller/coachsignupview');
+                    exit;
+                }
+            }
+        }
+
+        public function schoolsignup() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                // Collect and sanitize form data
+                $firstname = trim($_POST['firstname']);
+                $lastname = trim($_POST['lastname']);
+                $email = trim($_POST['email']);
+                $username = trim($_POST['username']);
+                $password = trim($_POST['password']);
+                $confirmPassword = trim($_POST['confirm-password']);
+                $phone = trim($_POST['phone']);
+                $address = trim($_POST['address']);
+                $dob = $_POST['dob'];
+                $gender = $_POST['gender'];
+                $age = trim($_POST['age']);
+                $school_name = trim($_POST['school_name']);
+                $school_email = trim($_POST['school_email']); 
+                $bio = trim($_POST['bio']);
+                $facilities = trim($_POST['facilities']);
+                $photo = $_FILES['photo'];
+
+    
+                // Validate password match
+                if ($password !== $confirmPassword) {
+                    // Handle password mismatch (redirect with error)
+                    $_SESSION['error'] = "Passwords do not match!";
+                    header('Location: ' . ROOT . '/signupcontroller/schoolsignupview');
+                    exit;
+                }
+    
+                // Handle file upload (photo)
+                $photoData = null;
+                if ($photo['size'] > 0) {
+                    $photoData = file_get_contents($photo['tmp_name']);
+                }
+
+                // Insert user data
+                if ($this->userModel->insertUser($firstname, $lastname, $email, $username, $password, $phone, $address, $dob, $gender, $age, $photoData, 'school')) {
+                    // Get the user_id of the newly inserted user
+                    $userId = $this->userModel->lastInsertId();
+    
+                    // Insert player data
+                    $this->userModel->insertSchool($userId, $school_name, $school_email, $bio, $facilities);
+    
+                    // Redirect or display success message
+                    $_SESSION['success'] = "Sign up successful!";
+                    header('Location: ' . ROOT . '/logincontroller/login'); // Redirect to login page
+                    exit;   
+                } else {
+                    // Handle error in user insertion
+                    $_SESSION['error'] = "An error occurred during signup!";
+                    header('Location: ' . ROOT . '/signupcontroller/schoolsignupview');
                     exit;
                 }
             }

@@ -28,14 +28,14 @@ class School extends Controller{
         $data = [];
         $this->view('School/schoolStudentData');
 }
-public function records(){
-    $data = [];
-    $this->view('School/records');
-}
-public function requests(){
-    $data = [];
-    $this->view('School/event');
-}
+    public function records(){
+        $data = [];
+        $this->view('School/records');
+    }
+    public function requests(){
+        $data = [];
+        $this->view('School/event');
+    }
 
 }
 

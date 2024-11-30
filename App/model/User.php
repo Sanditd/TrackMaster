@@ -106,7 +106,37 @@ class User {
 
     }
 
-    // Get sport_id by sport name
+    Public function insertCoach($userId, $sportId, $zone, $coach_type, $educational_qualifications, $professional_playing_experience, $coaching_experience, $technical_specializations, $key_achievements, $bio) {
+        $query = "INSERT INTO user_coach (user_id, sport_id, zone, coach_type, educational_qualifications, professional_playing_experience, coaching_experience, technical_specializations, key_achievements, bio)
+                  VALUES (:user_id, :sport_id, :zone, :coach_type, :educational_qualifications, :professional_playing_experience, :coaching_experience, :technical_specializations, :key_achievements, :bio)";
+        
+        $this->db->query($query);
+        $this->db->bind(':user_id', $userId);
+        $this->db->bind(':sport_id', $sportId);
+        $this->db->bind(':zone', $zone);
+        $this->db->bind(':coach_type', $coach_type);
+        $this->db->bind(':educational_qualifications', $educational_qualifications);
+        $this->db->bind(':professional_playing_experience', $professional_playing_experience);
+        $this->db->bind(':coaching_experience', $coaching_experience);
+        $this->db->bind(':technical_specializations', $technical_specializations);
+        $this->db->bind(':key_achievements', $key_achievements);
+        $this->db->bind(':bio', $bio);
+        return $this->db->execute();
+    }
+
+    Public function insertSchool($userId, $school_name, $school_email, $bio, $facilities) {
+        $query = "INSERT INTO user_school (user_id, school_name, school_email, bio, facilities )
+                  VALUES (:user_id, :school_name, :school_email, :bio, :facilities)";
+        
+        $this->db->query($query);
+        $this->db->bind(':user_id', $userId);
+        $this->db->bind(':school_name', $school_name);
+        $this->db->bind(':school_email', $school_email);
+        $this->db->bind(':bio',  $bio);
+        $this->db->bind(':facilities', $facilities);
+        return $this->db->execute();
+    }
+
 
 
 

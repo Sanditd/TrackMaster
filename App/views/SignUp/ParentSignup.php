@@ -8,7 +8,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sign Up - Student</title>
+        <title>Sign Up - Parent</title>
         <link rel="stylesheet" href="../Public/css/Coach/CoachSignup.css">
     </head>
     <body>
@@ -16,8 +16,8 @@
             <span id="signup-port-logo">
                 <img src="../Public/img/logo-black.png" alt="TrackMaster Logo">
             </span>
-            <h2>Sign Up - Student</h2>
-            <form method="POST" action="<?php echo ROOT; ?>/signupcontroller/coachsignup" enctype="multipart/form-data">
+            <h2>Sign Up - Parent</h2>
+            <form method="POST" action="<?php echo ROOT; ?>/signupcontroller/parentsignup" enctype="multipart/form-data">
 
             
                 <div class="form-row">
@@ -89,21 +89,12 @@
                     <input type="file" id="photo" name="photo" accept="image/*" required>
                 </div>
                 </div>
-
+                
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="coach_type">Level</label>
-                        <select id="coach_type" name="coach_type" required>
-                        <option value="" disabled selected>Select Level</option>
-                            <option value="Zonal">Zonal</option>
-                            <option value="provincial">Provincial</option>
-                            <option value="National">Natioanl</option>
-                        </select>
-                    </div> 
-                    <div class="form-group">
-                        <label for="sport">Sport</label>
-                        <select id="sport" name="sport" required>
-                            <option value="" disabled selected>Select Sport</option>
+                        <label for="player">Player</label>
+                        <select id="player" name="player" required>
+                            <option value="" disabled selected>Select Player</option>
                             <?php if (!empty($sports)) : ?>
                                 <?php foreach ($sports as $sport) : ?>
                                     <option value="<?= htmlspecialchars($sport->sport_name) ?>"><?= htmlspecialchars($sport->sport_name) ?></option>
@@ -113,43 +104,17 @@
                             <?php endif; ?>
                         </select>
                     </div> 
-                </div> 
-                
-                <div class="form-row">
                     <div class="form-group">
-                        <label for="zone">Zone</label>
-                        <input type="text" id="zone" name="zone" placeholder="Enter Zone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="bio">Bio</label>
-                        <textarea id="bio" name="bio" placeholder="Enter a brief biography" rows="3" required></textarea>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="educational-qualifications">Educational Qualifications</label>
-                        <textarea id="educational_qualifications" name="educational_qualifications" placeholder="Educational Qualifications" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="professional-playing-experience">Professioanl Experience</label>
-                        <textarea id="professional_playing_experience" name="professional_playing_experience" placeholder="Professioanl Experience" rows="3" required></textarea>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="coaching_experience">Coachine Experience</label>
-                        <textarea id="coaching_experience" name="coaching_experience" placeholder="Coachine Experience" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="technical_specializations">Technical Specifications</label>
-                        <textarea id="technical_specializations" name="technical_specializations" placeholder="Technical Specifications" rows="3" required></textarea>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="key_achievements">Key Achievements</label>
-                        <textarea id="key_achievements" name="key_achievements" placeholder="Key Achievements" rows="3" required></textarea>
-                    </div>
+                        <label for="relationship">Gender</label>
+                        <select id="relationship" name="relationship" required>
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="male">Father</option>
+                            <option value="female">Mother</option>
+                            <option value="other">Guardian</option>
+                        </select>
+                    </div> 
+
+
                 </div>
 
                 <button type="submit">Sign Up</button>

@@ -49,7 +49,7 @@
         </form>
         <div class="or">Or</div>
         <div class="or"><button id="frogetPW-button">Frogot Password</button></div>
-        <div class="or"><a href="<?php echo ROOT ?>/signUpController/signupview">Register Here</a></div>
+        <div class="or"><a href="<?php echo ROOT ?>/signUpController/selectrole">Register Here</a></div>
 
     </div>
 
