@@ -102,6 +102,124 @@
             // Return the new sportId in the desired format
             return 'TS' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: TS001
         }
+
+        public function generateUserId() {
+            // Query to get the last userId
+            $this->query("SELECT userId FROM user ORDER BY userId DESC LIMIT 1");
+            $lastUser = $this->single();
+        
+            if ($lastUser) {
+                // Extract the numeric part of the last userId and increment it
+                $lastId = (int) substr($lastUser->userId, 2); // Assuming format is "US001"
+                $newId = $lastId + 1;
+            } else {
+                // Start with US001 if no records exist
+                $newId = 1;
+            }
+        
+            // Return the new userId in the desired format
+            return 'US' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: US001
+        }
+        
+
+        public function generateCoachId() {
+            // Query to get the last userId
+            $this->query("SELECT coachId FROM coach ORDER BY coachId DESC LIMIT 1");
+            $lastUser = $this->single();
+        
+            if ($lastUser) {
+                // Extract the numeric part of the last userId and increment it
+                $lastId = (int) substr($lastUser->coachId, 2); // Assuming format is "US001"
+                $newId = $lastId + 1;
+            } else {
+                // Start with US001 if no records exist
+                $newId = 1;
+            }
+        
+            // Return the new userId in the desired format
+            return 'COACH' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: US001
+        }
+        
+
+        public function generatePlayerId() {
+            // Query to get the last userId
+            $this->query("SELECT playerId FROM player ORDER BY playerId DESC LIMIT 1");
+            $lastUser = $this->single();
+        
+            if ($lastUser) {
+                // Extract the numeric part of the last userId and increment it
+                $lastId = (int) substr($lastUser->playerId, 2); // Assuming format is "US001"
+                $newId = $lastId + 1;
+            } else {
+                // Start with US001 if no records exist
+                $newId = 1;
+            }
+        
+            // Return the new userId in the desired format
+            return 'PLY' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: US001
+        }
+
+        public function generateSchoolId() {
+            // Query to get the last userId
+            $this->query("SELECT schoolId FROM school ORDER BY playerId DESC LIMIT 1");
+            $lastUser = $this->single();
+        
+            if ($lastUser) {
+                // Extract the numeric part of the last userId and increment it
+                $lastId = (int) substr($lastUser->schoolId, 2); // Assuming format is "US001"
+                $newId = $lastId + 1;
+            } else {
+                // Start with US001 if no records exist
+                $newId = 1;
+            }
+        
+            // Return the new userId in the desired format
+            return 'SCL' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: US001
+        }
+
+        public function generateParentId() {
+            // Query to get the last userId
+            $this->query("SELECT parentId FROM parent ORDER BY parentId DESC LIMIT 1");
+            $lastUser = $this->single();
+        
+            if ($lastUser) {
+                // Extract the numeric part of the last userId and increment it
+                $lastId = (int) substr($lastUser->parentId, 2); // Assuming format is "US001"
+                $newId = $lastId + 1;
+            } else {
+                // Start with US001 if no records exist
+                $newId = 1;
+            }
+        
+            // Return the new userId in the desired format
+            return 'PRNT' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: US001
+        }
+        
+        public function generateAdminId() {
+            // Query to get the last userId
+            $this->query("SELECT adminId FROM admin ORDER BY parentId DESC LIMIT 1");
+            $lastUser = $this->single();
+        
+            if ($lastUser) {
+                // Extract the numeric part of the last userId and increment it
+                $lastId = (int) substr($lastUser->adminId, 2); // Assuming format is "US001"
+                $newId = $lastId + 1;
+            } else {
+                // Start with US001 if no records exist
+                $newId = 1;
+            }
+        
+            // Return the new userId in the desired format
+            return 'ADMIN' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: US001
+        }
+        
+
+
+        public function lastInsertId() {
+            return $this->dbh->lastInsertId();
+        }
 }
 
+
 ?>
+
