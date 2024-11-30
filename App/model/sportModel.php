@@ -143,8 +143,70 @@ require_once __DIR__ . '/../libraries/database.php';
                 return true;
             }
             return false;
-}
+        }
 
+        public function indsportEdit($data) {
+        
+            
+            // Prepare the query
+            $this->db->query("UPDATE indsport SET 
+                    durationMinutes = :duration,
+                    isIndoor = :isIndoor,
+                    equipment = :equipment,
+                    categories = :categories,
+                    scoringSystem = :scoringSystem,
+                    rulesLink = :rulesLink,
+                    updated_at = :updated_at
+                WHERE 
+                    sportId = :sport_id");
+            
+            // Bind the data to the query parameters
+            $this->db->bind(':duration', $data['duration']);
+            $this->db->bind(':isIndoor', $data['isIndoor']);
+            $this->db->bind(':equipment', $data['equipment']);
+            $this->db->bind(':categories', $data['categoriesJson']);
+            $this->db->bind(':scoringSystem', $data['scoringSystem']);
+            $this->db->bind(':rulesLink', $data['rulesLink']);
+            $this->db->bind(':sport_id', $data['sportId']);
+            $this->db->bind(':updated_at', date('Y-m-d H:i:s'));
+            
+            // Execute the query
+            return $this->db->execute();
+        }
+
+        public function teamsportEdit($data) {
+        
+            
+            // Prepare the query
+            $this->db->query("UPDATE teamsport SET 
+                    numPlayers = :numPlayers,
+                    positions = :positions,
+                    teamFormation = :teamFormation,
+                    durationMinutes = :durationMinutes,
+                    halfTimeDuration = :halfTimeDuration,
+                    isOutdoor = :isOutdoor,
+                    equipment = :equipment,
+                    rulesLink = :rulesLink,
+                    updated_at = :updated_at
+                WHERE 
+                    sportId = :sport_id");
+            
+            // Bind the data to the query parameters
+            $this->db->bind(':numPlayers', $data['numPlayers']);
+            $this->db->bind(':positions', $data['positionsJson']);
+            $this->db->bind(':teamFormation', $data['teamFormation']);
+            $this->db->bind(':durationMinutes', $data['durationMinutes']);
+            $this->db->bind(':halfTimeDuration', $data['halfTimeDuration']);
+            $this->db->bind(':isOutdoor', $data['isOutdoor']);
+            $this->db->bind(':equipment', $data['equipment']);
+            $this->db->bind(':rulesLink', $data['rulesLink']);
+            $this->db->bind(':sport_id', $data['sportId']);
+            $this->db->bind(':updated_at', date('Y-m-d H:i:s'));
+            
+            // Execute the query
+            return $this->db->execute();
+        }
 
     }
+        
 ?>

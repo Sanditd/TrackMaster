@@ -71,6 +71,14 @@
             return $this->stmt->fetch(PDO::FETCH_OBJ);
         }
 
+        // Assuming this is part of your database class
+        public function singleArray() {
+            // Execute the query
+            $this->execute();
+            // Fetch the result as an associative array
+            return $this->stmt->fetch(PDO::FETCH_ASSOC); // Fetches a single record as an associative array
+        }
+        
         //get row count
         public function rowCount(){
             return $this->stmt->rowCount();

@@ -104,7 +104,7 @@
             
             <div class="form-section">
                 <h2>Add a New Achievement</h2>
-                <form action="/TrackMaster/App/controllers/student/save" method="POST">  
+                <form action="<?php echo ROOT?>/student/saveAchievement" method="POST">  
                     <label for="place"> Place/Rank : </label> 
                     <textarea id="description" required></textarea>  
 
@@ -147,8 +147,8 @@
                                     <td><?php echo $achievement->description; ?></td>
                                     <td><?php echo $achievement->date; ?></td>
                                     <td>
-                                        <a href="<?php echo URLROOT; ?>/Student/editAchievement/<?php echo $achievement->id; ?>">Edit</a>
-                                        <form action="<?php echo URLROOT; ?>/Student/deleteAchievement/<?php echo $achievement->id; ?>" method="POST" style="display:inline;">
+                                        <a href="<?php echo URLROOT; ?>/Student/editAchievement/<?php echo $achievement->achievement_id; ?>">Edit</a>
+                                        <form action="<?php echo URLROOT; ?>/Student/deleteAchievement/<?php echo $achievement->achievement_id; ?>" method="POST" style="display:inline;">
                                             <button type="submit">Delete</button>
                                         </form>
                                     </td>
@@ -160,7 +160,7 @@
         </div>   
     </div>
 
-    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
+    <?php require 'footer.php'?>
 
     <script src="/TrackMaster/Public/js/Student/carousel.js"></script>
     <script src="/TrackMaster/Public/js/Student/achievements.js"></script>

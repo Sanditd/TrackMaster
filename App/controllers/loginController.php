@@ -63,7 +63,7 @@ class loginController extends Controller {
                         exit;
 
                     }
-                    exit;
+
               
             }
 
