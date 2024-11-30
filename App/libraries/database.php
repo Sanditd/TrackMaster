@@ -77,8 +77,6 @@
             return $this->stmt->rowCount();
         }
 
-        
-
          // Function to generate a custom auto-incrementing sportId
         public function generateSportId() {
             // Query to get the last sportId
