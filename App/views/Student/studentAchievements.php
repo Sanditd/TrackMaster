@@ -104,9 +104,9 @@
             
             <div class="form-section">
                 <h2>Add a New Achievement</h2>
-                <form action="/TrackMaster/App/controllers/student/save" method="POST">  
+                <form action="<?php echo URLROOT; ?>/Student/saveAchievement" method="POST">  
                     <label for="place"> Place/Rank : </label> 
-                    <textarea id="description" required></textarea>  
+                    <textarea id="place" name="place" required></textarea>  
 
                     <label for="level">Level :</label>
                     <input type="radio" id="level1" name="level" value="zonal" required> Zonal Level </br>
@@ -114,14 +114,14 @@
                     <input type="radio" id="level3" name="level" value="national" required> National Level</br>
            
                     <label for="description">Description :</label>
-                    <textarea id="description"></textarea>
+                    <textarea id="description" name="description"></textarea>
 
                     <label for="date">Date :</label>
-                    <input type="date" id="date" required>
+                    <input type="date" id="date" name="date" required>
                        
                     <center>
                         <button class="edit-button" type="submit"> Add </button>
-                        <button class="edit-button" type="submit" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAchievements'"> Cancel </button>
+                        <!-- <button class="edit-button" type="submit" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAchievements'"> Cancel </button> -->
                     </center>
                 </form>
             </div>

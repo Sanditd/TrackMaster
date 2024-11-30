@@ -10,7 +10,8 @@ class StudentModel {
 
     // Add a new achievement
     public function addAchievement($data) {
-        $this->db->query('INSERT INTO achievements (place, level, description, date) VALUES (:place, :level, :description, :date)');
+        $this->db->query('INSERT INTO achievements (place, player_id, level, description, date) VALUES (:player_id, :place, :level, :description, :date)');
+        $this->db->bind(':player_id', $data['player_id']);
         $this->db->bind(':place', $data['place']);
         $this->db->bind(':level', $data['level']);
         $this->db->bind(':description', $data['description']);

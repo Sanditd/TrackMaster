@@ -9,7 +9,7 @@
         public function __construct(){
             $url = $this->getUrl();
 
-            if(file_exists('../app/controllers/'.ucwords($url[0]).'.php')){
+            if ($url && file_exists('../app/controllers/'.ucwords($url[0]).'.php')) {
                 //if the controller exists then load it
                 $this->currentController = ucwords($url[0]);
                 //unset the controller in the URL
