@@ -14,12 +14,12 @@
             <div class="detail-row">
                 <strong>Duration (Minutes):</strong>
                 <span><?= htmlspecialchars($details['durationMinutes'] ?? 'N/A') ?></span>
-                <button class="edit-btn" onclick="openEditModal('Duration (Minutes)', '<?= $details['durationMinutes'] ?? '' ?>', 'durationMinutes')">Edit</button>
+                <!-- <button class="edit-btn" onclick="openEditModal('Duration (Minutes)', '<?= $details['durationMinutes'] ?? '' ?>', 'durationMinutes')">Edit</button> -->
             </div>
             <div class="detail-row">
                 <strong>Is Indoor:</strong>
                 <span><?= htmlspecialchars($details['isIndoor'] ?? 'N/A') ?></span>
-                <button class="edit-btn" onclick="openEditModal('Is Indoor', '<?= $details['isIndoor'] ?? '' ?>', 'isIndoor')">Edit</button>
+                <!-- <button class="edit-btn" onclick="openEditModal('Is Indoor', '<?= $details['isIndoor'] ?? '' ?>', 'isIndoor')">Edit</button> -->
             </div>
             <div class="detail-row">
                 <strong>Created At:</strong>
@@ -41,17 +41,17 @@
                 <div class="detail-row">
                     <strong>Equipment:</strong>
                     <span><?= htmlspecialchars($details['equipment'] ?? 'N/A') ?></span>
-                    <button class="edit-btn" onclick="openEditModal('Equipment', '<?= $details['equipment'] ?? '' ?>', 'equipment')">Edit</button>
+                    <!-- <button class="edit-btn" onclick="openEditModal('Equipment', '<?= $details['equipment'] ?? '' ?>', 'equipment')">Edit</button> -->
                 </div>
                 <div class="detail-row">
                     <strong>Categories:</strong>
                     <span><?= htmlspecialchars($details['categories'] ?? 'N/A') ?></span>
-                    <button class="edit-btn" onclick="openEditModal('Categories', '<?= $details['categories'] ?? '' ?>', 'categories')">Edit</button>
+                    <!-- <button class="edit-btn" onclick="openEditModal('Categories', '<?= $details['categories'] ?? '' ?>', 'categories')">Edit</button> -->
                 </div>
                 <div class="detail-row">
                     <strong>Scoring System:</strong>
                     <span><?= htmlspecialchars($details['scoringSystem'] ?? 'N/A') ?></span>
-                    <button class="edit-btn" onclick="openEditModal('Scoring System', '<?= $details['scoringSystem'] ?? '' ?>', 'scoringSystem')">Edit</button>
+                    <!-- <button class="edit-btn" onclick="openEditModal('Scoring System', '<?= $details['scoringSystem'] ?? '' ?>', 'scoringSystem')">Edit</button> -->
                 </div>
                 <div class="detail-row">
                     <strong>Rules Link:</strong>
@@ -60,8 +60,8 @@
                             <?= htmlspecialchars($details['rulesLink'] ?? 'N/A') ?>
                         </a>
                     </span>
-                    <button class="edit-btn" onclick="openEditModal('Rules Link', '<?= $details['rulesLink'] ?? '' ?>', 'rulesLink')">Edit</button>
-                    <button class="edit-btn" onclick="openEditModal('Sport ID', '<?= $sport['sportId'] ?? '' ?>', 'sportId', '<?= $sport['id'] ?? '' ?>')" style="display:none"></button>
+                    <!-- <button class="edit-btn" onclick="openEditModal('Rules Link', '<?= $details['rulesLink'] ?? '' ?>', 'rulesLink')">Edit</button> -->
+                    <!-- <button class="edit-btn" onclick="openEditModal('Sport ID', '<?= $sport['sportId'] ?? '' ?>', 'sportId', '<?= $sport['id'] ?? '' ?>')" style="display:none"></button> -->
 
                 </div>
             </div>
@@ -74,7 +74,7 @@
 
     <!-- Back Button -->
     <div class="back-button">
-        <a href="<?= ROOT ?>/admin/sportManage" class="btn">Back to Manage Sports</a>
+        <a href="<?= ROOT ?>/admin/sportManage/sdas" class="btn">Back to Manage Sports</a>
     </div>
 
     <!-- Edit Modal -->

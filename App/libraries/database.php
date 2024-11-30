@@ -71,13 +71,18 @@
             return $this->stmt->fetch(PDO::FETCH_OBJ);
         }
 
-
+        // Assuming this is part of your database class
+        public function singleArray() {
+            // Execute the query
+            $this->execute();
+            // Fetch the result as an associative array
+            return $this->stmt->fetch(PDO::FETCH_ASSOC); // Fetches a single record as an associative array
+        }
+        
         //get row count
         public function rowCount(){
             return $this->stmt->rowCount();
         }
-
-        
 
          // Function to generate a custom auto-incrementing sportId
         public function generateSportId() {
@@ -97,7 +102,6 @@
             // Return the new sportId in the desired format
             return 'TS' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: TS001
         }
-
 
         public function generateUserId() {
             // Query to get the last userId
@@ -216,8 +220,6 @@
         }
         
 }
-
-
 
 
 ?>
