@@ -10,6 +10,12 @@
 
     <?php require 'navbar.php'?>
     <?php require 'sidebar.php'?>
+    <?php 
+    
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . ROOT . '/loginController/login');
+    exit;
+}?>
     
    <div class="dashboard-container">
         <div class="dashboard-header">
@@ -49,8 +55,8 @@
                 <h2>Registered Sports</h2>
                 <ul>
                     <li>Cricket</li>
-                    <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/coachProfile'">View My Coach</button>
-                    <button class="view-more-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/PlayerPerformance'">Track My Performance</button>
+                    <button class="view-more-btn" onclick="window.location.href='<?php echo ROOT ?>/Student/coachProfile'">View My Coach</button>
+                    <button class="view-more-btn" onclick="window.location.href='<?php echo ROOT ?>/Student/PlayerPerformance'">Track My Performance</button>
                 </ul>
             </div>
 
@@ -153,7 +159,7 @@
     </div>
 </div>
 
-    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
+    <?php require 'footer.php'?>
     
     <script src="/TrackMaster/Public/js/Student/carousel.js"></script>
     <script src="/TrackMaster/Public/js/Student/calender.js"></script>

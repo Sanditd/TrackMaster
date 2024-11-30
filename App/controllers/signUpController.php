@@ -8,6 +8,11 @@
             $this->userModel = $this->model('User');
         }
 
+        public function index() {
+            // Default logic for the controller
+            // echo "SignUp index method called.";
+        }
+
 
         public function studentsignupview() {
     

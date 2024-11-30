@@ -31,9 +31,9 @@ class loginController extends Controller {
                     // If user is found and credentials are correct
                     if ($user) {
                         // Start session and store user information
-                        session_start();
-                        $_SESSION['user_id'] = $user->userId; // Corrected to object access
-                        $_SESSION['username'] = $user->userName; // Corrected to object access
+                        
+                        $_SESSION['user_id'] = $user->user_id; // Corrected to object access
+                        $_SESSION['username'] = $user->username; // Corrected to object access
                         // $_SESSION['role'] = $user->role; // Storing the user's role in session
         
                         // Redirect to the appropriate dashboard based on the role
@@ -65,6 +65,7 @@ class loginController extends Controller {
 
                     }
                     
+                    
                 }
             }
 
@@ -72,6 +73,15 @@ class loginController extends Controller {
             // Load the login view (HTML)
             $this->view('/Admin/login', ['error' => $error]);
 
+        }
+
+        public function logout(){
+            unset($_SESSION['user_id']);
+            unset($_SESSION['username']);
+            session_destroy();
+
+            header('Location: ' . ROOT . '/loginController/login');
+                        exit;
         }
 
     }

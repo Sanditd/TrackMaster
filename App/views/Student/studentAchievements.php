@@ -11,6 +11,12 @@
 
 <?php require 'navbar.php'?>
 <?php require 'sidebar.php'?>
+<?php 
+// if (!isset($_SESSION['user_id'])) {
+//     header('Location: ' . ROOT . '/loginController/login');
+//     exit;
+// }
+?>
 
     <div id="main">
         <div class="title">
@@ -104,9 +110,9 @@
             
             <div class="form-section">
                 <h2>Add a New Achievement</h2>
-                <form action="/TrackMaster/App/controllers/student/save" method="POST">  
+                <form action="<?php echo ROOT?>/student/saveAchievement" method="POST">  
                     <label for="place"> Place/Rank : </label> 
-                    <textarea id="description" required></textarea>  
+                    <textarea id="description"  name="place" required></textarea>  
 
                     <label for="level">Level :</label>
                     <input type="radio" id="level1" name="level" value="zonal" required> Zonal Level </br>
@@ -114,10 +120,10 @@
                     <input type="radio" id="level3" name="level" value="national" required> National Level</br>
            
                     <label for="description">Description :</label>
-                    <textarea id="description"></textarea>
+                    <textarea id="description" name="description"></textarea>
 
                     <label for="date">Date :</label>
-                    <input type="date" id="date" required>
+                    <input type="date" id="date" name="date" required>
                        
                     <center>
                         <button class="edit-button" type="submit"> Add </button>
@@ -147,8 +153,8 @@
                                     <td><?php echo $achievement->description; ?></td>
                                     <td><?php echo $achievement->date; ?></td>
                                     <td>
-                                        <a href="<?php echo URLROOT; ?>/Student/editAchievement/<?php echo $achievement->id; ?>">Edit</a>
-                                        <form action="<?php echo URLROOT; ?>/Student/deleteAchievement/<?php echo $achievement->id; ?>" method="POST" style="display:inline;">
+                                        <a href="<?php echo URLROOT; ?>/Student/editAchievement/<?php echo $achievement->achievement_id; ?>">Edit</a>
+                                        <form action="<?php echo URLROOT; ?>/Student/deleteAchievement/<?php echo $achievement->achievement_id; ?>" method="POST" style="display:inline;">
                                             <button type="submit">Delete</button>
                                         </form>
                                     </td>
@@ -160,7 +166,7 @@
         </div>   
     </div>
 
-    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
+    <?php require 'footer.php'?>
 
     <script src="/TrackMaster/Public/js/Student/carousel.js"></script>
     <script src="/TrackMaster/Public/js/Student/achievements.js"></script>

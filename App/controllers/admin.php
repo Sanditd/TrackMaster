@@ -267,7 +267,7 @@
         //load sport view
         public function sportView($sportId) {
             try {
-                // $sportId = 'TS001';
+                 //$sportId = 'TS002';
                 // Validate input
                 if (empty($sportId)) {
                     throw new Exception("Invalid sport ID!");
@@ -278,6 +278,7 @@
         
                 // Get the sport data by ID
                 $sport = $this->sportModel->getSportById($sportId);
+                //var_dump($sport);
         
                 // Debug: Check if sport data is returned
                 if (!$sport) {
@@ -337,6 +338,185 @@
             }
         }
             echo "Error updating sport detail.";
+        }
+
+        public function indsportEdit($sportId) {
+            // Check if the request method is POST
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $filters = [
+                    'duration' => FILTER_SANITIZE_NUMBER_INT,
+                    'isIndoor' => FILTER_SANITIZE_STRING,
+                    'equipment' => FILTER_SANITIZE_STRING,
+                    'categories' => FILTER_SANITIZE_STRING,
+                    'scoringSystem' => FILTER_SANITIZE_STRING,
+                    'rulesLink' => FILTER_SANITIZE_URL,
+                ];
+        
+                // Filter and sanitize POST data
+                $_POST = filter_input_array(INPUT_POST, $filters);
+        
+                // Create the data array with sanitized data
+                $data = [
+                    'sportId' => $sportId,  // Use $sportId passed to the method
+                    'duration' => trim($_POST['duration']),
+                    'isIndoor' => trim($_POST['isIndoor']),
+                    'equipment' => trim($_POST['equipment']),
+                    'categories' => trim($_POST['categories']),
+                    'categoriesJson' => json_encode(explode(',', 'categories')),
+                    'scoringSystem' => trim($_POST['scoringSystem']),
+                    'rulesLink' => trim($_POST['rulesLink']),
+                    'error' => ''
+                ];
+
+                
+        
+                // Validate the input data
+                if (empty($data['sportId'])) {
+                    $data['error'] = 'Sport Id not available';
+                } elseif (empty($data['duration'])) {
+                    $data['error'] = 'Please enter duration';
+                } elseif (empty($data['isIndoor'])) {
+                    $data['error'] = 'Please enter location type';
+                } elseif (empty($data['equipment'])) {
+                    $data['error'] = 'Please enter equipment';
+                } elseif (empty($data['categories'])) {
+                    $data['error'] = 'Please enter categories';
+                } elseif (empty($data['scoringSystem'])) {
+                    $data['error'] = 'Please enter scoringSystem';
+                } elseif (empty($data['rulesLink'])) {
+                    $data['error'] = 'Please enter URL of rules';
+                }
+        
+                // If there are errors, reload the form with error messages
+                if (!empty($data['error'])) {
+                    $this->view('/Admin/indsportEdit', $data);
+                    return;
+                }
+        
+                // Update the sport in the database using the model
+                if ($this->sportModel->indsportEdit($data)) {
+                    header('Location: ' . ROOT . '/admin/sportManage/asd');
+                    exit;
+                } else {
+                    $data['error'] = 'Something went wrong while updating the sport.';
+                    $this->view('/Admin/indsportEdit', $data);
+                }
+        
+            } else {
+                // Retrieve the sport data from the model
+                $sport = $this->sportModel->getIndSportDetails($sportId);
+                $sportName = $this->sportModel->getSportById($sportId);
+        
+                if (!$sport) {
+                    $data = [
+                        'error' => 'Sport not found.'
+                    ];
+                    $this->view('/Admin/indsportEdit', $data);
+                    return;
+                }
+        
+                // Pass the sport data to the view for editing
+                $data = [
+                    'sport' => $sport,
+                    'sportName' => $sportName,
+                    'error' => ''
+                ];
+                $this->view('/Admin/indsportEdit', $data);
+            }
+        }
+        
+        public function teamsportEdit($sportId) {
+            // Check if the request method is POST
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $filters = [
+                    'numPlayers' => FILTER_SANITIZE_NUMBER_INT,
+                    'positions' => FILTER_SANITIZE_STRING,
+                    'teamFormation' => FILTER_SANITIZE_STRING,
+                    'durationMinutes' => FILTER_SANITIZE_NUMBER_INT,
+                    'halfTimeDuration' => FILTER_SANITIZE_NUMBER_FLOAT,
+                    'isOutdoor' => FILTER_SANITIZE_STRING,
+                    'equipment' => FILTER_SANITIZE_STRING,
+                    'rulesLink' => FILTER_SANITIZE_URL,
+                ];
+        
+                // Filter and sanitize POST data
+                $_POST = filter_input_array(INPUT_POST, $filters);
+        
+                // Create the data array with sanitized data
+                $data = [
+                    'sportId' => $sportId,  // Use $sportId passed to the method
+                    'numPlayers' => trim($_POST['numPlayers']),
+                    'positions' => trim($_POST['positions']),
+                    'positionsJson' => json_encode(explode(',', 'positions')),
+                    'teamFormation' => trim($_POST['teamFormation']),
+                    'durationMinutes' => trim($_POST['durationMinutes']),
+                    'halfTimeDuration' => trim($_POST['halfTimeDuration']),
+                    'isOutdoor' => trim($_POST['isOutdoor']),
+                    'equipment' => trim($_POST['equipment']),
+                    'rulesLink' => trim($_POST['rulesLink']),
+                    'error' => ''
+                ];
+
+                
+        
+                // Validate the input data
+                if (empty($data['sportId'])) {
+                    $data['error'] = 'Sport Id not available';
+                } elseif (empty($data['numPlayers'])) {
+                    $data['error'] = 'Please enter duration';
+                } elseif (empty($data['positions'])) {
+                    $data['error'] = 'Please enter location type';
+                } elseif (empty($data['teamFormation'])) {
+                    $data['error'] = 'Please enter equipment';
+                } elseif (empty($data['durationMinutes'])) {
+                    $data['error'] = 'Please enter categories';
+                } elseif (empty($data['halfTimeDuration'])) {
+                    $data['error'] = 'Please enter scoringSystem';
+                } elseif (empty($data['isOutdoor'])) {
+                    $data['error'] = 'Please enter URL of rules';
+                } elseif (empty($data['equipment'])) {
+                    $data['error'] = 'Please enter URL of rules';
+                }elseif (empty($data['rulesLink'])) {
+                    $data['error'] = 'Please enter URL of rules';
+                }
+        
+        
+                // If there are errors, reload the form with error messages
+                if (!empty($data['error'])) {
+                    $this->view('/Admin/teamsportEdit', $data);
+                    return;
+                }
+        
+                // Update the sport in the database using the model
+                if ($this->sportModel->teamsportEdit($data)) {
+                    header('Location: ' . ROOT . '/admin/sportManage/asd');
+                    exit;
+                } else {
+                    $data['error'] = 'Something went wrong while updating the sport.';
+                    $this->view('/Admin/teamsportEdit', $data);
+                }
+        
+            } else {
+                // Retrieve the sport data from the model
+                $sport = $this->sportModel->getTeamSportDetails($sportId);
+                $sportName = $this->sportModel->getSportById($sportId);
+        
+                if (!$sport) {
+                    $data = [
+                        'error' => 'Sport not found.'
+                    ];
+                    $this->view('/Admin/teamsportEdit', $data);
+                    return;
+                }
+        
+                // Pass the sport data to the view for editing
+                $data = [
+                    'sport' => $sport,
+                    'sportName' => $sportName,
+                    'error' => ''
+                ];
+                $this->view('/Admin/teamSportEdit', $data);
+            }
         }
 
         
