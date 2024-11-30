@@ -26,7 +26,7 @@
                 <li><a href="<?php echo URLROOT ?>/School/Dashboard">Dashboard</a></li>
                 <li><a href="<?php echo URLROOT ?>/School/Profile">My Profile</a></li>
                 <li><a href="<?php echo URLROOT ?>/School/StudentsData">Student Records</a></li>
-                <li><a href="<?php echo URLROOT ?>/School/records">Acedemic Records</a></li>
+                <li><a href="<?php echo URLROOT ?>/School/viewrecords">Acedemic Records</a></li>
                 <li><a href="<?php echo URLROOT ?>/School/requests">Request Management</a></li>
                 
             </ul>

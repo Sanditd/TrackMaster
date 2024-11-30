@@ -1,0 +1,111 @@
+
+<?php
+require_once __DIR__ . '/../libraries/database.php';
+
+class SchoolModel {
+    private $db;
+
+    public function __construct() {
+        $this->db = new database();
+    }
+
+    // Retrieve school_id for the logged-in user
+    public function getSchoolId($user_id) {
+        $this->db->query("SELECT school_id FROM user_school WHERE user_id = :user_id");
+        $this->db->bind(':user_id', $user_id);
+
+        // Execute the query and return the result
+        return $this->db->single();
+    }
+
+    // Retrieve players for a given school_id
+    public function getPlayersForSchool($school_id) {
+        $this->db->query("
+            SELECT u.user_id, u.firstname
+            FROM users u
+            JOIN user_player up ON u.user_id = up.user_id
+            WHERE up.school_id = :school_id
+        ");
+        $this->db->bind(':school_id', $school_id);
+
+        // Execute the query and return the results
+        return $this->db->resultSet();
+    }
+
+    public function getPlayerId($user_id) {
+        $this->db->query("SELECT player_id FROM user_player WHERE user_id = :user_id");
+        $this->db->bind(':user_id', $user_id);
+        return $this->db->single();
+    }
+    public function getUserIdByFirstname($firstname) {
+        $this->db->query("SELECT user_id FROM users WHERE firstname = :firstname");
+        $this->db->bind(':firstname', $firstname);
+        return $this->db->single();  // Returns the user record
+    }
+    
+
+
+    public function insertRecord($data) {
+        $this->db->query("INSERT INTO academic_records (player_id, grade, term, average, rank, notes)
+        VALUES (:player_id, :grade, :term, :average, :rank, :notes)");
+        $this->db->bind(':player_id', $data['player_id']);
+        $this->db->bind(':grade', $data['grade']);
+        $this->db->bind(':term', $data['term']);
+        $this->db->bind(':average', $data['average']);
+        $this->db->bind(':rank', $data['rank']);
+        $this->db->bind(':notes', $data['notes']);
+
+        return $this->db->execute();
+    }
+
+    public function getAcademicRecordsByPlayerId($school_id) {
+        $this->db->query("
+        SELECT u.firstname, ar.grade, ar.term, ar.average, ar.rank, ar.notes, ar.player_id
+        FROM academic_records ar
+        JOIN user_player up ON ar.player_id = up.player_id
+        JOIN users u ON up.user_id = u.user_id
+        WHERE up.school_id = :school_id
+        ");
+        $this->db->bind(':school_id', $school_id);
+        return $this->db->resultSet();   
+    }
+    
+    public function getRecordByPlayerId($player_id) {
+        $this->db->query("SELECT * FROM academic_records WHERE player_id = :player_id");
+        $this->db->bind(':player_id', $player_id);
+        return $this->db->single();
+    }
+    
+    public function getUserByPlayerId($player_id) {
+        $this->db->query("SELECT u.* FROM users u JOIN user_player up ON u.user_id = up.user_id WHERE up.player_id = :player_id");
+        $this->db->bind(':player_id', $player_id);
+        return $this->db->single();
+    }
+
+    
+    public function getRecordById($id) {
+        $this->db->query('SELECT * FROM records WHERE player_id = :id');
+        $this->db->bind(':id', $id);
+        return $this->db->single();
+    }
+    
+    public function updateRecord($data) {
+        $this->db->query('UPDATE records SET grade = :grade, term = :term, average = :average, rank = :rank, notes = :notes WHERE player_id = :player_id');
+        $this->db->bind(':grade', $data['grade']);
+        $this->db->bind(':term', $data['term']);
+        $this->db->bind(':average', $data['average']);
+        $this->db->bind(':rank', $data['rank']);
+        $this->db->bind(':notes', $data['notes']);
+        $this->db->bind(':player_id', $data['player_id']);
+    
+        return $this->db->execute();
+    }
+    
+    public function deleteRecordById($id) {
+        $this->db->query('DELETE FROM records WHERE player_id = :id');
+        $this->db->bind(':id', $id);
+    
+        return $this->db->execute();
+    }
+    
+}
