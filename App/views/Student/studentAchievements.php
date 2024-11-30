@@ -12,105 +12,55 @@
 <?php require 'navbar.php'?>
 <?php require 'sidebar.php'?>
 <?php 
-// if (!isset($_SESSION['user_id'])) {
-//     header('Location: ' . ROOT . '/loginController/login');
-//     exit;
-// }
-?>
+    // echo $_SESSION['user_id'];
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . ROOT . '/loginController/login');
+    exit;
+}?>
 
     <div id="main">
         <div class="title">
             <h1>Student Player Achievements</h1>
         </div>
  
-        <center><div class="achievements-section">
-            <div class="carousel">
-                <div class="carousel-inner" id="carouselAchievementsDashboard">
-          
-                    <div class="carousel-item ">
-                        <div class="image-container">
-                            <img src="/TrackMaster/Public/img/Student/achievements.png">
+        <center>
+    <div class="achievements-section">
+        <div class="carousel">
+            <div class="carousel-inner" id="carouselAchievementsDashboard">
+                <?php if (!empty($data['achievements'])): ?>
+                    <?php foreach ($data['achievements'] as $achievement): ?>
+                        <div class="carousel-item">
+                            <div class="image-container">
+                                <img src="/TrackMaster/Public/img/Student/achievements.png" alt="Achievement">
+                            </div>
+                            <div class="content-container">
+                                <h3><?php echo htmlspecialchars($achievement->place); ?></h3>
+                                <i><h3><?php echo ucfirst(htmlspecialchars($achievement->level)); ?></h3></i>
+                                <p><?php echo htmlspecialchars(date('Y', strtotime($achievement->date))); ?></p>
+                                <p><?php echo htmlspecialchars($achievement->description); ?></p>
+                            </div>
                         </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="carousel-item">
                         <div class="content-container">
-                            <h3>Place/Rank</h3>
-                            <i><h3>Level</h3></i>
-                            <p>Date (Year)</p>
-                            <p>Description of achievement 1.</p>
+                            <p>No achievements available.</p>
                         </div>
                     </div>
-
-                    <div class="carousel-item ">
-                        <div class="image-container">
-                            <img src="/TrackMaster/Public/img/Student/achievements.png">
-                        </div>
-                        <div class="content-container">
-                            <h3>Place/Rank</h3>
-                            <i><h3>Level</h3></i>
-                            <p>Date (Year)</p>
-                            <p>Description of achievement 1.</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item ">
-                        <div class="image-container">
-                            <img src="/TrackMaster/Public/img/Student/achievements.png">
-                        </div>
-                        <div class="content-container">
-                            <h3>Place/Rank</h3>
-                            <i><h3>Level</h3></i>
-                            <p>Date (Year)</p>
-                            <p>Description of achievement 1.</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item ">
-                        <div class="image-container">
-                            <img src="/TrackMaster/Public/img/Student/achievements.png">
-                        </div>
-                        <div class="content-container">
-                            <h3>Place/Rank</h3>
-                            <i><h3>Level</h3></i>
-                            <p>Date (Year)</p>
-                            <p>Description of achievement 1.</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item ">
-                        <div class="image-container">
-                            <img src="/TrackMaster/Public/img/Student/achievements.png">
-                        </div>
-                        <div class="content-container">
-                            <h3>Place/Rank</h3>
-                            <i><h3>Level</h3></i>
-                            <p>Date (Year)</p>
-                            <p>Description of achievement 1.</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item ">
-                        <div class="image-container">
-                            <img src="/TrackMaster/Public/img/Student/achievements.png">
-                        </div>
-                        <div class="content-container">
-                            <h3>Place/Rank</h3>
-                            <i><h3>Level</h3></i>
-                            <p>Date (Year)</p>
-                            <p>Description of achievement 1.</p>
-                        </div>
-                    </div>
-
-                </div>
-                <button class="carousel-control prev" onclick="prevSlide()">❮</button>
-                <button class="carousel-control next" onclick="nextSlide()">❯</button>
+                <?php endif; ?>
             </div>
+            <button class="carousel-control prev" onclick="prevSlide()">❮</button>
+            <button class="carousel-control next" onclick="nextSlide()">❯</button>
         </div>
-        </center>
+    </div>
+</center>
 
         <div class="container">
             
             <div class="form-section">
                 <h2>Add a New Achievement</h2>
                 <form action="<?php echo ROOT?>/student/saveAchievement" method="POST">  
+                    <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']?>">
                     <label for="place"> Place/Rank : </label> 
                     <textarea id="description"  name="place" required></textarea>  
 
@@ -153,7 +103,7 @@
                                     <td><?php echo $achievement->description; ?></td>
                                     <td><?php echo $achievement->date; ?></td>
                                     <td>
-                                        <a href="<?php echo URLROOT; ?>/Student/editAchievement/<?php echo $achievement->achievement_id; ?>">Edit</a>
+                                        <a href="<?php echo URLROOT.'Student/editAchievement/'.$achievement-> achievement_id?>">Edit</a>
                                         <form action="<?php echo URLROOT; ?>/Student/deleteAchievement/<?php echo $achievement->achievement_id; ?>" method="POST" style="display:inline;">
                                             <button type="submit">Delete</button>
                                         </form>

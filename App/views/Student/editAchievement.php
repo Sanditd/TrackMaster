@@ -5,43 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Achievement</title>
     <link rel="stylesheet" href="/TrackMaster/Public/css/Student/achievements.css">
-
 </head>
 <body>
 
-<?php require 'navbar.php'?>
-<?php require 'sidebar.php'?>
- 
-    <center>    
+<?php require 'navbar.php'; ?>
+<?php require 'sidebar.php'; ?>
+<?php 
+    // echo $_SESSION['user_id'];
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . ROOT . '/loginController/login');
+    exit;
+}?>
+
+<center>    
     <div class="edit-section">
-    <div class="form-section">
-    <h2>Edit Achievement</h2>
-    <form action="<?php echo URLROOT; ?>/Student/editAchievement/<?php echo $data['id']; ?>" method="POST">  
-        <label for="place"> Place/Rank : </label> 
-        <textarea id="place" name="place" required><?php echo $data['place']; ?></textarea>  
+        <div class="form-section">
+            <h2>Edit Achievement</h2>
 
-        <label for="level">Level :</label>
-        <input type="radio" id="level1" name="level" value="zonal" <?php echo ($data['level'] == 'zonal') ? 'checked' : ''; ?> required> Zonal Level </br>
-        <input type="radio" id="level2" name="level" value="provincial" <?php echo ($data['level'] == 'provincial') ? 'checked' : ''; ?> required> Provincial Level</br>
-        <input type="radio" id="level3" name="level" value="national" <?php echo ($data['level'] == 'national') ? 'checked' : ''; ?> required> National Level</br>
+            <!-- Display error if any -->
+            <?php if (!empty($data['error'])): ?>
+                <p class="error-message"><?php echo htmlspecialchars($data['error']); ?></p>
+            <?php endif; ?>
 
-        <label for="description">Description :</label>
-        <textarea id="description" name="description"><?php echo $data['description']; ?></textarea>
+            <form action="<?php echo URLROOT; ?>/Student/editAchievement/<?php echo htmlspecialchars($data['achievement']->	achievement_id ); ?>" method="POST">  
+                <label for="place">Place/Rank:</label> 
+                <textarea id="place" name="place" required><?php echo htmlspecialchars($data['achievement']->place ?? ''); ?></textarea>  
 
-        <label for="date">Date :</label>
-        <input type="date" id="date" name="date" value="<?php echo $data['date']; ?>" required>
+                <label for="level">Level:</label>
+                <input type="radio" id="level1" name="level" value="zonal" <?php echo ($data['achievement']->level ?? '') == 'zonal' ? 'checked' : ''; ?> required> Zonal Level </br>
+                <input type="radio" id="level2" name="level" value="provincial" <?php echo ($data['achievement']->level ?? '') == 'provincial' ? 'checked' : ''; ?> required> Provincial Level</br>
+                <input type="radio" id="level3" name="level" value="national" <?php echo ($data['achievement']->level ?? '') == 'national' ? 'checked' : ''; ?> required> National Level</br>
 
-        <center>
-            <button class="edit-button" type="submit"> Save </button>
-            <button class="edit-button" type="button" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAchievements'"> Cancel </button>
-        </center>
-    </form>
-</div>
-            </div></center>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description"><?php echo htmlspecialchars($data['achievement']->description ?? ''); ?></textarea>
 
-            <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" value="<?php echo htmlspecialchars($data['achievement']->date ?? ''); ?>" required>
 
-    <script src="/Public/js/Student/achievements.js"></script>
+                <center>
+                    <button class="edit-button" type="submit">Save</button>
+                    <button class="edit-button" type="button" onclick="window.location.href='<?php echo URLROOT; ?>/Student/studentAchievements'">Cancel</button>
+                </center>
+            </form>
+        </div>
+    </div>
+</center>
+
+<?php require 'footer.php'; ?>
+
+<script src="/Public/js/Student/achievements.js"></script>
 
 </body>
 </html>
