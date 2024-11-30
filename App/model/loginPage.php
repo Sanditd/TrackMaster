@@ -12,7 +12,7 @@ require_once __DIR__ . '/../libraries/database.php';
             // Prepare the query to fetch user details by username
             $this->db->query("SELECT * FROM users WHERE username = :username");
             $this->db->bind(':username', $username);
-    
+            
             // Execute the query
             $user = $this->db->single();
     
@@ -40,7 +40,7 @@ require_once __DIR__ . '/../libraries/database.php';
         try {
     
             // Insert new user into the user table
-            $this->db->query("INSERT INTO user (userId, userName, role, fName, lName, address, PhoneNumber, email, cPassword) 
+            $this->db->query("INSERT INTO users (user_Id, userName, role, fName, lName, address, phoneNumber, email, Password) 
                                VALUES (:userId, :username, :role, :fname, :lname, :address, :phone_number, :email, :password)");
     
             $this->db->bind(':userId', $newUserId);
@@ -145,11 +145,7 @@ public function getUserByUsername($username) {
     return $result ? $result : false;
 }
 
-public function getDiv(){
-    $this->db->query("SELECT * FROM divisions");
-    $result = $this->db->resultSet();
-    return $result;
-}
+
 
 public function getProv(){
     $this->db->query("SELECT * FROM provinces");
@@ -170,9 +166,5 @@ public function getSchools(){
 }
 
 
-
-        // Return the result, which is either the user data or false if not found
-        return $result ? $result : false;
     }
-}
 ?>
