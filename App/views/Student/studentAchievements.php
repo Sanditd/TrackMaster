@@ -11,6 +11,12 @@
 
 <?php require 'navbar.php'?>
 <?php require 'sidebar.php'?>
+<?php 
+// if (!isset($_SESSION['user_id'])) {
+//     header('Location: ' . ROOT . '/loginController/login');
+//     exit;
+// }
+?>
 
     <div id="main">
         <div class="title">
@@ -106,7 +112,7 @@
                 <h2>Add a New Achievement</h2>
                 <form action="<?php echo ROOT?>/student/saveAchievement" method="POST">  
                     <label for="place"> Place/Rank : </label> 
-                    <textarea id="description" required></textarea>  
+                    <textarea id="description"  name="place" required></textarea>  
 
                     <label for="level">Level :</label>
                     <input type="radio" id="level1" name="level" value="zonal" required> Zonal Level </br>
@@ -114,10 +120,10 @@
                     <input type="radio" id="level3" name="level" value="national" required> National Level</br>
            
                     <label for="description">Description :</label>
-                    <textarea id="description"></textarea>
+                    <textarea id="description" name="description"></textarea>
 
                     <label for="date">Date :</label>
-                    <input type="date" id="date" required>
+                    <input type="date" id="date" name="date" required>
                        
                     <center>
                         <button class="edit-button" type="submit"> Add </button>
