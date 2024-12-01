@@ -80,9 +80,35 @@ textarea {
     font-size: 14px;
     font-weight: bold;
     transition: all 0.3s ease-in-out;
+    margin-top: 15px;
 }
 
 .edit-button:hover {
     background-color: #cc8400;
     transform: scale(1.05);
+}
+
+.back-button {
+    background-color: #c40202;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    margin-top: 30px;
+}
+
+.back-button:hover {
+    background-color: #c40202;
+    transform: scale(1.05);
+}
+
+.popup-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
