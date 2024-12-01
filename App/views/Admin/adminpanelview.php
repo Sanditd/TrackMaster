@@ -5,61 +5,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/form.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/dashboard.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
-    <link rel="stylesheet" href="../../../Public/css/Admin/userManage.css">
-    <script src="../../Public/js/Admin/sidebar.js"></script>
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Admin/adminDashboard.css">
  
 </head>
 
 <body>
     <?php require_once 'adminNav.php'?>
 
-    <div id="frame">
-        <div class="container">
-            <div class="chart">
-                <div id="topic">
-                    Matrix
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Admin Dashboard</h1>
+        </div>
+
+        <div class="main-content">
+
+            <div class="section upcoming-appointments">
+                <center>
+                <div id="calendar">
+                    <div id="header">
+                        <button id="prevMonth">&lt;</button>
+                        <span id="monthYear"></span>
+                        <button id="nextMonth">&gt;</button>
+                    </div>
+                <div id="days">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                 </div>
+                <div id="dates"> </div>
             </div>
 
-            <div class="alert">
-                <div id="topic">
-                    System Alert
+            <div id="noteModal" class="modal hidden">
+                <div class="modal-content">
+                    <h3 id="noteTitle">Add Note</h3>
+                    <textarea id="noteInput" placeholder="Write your note here..."></textarea>
+                    <button class="view-more-btn" id="saveNote">Save Note</button>
+                    <button class="view-more-btn" id="closeModal">Close</button>
                 </div>
-
-                <table class="tg">
-                    <thead>
-                        <tr>
-                            <td class="tg-0lax">
-                                2024.06.30 | 08.30
-                            </td>
-                            <td class="tg-req">
-                                <div id="tg-con">Account delete req</div>
-                            </td>
-                            <td>
-                                <div id="tg-button"><button>View</button></div>
-                            </td>
-                        </tr>
-                    </thead>
-                </table>
+            </div>
+            </center>
             </div>
 
-            <div class="user">
-                <div id="topic">
-                    User Engagement
-                </div>
+            <div class="section upcoming-appointments">
+                <h2>System Alerts</h2>
+                <ul>
+                    <li><strong> Account Deletion Requests : </strong>4</li>
+                    <li><strong> Report Generation Requests : </strong>6</li>
+                    <li><strong> Help Requests : </strong>8</li>
+                    <li><strong> Suspicious Activities : </strong>3</li>
+                    <li><strong> System Maintanance Alerts : </strong> 0</li>
+                    <li><strong> Fund Request Applications : </strong> 2</li>
+                    <center><button class="view-more-btn">View All</button></center>
+                </ul>
+            </div>
 
-                <div>
-                    <table class="ue">
+            <div class="section upcoming-appointments">
+                <h2>User Engagement</h2>
+                <table class="ue">
                         <tr>
                             <th rowspan="2">Period</th>
                             <th colspan="4">New Users</th>
-                            <th rowspan="2">Account Deletions</th>
+                            <th colspan="4">Total Users</th>
                         </tr>
 
                         <tr>
+                            <td>Coaches</td>
+                            <td>Players</td>
+                            <td>School</td>
+                            <td>Parents</td>
                             <td>Coaches</td>
                             <td>Players</td>
                             <td>School</td>
@@ -72,49 +83,63 @@
                             <td>26</td>
                             <td>1</td>
                             <td>26</td>
-                            <td>0</td>
+                            <td>4</td>
+                            <td>39</td>
+                            <td>6</td>
+                            <td>30</td>
+                        </tr>
+
+                        <tr>
+                            <td>July 2024</td>
+                            <td>2</td>
+                            <td>26</td>
+                            <td>1</td>
+                            <td>26</td>
+                            <td>4</td>
+                            <td>39</td>
+                            <td>6</td>
+                            <td>30</td>
                         </tr>
 
                     </table>
-                </div>
-
             </div>
-            <div class="sports">
-                <div id="topic">
-                    Sport Engagement
-                </div>
-            </div>
-            <div class="req">
-                <div id="topic">
-                    Account Deletion Request
-                </div>
-
-                <table class="tg">
-                    <thead>
+  
+            <div class="section upcoming-appointments">
+                <h2>Sport Management</h2>
+                <table class="ue">
                         <tr>
-                            <td class="tg-0lax">
-                                2024.06.30 | 08.30
-                            </td>
-                            <td class="tg-req">
-                                <div id="tg-con">Player : Charitha Sudewa</div>
-                            </td>
-                            <td>
-                                <div id="tg-button"><button>View</button></div>
-                            </td>
+                            <th rowspan="2">Sport Name</th>
+                            <th rowspan="2">Sport Type</th>
+                            <th colspan="2">Total Users</th>
                         </tr>
-                    </thead>
-                </table>
 
+                        <tr>
+                            <td>Coaches</td>
+                            <td>Players</td>
+                        </tr>
+
+                        <tr>
+                            <td>Cricket</td>
+                            <td>Team</td>
+                            <td>3</td>
+                            <td>40</td>
+                        </tr>
+
+                        <tr>
+                            <td>Chess</td>
+                            <td>Individual</td>
+                            <td>2</td>
+                            <td>24</td>
+                        </tr>
+
+                    </table>              
             </div>
-            <div class="notification">
-                <div id="topic">
-                    Notifications
-                </div>
-            </div>
+
         </div>
-</body>
+    </div>
 </div>
 
+<script src="/TrackMaster/Public/js/Student/calender.js"></script>
 
 </body>
 
