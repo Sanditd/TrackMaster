@@ -1,5 +1,5 @@
     <?php
-    session_start(); 
+    
 
     class SignUpController extends Controller {
         private $userModel;

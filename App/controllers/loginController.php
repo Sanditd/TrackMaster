@@ -26,8 +26,7 @@ class loginController extends Controller {
                     $error = 'Please fill in both fields.';
                 } else {
                     // Attempt to login with the provided credentials
-                    $user = $this->login->checkLoginCredentials($username, $password);
-        
+                    $user = $this->login->checkLoginCredentials($username, $password);  
                     // If user is found and credentials are correct
                     if ($user) {
                         // Start session and store user information

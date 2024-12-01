@@ -13,7 +13,7 @@
     <?php require 'sidebar.php'; ?>
 
     <div class="section recent-clients">
-        <table>
+        <table> 
             <thead>
                 <tr>
                     <th>Name</th>
@@ -26,32 +26,33 @@
                 </tr>
             </thead>
             <tbody id="studentTableBody">
-                <?php if (!empty($data['records'])): ?>
-                    <?php foreach ($data['records'] as $record): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($record->firstname); ?></td>
-                            <td class="editable"><?php echo htmlspecialchars($record->grade); ?></td>
-                            <td class="editable"><?php echo htmlspecialchars($record->term); ?></td>
-                            <td class="editable"><?php echo htmlspecialchars($record->average); ?></td>
-                            <td class="editable"><?php echo htmlspecialchars($record->rank); ?></td>
-                            <td class="editable"><?php echo htmlspecialchars($record->notes); ?></td>
-                            <td>
-                            <button class="action-btn edit-btn" type="button" onclick="window.location.href='<?php echo URLROOT ?>/School/editRecord?player_id=<?php echo $record->player_id; ?>'">Edit</button>
-                            <button 
-                                class="action-btn delete-btn" 
-                                type="button" 
-                                onclick="confirmDelete('<?php echo $record->player_id; ?>')">
-                                Delete
-                            </button>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="7">No records found.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
+    <?php if (!empty($data['records'])): ?>
+        <?php foreach ($data['records'] as $record): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($record->firstname); ?></td>
+                <td class="editable"><?php echo htmlspecialchars($record->grade); ?></td>
+                <td class="editable"><?php echo htmlspecialchars($record->term); ?></td>
+                <td class="editable"><?php echo htmlspecialchars($record->average); ?></td>
+                <td class="editable"><?php echo htmlspecialchars($record->rank); ?></td>
+                <td class="editable"><?php echo htmlspecialchars($record->notes); ?></td>
+                <td>
+                <button 
+                    class="action-btn edit-btn" 
+                    type="button" 
+                    onclick="window.location.href='<?php echo URLROOT ?>/School/editRecord/<?php echo $record->player_id; ?>'">
+                    Edit
+                </button>
+                <button class="action-btn delete-btn" type="button" onclick="confirmDelete('<?php echo $record->player_id; ?>')">Delete</button>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="7">No records found.</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
         </table>
     </div>
 
@@ -101,8 +102,7 @@
     function confirmDelete(playerId) {
     if (confirm("Are you sure you want to delete this record? This action cannot be undone.")) {
         // Redirect to the deleteRecord method with the player's ID
-        window.location.href = '<?php echo URLROOT; ?>/School/viewrecords/' + playerId;
-    }
+        window.location.href = '<?php echo URLROOT; ?>/School/deleteRecord/' + playerId;    }
 }
 </script>
 

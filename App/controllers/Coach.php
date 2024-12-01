@@ -82,6 +82,20 @@ class Coach extends Controller {
                 }
         }
 
+        public function filterPlayers() {
+            $role = $_POST['role'] ?? null;
+            $gender = $_POST['gender'] ?? null;
+    
+            // Call the model's filterPlayers method
+            $players = $this->coachModel->filterPlayers($role, $gender);
+    
+            // Return the filtered players as a JSON response
+            echo json_encode(['players' => $players]);
+        }
         
+
+        
+        
+     
         
     }

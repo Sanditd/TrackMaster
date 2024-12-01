@@ -117,6 +117,7 @@ require_once __DIR__ . '/../libraries/database.php';
         public function getSportById($sportId) {
             $this->db->query("SELECT * FROM sport WHERE sportId = :sportId");
             $this->db->bind(':sportId', $sportId);
+            $this->db->execute();
             return $this->db->singleArray(); // Fetch single record
         }
     
@@ -124,6 +125,7 @@ require_once __DIR__ . '/../libraries/database.php';
         public function getTeamSportDetails($sportId) {
             $this->db->query("SELECT * FROM teamsport WHERE sportId = :sportId");
             $this->db->bind(':sportId', $sportId);
+            $this->db->execute();
             return $this->db->singleArray();
         }
     
@@ -131,6 +133,7 @@ require_once __DIR__ . '/../libraries/database.php';
         public function getIndSportDetails($sportId) {
             $this->db->query("SELECT * FROM indsport WHERE sportId = :sportId");
             $this->db->bind(':sportId', $sportId);
+            $this->db->execute();
             return $this->db->singleArray();
         }
 
@@ -205,6 +208,12 @@ require_once __DIR__ . '/../libraries/database.php';
             
             // Execute the query
             return $this->db->execute();
+        }
+
+        public function deleteSportById($sportId) {
+            $this->db->query("DELETE FROM sport WHERE sportId = :sportId");
+            $this->db->bind(':sportId', $sportId);
+            $this->db->execute();
         }
 
     }

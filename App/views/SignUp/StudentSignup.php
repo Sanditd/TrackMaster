@@ -1,7 +1,7 @@
-<?php if (isset($_SESSION['error'])): ?>
+<!-- <?php if (isset($_SESSION['error'])): ?>
     <div class="error"><?php echo $_SESSION['error']; ?></div>
     <?php unset($_SESSION['error']); ?>
-<?php endif; ?>
+<?php endif; ?> -->
 
 <!DOCTYPE html>
     <html lang="en">
