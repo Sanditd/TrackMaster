@@ -7,8 +7,22 @@ class Student extends Controller {
     }
 
     public function dashboard() {
-        $data = [];
-        $this->view('Student/dashboard');
+        $userId = $_SESSION['user_id'];
+    
+        // Fetch achievements from the model
+        $achievements = $this->studentModel->getAchievementsByUser($userId);
+    
+        // Check if data is returned correctly
+        if (empty($achievements)) {
+            $data['error']="No achivement";
+            $this->view('Student/dashboard',$data);
+        }
+    
+        // Pass the data to the view
+        $data = [
+            'achievements' => $achievements
+        ];
+        $this->view('Student/dashboard',$data);
     }
 
     public function editStudentProfile() {
@@ -23,7 +37,7 @@ class Student extends Controller {
 
             // Process form data
             $data = [
-                'player_id' => '1',
+                'user_id' => trim($_POST['user_id']),
                 'place' => trim($_POST['place']),
                 'level' => trim($_POST['level']),
                 'description' => trim($_POST['description']),
@@ -77,50 +91,67 @@ class Student extends Controller {
             $this->view('Student/saveAchievement', $data);
         }
     }
-
-    public function editAchievement($id = null) {
-        if ($id === null) {
-            // Handle the case where ID is not provided
-            header('Location: ' . URLROOT . '/Student/studentAchievements');
-            exit();
-        }
-
+    public function editAchievement($achievement_id) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Process form
+            // Sanitize and process the POST data
             $data = [
-                'id' => $id,
+                'id' => $achievement_id,
                 'place' => trim($_POST['place']),
                 'level' => trim($_POST['level']),
                 'description' => trim($_POST['description']),
-                'date' => trim($_POST['date'])
+                'date' => trim($_POST['date']),
+                'errors' => []
             ];
-
-            if ($this->studentModel->updateAchievement($data)) {
-                header('Location: ' . URLROOT . '/Student/studentAchievements');
-            } else {
-                die('Something went wrong');
+    
+            // Validate inputs (add validations as needed)
+            if (empty($data['place'])) {
+                $data['errors'] = 'Place is required.';
             }
-        } else {
-            // Get existing achievement from model
-            $achievement = $this->studentModel->getAchievementById($id);
-
-            if ($achievement) {
+    
+            if (empty($data['level'])) {
+                $data['errors'] = 'Level is required.';
+            }
+    
+            if (empty($data['description'])) {
+                $data['errors']= 'Description is required.';
+            }
+    
+            if (empty($data['date'])) {
+                $data['errors'] = 'Date is required.';
+            }
+    
+            if (empty($data['errors'])) {
+                // Call the model to update the achievement
+                if ($this->studentModel->updateAchievement($data)) {
+                    header('Location: ' . URLROOT . '/Student/studentAchievements');
+                    exit();
+                } else {
+                    $data['errors'] = 'Something went wrong while updating the achievement.';
+                    $this->view('Student/editAchievement', $data);
+                }
+            } else {
+                // Reload the form with error messages
+                $this->view('Student/editAchievement', $data);
+            }
+        }else {
+            $achievement = $this->studentModel->getAchievementById($achievement_id);
+        
+            if (empty($achievement)) {
                 $data = [
-                    'id' => $id,
-                    'place' => $achievement->place,
-                    'level' => $achievement->level,
-                    'description' => $achievement->description,
-                    'date' => $achievement->date
+                    'error' => "Achievement is empty"
                 ];
-
                 $this->view('Student/editAchievement', $data);
             } else {
-                // Handle the case where the achievement is not found
-                header('Location: ' . URLROOT . '/Student/studentAchievements');
-                exit();
+                // Prepare data for the view
+                $data = [
+                    'achievement' => $achievement
+                ];
+                $this->view('Student/editAchievement', $data);
             }
         }
+        
     }
+    
 
     public function deleteAchievement($id = null) {
         if ($id === null) {
@@ -188,4 +219,30 @@ class Student extends Controller {
         $this->view('Student/Playerperformance');
     }
 
+    public function studentDashboard() {
+        // Assuming you're storing the user ID in session
+        $userId = $_SESSION['user_id'];
+    
+        // Fetch achievements from the model
+        $achievements = $this->studentModel->getAchievementsByUser($userId);
+    
+        // Check if data is returned correctly
+        if (empty($achievements)) {
+            // Handle the case where no achievements are found
+            $achievements = [];  // This prevents an undefined index warning in the view
+        }
+    
+        // Pass the data to the view
+        $data = [
+            'achievements' => $achievements
+        ];
+    
+        // Load the view
+        $this->view('Student/dashboard', $data);
+    }
+    
+    
+
 }
+
+

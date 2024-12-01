@@ -96,7 +96,6 @@
             return 'TS' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: TS001
         }
 
-
         public function generateUserId() {
             // Query to get the last userId
             $this->query("SELECT userId FROM user ORDER BY userId DESC LIMIT 1");
@@ -213,9 +212,6 @@
             return $this->dbh->lastInsertId();
         }
 }
-
-
-
 
 ?>
 

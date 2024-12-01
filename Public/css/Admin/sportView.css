@@ -170,3 +170,14 @@ button:hover {
 .modal-content .btn {
     margin-top: 10px;
 }
+
+
+   
+    .modal.hidden {
+        display: none;
+    }
+    .edit-btn {
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
