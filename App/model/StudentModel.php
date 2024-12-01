@@ -76,5 +76,11 @@ class StudentModel {
         return $this->db->resultSet();
     }
     
+    public function getUserDetails($userId) {
+        $this->db->query("SELECT * FROM users WHERE user_id = :userId");
+        $this->db->bind(':userId', $userId);
+        return $this->db->single(); // Return a single record
+    }
+    
     
 }

@@ -520,6 +520,25 @@
         }
 
         
+        public function deleteSport($sportId) {
+            try {
+                // Validate sportId
+                if (empty($sportId)) {
+                    throw new Exception("Invalid sport ID.");
+                }
+        
+                // Delete the sport from the database
+                $this->sportModel->deleteSportById($sportId);
+        
+                // Return a success response
+                http_response_code(200);
+                echo json_encode(["message" => "Sport deleted successfully."]);
+            } catch (Exception $e) {
+                // Handle errors and send error response
+                http_response_code(400);
+                echo json_encode(["error" => $e->getMessage()]);
+            }
+        }
         
         
 

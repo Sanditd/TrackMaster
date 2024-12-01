@@ -34,6 +34,10 @@ class loginController extends Controller {
                         
                         $_SESSION['user_id'] = $user->user_id; // Corrected to object access
                         $_SESSION['username'] = $user->username; // Corrected to object access
+                        $_SESSION['photo'] = 'data:image/jpeg;base64,' . base64_encode($user->photo);
+                        $_SESSION['role'] = $user->role; 
+
+
                         // $_SESSION['role'] = $user->role; // Storing the user's role in session
         
                         // Redirect to the appropriate dashboard based on the role

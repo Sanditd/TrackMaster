@@ -54,6 +54,10 @@
 
         }
 
+        public function singleArray(){
+            return $this->stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
         //excute the prepare stmt
         public function execute(){
             return $this->stmt->execute();
@@ -211,6 +215,8 @@
         public function lastInsertId() {
             return $this->dbh->lastInsertId();
         }
+
+        
 }
 
 

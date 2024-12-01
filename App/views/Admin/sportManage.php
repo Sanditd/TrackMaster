@@ -48,18 +48,21 @@
                         <td><?= htmlspecialchars($sport->sportName) ?></td>
                         <td><?= htmlspecialchars($sport->sportType) ?></td>
                         <td>
-                        <button 
-                class="view-btn" 
-                onclick="viewSport(<?= htmlspecialchars(json_encode($sport->sportId)) ?>)">
-        
-                View
-            </button>
-            <button class="edit-btn" 
-    onclick="editSport(<?= htmlspecialchars(json_encode($sport->sportId)) ?>, '<?= htmlspecialchars($sport->sportType) ?>')">
-    Edit
-</button>
+                            <button class="view-btn"
+                                onclick="viewSport(<?= htmlspecialchars(json_encode($sport->sportId)) ?>)">
 
-                            <button class="delete-btn">Delete</button>
+                                View
+                            </button>
+                            <button class="edit-btn"
+                                onclick="editSport(<?= htmlspecialchars(json_encode($sport->sportId)) ?>, '<?= htmlspecialchars($sport->sportType) ?>')">
+                                Edit
+                            </button>
+
+                            <button class="delete-btn"
+                                onclick="deleteSport(<?= htmlspecialchars(json_encode($sport->sportId)) ?>)">
+                                Delete
+                            </button>
+
                         </td>
                     </tr>
                     <?php endif; ?>
@@ -77,13 +80,13 @@
 </body>
 
 <script>
-    function viewSport(sportId) {
+function viewSport(sportId) {
     // Ensure the ROOT is properly encoded for use in JavaScript
     const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
-    
+
     // Construct the URL dynamically based on the required format
     const url = `${root}/admin/sportView/${encodeURIComponent(sportId)}`;
-    
+
     // Redirect the browser to the constructed URL
     window.location.href = url;
 }
@@ -91,7 +94,7 @@
 function editSport(sportId, sportType) {
     // Ensure the ROOT is properly encoded for use in JavaScript
     const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
-    
+
     // Determine the URL based on the sport type
     let url = '';
     if (sportType === 'Individual Sport') {
@@ -102,11 +105,49 @@ function editSport(sportId, sportType) {
         alert('Unknown sport type.');
         return; // Stop execution if the type is unknown
     }
-    
+
     // Redirect to the appropriate view
     window.location.href = url;
 }
 
+function deleteSport(sportId) {
+        // Confirm before deleting
+        const confirmation = confirm("Are you sure you want to delete this sport?");
+        if (!confirmation) {
+            return; // Exit if the user cancels
+        }
+
+        // Ensure the ROOT is properly encoded for use in JavaScript
+        const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
+
+        // Construct the URL dynamically for the delete API
+        const url = `${root}/admin/deleteSport/${encodeURIComponent(sportId)}`;
+
+        // Send a DELETE request using Fetch API
+        fetch(url, {
+            method: 'DELETE', // HTTP DELETE method
+            headers: {
+                'Content-Type': 'application/json', // Ensure proper content type
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    // If the deletion is successful, reload the page or update the table
+                    alert("Sport deleted successfully.");
+                    location.reload(); // Reload the page to refresh the list
+                } else {
+                    return response.text().then((text) => {
+                        // Show the error message from the server
+                        throw new Error(text || "Failed to delete the sport.");
+                    });
+                }
+            })
+            .catch((error) => {
+                // Handle errors and display them to the user
+                console.error("Error deleting sport:", error);
+                alert(`Error: ${error.message}`);
+            });
+    }
 </script>
 
 

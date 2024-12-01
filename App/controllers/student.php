@@ -11,6 +11,7 @@ class Student extends Controller {
     
         // Fetch achievements from the model
         $achievements = $this->studentModel->getAchievementsByUser($userId);
+        $userDetails = $this->studentModel->getUserDetails($userId);
     
         // Check if data is returned correctly
         if (empty($achievements)) {
@@ -20,6 +21,7 @@ class Student extends Controller {
     
         // Pass the data to the view
         $data = [
+            'userDetails' => $userDetails,
             'achievements' => $achievements
         ];
         $this->view('Student/dashboard',$data);
