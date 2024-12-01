@@ -12,6 +12,7 @@ class StudentModel {
     public function addAchievement($data) {
         // Retrieve the player ID from the user ID
         $player_id = $this->getPlayerIdByUserId($data['user_id']);
+        var_dump($player_id);
     
         // Prepare the SQL query, ensuring all placeholders are defined
         $this->db->query(
@@ -65,6 +66,7 @@ class StudentModel {
     public function getPlayerIdByUserId($user_id) {
         $this->db->query('SELECT player_id FROM user_player WHERE user_id = :user_id');
         $this->db->bind(':user_id', $user_id);
+        $this->db->execute();
         $result = $this->db->single(); // Fetches a single row as an object
         return $result ? $result->player_id : null; // Access the player_id property
     }
@@ -74,6 +76,12 @@ class StudentModel {
         $this->db->query('SELECT * FROM achievements WHERE player_id = :user_id');
         $this->db->bind(':user_id', $player_id);
         return $this->db->resultSet();
+    }
+    
+    public function getUserDetails($userId) {
+        $this->db->query("SELECT * FROM users WHERE user_id = :userId");
+        $this->db->bind(':userId', $userId);
+        return $this->db->single(); // Return a single record
     }
     
     

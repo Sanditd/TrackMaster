@@ -93,8 +93,20 @@ class Coach extends Controller {
             echo json_encode(['players' => $players]);
         }
         
-
+        public function comparePlayers() {
+            $playerIds = $_POST['playerIds'] ?? '';
+            $playerIdsArray = explode(',', $playerIds);
         
+            if (empty($playerIdsArray) || count($playerIdsArray) < 2) {
+                echo json_encode(['status' => 'error', 'message' => 'At least two players must be selected for comparison.']);
+                return;
+            }
+        
+            // Fetch player stats from the model
+            $stats = $this->coachModel->getPlayerStatsByIds($playerIdsArray);
+        
+            echo json_encode(['status' => 'success', 'stats' => $stats]);
+        }
         
      
         

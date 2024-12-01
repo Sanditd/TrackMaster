@@ -36,18 +36,32 @@ class CoachModel {
     }
 
     public function filterPlayers($role = null, $gender = null) {
-        $query = 'SELECT u.firstname, u.user_id, cs.role, cs.batting_avg, cs.bowling_avg, u.gender
-                  FROM users u
-                  JOIN user_player up ON u.user_id = up.user_id
-                  JOIN cricket_stats cs ON up.player_id = cs.player_id
-                  WHERE 1=1';
-
-        // Apply role filter if provided
+        $query = 'SELECT 
+                    u.firstname, 
+                    u.user_id, 
+                    u.gender, 
+                    cs.role, 
+                    cs.matches, 
+                    cs.batting_avg, 
+                    cs.strike_rate, 
+                    cs.fifties, 
+                    cs.hundreds, 
+                    cs.wickets, 
+                    cs.bowling_avg, 
+                    cs.bowling_strike_rate, 
+                    cs.economy_rate
+                  FROM 
+                    users u
+                  JOIN 
+                    user_player up ON u.user_id = up.user_id
+                  JOIN 
+                    cricket_stats cs ON up.player_id = cs.player_id
+                  WHERE 
+                    1=1';
+    
         if ($role) {
             $query .= ' AND cs.role = :role';
         }
-
-        // Apply gender filter if provided
         if ($gender) {
             $query .= ' AND u.gender = :gender';
         }
@@ -71,6 +85,30 @@ class CoachModel {
 
         return $this->db->resultSet();
     }
+
+    public function getPlayerStatsByIds($playerIds) {
+    $placeholders = implode(',', array_fill(0, count($playerIds), '?'));
+    $query = "SELECT u.firstname, cs.role, u.gender, cs.batting_avg, cs.bowling_avg, cs.matches, cs.strike_rate, cs.fifties, cs.hundreds, cs.wickets, cs.bowling_avg, cs.bowling_strike_rate,  cs.economy_rate
+              FROM users u
+              JOIN user_player up ON u.user_id = up.user_id
+              JOIN cricket_stats cs ON up.player_id = cs.player_id
+              WHERE u.user_id IN ($placeholders)";
+
+    $this->db->query($query);
+    foreach ($playerIds as $index => $id) {
+        $this->db->bind($index + 1, $id);
+    }
+
+    return $this->db->resultSet();
+}
+public function addPlayerToTeam($player_id, $team_id) {
+    $this->db->query("INSERT INTO cricket_team (player_id, team_id) VALUES (:player_id, :team_id)");
+    $this->db->bind(':player_id', $player_id);
+    $this->db->bind(':team_id', $team_id);
+
+    return $this->db->execute();
+}
+
 
 
 }

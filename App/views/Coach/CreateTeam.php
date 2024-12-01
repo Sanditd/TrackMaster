@@ -119,6 +119,59 @@ function displayPlayerList(players) {
     });
 }
 
+function comparePlayers() {
+    // Get selected players' IDs
+    const selectedPlayers = Array.from(document.querySelectorAll('input[name="selectedPlayers"]:checked'))
+        .map(input => input.value);
+
+    if (selectedPlayers.length === 0) {
+        alert('Please select at least one player to compare.');
+        return;
+    }
+
+    // Send selected player IDs to the server
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'getPlayerStats', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.players && response.players.length > 0) {
+                displayPlayerStats(response.players);
+            } else {
+                alert('No data available for the selected players.');
+            }
+        } else {
+            alert('Failed to fetch player stats.');
+        }
+    };
+    xhr.send(`playerIds=${JSON.stringify(selectedPlayers)}`);
+}
+
+function displayPlayerStats(players) {
+    const statsContainer = document.getElementById('statsContainer');
+    statsContainer.innerHTML = ''; // Clear previous stats
+
+    players.forEach(player => {
+        const playerSection = document.createElement('div');
+        playerSection.className = 'player-section';
+        playerSection.innerHTML = `
+            <h4>${player.firstname}</h4>
+            <p>Role: ${player.role}</p>
+            <p>Gender: ${player.gender}</p>
+            Matches: ${player.matches}<br>
+            Batting Avg: ${player.batting_avg || 'N/A'}, Strike Rate: ${player.strike_rate || 'N/A'}<br>
+            Fifties: ${player.fifties || 'N/A'}, Hundreds: ${player.hundreds || 'N/A'}<br>
+            Wickets: ${player.wickets || 'N/A'}, Bowling Avg: ${player.bowling_avg || 'N/A'}<br>
+            Bowling Strike Rate: ${player.bowling_strike_rate || 'N/A'}, Economy Rate: ${player.economy_rate || 'N/A'}
+        `;
+        statsContainer.appendChild(playerSection);
+    });
+
+    document.getElementById('selectedPlayersStats').classList.remove('hidden'); // Show the stats section
+}
+
+
 
 
 
