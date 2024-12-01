@@ -205,11 +205,6 @@
             // Return the new userId in the desired format
             return 'ADMIN' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: US001
         }
-
-        public function singleArray() {
-            // Fetch a single record as an associative array
-            return $this->stmt->fetch(PDO::FETCH_ASSOC);
-        }
         
 
 
