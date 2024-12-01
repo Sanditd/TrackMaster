@@ -8,23 +8,32 @@
 </head>
 <body>
 
-    <!-- Side Bar -->
-    <div id="sidebar" class="sidebar">
-        <span class="close" onmouseleave="closeNav()">
+<div id="sidebar" class="sidebar">
+    <span class="close" onmouseleave="closeNav()">
         <div class="profile">
-            <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture">
-            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
+            <!-- Dynamically Load Profile Picture -->
+            <img src="/TrackMaster/Public/img/uploads/<?php echo htmlspecialchars($_SESSION['photo'] ?? 'default.jpg'); ?>" alt="Profile Picture">
+
+            <!-- Display Username -->
+            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">
+                <?php echo htmlspecialchars($_SESSION['username'] ?? 'Guest'); ?>
+            </div>
             <br>
-            <div style="font-size:10px;white-space: nowrap;">Student Player</div>
+
+            <!-- Display User Role -->
+            <div style="font-size:10px;white-space: nowrap;">
+                <?php echo htmlspecialchars($_SESSION['role'] ?? 'Unknown'); ?>
+            </div>
+
             <div>
                 <select id="status">
-                  <option value="rest">Rest</option>
-                  <option value="practicing">Practicing</option>
-                  <option value="meet">In a Meet</option>
-                  <option value="injury">Injury</option>
-                  <option value="studying">Studying</option>
+                    <option value="rest">Rest</option>
+                    <option value="practicing">Practicing</option>
+                    <option value="meet">In a Meet</option>
+                    <option value="injury">Injury</option>
+                    <option value="studying">Studying</option>
                 </select>
-              </div>
+            </div>
             <br>
             <hr>
         </div>
@@ -37,11 +46,11 @@
                 <li><a href="<?php echo URLROOT ?>/Student/studentSchedule">My Schedule</a></li>
             </ul>
         </nav>
-        </span>
-    </div>
+    </span>
+</div>
 
-    <script src="/TrackMaster/Public/js/sidebar.js"></script>
-    <script src="/TrackMaster/Public/js/profile.js"></script>
-    
+<script src="/TrackMaster/Public/js/sidebar.js"></script>
+<script src="/TrackMaster/Public/js/profile.js"></script>
+
 </body>
 </html>

@@ -82,6 +82,32 @@ class Coach extends Controller {
                 }
         }
 
+        public function filterPlayers() {
+            $role = $_POST['role'] ?? null;
+            $gender = $_POST['gender'] ?? null;
+    
+            // Call the model's filterPlayers method
+            $players = $this->coachModel->filterPlayers($role, $gender);
+    
+            // Return the filtered players as a JSON response
+            echo json_encode(['players' => $players]);
+        }
         
+        public function comparePlayers() {
+            $playerIds = $_POST['playerIds'] ?? '';
+            $playerIdsArray = explode(',', $playerIds);
+        
+            if (empty($playerIdsArray) || count($playerIdsArray) < 2) {
+                echo json_encode(['status' => 'error', 'message' => 'At least two players must be selected for comparison.']);
+                return;
+            }
+        
+            // Fetch player stats from the model
+            $stats = $this->coachModel->getPlayerStatsByIds($playerIdsArray);
+        
+            echo json_encode(['status' => 'success', 'stats' => $stats]);
+        }
+        
+     
         
     }

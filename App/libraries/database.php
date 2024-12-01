@@ -1,5 +1,4 @@
 <?php
-
     class database{
         private $host = DB_HOST;
         private $user = DB_USER;
@@ -91,10 +90,11 @@
             } else {
                 // Start with TS001 if no records exist
                 $newId = 1;
-
             }
- 
 
+            // Return the new sportId in the desired format
+            return 'TS' . str_pad($newId, 3, '0', STR_PAD_LEFT); // Example: TS001
+        }
 
         public function generateUserId() {
             // Query to get the last userId
@@ -213,6 +213,5 @@
         }
 }
 
-
-
 ?>
+

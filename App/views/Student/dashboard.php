@@ -22,7 +22,8 @@ if (!isset($_SESSION['user_id'])) {
     <div class="dashboard-container">
         <div class="dashboard-header">
             <h1>Student Dashboard</h1>
-            <p>Welcome, Eraji!</p>
+            
+            <p>Welcome, <?php echo htmlspecialchars($_SESSION['username'] ?? 'Guest'); ?></p>
         </div>
 
         <div class="main-content">

@@ -35,52 +35,82 @@ class CoachModel {
         return $this->db->lastInsertId();
     }
 
-    public function getFilteredPlayers($role, $gender) {
-        $query = "SELECT 
-                    u.userid AS player_id, 
-                    CONCAT(u.firstname, ' ', u.lname) AS name, 
-                    p.zone, 
-                    p.gender, 
-                    a.matches, 
-                    a.batting_avg, 
-                    a.bowling_avg 
+    public function filterPlayers($role = null, $gender = null) {
+        $query = 'SELECT 
+                    u.firstname, 
+                    u.user_id, 
+                    u.gender, 
+                    cs.role, 
+                    cs.matches, 
+                    cs.batting_avg, 
+                    cs.strike_rate, 
+                    cs.fifties, 
+                    cs.hundreds, 
+                    cs.wickets, 
+                    cs.bowling_avg, 
+                    cs.bowling_strike_rate, 
+                    cs.economy_rate
                   FROM 
-                    user_player AS p
-                  INNER JOIN 
-                    users AS u ON u.userid = p.user_id
-                  LEFT JOIN 
-                    player_stats AS a ON a.player_id = p.player_id
-                  WHERE 1 = 1";
+                    users u
+                  JOIN 
+                    user_player up ON u.user_id = up.user_id
+                  JOIN 
+                    cricket_stats cs ON up.player_id = cs.player_id
+                  WHERE 
+                    1=1';
     
-        if (!empty($role)) {
-            $query .= " AND a.role = :role";
+        if ($role) {
+            $query .= ' AND cs.role = :role';
         }
-    
-        if (!empty($gender)) {
-            $query .= " AND p.gender = :gender";
+        if ($gender) {
+            $query .= ' AND u.gender = :gender';
         }
-    
-        $query .= " ORDER BY 
-                    CASE 
-                      WHEN :role = 'batsman' THEN a.batting_avg 
-                      WHEN :role = 'bowler' THEN a.bowling_avg 
-                    END DESC";
-    
-        $stmt = $this->db->prepare($query);
-    
-        if (!empty($role)) {
-            $stmt->bindValue(':role', $role, PDO::PARAM_STR);
+
+        // Order by batting or bowling average depending on the role
+        if ($role == 'batsman') {
+            $query .= ' ORDER BY cs.batting_avg DESC';
+        } elseif ($role == 'bowler') {
+            $query .= ' ORDER BY cs.bowling_avg DESC';
         }
-        if (!empty($gender)) {
-            $stmt->bindValue(':gender', $gender, PDO::PARAM_STR);
+
+        $this->db->query($query);
+
+        // Bind parameters dynamically
+        if ($role) {
+            $this->db->bind(':role', $role);
         }
-    
-        $stmt->bindValue(':role', $role, PDO::PARAM_STR); // For ordering
-        $stmt->execute();
-    
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($gender) {
+            $this->db->bind(':gender', $gender);
+        }
+
+        return $this->db->resultSet();
     }
-    
+
+    public function getPlayerStatsByIds($playerIds) {
+    $placeholders = implode(',', array_fill(0, count($playerIds), '?'));
+    $query = "SELECT u.firstname, cs.role, u.gender, cs.batting_avg, cs.bowling_avg, cs.matches, cs.strike_rate, cs.fifties, cs.hundreds, cs.wickets, cs.bowling_avg, cs.bowling_strike_rate,  cs.economy_rate
+              FROM users u
+              JOIN user_player up ON u.user_id = up.user_id
+              JOIN cricket_stats cs ON up.player_id = cs.player_id
+              WHERE u.user_id IN ($placeholders)";
+
+    $this->db->query($query);
+    foreach ($playerIds as $index => $id) {
+        $this->db->bind($index + 1, $id);
+    }
+
+    return $this->db->resultSet();
+}
+public function addPlayerToTeam($player_id, $team_id) {
+    $this->db->query("INSERT INTO cricket_team (player_id, team_id) VALUES (:player_id, :team_id)");
+    $this->db->bind(':player_id', $player_id);
+    $this->db->bind(':team_id', $team_id);
+
+    return $this->db->execute();
+}
+
+
+
 }
 
 

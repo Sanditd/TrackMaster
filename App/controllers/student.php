@@ -11,6 +11,7 @@ class Student extends Controller {
     
         // Fetch achievements from the model
         $achievements = $this->studentModel->getAchievementsByUser($userId);
+        $userDetails = $this->studentModel->getUserDetails($userId);
     
         // Check if data is returned correctly
         if (empty($achievements)) {
@@ -20,6 +21,7 @@ class Student extends Controller {
     
         // Pass the data to the view
         $data = [
+            'userDetails' => $userDetails,
             'achievements' => $achievements
         ];
         $this->view('Student/dashboard',$data);
@@ -32,63 +34,23 @@ class Student extends Controller {
 
     public function saveAchievement() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize POST data
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-            // Process form data
+            // Process form
             $data = [
                 'user_id' => trim($_POST['user_id']),
                 'place' => trim($_POST['place']),
                 'level' => trim($_POST['level']),
                 'description' => trim($_POST['description']),
-                'date' => trim($_POST['date']),
-                'place_err' => '',
-                'level_err' => '',
-                'description_err' => '',
-                'date_err' => ''
+                'date' => trim($_POST['date'])
             ];
 
-            // Validate data
-            if (empty($data['place'])) {
-                $data['place_err'] = 'Please enter the place';
-            }
-            if (empty($data['level'])) {
-                $data['level_err'] = 'Please enter the level';
-            }
-            if (empty($data['description'])) {
-                $data['description_err'] = 'Please enter the description';
-            }
-            if (empty($data['date'])) {
-                $data['date_err'] = 'Please enter the date';
-            }
-
-            // Make sure no errors
-            if (empty($data['place_err']) && empty($data['level_err']) && empty($data['description_err']) && empty($data['date_err'])) {
-                // Save achievement to the database
-                if ($this->studentModel->addAchievement($data)) {
-                    // Redirect to achievements page
-                    header('location: ' . URLROOT . '/Student/studentAchievements');
-                } else {
-                    die('Something went wrong');
-                }
+            if ($this->studentModel->addAchievement($data)) {
+                header('Location: ' . URLROOT . '/Student/studentAchievements');
             } else {
-                // Load view with errors
-                $this->view('Student/saveAchievement', $data);
+                die('Something went wrong');
             }
         } else {
-            // Load form with empty data
-            $data = [
-                'place' => '',
-                'level' => '',
-                'description' => '',
-                'date' => '',
-                'place_err' => '',
-                'level_err' => '',
-                'description_err' => '',
-                'date_err' => ''
-            ];
-
-            $this->view('Student/saveAchievement', $data);
+            // Load form
+            $this->view('Student/addAchievement');
         }
     }
     public function editAchievement($achievement_id) {
@@ -245,4 +207,5 @@ class Student extends Controller {
 
 }
 
+    
 

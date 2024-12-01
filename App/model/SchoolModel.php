@@ -70,42 +70,38 @@ class SchoolModel {
         return $this->db->resultSet();   
     }
     
-    public function getRecordByPlayerId($player_id) {
-        $this->db->query("SELECT * FROM academic_records WHERE player_id = :player_id");
-        $this->db->bind(':player_id', $player_id);
-        return $this->db->single();
-    }
     
-    public function getUserByPlayerId($player_id) {
-        $this->db->query("SELECT u.* FROM users u JOIN user_player up ON u.user_id = up.user_id WHERE up.player_id = :player_id");
+    public function getRecordByPlayerId($player_id) {
+        $this->db->query("
+            SELECT ar.grade, ar.term, ar.average, ar.rank, ar.notes, u.firstname
+            FROM academic_records ar
+            JOIN user_player up ON ar.player_id = up.player_id
+            JOIN users u ON up.user_id = u.user_id
+            WHERE ar.player_id = :player_id
+        ");
         $this->db->bind(':player_id', $player_id);
         return $this->db->single();
     }
 
-    
-    public function getRecordById($id) {
-        $this->db->query('SELECT * FROM records WHERE player_id = :id');
-        $this->db->bind(':id', $id);
-        return $this->db->single();
-    }
-    
     public function updateRecord($data) {
-        $this->db->query('UPDATE records SET grade = :grade, term = :term, average = :average, rank = :rank, notes = :notes WHERE player_id = :player_id');
-        $this->db->bind(':grade', $data['grade']);
-        $this->db->bind(':term', $data['term']);
-        $this->db->bind(':average', $data['average']);
-        $this->db->bind(':rank', $data['rank']);
-        $this->db->bind(':notes', $data['notes']);
-        $this->db->bind(':player_id', $data['player_id']);
+    $this->db->query("UPDATE academic_records SET grade = :grade, term = :term, average = :average, rank = :rank, notes = :notes WHERE player_id = :player_id");
+    $this->db->bind(':grade', $data['grade']);
+    $this->db->bind(':term', $data['term']);
+    $this->db->bind(':average', $data['average']);
+    $this->db->bind(':rank', $data['rank']);
+    $this->db->bind(':notes', $data['notes']);
+    $this->db->bind(':player_id', $data['player_id']);
+
+    return $this->db->execute();
+}
+
+public function deleteRecordByPlayerId($player_id) {
+    $this->db->query("DELETE FROM academic_records WHERE player_id = :player_id");
+    $this->db->bind(':player_id', $player_id);
+
+    return $this->db->execute();
+}
+
     
-        return $this->db->execute();
-    }
-    
-    public function deleteRecordById($id) {
-        $this->db->query('DELETE FROM records WHERE player_id = :id');
-        $this->db->bind(':id', $id);
-    
-        return $this->db->execute();
-    }
     
 }
