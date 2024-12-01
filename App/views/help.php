@@ -29,22 +29,22 @@
         <section id="students" class="topics">
             <h2>Frequently Asked Topics for Students</h2>
             <div class="topic-grid">
-                <div class="topic">
-                    <img src="../../Public/img/help/user.png" alt="User Management">
-                    <p>User Management</p>
-                </div>
-                <div class="topic">
-                    <img src="../../Public/img/help/track.jpeg" alt="Tracking History">
-                    <p>Tracking History</p>
-                </div>
-                <div class="topic">
-                    <img src="../../Public/img/help/ball1.jpeg" alt="Goal Setting">
-                    <p>Goal Setting</p>
-                </div>
-                <div class="topic">
-                    <img src="../../Public/img/help/activity1.png" alt="Activity Reports">
-                    <p>Activity Reports</p>
-                </div>
+            <div class="topic" onclick="showPopup('How to edit my Profile ?', ['Step 1: Go to SideBar.', 'Step 2: Click on My Profile.', 'Step 3: Click on Edit My Profile.',' Step 4: Save changes.'])">
+                <img src="../../Public/img/help/user.png" alt="User Management">
+                <p>How to edit my Profile ?</p>
+            </div>
+            <div class="topic" onclick="showPopup('How to Track My Performance ?', ['Step 1: Go to Dashboard. ', 'Step 2: Click on Track My Performance.', '', 'OR', '', 'Step 1: Go to SideBar.',' Step 2: Click on My Performance.'])">
+                <img src="../../Public/img/help/track.jpeg" alt="Tracking History">
+                <p>How to Track My Performance ?</p>
+            </div>
+            <div class="topic" onclick="showPopup('Can I Add My Achievements to My Profile ?', ['Step 1: Go to Dashboard.', 'Step 2: Click on View All Achievements.', 'Step 3: Fill the Form to Add a New Achievement.', '', 'You can also Edit and Delete them as Necessary.' ])">
+                <img src="../../Public/img/help/ball1.jpeg" alt="Goal Setting">
+                <p>Can I Add My Achievements to My Profile ?</p>
+            </div>
+            <div class="topic" onclick="showPopup('How Can I Reschedule or Request Extra Classes ?', ['Step 1: Go to sidebar.', 'Step 2: Click on My Schedule.', 'Step 3: Fill the Relevant Forms.', '', 'You can also Add Events to your Calender by Clicking on the Relevant Day on the Calender.'])">
+                <img src="../../Public/img/help/activity1.png" alt="Activity Reports">
+                <p>How Can I Reschedule or Request Extra Classes ?</p>
+            </div>
             </div>
         </section>
 
@@ -114,6 +114,12 @@
             </div>
         </section>
 
+        <center><div class="popup" id="popup">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <h2 id="popupTitle">Select Your Problem</h2>
+            <ul id="popupSteps"></ul>
+        </div></center>
+
         <div class="container">
         <section class="form-section">
                 <h2>ADDITIONAL HELP</h2>
@@ -163,6 +169,30 @@
             // Add active class to the clicked button
             event.target.classList.add('active');
         }
+
+        function showPopup(title, steps) {
+        // Set the title
+        document.getElementById('popupTitle').innerText = title;
+
+        // Generate the list of steps
+        const stepsList = document.getElementById('popupSteps');
+        stepsList.innerHTML = ''; // Clear any existing content
+        steps.forEach(step => {
+            const listItem = document.createElement('li');
+            listItem.innerText = step;
+            stepsList.appendChild(listItem);
+        });
+
+        // Show the popup and overlay
+        document.getElementById('popup').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+        }
     </script>
+
 </body>
 </html>

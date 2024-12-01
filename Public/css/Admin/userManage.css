@@ -17,10 +17,15 @@ body {
 }
 
 /* Header */
-h1 {
+
+h1{
     text-align: center;
-    margin-bottom: 20px;
-    color: #007bff;
+    font-size: 22px;
+    margin: 20px;
+    background-color: #00264d; 
+    color: #fff; 
+    padding: 15px;
+    border-radius: 8px;
 }
 
 /* Sections */
@@ -45,7 +50,7 @@ input[type="text"], input[type="email"] {
 
 button {
     padding: 10px 15px;
-    background-color: #007bff;
+    background-color:#ffa500;
     color: white;
     border: none;
     border-radius: 4px;

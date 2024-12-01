@@ -59,10 +59,6 @@ if (!isset($_SESSION['user_id'])) {
             
             <div class="form-section">
                 <h2>Add a New Achievement</h2>
-                <form action="<?php echo ROOT?>/student/saveAchievement" method="POST">  
-                    <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']?>">
-                    <label for="place"> Place/Rank : </label> 
-                    <textarea id="description"  name="place" required></textarea>  
 
                     <label for="level">Level :</label>
                     <input type="radio" id="level1" name="level" value="zonal" required> Zonal Level </br>
@@ -77,7 +73,7 @@ if (!isset($_SESSION['user_id'])) {
                        
                     <center>
                         <button class="edit-button" type="submit"> Add </button>
-                        <button class="edit-button" type="submit" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAchievements'"> Cancel </button>
+                        <!-- <button class="edit-button" type="submit" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAchievements'"> Cancel </button> -->
                     </center>
                 </form>
             </div>
