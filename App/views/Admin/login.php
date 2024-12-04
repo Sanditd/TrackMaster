@@ -36,7 +36,7 @@
 
     <div id="login-port">
         <span id="login-port-logo">
-        <img src="../../img\icon\logo-black.png" alt="Logo">
+        <img src="../Public/img/logo-black.png" alt="Logo">
         </span>
         <form action="<?php echo ROOT ?>/loginController/login" method="POST">
             <div>

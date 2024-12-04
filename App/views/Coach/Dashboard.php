@@ -49,19 +49,12 @@
             </div>
 
             <div class="section quick-session">
-                <h2>Current Team</h2>
+                <h2>Current Teams</h2>
                 <ul>
-                    <li>Morty Smith <span>Batsman</span></li>
-                    <li>Rick Sanchez <span>Batsman(wk)</span></li>
-                    <li>Paul Hewmatt <span>Batsman</span></li>
-                    <li>Sheen Estevez <span>Batsman</span></li>
-                    <li>John Does <span>Batsman</span></li>
-                    <li>Morty Smith <span>All-Rounder</span></li>
-                    <li>Rick Sanchez <span>All-Rounder</span></li>
-                    <li>Paul Hewmatt <span>All-Rounder</span></li>
-                    <li>Sheen Estevez <span>Bowler</span></li>
-                    <li>John Does <span>Bowler</span></li>
-                    <li>John Does <span>Bowler</span></li>
+                    <li>Team A <span>15 Players</span></li>
+                    <li>Team B <span>15 Players</span></li>
+                    <li>Girls Team <span>15 Players</span></li>
+                    <li>Base Team For Williams Cup <span>28 Players</span></li>
                 </ul>
             </div>
 
@@ -95,7 +88,7 @@
         </div>
     </div>
 
-
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 
     <script src="../Public/js/Student/carousel.js"></script>
     <script src="../Public/js/Student/profile.js"></script>

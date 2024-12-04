@@ -11,13 +11,8 @@
 <body>
 
     <?php require 'navbar.php'?>
-    <?php require 'sidebar.php'?>
-    <?php 
+    <?php require 'sidebar.php'?> 
     
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . ROOT . '/loginController/login');
-    exit;
-}?>
 
     <div class="dashboard-container">
         <div class="dashboard-header">

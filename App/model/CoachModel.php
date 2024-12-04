@@ -86,31 +86,90 @@ class CoachModel {
         return $this->db->resultSet();
     }
 
-    public function getPlayerStatsByIds($playerIds) {
-    $placeholders = implode(',', array_fill(0, count($playerIds), '?'));
-    $query = "SELECT u.firstname, cs.role, u.gender, cs.batting_avg, cs.bowling_avg, cs.matches, cs.strike_rate, cs.fifties, cs.hundreds, cs.wickets, cs.bowling_avg, cs.bowling_strike_rate,  cs.economy_rate
-              FROM users u
-              JOIN user_player up ON u.user_id = up.user_id
-              JOIN cricket_stats cs ON up.player_id = cs.player_id
-              WHERE u.user_id IN ($placeholders)";
-
-    $this->db->query($query);
-    foreach ($playerIds as $index => $id) {
-        $this->db->bind($index + 1, $id);
+    public function getPlayerStats($playerIds) {
+        $query = 'SELECT  up.player_id, u.firstname, cs.role, u.gender, cs.batting_avg, cs.bowling_avg, cs.matches, cs.strike_rate, cs.fifties, cs.hundreds, cs.wickets, cs.bowling_avg, cs.bowling_strike_rate,  cs.economy_rate
+                  FROM users u
+                  JOIN user_player up ON u.user_id = up.user_id
+                  JOIN cricket_stats cs ON up.player_id = cs.player_id
+                  WHERE u.user_id IN(' . implode(',', array_map('intval', explode(',', $playerIds))) . ')';
+    
+        $this->db->query($query);
+        return $this->db->resultSet();
     }
 
-    return $this->db->resultSet();
-}
-public function addPlayerToTeam($player_id, $team_id) {
-    $this->db->query("INSERT INTO cricket_team (player_id, team_id) VALUES (:player_id, :team_id)");
-    $this->db->bind(':player_id', $player_id);
-    $this->db->bind(':team_id', $team_id);
 
-    return $this->db->execute();
-}
+    public function addPlayerToTeam($teamId, $playerId) {
+        $query = 'INSERT INTO cricket_team (team_id, player_id) VALUES (:teamId, :playerId)';
+        $this->db->query($query);
+        $this->db->bind(':teamId', $teamId);
+        $this->db->bind(':playerId', $playerId);
+       
+        if (!$this->db->execute()) {
+            error_log("Database Error: " . $this->db->error()); // Log the database error
+            return false;
+        }
+    
+        return true;
+    }
+    
 
-
-
+    public function deleteTeam($teamId) {
+        try {
+            $this->db->beginTransaction();
+    
+            // Delete associated players in the cricket_team table
+            $this->db->query('DELETE FROM cricket_team WHERE team_id = :teamId');
+            $this->db->bind(':teamId', $teamId);
+            $this->db->execute();
+    
+            // Delete the team from the team table
+            $this->db->query('DELETE FROM team WHERE team_id = :teamId');
+            $this->db->bind(':teamId', $teamId);
+            $this->db->execute();
+    
+            $this->db->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            error_log("Error deleting team: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    public function getTeamById($teamId) {
+        $this->db->query('SELECT * FROM team WHERE team_id = :teamId');
+        $this->db->bind(':teamId', $teamId);
+        return $this->db->single();
+    }
+    
+    public function updateTeam($teamId, $teamName, $numberOfPlayers) {
+        $this->db->query('UPDATE team SET team_name = :teamName, number_of_players = :numberOfPlayers WHERE team_id = :teamId');
+        $this->db->bind(':teamName', $teamName);
+        $this->db->bind(':numberOfPlayers', $numberOfPlayers);
+        $this->db->bind(':teamId', $teamId);
+        return $this->db->execute();
+    }
+    
+    public function getPlayerssByTeamId($teamId) {
+        $this->db->query('
+            SELECT ct.player_id, u.firstname AS name, cs.role
+            FROM cricket_team ct
+            JOIN user_player up ON ct.player_id = up.player_id
+            JOIN users u ON up.user_id = u.user_id
+            JOIN cricket_stats cs ON ct.player_id = cs.player_id
+            WHERE ct.team_id = :teamId
+        ');
+        $this->db->bind(':teamId', $teamId);
+        return $this->db->resultSet();
+    }
+    
+    public function removePlayerFromTeam($teamId, $playerId) {
+        $this->db->query('DELETE FROM cricket_team WHERE team_id = :teamId AND player_id = :playerId');
+        $this->db->bind(':teamId', $teamId);
+        $this->db->bind(':playerId', $playerId);
+        return $this->db->execute();
+    }
+    
 }
 
 

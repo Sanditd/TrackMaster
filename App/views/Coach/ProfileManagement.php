@@ -3,54 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
-    <link rel="stylesheet" href="../../../Public/css/Coach/ProfileManagement.css">
-    <link rel="stylesheet" href="../../../Public/css/navbar.css">
+    <title>Coach Dashboard</title>
+
+    <link rel="stylesheet" href="../Public/css/Coach/profileManagement.css">
+    <link rel="stylesheet" href="../Public/css/navbar.css">
+    <link rel="stylesheet" href="../Public/css/sidebar.css">
+    <link rel="stylesheet" href="../Public/css/footer.css">
+
 </head>
 <body>
-    <div id="sidebar" class="sidebar">
-        <span class="close" onmouseleave="closeNav()">
-        <div class="profile">
-            <img src="../../../Public/img/Student/practicing.png" alt="Profile Picture">
-            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">T.H.E.G.THENUWARA</div>
-            <br>
-            <div style="font-size:10px;white-space: nowrap;">Coach - Cricket</div>
-        </div>
-
-        <nav>
-            <ul>
-                <li><a href="../Student/dashboard.html">Dashboard</a></li>
-                <li><a href="../Student/coachprofile.html">My Profile</a></li>
-                <li><a href="../Student/performanceTracking.html">Performancce Tracking</a></li>
-                <li><a href="../Student/Teammanagement.html">Team Management</a></li>
-                <li><a href="../Student/EventManagement.html">Event Management</a></li>
-                <li><a href="../Student/Profile Management.html">Profile Management</a></li>
-                <li><a href="   /stu_notifications">Notifications</a></li>
-            </ul>
-        </nav>
-        </span>
-    </div>
-
-    <div id="main">
-        <header>
-            <button class="openbtn" onclick="toggleNav()">☰ </button>
-
-            <nav class="navbar" id="navbar">
-                <div class="logo">
-                    <img src="../../../Public/img/Student/logo.png" alt="Logo"> 
-                </div>
-                <ul class="nav-links">
-                    <li><a href="../Student/dashboard.html"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Sign In</a></li>
-                    <li><a href="#">Log In</a></li>
-                </ul>
-            </nav>
-
-        </header>
-    </div>
+    <?php require 'CoachNav.php'; ?>
 
     <div class="form-container">
         <h2>Share Player Profile</h2>
@@ -122,7 +84,7 @@
         </form>
     </div>
 
-
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
     <script src="../../../Public/js/Student/carousel.js"></script>
     <script src="../../../Public/js/Student/profile.js"></script>
     <script src="../../../Public/js/sidebar.js"></script>

@@ -61,7 +61,6 @@ if (!isset($_SESSION['user_id'])) {
                 <h2>Add a New Achievement</h2>
                 <form action="<?php echo ROOT?>/student/saveAchievement" method="POST">  
                     <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']?>">
-                    <?php var_dump($_SESSION['user_id']) ?>
                     <label for="place"> Place/Rank : </label> 
                     <textarea id="description"  name="place" required></textarea>  
 
@@ -104,9 +103,9 @@ if (!isset($_SESSION['user_id'])) {
                                     <td><?php echo $achievement->description; ?></td>
                                     <td><?php echo $achievement->date; ?></td>
                                     <td>
-                                        <a href="<?php echo URLROOT.'Student/editAchievement/'.$achievement-> achievement_id?>">Edit</a>
+                                        <button class="Edit-button"><a href="<?php echo URLROOT.'Student/editAchievement/'.$achievement-> achievement_id?>">Edit</a></button>
                                         <form action="<?php echo URLROOT; ?>/Student/deleteAchievement/<?php echo $achievement->achievement_id; ?>" method="POST" style="display:inline;">
-                                            <button type="submit">Delete</button>
+                                            <button class="delete-button" type="submit">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
