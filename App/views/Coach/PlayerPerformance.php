@@ -192,7 +192,7 @@
 </div>
 
     
-    
+<?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
     <script src="../Public/js/Coach/BowlerPerformance.js"></script>
     <script src="../Public/js/sidebar.js"></script>
 </body>

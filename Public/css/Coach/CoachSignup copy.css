@@ -12,11 +12,12 @@ body {
 }
 
 #signup-port {
+    border: 1px solid  #ffa500;
     background-color: #fff;
     padding: 30px;
     border-radius: 20px;
     box-shadow: 6px 6px 29px -4px rgba(34, 34, 34, 0.75);
-    width: 600px;
+    width: 1000px;
     text-align: center;
     margin-top: 30px;
 }
@@ -24,16 +25,20 @@ body {
 #signup-port-logo img {
     width: 180px;
     height: 60px;
-    margin-bottom: 20px;
+
+    
+    
 }
 
 h2 {
     font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    color: #ffa500;
 }
 
 form {
+    
     display: flex;
     flex-direction: column;
     gap: 20px;

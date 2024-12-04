@@ -55,10 +55,12 @@
             </div>
         </div>
     </div>
-
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
     <script>
 
     let currentTeamId = null;
+    let currentPlayerCount = 0; // Tracks the number of players added
+        let maxPlayerCount = 0;
 
     function createTeamAndShowPlayerFilter() {        
         const teamName = document.getElementById('teamName').value;
@@ -68,6 +70,8 @@
             alert('Please provide a valid team name and number of players.');
             return;
         }
+
+        maxPlayerCount = parseInt(numPlayers); 
 
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'createTeam', true);
@@ -105,7 +109,68 @@
     xhr.send(`role=${role}&gender=${gender}`);
 }
 
+function comparePlayers() {
+    // Get all selected players
+    const selectedPlayers = [];
+    const checkboxes = document.querySelectorAll('input[name="selectedPlayers"]:checked');
+    checkboxes.forEach(checkbox => {
+        selectedPlayers.push(checkbox.value);
+    });
+
+    // If no players are selected, alert the user
+    if (selectedPlayers.length === 0) {
+        alert('Please select at least one player to compare.');
+        return;
+    }
+
+    // Fetch selected players' stats
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'getPlayerStats', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.status === 'success') {
+                displaySelectedPlayersStats(response.players);
+            } else {
+                alert('Error fetching player stats: ' + response.message);
+            }
+        }
+    };
+    xhr.send(`playerIds=${selectedPlayers.join(',')}`);
+}
+
+function displaySelectedPlayersStats(players) {
+    const statsContainer = document.getElementById('statsContainer');
+    statsContainer.innerHTML = ''; // Clear previous results
+
+    players.forEach(player => {
+        const playerCard = document.createElement('div');
+        playerCard.classList.add('player-card');
+
+        playerCard.innerHTML = `
+           <h4>${player.firstname}</h4>
+           ${player.player_id}
+             <p>Role: ${player.role}</p>
+             <p>Gender: ${player.gender}</p>
+             Matches: ${player.matches}<br>
+             Batting Avg: ${player.batting_avg || 'N/A'}, Strike Rate: ${player.strike_rate || 'N/A'}<br>
+             Fifties: ${player.fifties || 'N/A'}, Hundreds: ${player.hundreds || 'N/A'}<br>
+             Wickets: ${player.wickets || 'N/A'}, Bowling Avg: ${player.bowling_avg || 'N/A'}<br>
+             Bowling Strike Rate: ${player.bowling_strike_rate || 'N/A'}, Economy Rate: ${player.economy_rate || 'N/A'}
+            <button type="button" class="btn add-player" onclick="addPlayerToTeam(${player.player_id})">Add Player</button>
+
+        `;
+        
+        statsContainer.appendChild(playerCard);
+    });
+
+    // Show the selected players' stats section
+    document.getElementById('selectedPlayersStats').classList.remove('hidden');
+}
+
 function displayPlayerList(players) {
+    
     const playerList = document.getElementById('playerList');
     playerList.innerHTML = ''; // Clear previous results
 
@@ -119,57 +184,119 @@ function displayPlayerList(players) {
     });
 }
 
-function comparePlayers() {
-    // Get selected players' IDs
-    const selectedPlayers = Array.from(document.querySelectorAll('input[name="selectedPlayers"]:checked'))
-        .map(input => input.value);
-
-    if (selectedPlayers.length === 0) {
-        alert('Please select at least one player to compare.');
+function addPlayerToTeam(playerId) {
+    if (currentPlayerCount >= maxPlayerCount) {
+        showNotification('error', 'Player limit reached! You cannot add more players.');
         return;
     }
-
-    // Send selected player IDs to the server
+    console.log(`Button clicked for Player ID: ${playerId}`);
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'getPlayerStats', true);
+    xhr.open('POST', '/TrackMaster/Coach/addPlayerToTeam', true); // Replace with actual path
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
+    xhr.onload = function () {
         if (xhr.status === 200) {
             const response = JSON.parse(xhr.responseText);
-            if (response.players && response.players.length > 0) {
-                displayPlayerStats(response.players);
+            if (response.status === 'success') {
+                showNotification('success', response.message); // Show success notification
             } else {
-                alert('No data available for the selected players.');
+                showNotification('error', response.message); // Show error notification
             }
         } else {
-            alert('Failed to fetch player stats.');
+            showNotification('error', 'Unexpected error occurred.');
         }
     };
-    xhr.send(`playerIds=${JSON.stringify(selectedPlayers)}`);
+    xhr.send(`teamId=${currentTeamId}&playerId=${playerId}`);
 }
 
-function displayPlayerStats(players) {
-    const statsContainer = document.getElementById('statsContainer');
-    statsContainer.innerHTML = ''; // Clear previous stats
+function showNotification(type, message) {
+    // Create a notification container if it doesn't exist
+    let notificationContainer = document.getElementById('notification-container');
+    if (!notificationContainer) {
+        notificationContainer = document.createElement('div');
+        notificationContainer.id = 'notification-container';
+        notificationContainer.style.position = 'fixed';
+        notificationContainer.style.top = '10px';
+        notificationContainer.style.right = '10px';
+        notificationContainer.style.zIndex = '1000';
+        document.body.appendChild(notificationContainer);
+    }
 
-    players.forEach(player => {
-        const playerSection = document.createElement('div');
-        playerSection.className = 'player-section';
-        playerSection.innerHTML = `
-            <h4>${player.firstname}</h4>
-            <p>Role: ${player.role}</p>
-            <p>Gender: ${player.gender}</p>
-            Matches: ${player.matches}<br>
-            Batting Avg: ${player.batting_avg || 'N/A'}, Strike Rate: ${player.strike_rate || 'N/A'}<br>
-            Fifties: ${player.fifties || 'N/A'}, Hundreds: ${player.hundreds || 'N/A'}<br>
-            Wickets: ${player.wickets || 'N/A'}, Bowling Avg: ${player.bowling_avg || 'N/A'}<br>
-            Bowling Strike Rate: ${player.bowling_strike_rate || 'N/A'}, Economy Rate: ${player.economy_rate || 'N/A'}
-        `;
-        statsContainer.appendChild(playerSection);
-    });
+    // Create the notification
+    const notification = document.createElement('div');
+    notification.style.marginBottom = '10px';
+    notification.style.padding = '10px';
+    notification.style.border = '1px solid';
+    notification.style.borderRadius = '5px';
+    notification.style.backgroundColor = type === 'success' ? '#d4edda' : '#f8d7da';
+    notification.style.color = type === 'success' ? '#155724' : '#721c24';
+    notification.style.borderColor = type === 'success' ? '#c3e6cb' : '#f5c6cb';
+    notification.textContent = message;
 
-    document.getElementById('selectedPlayersStats').classList.remove('hidden'); // Show the stats section
+    // Add the notification to the container
+    notificationContainer.appendChild(notification);
+
+    // Remove the notification after 3 seconds
+    setTimeout(() => {
+        notificationContainer.removeChild(notification);
+    }, 3000);
 }
+
+
+
+
+
+
+// function comparePlayers() {
+//     // Get selected players' IDs
+//     const selectedPlayers = Array.from(document.querySelectorAll('input[name="selectedPlayers"]:checked'))
+//         .map(input => input.value);
+
+//     if (selectedPlayers.length === 0) {
+//         alert('Please select at least one player to compare.');
+//         return;
+//     }
+
+//     // Send selected player IDs to the server
+//     const xhr = new XMLHttpRequest();
+//     xhr.open('POST', 'getPlayerStats', true);
+//     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+//     xhr.onload = function() {
+//         if (xhr.status === 200) {
+//             const response = JSON.parse(xhr.responseText);
+//             if (response.players && response.players.length > 0) {
+//                 displayPlayerStats(response.players);
+//             } else {
+//                 alert('No data available for the selected players.');
+//             }
+//         } else {
+//             alert('Failed to fetch player stats.');
+//         }
+//     };
+//     xhr.send(`playerIds=${JSON.stringify(selectedPlayers)}`);
+// }
+
+// function displayPlayerStats(players) {
+//     const statsContainer = document.getElementById('statsContainer');
+//     statsContainer.innerHTML = ''; // Clear previous stats
+
+//     players.forEach(player => {
+//         const playerSection = document.createElement('div');
+//         playerSection.className = 'player-section';
+//         playerSection.innerHTML = `
+//             <h4>${player.firstname}</h4>
+//             <p>Role: ${player.role}</p>
+//             <p>Gender: ${player.gender}</p>
+//             Matches: ${player.matches}<br>
+//             Batting Avg: ${player.batting_avg || 'N/A'}, Strike Rate: ${player.strike_rate || 'N/A'}<br>
+//             Fifties: ${player.fifties || 'N/A'}, Hundreds: ${player.hundreds || 'N/A'}<br>
+//             Wickets: ${player.wickets || 'N/A'}, Bowling Avg: ${player.bowling_avg || 'N/A'}<br>
+//             Bowling Strike Rate: ${player.bowling_strike_rate || 'N/A'}, Economy Rate: ${player.economy_rate || 'N/A'}
+//         `;
+//         statsContainer.appendChild(playerSection);
+//     });
+
+//     document.getElementById('selectedPlayersStats').classList.remove('hidden'); // Show the stats section
+// }
 
 
 

@@ -1,3 +1,5 @@
+<?php require 'navbar.php'; ?>
+
 <div id="sidebar" class="sidebar">
         <span class="close" onmouseleave="closeNav()">
         <div class="profile">
@@ -24,30 +26,13 @@
                 <li><a href="<?php echo ROOT ?>/coach/performancetracking">Performancce Tracking</a></li>
                 <li><a href="<?php echo ROOT ?>/coach/teammanagement">Team Management</a></li>
                 <li><a href="<?php echo ROOT ?>/coach/eventmanagement">Event Management</a></li>
-                <li><a href="../Student/Profile Management.html">Profile Management</a></li>
+                <li><a href="<?php echo ROOT ?>/coach/profilemanagement">Profile Management</a></li>
             </ul>
         </nav>
         </span>
     </div>
 
-    <div id="main">
-    <header>
-        <button class="openbtn" onclick="toggleNav()">☰ </button>
-
-        <nav class="navbar" id="navbar">
-            <div class="logo">
-                <img src="/TrackMaster/Public/img/logo.png" alt="Logo"> 
-            </div>
-            <ul class="nav-links">
-                <li><a href="<?php echo URLROOT ?>/loginController/login">Home</a></li>
-                <li><a href="<?php echo URLROOT ?>/common/aboutUs">About Us</a></li>
-                <li><a href="<?php echo URLROOT ?>/common/help">Help & Support</a></li>    
-                <li><button class="login" onclick="window.location.href='<?php echo URLROOT ?>/login'">Log in</button></li>
-                <li><img src="/TrackMaster/Public/img/log in.png" alt="Logo"> </li>
-                <li><img src="/TrackMaster/Public/img/notification.png" alt="Logo"> </li>
-            </ul>
-        </nav>
-    </header>
+    
     </div>
 
     <script src="/TrackMaster/Public/js/sidebar.js"></script>

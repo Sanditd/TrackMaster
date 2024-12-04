@@ -23,7 +23,7 @@
                 <li><a href="<?php echo URLROOT ?>/loginController/login">Home</a></li>
                 <li><a href="<?php echo URLROOT ?>/common/aboutUs">About Us</a></li>
                 <li><a href="<?php echo URLROOT ?>/common/help">Help & Support</a></li>    
-                <li><button class="login" onclick="window.location.href='<?php echo URLROOT ?>/login'">Log in</button></li>
+                <li><button class="login" onclick="window.location.href='<?php echo URLROOT ?>/loginController/logout'">LogOut</button></li>
                 <li><img src="/TrackMaster/Public/img/log in.png" alt="Logo"> </li>
                 <li><img src="/TrackMaster/Public/img/notification.png" alt="Logo"> </li>
             </ul>
@@ -34,7 +34,7 @@
         <div id="sidebar" class="sidebar">
             
                 <div class="profile">
-                    <img src="../../Public/img/profile.jpeg" alt="Profile Picture">
+                    <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture">
                     <div style="font-size:15px;font-weight:bold;white-space: nowrap;position:fix">T.H.E.G.THENUWARA
                     </div>
                     <br>

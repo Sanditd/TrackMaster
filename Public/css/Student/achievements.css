@@ -144,7 +144,8 @@ input[type="radio"]{
 
 .Edit-button {
     background-color: rgb(81, 238, 102);;
-    color: white
+    color: white;
+    text-decoration: none;
 }
 
 .delete-button {

@@ -9,14 +9,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Sign Up - Student</title>
-        <link rel="stylesheet" href="../Public/css/Coach/CoachSignup.css">
+        <link rel="stylesheet" href="../Public/css/Coach/CoachSignup copy.css">
     </head>
     <body>
         <div id="signup-port">
             <span id="signup-port-logo">
                 <img src="../Public/img/logo-black.png" alt="TrackMaster Logo">
             </span>
-            <h2>Sign Up - Student</h2>
+            <h2>Sign Up - Coach</h2>
             <form method="POST" action="<?php echo ROOT; ?>/signupcontroller/coachsignup" enctype="multipart/form-data">
 
             
