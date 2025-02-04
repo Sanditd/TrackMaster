@@ -4,27 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Help Page</title>
-    <link rel="stylesheet" href="/TrackMaster/Public/css/Helpp.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/helppage.css">
 </head>
 <body>
 
 <?php require 'C:/xampp/htdocs/TrackMaster/App/views/Student/navbar.php'?>
 <?php require 'C:/xampp/htdocs/TrackMaster/App/views/Student/sidebar.php'?>
 
-    <div id="main">
+        <div class="intro">
             <center>
             <h1>HELP for a Better Experience at Our Website</h1>
             </center>
+        </div>
 
-        <section class="tabs">
-        <p>Select Your Role :</p>
-            <div class="tab-links">
-                <button class="active" onclick="showTab('students')">Student</button>
-                <button onclick="showTab('coaches')">Coach</button>
-                <button onclick="showTab('parents')">Parent</button>
-                <button onclick="showTab('schools')">School</button>
+        <h2>Click on Your Role :</h2>
+        <div class="tabs">
+            <div class="card">
+                <button  onclick="showTab('students')">
+                    <img src="/TrackMaster/Public/img/help2.jpeg" alt="students">
+                    <h4>STUDENT</h4>
+                </button>
             </div>
-        </section>
+            <div class="card">
+                <button onclick="showTab('coaches')">
+                    <img src="/TrackMaster/Public/img/help1.jpeg" alt="coaches">
+                    <h4>COACH</h4>
+                </button>
+            </div>
+            <div class="card">
+                <button onclick="showTab('parents')">
+                    <img src="/TrackMaster/Public/img/help3.jpeg" alt="parents">
+                    <h4>PARENT</h4>
+                </button>
+            </div>
+            <div class="card">
+                <button onclick="showTab('schools')">
+                    <img src="/TrackMaster/Public/img/help4.jpeg" alt="schools">
+                    <h4>SCHOOL</h4>
+                </button>
+            </div>    
+        </div>
 
         <section id="students" class="topics">
             <h2>Frequently Asked Topics for Students</h2>
@@ -143,10 +162,11 @@
             <textarea id="description" name="description" rows="4" placeholder="Describe the issue in detail..."></textarea>
 
             <h3>We'll get back to you as soon as possible.</h3>
-            <center><button type="submit">Submit</button></center>
+            <center><button class="form-btn" type="submit">Submit</button></center>
 
             </form>           
         </section>
+        <img class="form-img" src="/TrackMaster/Public/img/about3.jpeg" alt="students">
         </div>
 
         <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
@@ -163,7 +183,7 @@
             document.getElementById(tabId).style.display = 'block';
 
             // Remove active class from all buttons
-            let buttons = document.querySelectorAll('.tab-links button');
+            let buttons = document.querySelectorAll('.card button');
             buttons.forEach(btn => btn.classList.remove('active'));
 
             // Add active class to the clicked button
