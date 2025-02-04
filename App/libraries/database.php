@@ -211,23 +211,6 @@
         public function lastInsertId() {
             return $this->dbh->lastInsertId();
         }
-
-        public function beginTransaction() {
-            $this->dbh->beginTransaction();
-        }
-        
-        public function commit() {
-            $this->dbh->commit();
-        }
-        
-        public function rollBack() {
-            $this->dbh->rollBack();
-        }
-
-        public function singleArray(){
-            return $this->stmt->fetch(PDO::FETCH_ASSOC);
-        }
-
 }
 
 ?>

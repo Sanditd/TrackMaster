@@ -109,7 +109,7 @@ if (!isset($_SESSION['user_id'])) {
                                         </form>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                     <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>           
