@@ -4,105 +4,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create a Sport</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/sportCreate.css">
+    <title>Dashboard</title>
+    <!-- <link rel="stylesheet" href="../../Public/css/Admin/form.css"> -->
     <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
+    <link rel="stylesheet" href="../../Public/css/Admin/zoneManage.css">
     <script src="../../Public/js/Admin/sidebar.js"></script>
 
+    <!-- FullCalendar CSS and JS -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script> -->
 </head>
 
 <body>
+    <div class="adminNav">
+        <?php require_once 'adminNav.php'?>
+    </div>
 
-</body>
-<?php require_once "adminNav.php" ?>
+    <div id="frame" style="margin-top: 100px; margin-left:100px">
+        <div class="container">
 
-<!-- <div id="mainContent" style="display: none;"> -->
-<div id="teamSport" >
-    <div class="container">
-        <h1>Create a Team Sport</h1>
+            <div class="temp-container">
+                <div id="signup-port">
 
-        <form id="createSportForm" action="<?php echo ROOT ?>/admin/addSportForm" method="post">
-            <!-- Sport Name -->
-            <div class="form-group">
-                <label for="sportName">Sport Name:</label>
-                <input type="text" id="sportName" name="sportName" placeholder="Enter Sport Name" required
-                    >
-            </div>
+                    <div class="temp2-container">
+                        <div class="column">
+                            <h3>Add New Sport</h3>
+                            <br>
+                            <div class="form-group">
+                                <label for="sportName">Sport Name</label>
+                                <input type="text" id="sportName" name="sportName" placeholder="Cricket">
+                            </div>
 
-            <!-- Sport Type -->
-            <!-- <div class="form-group">
-                        <label for="sportType">Sport Type:</label>
-                        <select id="sportType" name="sportType" required value=">
-                            <option value="">Select Type</option>
-                            <option value="Individual">Individual</option>
-                            <option value="Team">Team</option>
-                        </select>
-                    </div> -->
+                            <div class="form-group">
+                                <label for="numOfPlayers">Number of Players</label>
+                                <input type="text" id="numOfPlayers" name="numOfPlayers" placeholder="11">
+                            </div>
 
-            <!-- Number of Players -->
-            <div class="form-group">
-                <label for="numPlayers">Number of Players:</label>
-                <input type="number" id="numPlayers" name="numPlayers" min="1" placeholder="Enter Number of Players"
-                    required >
-            </div>
+                            <div class="form-group">
+                                <div id="dynamic-positions-container">
+                                    <div class="input-group">
+                                        <label for="positions">Player Position (Click ➕ to add more positions)</label>
+                                        <input type="text" id="positions" name="positions[]" placeholder="Batsman">
+                                        <button class="add-btn" onclick="addPositionField(this)">➕</button>
 
-            <!-- Player Position List -->
-            <div class="form-group">
-                <label for="playerPositions">Player Positions (comma-separated):</label>
-                <input type="text" id="playerPositions" name="playerPositions"
-                    placeholder="e.g., Goalkeeper, Defender, Striker" >
-            </div>
+                                    </div>
+                                </div>
+                            </div>
 
-            <!-- Team Formation -->
-            <div class="form-group">
-                <label for="teamFormation">Team Formation:</label>
-                <input type="text" id="teamFormation" name="teamFormation" placeholder="e.g., 4-4-2"
-                    >
-            </div>
 
-            <!-- Duration of Each Game -->
-            <div class="form-group">
-                <label for="gameDuration">Game Duration (minutes):</label>
-                <input type="number" id="gameDuration" name="gameDuration" min="1" placeholder="Enter Game Duration"
-                    required >
-            </div>
+                            <div class="form-group">
+                                <div id="dynamic-types-container">
+                                    <div class="input-group">
+                                        <label for="types">Player Types (Click ➕ to add more types)</label>
+                                        <input type="text" id="types-1" name="types[]" placeholder="Left Hand Batsman">
+                                        <button class="add-btn" onclick="addTypeField(this)">➕</button>
+                                    </div>
+                                </div>
+                            </div>
 
-            <!-- Halftime Duration -->
-            <div class="form-group">
-                <label for="halftimeDuration">Halftime Duration (minutes):</label>
-                <input type="number" id="halftimeDuration" name="halftimeDuration" min="1"
-                    placeholder="Enter Halftime Duration" >
-            </div>
-
-            <!-- Indoor or Outdoor -->
-            <div class="form-group">
-                <label for="locationType">Location Type:</label>
-                <select id="locationType" name="locationType" required >
-                    <option value="">Select Location</option>
-                    <option value="Indoor">Indoor</option>
-                    <option value="Outdoor">Outdoor</option>
-                </select>
-            </div>
-
-            <!-- Equipment -->
-            <div class="form-group">
-                <label for="equipment">Equipment (comma-separated):</label>
-                <input type="text" id="equipment" name="equipment" placeholder="e.g., Ball, Net, Bat"
-                    >
-            </div>
-
-            <!-- Rules URL -->
-            <div class="form-group">
-                <label for="rulesURL">Rules (URL):</label>
-                <input type="url" id="rulesURL" name="rulesURL" placeholder="Enter URL for Rules"
-                    >
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit">Create Sport</button>
-        </form>
+                            <div class="form-group">
+    <label for="duration">Game Types and Durations</label>
+    <div class="input-row">
+        <input type="text" id="Gtypes-1" name="Gtypes[]" placeholder="Enter game type name">
+        <select name="durationType" id="duration-type">
+            <option value="T">Time Based</option>
+            <option value="O">Over Based</option>
+            <option value="S">Score Based</option>
+        </select>
+        <input type="text" name="duration" id="duration" placeholder="Enter duration">
     </div>
 </div>
-<!-- </div> -->
+
+
+                        </div>
+
+                        <div class="column">
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Custom Alert Box -->
+    <div id="customAlertOverlay">
+        <div id="customAlertBox">
+            <h2>Notice</h2>
+            <p id="customAlertMessage"></p>
+            <button onclick="hideCustomAlert()">OK</button>
+        </div>
+    </div>
+
+
+</body>
+
+<script>
+// Show the alert box
+function showCustomAlert(message) {
+    document.getElementById('customAlertMessage').innerText = message;
+    document.getElementById('customAlertOverlay').style.display = 'flex';
+}
+
+// Hide the alert box
+function hideCustomAlert() {
+    document.getElementById('customAlertOverlay').style.display = 'none';
+}
+
+// Check for error or success message from PHP and display the alert
+<?php if (!empty($data['errormsg']) || isset($_GET['error']) || isset($_GET['success'])): ?>
+const alertMessage =
+    <?php 
+    echo json_encode(
+        !empty($data['errormsg']) 
+            ? $data['errormsg'] 
+            : (!empty($_GET['error']) 
+                ? htmlspecialchars($_GET['error']) 
+                : htmlspecialchars($_GET['success']))
+    ); 
+    ?>;
+showCustomAlert(alertMessage);
+<?php endif; ?>
+
+let positionFieldCount = 1; // Counter for position fields
+let typeFieldCount = 1; // Counter for type fields
+
+// Function to add a new position field
+function addPositionField(element) {
+    positionFieldCount++;
+    const container = document.getElementById('dynamic-positions-container');
+
+    const newField = document.createElement('div');
+    newField.className = 'input-group';
+    newField.innerHTML = `
+        <input type="text" id="positions-${positionFieldCount}" name="positions[]" placeholder="Position ${positionFieldCount}">
+        <button class="add-btn" onclick="addPositionField(this)">➕</button>
+        <button class="remove-btn" onclick="removeField(this)">❌</button>
+    `;
+
+    // Insert the new field after the current field
+    container.insertBefore(newField, element.parentElement.nextSibling);
+
+    // Remove the "Add" button from the current field
+    element.remove();
+}
+
+// Function to add a new type field
+function addTypeField(element) {
+    typeFieldCount++;
+    const container = document.getElementById('dynamic-types-container');
+
+    const newField = document.createElement('div');
+    newField.className = 'input-group';
+    newField.innerHTML = `
+        <input type="text" id="types-${typeFieldCount}" name="types[]" placeholder="Type ${typeFieldCount}">
+        <button class="add-btn" onclick="addTypeField(this)">➕</button>
+        <button class="remove-btn" onclick="removeField(this)">❌</button>
+    `;
+
+    // Insert the new field after the current field
+    container.insertBefore(newField, element.parentElement.nextSibling);
+
+    // Remove the "Add" button from the current field
+    element.remove();
+}
+
+// Function to remove an input field
+function removeField(element) {
+    const container = element.closest('.form-group').querySelector('div[id$="-container"]');
+
+    // Remove the current field
+    element.parentElement.remove();
+
+    // Ensure the last field in this container has an "Add" button
+    const inputGroups = container.getElementsByClassName('input-group');
+    if (inputGroups.length > 0) {
+        const lastField = inputGroups[inputGroups.length - 1];
+        if (!lastField.querySelector('.add-btn')) {
+            const addButton = document.createElement('button');
+            addButton.className = 'add-btn';
+            addButton.textContent = '➕';
+            addButton.setAttribute('onclick', container.id.includes('positions') ? 'addPositionField(this)' :
+                'addTypeField(this)');
+            lastField.appendChild(addButton);
+        }
+    } else {
+        alert("You must have at least one field in this section!");
+    }
+}
+</script>
 
 </html>

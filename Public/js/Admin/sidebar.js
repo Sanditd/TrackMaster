@@ -1,13 +1,11 @@
-function openNav() {
-    document.getElementById("sidebar").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
-}
+// JavaScript for Sidebar Expansion
+const sidebar = document.getElementById("sidebar");
+const logo = document.querySelector(".sidebar-logo");
 
-function closeNav() {
-    document.getElementById("sidebar").style.width = "0"; // Close sidebar
-}
+logo.addEventListener("mouseenter", () => {
+    sidebar.classList.add("expanded");
+});
 
-function toggleNav() {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.style.width = sidebar.style.width === "250px" ? "0" : "250px"; // Adjust width for toggle
-}
+sidebar.addEventListener("mouseleave", () => {
+    sidebar.classList.remove("expanded");
+});

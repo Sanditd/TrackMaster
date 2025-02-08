@@ -34,7 +34,7 @@
         }
 
         //bind param
-        public function bind($param, $value, $type = null){
+        public function bind($param, $value, $type = null) {
             if (is_null($type)) {
                 switch (true) {
                     case is_int($value):
@@ -46,13 +46,16 @@
                     case is_null($value):
                         $type = PDO::PARAM_NULL;
                         break;
-                    default :
+                    case is_resource($value): // Check if it's a resource (used for LOBs)
+                        $type = PDO::PARAM_LOB;
+                        break;
+                    default:
                         $type = PDO::PARAM_STR;
                 }
             }
             $this->stmt->bindValue($param, $value, $type);
-
         }
+        
 
         public function singleArray(){
             return $this->stmt->fetch(PDO::FETCH_ASSOC);
@@ -216,7 +219,10 @@
             return $this->dbh->lastInsertId();
         }
 
-        
+        // Get error information
+    public function errorInfo() {
+        return $this->stmt->errorInfo(); // Return PDOStatement error info
+    }
 }
 
 

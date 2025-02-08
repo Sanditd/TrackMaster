@@ -1,8 +1,14 @@
 <?php
     class admin extends Controller{
         private $sportModel;
+        private $userModel;
+        private $calmodel;
+        private $zoneModel;
         public function __construct(){
           $this->sportModel=$this->model('sportModel');
+          $this->userModel =$this->model('User');
+          $this->zoneModel =$this->model('zoneModel');
+          //$this->calmodel =$this->model('calenderModel');
         }
 
         public function index(){
@@ -25,8 +31,10 @@
 
         //to load dashbaord.php
         public function dashboard(){
-            $data=[];
-            $this->view('Admin/adminpanelview');
+            $data=$this->showMonthlySignups();
+            //$caldata=$this->getCalendarData();
+            //$data=array_merge($userdata,$caldata);
+            $this->view('Admin/adminpanelview',$data);
         }
 
         //to load userManage.php
@@ -540,7 +548,181 @@
             }
         }
         
+        public function showMonthlySignups() {
+            $month = date('m'); // Returns the current month as a two-digit number (e.g., "01" for January)
+            $year = date('Y'); // Returns the current year as a four-digit number (e.g., "2024")
+
+            $signups = $this->userModel->getMonthlySignups($month, $year);
+
+            if(empty($signups)){
+                return [
+                    'signups' => [
+                        'month' => 0, // Current month in "Month Year" format
+                        'coaches' => 0,
+                        'players' => 0,
+                        'schools' => 0,
+                        'parents' => 0,
+                        'deletions' => 0,
+                        'errormsg' => 'No data found'
+                    ],
+                ];
+            }else{
+            // Return data for rendering in the view
+            return [
+                'signups' => [
+                    'month' => date("F Y"), // Current month in "Month Year" format
+                    'coaches' => $signups['coaches'] ?? 0,
+                    'players' => $signups['players'] ?? 0,
+                    'schools' => $signups['schools'] ?? 0,
+                    'parents' => $signups['parents'] ?? 0,
+                    'deletions' => $signups['deleted_accounts'] ?? 0,
+                ],
+            ];
+        }
+        }
+
+        
+
+        //calender controllers
+        public function addReminder($date, $description) {
+            $this->calmodel->addReminder($date, $description);
+        }
+
+        public function getCalendarData() {
+            $reminders = $this->calmodel->getReminders();
+            $holidays = $this->calmodel->getHolidays();
+    
+            $data = [
+                'reminders' => [],
+                'holidays' => []
+            ];
+    
+            foreach ($reminders as $reminder) {
+                $data['reminders'][$reminder['date']][] = $reminder['description'];
+            }
+    
+            foreach ($holidays as $holiday) {
+                $data['holidays'][$holiday['date']] = $holiday['name'];
+            }
+    
+            return $data;
+        }
+
+
+        public function zoneManage(){
+            $data=$this->showZones();
+            $this->view('/Admin/zoneManage',$data);
+        }
+
+        
+        public function showZones() {
+            $zones = $this->zoneModel->getZones();
+            if (empty($zones)) {
+                return [
+                    'zones' => [],
+                    'errormsg' => 'No data found'
+                ];
+            }
+            return ['zones' => $zones, 'errormsg' => ''];
+        }
+        
+
+        public function addZone() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $filters = [
+                    'Province' => FILTER_SANITIZE_STRING,
+                    'District' => FILTER_SANITIZE_STRING,
+                    'zone' => FILTER_SANITIZE_STRING
+                ];
+                $_POST = filter_input_array(INPUT_POST, $filters);
+        
+                $data = [
+                    'province' => trim($_POST['Province']),
+                    'district' => trim($_POST['District']),
+                    'zone' => isset($_POST['zone']) ? trim($_POST['zone']) : '',
+                    'active' => '0',
+                    'errormsg' => ''
+                ];
+        
+                if (empty($data['province']) || empty($data['district']) || empty($data['zone'])) {
+                    $errorMsg = urlencode('Please provide all information.');
+                    header('Location: ' . ROOT . '/admin/zoneManage/dffsds?error=' . $errorMsg);
+                    exit;
+                }
+
+                if ($this->zoneModel->isZoneExists($data)) {
+                    $errorMsg = urlencode('The specified zone already exists.');
+                    header('Location: ' . ROOT . '/admin/zoneManage/dffsds?error=' . $errorMsg);
+                    exit;
+                }
+                
+        
+                if ($this->zoneModel->addZone($data)) {
+                    $errorMsg = urlencode('New Zone added to Database');
+                    header('Location: ' . ROOT . '/admin/zoneManage/dffsds?error=' . $errorMsg);
+                    exit;
+                } else {
+                    $errorMsg = urlencode('Something went wrong.');
+                    header('Location: ' . ROOT . '/admin/zoneManage/dffsds?error=' . $errorMsg);
+                    exit;
+                }
+            }
+        }
+        
+        public function updateZoneStatus() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                // Get zone name and status from POST data
+                $zoneName = $_POST['zoneName'];
+                $status = $_POST['status']; // 1 for active, 0 for inactive
+        
+                // Call the model function to update the status in the database
+                $result = $this->zoneModel->updateZoneStatus($zoneName, $status);
+        
+                // Redirect to the zone management page with a success message
+                if ($result) {
+                    // Success redirect (you can modify this to include a success message)
+                    $errorMsg = urlencode('Zone update sucessfully');
+                    header('Location: ' . ROOT . '/admin/zoneManage/sdasd?error=' . $errorMsg);
+                    exit;
+                } else {
+                    // Error redirect (you can modify this to include an error message)
+                    $errorMsg = urlencode($zoneName.' deactivated');
+                    header('Location: ' . ROOT . '/admin/zoneManage/sdsdas?error=' . $errorMsg);
+                    exit;
+                }
+            }
+        }
+        
+        public function deleteZone() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                // Sanitize the input to prevent SQL injection
+                $zoneName = htmlspecialchars(trim($_POST['zoneName']));
+        
+                // Call the model function to delete the zone
+                if ($this->zoneModel->deleteZoneByName($zoneName)) {
+                    // Redirect with a success message
+                    $successMsg = urlencode("Zone '$zoneName' has been deleted successfully.");
+                    header("Location: " . ROOT . "/admin/zoneManage/dssdf?success=$successMsg");
+                    exit;
+                } else {
+                    // Redirect with an error message
+                    $errorMsg = urlencode("Failed to delete zone '$zoneName'. Please try again.");
+                    header("Location: " . ROOT . "/admin/zoneManage/sdfsdf?error=$errorMsg");
+                    exit;
+                }
+            } else {
+                // Redirect if the request method is not POST
+                header("Location: " . ROOT . "/admin/zoneManage/sdfsdf");
+                exit;
+            }
+        }
+        
         
 
     }
-?>
+
+    
+
+    ?>
+
+       

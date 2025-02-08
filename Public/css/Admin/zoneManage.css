@@ -110,6 +110,18 @@ form button {
     cursor: pointer;
 }
 
+.form-group label {
+    margin-bottom: 5px; /* Adds spacing between label and input */
+    font-weight: bold; /* Optional: Makes the label bold for better readability */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column; /* Ensures label and input are stacked vertically */
+    align-items: flex-start; /* Aligns the label and input to the left */
+    margin-bottom: 10px; /* Adds spacing between form groups */
+}
+
 /* Overlay */
 #customAlertOverlay {
     display: none;
@@ -163,56 +175,4 @@ form button {
 
 #customAlertBox button:hover {
     background-color: #0056b3;
-}
-/* Styles for the input group and form */
-.form-group label {
-    margin-bottom: 5px; /* Space between label and input */
-    font-weight: bold; /* Makes the label bold */
-}
-
-.form-group {
-    margin-bottom: 15px; /* Space between form groups */
-}
-
-.input-row {
-    display: flex;
-    align-items: center; /* Vertically align items */
-    gap: 10px; /* Space between elements in the row */
-}
-
-.input-row input[type="text"],
-.input-row select {
-    flex: 1; /* Allow fields to take up equal space */
-    min-width: 150px; /* Set a minimum width for better responsiveness */
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Ensures consistent padding and border calculations */
-}
-
-/* Button styles */
-button.add-btn {
-    padding: 8px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    background-color: #007bff; /* Primary blue color */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease; /* Smooth hover transition */
-}
-
-button.add-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
-
-
-
-.remove-btn {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
 }

@@ -3,51 +3,93 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background-image: url('../../img/images/login/black_hex.jpg'); /* Ensure the path is correct */
     background-size: cover;
+    height: 100vh;
+    color: #333;
+}
+
+.temp-container{
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    height: 100vh;
-    color: #333;
-    padding-top: 50px;
+    padding-top: 10px;
 }
+
+
 
 #signup-port {
     background-color: #fff;
-    padding: 30px;
+    padding: 20px;
     border-radius: 20px;
     box-shadow: 6px 6px 29px -4px rgba(34, 34, 34, 0.75);
-    width: 600px;
+    width: 1500px;
     text-align: center;
-    margin-top: 20px;
+    gap: 20px;
 }
 
-#signup-port-logo img {
-    width: 180px;
-    height: 60px;
-    margin-bottom: 20px;
+.container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
 }
 
-h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
+
+.column {
+    flex: 1;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 
-.form-row {
-    display: flex;
-    gap: 20px;
+form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-group label {
+    margin-bottom: 5px; /* Adds spacing between label and input */
+    font-weight: bold; /* Optional: Makes the label bold for better readability */
 }
 
 .form-group {
-    flex: 1;
-    text-align: left;
+    display: flex;
+    flex-direction: column; /* Ensures label and input are stacked vertically */
+    align-items: flex-start; /* Aligns the label and input to the left */
+    margin-bottom: 10px; /* Adds spacing between form groups */
 }
+
+.container form {
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+}
+
+#signup-port-logo img {
+    margin-top: -10px;
+    width: 180px;
+    height: 60px;
+}
+
+h2 {
+    font-size: 24px;
+    color: #333;
+    margin-top: -5px;
+    display: flex;
+    flex-direction: column; /* Ensures label and input are stacked vertically */
+    align-items: flex-start;
+    padding-left: 15px;
+    margin-bottom: -5px;
+}
+
 
 label {
     display: block;
@@ -92,4 +134,113 @@ button {
 
 button:hover {
     opacity: 0.9;
+}
+
+.custom-file-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.custom-button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.custom-button:hover {
+    background-color: #0056b3;
+}
+
+input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+#file-name {
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    color: #666;
+}
+
+.photo-preview {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.photo-preview img {
+    max-width: 100%;
+    max-height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.photo-preview p {
+    color: #666;
+    font-size: 14px;
+}
+
+
+/* Overlay */
+#customAlertOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+/* Alert Box */
+#customAlertBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1001;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+#customAlertBox h2 {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+#customAlertBox p {
+    margin: 0;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+#customAlertBox button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#customAlertBox button:hover {
+    background-color: #0056b3;
 }
