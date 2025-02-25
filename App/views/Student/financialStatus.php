@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
+    <?php require 'footer.php'; ?>
  
     <script src="/TrackMaster/Public/js/Student/financial_status.js"></script>
 </body>

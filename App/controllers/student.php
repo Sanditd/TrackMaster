@@ -133,6 +133,36 @@ class Student extends Controller {
         }
     }
 
+    //medical status
+    public function saveMedicalStatus(){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Process form
+            $data = [
+                'user_id' => trim($_POST['user_id']),
+                'date' => trim($_POST['date']),
+                'conditions' => trim($_POST['condition']),
+                'medications' => trim($_POST['medication']),
+                'notes' => trim($_POST['notes'])
+            ];
+
+            if ($this->studentModel->addMedicalStatus($data)) {
+                header('Location: ' . URLROOT . '/Student/medicalStatus');
+            } else {
+                die('Something went wrong');
+            }
+        } 
+    }
+
+
+
+
+
+
+
+
+
+
+
     public function studentAchievements() {
         $achievements = $this->studentModel->getAchievements();
         $data = ['achievements' => $achievements];
