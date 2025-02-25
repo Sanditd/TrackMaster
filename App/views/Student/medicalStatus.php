@@ -29,21 +29,22 @@
             
             <div class="form-section">
                 <h2>Update The Current Medical Status</h2>
-                <form>    
+                <form action="<?php echo ROOT?>/student/saveMedicalStatus" method="POST">
+                <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']?>">
                     <label for="date">Date:</label>
-                    <input type="date" id="date" required><br>
+                    <input type="date" id="date" name="date" required><br>
     
                     <label for="condition">Medical Condition:</label>
-                    <input type="text" id="condition" placeholder="Enter the Ongoing Medical Condition" required><br>
+                    <input type="text" id="condition" placeholder="Enter the Ongoing Medical Condition" name="condition" required><br>
 
                     <label for="medication">Medication:</label>
-                    <textarea id="medication" placeholder="Enter the Given Medications" required></textarea><br> <!-- Changed ID -->
+                    <textarea id="medication" placeholder="Enter the Given Medications"name="medication" required></textarea><br> <!-- Changed ID -->
 
                     <label for="notes">Notes:</label>
-                    <textarea id="notes" placeholder="Enter Additional Notes" required></textarea><br>
+                    <textarea id="notes" placeholder="Enter Additional Notes" name="notes" required></textarea><br>
     
-                    <label for="report">Upload Medical Report (PDF):</label>
-                    <input type="file" id="report" accept=".pdf" required><br>
+                    <!-- <label for="report">Upload Medical Report (PDF):</label>
+                    <input type="file" id="report" accept=".pdf" required><br> -->
     
                     <center><button class="edit-button" type="submit">Submit</button></center>
                 </form>
@@ -97,7 +98,7 @@
     
     </div>
 
-    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
+    <?php require 'footer.php'; ?>
     
     <script src="/TrackMaster/Public/js/Student/medical_status.js"></script>
 

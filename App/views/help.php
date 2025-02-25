@@ -8,9 +8,9 @@
 </head>
 <body>
 
-<?php require 'C:/xampp/htdocs/TrackMaster/App/views/Student/navbar.php'?>
+<?php require 'navbar.php'?>
 <?php require 'C:/xampp/htdocs/TrackMaster/App/views/Student/sidebar.php'?>
-
+<div>
         <div class="intro">
             <center>
             <h1>HELP for a Better Experience at Our Website</h1>
@@ -168,8 +168,9 @@
         </section>
         <img class="form-img" src="/TrackMaster/Public/img/about3.jpeg" alt="students">
         </div>
+    </div>
 
-        <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
+        <?php require 'footer.php'; ?>
 
     <script>
         function showTab(tabId) {

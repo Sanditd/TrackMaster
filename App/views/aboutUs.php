@@ -9,7 +9,7 @@
 
 <body>
 
-    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/Student/navbar.php'?>
+    <?php require 'navbar.php'?>
     <?php require 'C:/xampp/htdocs/TrackMaster/App/views/Student/sidebar.php'?>
 
 <div class="about">
@@ -96,7 +96,7 @@
 
 </div>
 
-<?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
+<?php require 'footer.php'; ?>
 
 </body>
 </html>
