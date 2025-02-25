@@ -9,7 +9,7 @@
 <body>
 
 <?php require 'navbar.php'?>
-<?php require 'C:/xampp/htdocs/TrackMaster/App/views/Student/sidebar.php'?>
+<?php require 'sidebar.php'?>
 <div>
         <div class="intro">
             <center>
