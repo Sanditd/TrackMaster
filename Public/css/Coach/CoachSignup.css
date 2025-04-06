@@ -109,7 +109,7 @@ select {
     padding: 12px 10px;
     margin: 4px 0;
     display: block;
-    border: 1px solid  #ffa500;
+    border: 1px solid #ccc;
     box-sizing: border-box;
     border-radius: 4px;
     font-size: 14px;
@@ -121,7 +121,7 @@ textarea {
 }
 
 button {
-    background-color:  #ffa500;
+    background-color: #333;
     color: white;
     padding: 12px 20px;
     margin: 8px 0;
