@@ -12,7 +12,7 @@
     <span class="close" onmouseleave="closeNav()">
         <div class="profile">
             <!-- Dynamically Load Profile Picture -->
-            <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture">
+            <img src="/TrackMaster/Public/img/uploads/<?php echo htmlspecialchars($_SESSION['photo'] ?? 'default.jpg'); ?>" alt="Profile Picture">
 
             <!-- Display Username -->
             <div style="font-size:15px;font-weight:bold;white-space: nowrap;">

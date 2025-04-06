@@ -12,6 +12,7 @@
 
 <body>
 
+
 <header>
         <button class="openbtn" onclick="toggleNav()">☰ </button>
 
@@ -55,6 +56,7 @@
         </div> 
     <script src="/TrackMaster/Public/js/sidebar.js"></script>
        
+
 </body>
 
 </html>

@@ -1,8 +1,14 @@
 <?php
     class admin extends Controller{
         private $sportModel;
+        private $userModel;
+        private $calmodel;
+        private $zoneModel;
         public function __construct(){
           $this->sportModel=$this->model('sportModel');
+          $this->userModel =$this->model('User');
+          $this->zoneModel =$this->model('zoneModel');
+          //$this->calmodel =$this->model('calenderModel');
         }
 
         public function index(){
@@ -25,8 +31,10 @@
 
         //to load dashbaord.php
         public function dashboard(){
-            $data=[];
-            $this->view('Admin/adminpanelview');
+            $data=$this->showMonthlySignups();
+            //$caldata=$this->getCalendarData();
+            //$data=array_merge($userdata,$caldata);
+            $this->view('Admin/adminpanelview',$data);
         }
 
         //to load userManage.php
@@ -44,206 +52,115 @@
         }
 
         //handle sport adding to database
-        public function addSportForm(){
-            if($_SERVER['REQUEST_METHOD']=='POST'){
-                //form is submitting
-                //validate data
-                $filters=[
-                    'sportName' => FILTER_SANITIZE_STRING,
-                    'sportType' => FILTER_SANITIZE_STRING,
-                    'numPlayers' => FILTER_SANITIZE_NUMBER_INT,
-                    'playerPositions' => FILTER_SANITIZE_STRING,
-                    'teamFormation' => FILTER_SANITIZE_NUMBER_INT,
-                    'gameDuration' => FILTER_SANITIZE_NUMBER_FLOAT,
-                    'halftimeDuration' => FILTER_SANITIZE_NUMBER_FLOAT,
-                    'locationType' => FILTER_SANITIZE_STRING,
-                    'equipment' => FILTER_SANITIZE_STRING,
-                    'rulesURL'=> FILTER_SANITIZE_STRING,
-                ];
-
-                $_POST=filter_input_array(INPUT_POST,$filters);
-
-                //input data
-                $data=[
-                    'sportName' => trim($_POST['sportName']),
-                    'sportType' => 'teamSport',
-                    'numPlayers' => trim($_POST['numPlayers']),
-                    'playerPositions' => json_encode(explode(',', trim($_POST['playerPositions']))),
-                    'teamFormation' => trim($_POST['teamFormation']),
-                    'gameDuration' => trim($_POST['gameDuration']),
-                    'halftimeDuration' => trim($_POST['halftimeDuration']),
-                    'locationType' => trim($_POST['locationType']),
-                    'equipment' => trim($_POST['equipment']),
-                    'rulesURL'=> trim($_POST['rulesURL']),
-
-                    'errorMsg' => ''
-                ];
-
-                //validate data
-                
-                //validate name
-                if(empty($data['sportName'])){
-                    $data['errorMsg']='Please enter sport name';
-                }else{
-                    //check the sport already available in the db
-                    if($this->sportModel->findSportByName($data['sportName'])){
-                        $data['errorMsg']='Sport is already in the Database';                                   
-                    }
-                }
-
-                //validate sportType
-                if(empty($data['sportType'])){
-                    $data['errorMsg']='Please select sport type';
-                }
-
-                //validate numPlayer
-                if(empty($data['numPlayers'])){
-                    $data['errorMsg']='Please enter number of players per team';
-                }
-
-                //validate playerPositions
-                if(empty($data['playerPositions'])){
-                    $data['errorMsg']='Please enter player positions';
-                }
-
-                //validate teamFormation
-                if(empty($data['teamFormation'])){
-                    $data['errorMsg']='Please enter team formation';
-                }
-
-                //validate gameDuration
-                if(empty($data['gameDuration'])){
-                    $data['errorMsg']='Please enter game duration';
-                }
-
-                //validate halftimeDuration
-                if(empty($data['halftimeDuration'])){
-                    $data['errorMsg']='Please enter half time duration';
-                }
-                
-                //validate locationType
-                if(empty($data['locationType'])){
-                    $data['errorMsg']='Please enter location type';
-                }
-
-                //validate equipment
-                if(empty($data['equipment'])){
-                    $data['errorMsg']='Please name equipments';
-                }
-
-                //validate rulesURL
-                if(empty($data['rulesURL'])){
-                    $data['errorMsg']='Please provide URL for rules';
-                }
-
-                //validation is complete and no error
-
-                if (!empty($data['errorMsg'])) {
-                    $this->view('/Admin/teamSportForm', $data);
-                    return;
-                }
-                
-                // Add sport to the database
-                if ($this->sportModel->addSport($data)) {
-                    header('Location: ' . ROOT . '/admin/sportManage/asdad');
-                    exit;
-                } else {
-                    $idata['errorMsg'] = 'Something went wrong while adding sport.';
-                    $this->view('/Admin/teamSportForm', $data);
-                }
-    
-    
-            }else{
-                //initial form
-                $data=[
-                    'sportName' => '',
-                    'sportType' => '',
-                    'numPlayers' => '',
-                    'playerPositions' => '',
-                    'teamFormation' => '',
-                    'gameDuration' => '',
-                    'halftimeDuration' => '',
-                    'locationType' => '',
-                    'equipment' => '',
-                    'rulesURL'=> '',
-                ];
-
-                $this->view('/Admin/teamSportForm',$data);
-            }
-        }
-
-        public function addindSportForm(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Sanitize inputs
+        public function addTeamSport() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                header('Content-Type: application/json');
+        
                 $filters = [
                     'sportName' => FILTER_SANITIZE_STRING,
-                    'gameDuration' => FILTER_SANITIZE_NUMBER_FLOAT,
-                    'locationType' => FILTER_SANITIZE_STRING,
-                    'equipment' => FILTER_SANITIZE_STRING,
-                    'category' => FILTER_SANITIZE_STRING,
-                    'scoring' => FILTER_SANITIZE_STRING,
-                    'rulesURL' => FILTER_SANITIZE_STRING,
+                    'numOfPlayers' => FILTER_SANITIZE_NUMBER_INT,
+                    'positions' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'types' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'Gtypes' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'durationType' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'duration' => ['filter' => FILTER_SANITIZE_NUMBER_INT, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'scoring_method' => FILTER_SANITIZE_STRING,
+                    'rules' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY]
                 ];
         
                 $_POST = filter_input_array(INPUT_POST, $filters);
         
-                // Prepare data
-                $idata = [
+                $data = [
                     'sportName' => trim($_POST['sportName']),
-                    'sportType' => 'indSport',
-                    'gameDuration' => trim($_POST['gameDuration']),
-                    'locationType' => trim($_POST['locationType']),
-                    'equipment' => trim($_POST['equipment']),
-                    'category' => json_encode(explode(',', trim($_POST['playerPositions']))),
-                    'scoring' => trim($_POST['scoring']),
-                    'rulesURL' => trim($_POST['rulesURL']),
-                    'errorMsg' => ''
+                    'sportType' => 'teamSport',
+                    'numOfPlayers' => trim($_POST['numOfPlayers']),
+                    'positions' => isset($_POST['positions']) ? array_map('trim', $_POST['positions']) : [],
+                    'types' => $_POST['types'],
+                    'Gtypes' => isset($_POST['Gtypes']) ? array_map('trim', $_POST['Gtypes']) : [],
+                    'durationType' => isset($_POST['durationType']) ? $_POST['durationType'] : [],
+                    'duration' => isset($_POST['duration']) ? $_POST['duration'] : [],
+                    'scoring_method' => trim($_POST['scoring_method']),
+                    'rules' => isset($_POST['rules']) ? $_POST['rules'] : [],
                 ];
         
-                // Validation
-                if (empty($idata['sportName'])) {
-                    $idata['errorMsg'] = 'Please enter sport name';
-                } elseif ($this->sportModel->findSportByName($idata['sportName'])) {
-                    $idata['errorMsg'] = 'Sport is already in the database';
-                }
+                $result = $this->sportModel->addTeamSport($data);
         
-                if (empty($idata['gameDuration'])) {
-                    $idata['errorMsg'] = 'Please enter game duration';
-                }
-        
-                if (empty($idata['locationType'])) {
-                    $idata['errorMsg'] = 'Please enter location type';
-                }
-        
-                if (empty($idata['equipment'])) {
-                    $idata['errorMsg'] = 'Please name equipment';
-                }
-        
-                if (empty($idata['category'])) {
-                    $idata['errorMsg'] = 'Please enter category';
-                }
-        
-                if (empty($idata['scoring'])) {
-                    $idata['errorMsg'] = 'Please describe scoring system';
-                }
-        
-                if (empty($idata['rulesURL'])) {
-                    $idata['errorMsg'] = 'Please provide URL for rules';
-                }
-        
-                // If errors exist, reload the form
-                if (!empty($idata['errorMsg'])) {
-                    $this->view('/Admin/addindSportForm', $idata);
-                    return;
-                }
-        
-                // Add sport to the database
-                if ($this->sportModel->addindSportForm($idata)) {
-                    header('Location: ' . ROOT . '/admin/sportManage/sasd');
+                if ($result['success']) {
+                    session_start();
+                    $_SESSION['success_message'] = "Sport added successfully.";
+                    header('Location: ' . ROOT . '/admin/teamSportForm/success');
                     exit;
                 } else {
-                    $idata['errorMsg'] = 'Something went wrong while adding sport.';
-                    $this->view('/Admin/addindSportForm', $idata);
+                    session_start();
+                    $_SESSION['error_message'] = $result['error'];
+                    error_log("Database Insert Failed: " . $result['error']);
+                    header('Location: ' . ROOT . '/admin/teamSportForm/error');
+                    exit;
+                }
+            } else {
+                $data = [
+                    'sportName' => '',
+                    'sportType' => '',
+                    'numPlayers' => '',
+                    'positions' => '',
+                    'types' => [],
+                    'durationType' => [],
+                    'duration' => [],
+                    'scoring_method' => '',
+                    'rules' => []
+                ];
+                $this->view('/Admin/teamSportForm', $data);
+            }
+        }
+        
+        
+
+        public function addindSportForm(){
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                header('Content-Type: application/json');
+        
+                $filters = [
+                    'sportName' => FILTER_SANITIZE_STRING,
+                    'types' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'Gtypes' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'durationType' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'duration' => ['filter' => FILTER_SANITIZE_NUMBER_INT, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'scoring_method' => FILTER_SANITIZE_STRING,
+                    'weightClass' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'minWeight' => ['filter' => FILTER_SANITIZE_NUMBER_INT, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'maxWeight' => ['filter' => FILTER_SANITIZE_NUMBER_INT, 'flags' => FILTER_REQUIRE_ARRAY],
+                    'rules' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY]
+                ];
+        
+                $_POST = filter_input_array(INPUT_POST, $filters);
+        
+                $data = [
+                    'sportName' => trim($_POST['sportName']),
+                    'sportType' => 'IndSport',
+                    'types' => $_POST['types'],
+                    'Gtypes' => isset($_POST['Gtypes']) ? array_map('trim', $_POST['Gtypes']) : [],
+                    'durationType' => isset($_POST['durationType']) ? $_POST['durationType'] : [],
+                    'duration' => isset($_POST['duration']) ? $_POST['duration'] : [],
+                    'scoring_method' => trim($_POST['scoring_method']),
+                    'rules' => isset($_POST['rules']) ? $_POST['rules'] : [],
+                    'weightClass' => isset($_POST['weightClass']) ? $_POST['weightClass'] : [],
+                    'minWeight' => isset($_POST['minWeight']) ? $_POST['minWeight'] : [],
+                    'maxWeight' => isset($_POST['maxWeight']) ? $_POST['maxWeight'] : [],
+                ];
+        
+                $result = $this->sportModel->addIndSport($data);
+        
+                if ($result['success']) {
+                    session_start();
+                    $_SESSION['success_message'] = "Sport added successfully.";
+                    header('Location: ' . ROOT . '/admin/teamSportForm/success');
+                    exit;
+                } else {
+                    session_start();
+                    $_SESSION['error_message'] = $result['error'];
+                    error_log("Database Insert Failed: " . $result['error']);
+                    header('Location: ' . ROOT . '/admin/teamSportForm/error');
+                    exit;
                 }
             } else {
                 // Initial form load
@@ -525,21 +442,180 @@
                 if (empty($sportId)) {
                     throw new Exception("Invalid sport ID.");
                 }
+    
+            }
+        }
         
-                // Delete the sport from the database
-                $this->sportModel->deleteSportById($sportId);
-        
-                // Return a success response
-                http_response_code(200);
-                echo json_encode(["message" => "Sport deleted successfully."]);
-            } catch (Exception $e) {
-                // Handle errors and send error response
-                http_response_code(400);
-                echo json_encode(["error" => $e->getMessage()]);
-       }
-}
-        
+        public function showMonthlySignups() {
+            $month = date('m'); // Returns the current month as a two-digit number (e.g., "01" for January)
+            $year = date('Y'); // Returns the current year as a four-digit number (e.g., "2024")
+
+            $signups = $this->userModel->getMonthlySignups($month, $year);
+
+            if(empty($signups)){
+                return [
+                    'signups' => [
+                        'month' => 0, // Current month in "Month Year" format
+                        'coaches' => 0,
+                        'players' => 0,
+                        'schools' => 0,
+                        'parents' => 0,
+                        'deletions' => 0,
+                        'errormsg' => 'No data found'
+                    ],
+                ];
+            }else{
+            // Return data for rendering in the view
+            return [
+                'signups' => [
+                    'month' => date("F Y"), // Current month in "Month Year" format
+                    'coaches' => $signups['coaches'] ?? 0,
+                    'players' => $signups['players'] ?? 0,
+                    'schools' => $signups['schools'] ?? 0,
+                    'parents' => $signups['parents'] ?? 0,
+                    'deletions' => $signups['deleted_accounts'] ?? 0,
+                ],
+            ];
+        }
+        }
+
         
 
-    }
-?>
+        //calender controllers
+        public function addReminder($date, $description) {
+            $this->calmodel->addReminder($date, $description);
+        }
+
+        public function getCalendarData() {
+            $reminders = $this->calmodel->getReminders();
+            $holidays = $this->calmodel->getHolidays();
+    
+            $data = [
+                'reminders' => [],
+                'holidays' => []
+            ];
+    
+            foreach ($reminders as $reminder) {
+                $data['reminders'][$reminder['date']][] = $reminder['description'];
+            }
+    
+            foreach ($holidays as $holiday) {
+                $data['holidays'][$holiday['date']] = $holiday['name'];
+            }
+    
+            return $data;
+        }
+
+
+        public function zoneManage(){
+            $data=$this->showZones();
+            $this->view('/Admin/zoneManage',$data);
+        }
+
+        
+        public function showZones() {
+            $zones = $this->zoneModel->getZones();
+            if (empty($zones)) {
+                return [
+                    'zones' => [],
+                    'errormsg' => 'No data found'
+                ];
+            }
+            return ['zones' => $zones, 'errormsg' => ''];
+        }
+        
+
+        public function addZone() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $filters = [
+                    'Province' => FILTER_SANITIZE_STRING,
+                    'District' => FILTER_SANITIZE_STRING,
+                    'zone' => FILTER_SANITIZE_STRING
+                ];
+                $_POST = filter_input_array(INPUT_POST, $filters);
+        
+                $data = [
+                    'province' => trim($_POST['Province']),
+                    'district' => trim($_POST['District']),
+                    'zone' => isset($_POST['zone']) ? trim($_POST['zone']) : '',
+                    'active' => '0',
+                    'errormsg' => ''
+                ];
+        
+                if (empty($data['province']) || empty($data['district']) || empty($data['zone'])) {
+                    $errorMsg = urlencode('Please provide all information.');
+                    header('Location: ' . ROOT . '/admin/zoneManage/dffsds?error=' . $errorMsg);
+                    exit;
+                }
+
+                if ($this->zoneModel->isZoneExists($data)) {
+                    $errorMsg = urlencode('The specified zone already exists.');
+                    header('Location: ' . ROOT . '/admin/zoneManage/dffsds?error=' . $errorMsg);
+                    exit;
+                }
+                
+        
+                if ($this->zoneModel->addZone($data)) {
+                    $errorMsg = urlencode('New Zone added to Database');
+                    header('Location: ' . ROOT . '/admin/zoneManage/dffsds?error=' . $errorMsg);
+                    exit;
+                } else {
+                    $errorMsg = urlencode('Something went wrong.');
+                    header('Location: ' . ROOT . '/admin/zoneManage/dffsds?error=' . $errorMsg);
+                    exit;
+                }
+            }
+        }
+        
+        public function updateZoneStatus() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                // Get zone name and status from POST data
+                $zoneName = $_POST['zoneName'];
+                $status = $_POST['status']; // 1 for active, 0 for inactive
+        
+                // Call the model function to update the status in the database
+                $result = $this->zoneModel->updateZoneStatus($zoneName, $status);
+        
+                // Redirect to the zone management page with a success message
+                if ($result) {
+                    // Success redirect (you can modify this to include a success message)
+                    $errorMsg = urlencode('Zone update sucessfully');
+                    header('Location: ' . ROOT . '/admin/zoneManage/sdasd?error=' . $errorMsg);
+                    exit;
+                } else {
+                    // Error redirect (you can modify this to include an error message)
+                    $errorMsg = urlencode($zoneName.' deactivated');
+                    header('Location: ' . ROOT . '/admin/zoneManage/sdsdas?error=' . $errorMsg);
+                    exit;
+                }
+            }
+        }
+        
+        public function deleteZone() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                // Sanitize the input to prevent SQL injection
+                $zoneName = htmlspecialchars(trim($_POST['zoneName']));
+        
+                // Call the model function to delete the zone
+                if ($this->zoneModel->deleteZoneByName($zoneName)) {
+                    // Redirect with a success message
+                    $successMsg = urlencode("Zone '$zoneName' has been deleted successfully.");
+                    header("Location: " . ROOT . "/admin/zoneManage/dssdf?success=$successMsg");
+                    exit;
+                } else {
+                    // Redirect with an error message
+                    $errorMsg = urlencode("Failed to delete zone '$zoneName'. Please try again.");
+                    header("Location: " . ROOT . "/admin/zoneManage/sdfsdf?error=$errorMsg");
+                    exit;
+                }
+            } else {
+                // Redirect if the request method is not POST
+                header("Location: " . ROOT . "/admin/zoneManage/sdfsdf");
+                exit;
+            }
+        }
+
+       }
+    
+
+    ?>

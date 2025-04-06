@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../libraries/database.php';
+require_once __DIR__ . '/../libraries/Database.php';
 
 class StudentModel {
     private $db;
@@ -82,29 +82,6 @@ class StudentModel {
         $this->db->query("SELECT * FROM users WHERE user_id = :userId");
         $this->db->bind(':userId', $userId);
         return $this->db->single(); // Return a single record
-    }
-
-
-    //medical status function
-    public function addMedicalStatus($data){
-         // Retrieve the player ID from the user ID
-         $user_id = $this->getPlayerIdByUserId($data['user_id']);
-
-         $this->db->query(
-             'INSERT INTO medicalstatus (date, conditions, medications, notes,user_id) 
-              VALUES (:date, :conditions, :medications, :notes, :user_id)'
-         );
-     
-         // Bind all parameters
-         $this->db->bind(':date', $data['date']);
-         $this->db->bind(':conditions', $data['conditions']);
-         $this->db->bind(':medications', $data['medications']);
-         $this->db->bind(':notes', $data['notes']);
-         $this->db->bind(':user_id', $data['user_id']);
-     
-         // Execute the query
-         return $this->db->execute();
-
     }
     
     

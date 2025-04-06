@@ -1,143 +1,209 @@
+/* General Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
+
+/* Body Styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Sidebar */
 .sidebar {
     height: 100%;
-    width: 0; 
-    position: fixed; 
-    z-index: 1000; 
+    width: 80px; /* Default collapsed width */
+    position: fixed;
     top: 0;
     left: 0;
     background-color: black;
-    color: #ecf0f1;
-    overflow-x: hidden;
-    overflow-y: auto; 
-    transition: width 0.5s;
-    padding-top: 60px;
+    color: white;
+    transition: width 0.3s ease;
+    overflow: hidden;
     z-index: 1000;
+    padding-top: 20px;
 }
 
-.sidebar .close {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 36px;
-    cursor: pointer;
+.sidebar:hover {
+    width: 250px; /* Expand on hover */
 }
 
-
-.sidebar .profile {
-    padding: 0;
-    text-align: center;
-}
-
-.sidebar .profile img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
-
-.sidebar .profile h2 {
-    font-size: 18px;
+.sidebar .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 20px;
 }
 
+.sidebar .logo img {
+    width: 50px;
+    height: 50px;
+}
+
+.sidebar:hover .logo span {
+    display: inline;
+    color: white;
+    font-size: 18px;
+    margin-left: 10px;
+}
+
 .sidebar nav ul {
-    margin-top: 30px;
-    list-style-type: none;
+    list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .sidebar nav ul li {
-    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
 }
 
 .sidebar nav ul li a {
-    color: #ecf0f1;
     text-decoration: none;
-    white-space: nowrap;
+    color: white;
     font-size: 16px;
-    display: block;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.sidebar nav ul li a:hover {
-    background-color: #85c1e9;
-}
-
-header {
     display: flex;
-    background-color: black;
-    height: 80px;
+    align-items: center;
+}
+
+.sidebar nav ul li a i {
+    margin-right: 15px;
+    font-size: 18px;
+}
+
+.sidebar nav ul li:hover {
+    background-color: #333;
+}
+
+.sidebar:hover nav ul li a span {
+    display: inline;
+}
+
+/* By default, hide text in sidebar links */
+.sidebar nav ul li a span {
+    display: none;
+}
+
+/* Top Navigation Bar */
+header {
     width: 100%;
-    color: #ecf0f1;
-    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    height: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between; /* Align logo and account section */
+    align-items: center;
+    padding: 0 20px;
+    z-index: 999;
 }
 
 .navbar {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 95%;
 }
 
-.navbar .logo img {
-    width: 40%;
-    height: 40%;
-}
-
-.nav-links {
-    display: flex;
-    list-style-type: none;
-}
-
-.nav-links li {
-    margin: 0 15px;
-}
-
-.nav-links a {
-    color: #ecf0f1;
-    text-decoration: none;
-    font-size: 16px;
+.logo {
     display: flex;
     align-items: center;
 }
 
-.nav-links a i {
-    margin-right: 5px; 
+.logo img {
+    width: 50px;
+    height: 50px;
 }
 
+.track-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Centers the Track Master logo */
+}
 
-/* Open button styling */
-.openbtn {
-    width: 5%;
-    font-size: 20px;
-    cursor: pointer;
-    background-color:black;
+.track-logo img {
+    height: 150px;  /* Set the height of the Track Master logo */
+}
+
+.account-section {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Push content to the right */
+}
+
+.account-section .profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+    color: #ddd;
+}
+
+.user-details .username {
+    font-weight: bold;
+}
+
+.user-details .user-role {
+    font-size: 12px;
+    color: #bbb;
+}
+
+.account-settings {
+    text-decoration: none;
     color: white;
-    padding: 10px 15px;
-    border: none;
-    margin-bottom: 10px;
+    font-size: 16px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background 0.3s, color 0.3s;
 }
 
-/* Responsive Design */
+.account-settings:hover {
+    background: #ddd;
+    color: black;
+}
+
+/* Responsive Design for Mobile */
 @media (max-width: 768px) {
-    .navbar {
-        flex-direction: column; 
-        display: none; 
+    .sidebar {
+        width: 60px;
     }
-    .navbar.active {
-        display: flex; 
+    .sidebar:hover {
+        width: 200px;
     }
-    .openbtn {
-        display: block;
+
+    .sidebar nav ul li a span {
+        display: none;
+    }
+
+    header {
+        padding: 0 10px;
+    }
+
+    .account-section .profile-pic {
+        width: 30px;
+        height: 30px;
+    }
+
+    .account-settings {
+        font-size: 14px;
+    }
+
+    .track-logo img {
+        height: 40px;
     }
 }
-
-
