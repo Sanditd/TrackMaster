@@ -20,7 +20,7 @@
                 <li><a href="<?php echo URLROOT ?>/loginController/login">Home</a></li>
                 <li><a href="<?php echo URLROOT ?>/common/aboutUs">About Us</a></li>
                 <li><a href="<?php echo URLROOT ?>/common/help">Help & Support</a></li>    
-                <li><button class="login" onclick="window.location.href='<?php echo URLROOT ?>/login'">Log in</button></li>
+                <li><button class="login" onclick="window.location.href='<?php echo URLROOT ?>/loginController/logout'">LogOut</button></li>
                 <li><img src="/TrackMaster/Public/img/log in.png" alt="Logo"> </li>
                 <li><img src="/TrackMaster/Public/img/notification.png" alt="Logo"> </li>
             </ul>

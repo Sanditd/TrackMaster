@@ -45,19 +45,23 @@ if (isset($_SESSION['error'])) {
     </script>
 <?php endif; ?>
 
-<script>
-    var districts = <?= json_encode($data['districts']); ?>; 
-</script>
 
-
-<body>
-    <?php $nav->render(); ?>
-    <div class="temp-container">
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sign Up - Student</title>
+        <link rel="stylesheet" href="../Public/css/Coach/CoachSignup copy.css">
+    </head>
+    <body>
         <div id="signup-port">
-            <!-- <span id="signup-port-logo">
-            <img src="../Public/img/logo-black.png" alt="TrackMaster Logo">
-        </span> -->
+            <span id="signup-port-logo">
+                <img src="../Public/img/logo-black.png" alt="TrackMaster Logo">
+            </span>
             <h2>Sign Up - Coach</h2>
+            <form method="POST" action="<?php echo ROOT; ?>/signupcontroller/coachsignup" enctype="multipart/form-data">
+
 
             <div class="container">
                 <!-- Column 1 -->

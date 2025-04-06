@@ -26,18 +26,12 @@ class loginController extends Controller {
                     $error = 'Please fill in both fields.';
                 } else {
                     // Attempt to login with the provided credentials
-                    $user = $this->login->checkLoginCredentials($username, $password);
-        
+                    $user = $this->login->checkLoginCredentials($username, $password);  
                     // If user is found and credentials are correct
                     if ($user) {
                         // Start session and store user information
                         
                         $_SESSION['user_id'] = $user->user_id; // Corrected to object access
-                        $_SESSION['username'] = $user->username; // Corrected to object access
-                        $_SESSION['photo'] = 'data:image/jpeg;base64,' . base64_encode($user->photo);
-                        $_SESSION['role'] = $user->role; 
-
-
                         // $_SESSION['role'] = $user->role; // Storing the user's role in session
         
                         // Redirect to the appropriate dashboard based on the role
@@ -55,7 +49,7 @@ class loginController extends Controller {
                                 header('Location: ' . ROOT . '/school/dashboard');
                                 break;
                             case 'parent':
-                                header('Location: ' . ROOT . '/parentController/dashboard');
+                                header('Location: ' . ROOT . '/guardian/dashboard');
                                 break;
                             default:
                                 header('Location: ' . ROOT . '/userController/dashboard');

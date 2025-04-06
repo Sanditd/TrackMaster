@@ -96,7 +96,7 @@
             </table>
         </div>
     </div>
-
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
     <script src="../Public/js/Student/carousel.js"></script>
     <script src="../Public/js/Student/profile.js"></script>
     <script src="../Public/js/sidebar.js"></script>

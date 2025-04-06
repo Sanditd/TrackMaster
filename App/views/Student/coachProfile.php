@@ -114,7 +114,7 @@ BCCI High-Performance Coaching Diploma
 
     </div>
 
-    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'?>
+    <?php require 'footer.php'; ?>
 
 </body>
 </html>

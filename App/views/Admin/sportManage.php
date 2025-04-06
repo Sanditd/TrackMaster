@@ -49,17 +49,22 @@
                         <td><?= htmlspecialchars($sport->sport_type) ?></td>
                         <td>
                             <button class="view-btn"
-                                onclick="viewSport(<?= htmlspecialchars(json_encode($sport->sport_id)) ?>)">
+
+                                onclick="viewSport(<?= htmlspecialchars(json_encode($sport->sportId)) ?>)">
+
 
                                 View
                             </button>
                             <button class="edit-btn"
+
                                 onclick="editSport(<?= htmlspecialchars(json_encode($sport->sport_id)) ?>, '<?= htmlspecialchars($sport->sport_type) ?>')">
+
                                 Edit
                             </button>
 
                             <button class="delete-btn"
                                 onclick="deleteSport(<?= htmlspecialchars(json_encode($sport->sport_id)) ?>)">
+
                                 Delete
                             </button>
 
@@ -80,6 +85,7 @@
 </body>
 
 <script>
+<<<<<<< HEAD
 function viewSport(sport_id) {
     // Ensure the ROOT is properly encoded for use in JavaScript
     const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
@@ -91,11 +97,16 @@ function viewSport(sport_id) {
     window.location.href = url;
 }
 
-function editSport(sport_id, sport_type) {
-    // Ensure the ROOT is properly encoded for use in JavaScript
+
+function viewSport(sportId) {
+    const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
+    const url = `${root}/admin/sportView/${encodeURIComponent(sportId)}`;
+    window.location.href = url;
+}
+
+function editSport(sportId, sportType) {
     const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
 
-    // Determine the URL based on the sport type
     let url = '';
     if (sport_type === 'Individual Sport') {
         url = `${root}/admin/indsportEdit/${encodeURIComponent(sport_id)}`;
@@ -105,6 +116,7 @@ function editSport(sport_id, sport_type) {
         alert('Unknown sport type.');
         return; // Stop execution if the type is unknown
     }
+
 
     // Redirect to the appropriate view
     window.location.href = url;
@@ -148,6 +160,7 @@ function deleteSport(sport_id) {
                 alert(`Error: ${error.message}`);
             });
     }
+
 </script>
 
 

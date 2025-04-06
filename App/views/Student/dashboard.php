@@ -5,19 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <link rel="stylesheet" href="../Public/css/Student/Dashboard_Stu.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/Dashboard_Stu.css">
 </head>
 
 <body>
 
     <?php require 'navbar.php'?>
-    <?php require 'sidebar.php'?>
-    <?php 
+    <?php require 'sidebar.php'?> 
     
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . ROOT . '/loginController/login');
-    exit;
-}?>
 
     <div class="dashboard-container">
         <div class="dashboard-header">

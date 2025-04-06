@@ -1,0 +1,371 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f9;
+}
+
+h1 {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    width: 100%;
+    padding: 30px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 38px;
+}
+
+.rate{
+    width: 25%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.intro {
+    width: 100%;
+    height: 200px;
+    margin: 0%;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+.container {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+h2 {
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #ffa500;  
+    display: inline-block;
+    padding-bottom: 3px;
+    text-align: center;
+}
+
+p{
+    margin-bottom: 8px;
+    font-size: 14px;
+    position: relative;
+    padding-left: 10px;
+    color: #555;
+}
+
+h3{
+    font-size: 16px;
+    margin: 20px;
+    color: #000000; 
+    display: inline-block;
+    padding: 5px;
+    text-align: center;
+}
+
+.form-section {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white ;
+}
+
+.form-section h2 {
+    margin-bottom: 15px;
+}
+
+.form-section label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.form-section input[type="text"],input[type="file"],input[type="date"],
+.form-section textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-section textarea {
+    resize: vertical;
+}
+
+.edit-button {
+    background-color: #ffa500;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+.edit-button:hover {
+    background-color: #cc8400;
+    transform: scale(1.05);
+}
+
+.table-section {
+    font-size: 14px;
+    flex: 1;
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.table-section h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.table-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table-section th,
+.table-section td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.table-section th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+button {
+    border: none;
+    display: flex;
+    padding: 0.75rem 1.5rem;
+    background-color: #1aff66;
+    color: #ffffff;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    text-transform: uppercase;
+    vertical-align: middle;
+    align-items: center;
+    border-radius: 0.5rem;
+    user-select: none;
+    gap: 0.75rem;
+    box-shadow:
+      0 4px 6px -1px #488aec31,
+      0 2px 4px -1px #488aec17;
+    transition: all 0.6s ease;
+  }
+  
+  button:hover {
+    box-shadow:
+      0 10px 15px -3px #488aec4f,
+      0 4px 6px -2px #488aec17;
+  }
+  
+  button:focus,
+  button:active {
+    opacity: 0.85;
+    box-shadow: none;
+  }
+  
+  button svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+.create-btn,
+.edit-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.create-btn {
+    background-color: #007BFF;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #FF9800;
+    color: white;
+}
+
+.create-btn:hover {
+    background-color: #0056b3;
+}
+
+.edit-btn:hover {
+    background-color: #e68a00;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 40%;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.blur {
+    filter: blur(8px);
+}
+
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.3rem;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  .rating input {
+    display: none;
+  }
+  
+  .rating label .svgOne {
+    stroke: #ccc;
+    fill: rgba(255, 217, 0, 0);
+    transition:
+      stroke 0.5s ease,
+      fill 0.5s ease;
+  }
+  
+  .rating label .svgTwo {
+    position: absolute;
+    top: -1px;
+    fill: gold;
+    stroke: rgba(255, 217, 0, 0);
+    opacity: 0;
+    transition:
+      stroke 0.5s ease,
+      fill 0.5s ease,
+      opacity 0.5s ease;
+  }
+  
+  .rating label {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    transition: all 0.5s ease;
+  }
+  
+  .rating label:hover .svgOne,
+  .rating label:hover ~ label .svgOne {
+    stroke: gold;
+  }
+  
+  .rating input:checked ~ label .svgOne {
+    stroke: #cccccc00;
+  }
+  
+  .rating input:checked ~ label .svgTwo {
+    transform: rotateX(0deg) rotateY(0deg) translateY(0px);
+    opacity: 1;
+    animation: displayStar 0.5s cubic-bezier(0.75, 0.41, 0.82, 1.2);
+  }
+  
+  @keyframes displayStar {
+    0% {
+      transform: rotateX(100deg) rotateY(100deg) translateY(10px);
+    }
+    100% {
+      transform: rotateX(0deg) rotateY(0deg) translateY(0px);
+    }
+  }
+  
+  .ombre {
+    background: radial-gradient(
+      ellipse closest-side,
+      rgba(0, 0, 0, 0.24),
+      rgba(0, 0, 0, 0)
+    );
+    width: 30px;
+    height: 8px;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.2s;
+  }
+  
+  /* Étoiles sélectionnées ou survolées */
+  .rating label:hover .ombre,
+  .rating label:hover ~ label .ombre {
+    opacity: 0.3;
+  }
+  
+  .rating input:checked ~ label .ombre {
+    opacity: 1;
+  }
+  
+  /* Animation de secousse uniquement au hover */
+  .rating label:hover .svgTwo:hover {
+    animation:
+      chackStar 0.6s ease-out,
+      displayStar none 1s;
+  }
+  
+  @keyframes chackStar {
+    0% {
+      transform: rotate(0deg);
+    }
+    20% {
+      transform: rotate(-20deg);
+    }
+    50% {
+      transform: rotate(20deg);
+    }
+    80% {
+      transform: rotate(-20deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+  
