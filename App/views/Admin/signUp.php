@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="<?php echo ROOT ?>/Public/css/Admin/login.css">
     <link rel="stylesheet" href="<?php echo ROOT ?>/Public/css/Admin/signup.css">
     <style>
-
+    /* Modal (popup) styles */
     .popup {
         display: none;
         /* position: fixed; */
@@ -54,6 +54,8 @@
     <div class="container">
         <h1>Signup</h1>
 
+
+        <!-- Role Selection -->
         <h2>Select Your Role</h2>
         <div class="roles">
             <div class="role" data-role="Coach">Coach</div>
@@ -63,6 +65,7 @@
         </div>
     </div>
 
+    <!-- Popup Modal -->
     <div class="popup" id="signupPopup">
         <div class="popup-content">
             <h2>Signup Form</h2>
@@ -213,6 +216,7 @@
     </div>
 
     <script>
+    // Handle role selection
     const roles = document.querySelectorAll('.role');
     const roleInput = document.getElementById('role');
     const roleSpecificFields = document.querySelectorAll('.role-specific-fields');
