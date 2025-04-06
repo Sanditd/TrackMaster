@@ -26,13 +26,11 @@ if (isset($_SESSION['error_message'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Dashboard</title>
     <!-- <link rel="stylesheet" href="../../Public/css/Admin/form.css"> -->
     <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
     <link rel="stylesheet" href="../../Public/css/Admin/zoneManage.css">
     <script src="../../Public/js/Admin/sidebar.js"></script>
-
 
     <!-- FullCalendar CSS and JS -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet" />
@@ -40,7 +38,6 @@ if (isset($_SESSION['error_message'])) {
 </head>
 
 <body>
-<<<<<<< HEAD
     <div class="adminNav">
         <?php require_once 'adminNav.php'?>
     </div>
@@ -172,14 +169,10 @@ if (isset($_SESSION['error_message'])) {
 
 </body>
 
-<?php require_once "adminNav.php" ?>
-
-
 <script id="error-message" type="application/json">
     <?= json_encode(trim($Error_message)); ?>
 </script>
 
-<<<<<<< HEAD
 <script id="success-message" type="application/json">
     <?= json_encode(trim($Success_message)); ?>
 </script>
@@ -187,6 +180,5 @@ if (isset($_SESSION['error_message'])) {
 
 <script src="../../Public/js/Admin/formHandler.js"></script>
 
-rigin/main
 
 </html>

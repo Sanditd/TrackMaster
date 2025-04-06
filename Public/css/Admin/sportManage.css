@@ -1,3 +1,4 @@
+/* General Reset */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -5,7 +6,7 @@ body {
     color: #333;
 }
 
-
+/* Container */
 .container {
     max-width: 800px;
     margin: 20px auto;
@@ -15,14 +16,11 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h1{
+/* Header */
+h1 {
     text-align: center;
-    font-size: 22px;
-    margin: 20px;
-    background-color: #00264d; 
-    color: #fff; 
-    padding: 15px;
-    border-radius: 8px;
+    margin-bottom: 20px;
+    color: #007bff;
 }
 
 /* Table */
@@ -58,12 +56,12 @@ button {
 }
 
 button.view-btn {
-    background-color: #ffa500;
+    background-color: #007bff;
     color: white;
 }
 
 button.view-btn:hover {
-    background-color:  #ffa500;
+    background-color: #0056b3;
 }
 
 button.edit-btn {
