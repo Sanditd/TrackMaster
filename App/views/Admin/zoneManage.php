@@ -157,7 +157,7 @@
                                     <input type="text" id="zone" name="zone" placeholder="Enter Zone" required>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit">Submit</button>
+                                    <button type="submit" style="background-color:#007BFF;width:20%">Submit</button>
                                 </div>
 
                             </form>

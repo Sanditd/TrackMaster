@@ -58,6 +58,7 @@ table th {
 }
 
 input[type="text"],
+input[type="number"],
 input[type="email"],
 input[type="tel"],
 input[type="date"],
@@ -103,7 +104,8 @@ form {
 form button {
     /* margin-top: 20px; */
     padding: 10px 20px;
-    background-color: #007BFF;
+    background-color: #D6D6D6;
+    width:70px;
     color: white;
     border: none;
     border-radius: 4px;

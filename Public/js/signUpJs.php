@@ -1,31 +1,33 @@
-const fileInput = document.getElementById('photo');
-const fileNameSpan = document.getElementById('file-name');
-const photoPreview = document.getElementById('photo-preview');
+document.addEventListener("DOMContentLoaded", function() {
+    const fileInput = document.getElementById('photo');
+    const fileNameSpan = document.getElementById('file-name');
+    const photoPreview = document.getElementById('photo-preview');
 
-fileInput.addEventListener('change', function() {
-// Update the file name display
-if (fileInput.files.length > 0) {
-const file = fileInput.files[0];
-fileNameSpan.textContent = file.name;
+    if (fileInput) { // ✅ Check if the element exists before using it
+        fileInput.addEventListener('change', function() {
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                fileNameSpan.textContent = file.name;
 
-// Check if the file is an image
-if (file.type.startsWith('image/')) {
-const reader = new FileReader();
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
 
-reader.onload = function(e) {
-// Create an image element or update the existing one
-photoPreview.innerHTML = `<img src="${e.target.result}" alt="Photo Preview">`;
-};
+                    reader.onload = function(e) {
+                        photoPreview.innerHTML = `<img src="${e.target.result}" alt="Photo Preview">`;
+                    };
 
-// Read the image file
-reader.readAsDataURL(file);
-} else {
-photoPreview.innerHTML = `<p>Invalid file type. Please upload an image.</p>`;
-}
-} else {
-fileNameSpan.textContent = "No file chosen";
-photoPreview.innerHTML = `<p>No photo uploaded</p>`;
-}
+                    reader.readAsDataURL(file);
+                } else {
+                    photoPreview.innerHTML = `<p>Invalid file type. Please upload an image.</p>`;
+                }
+            } else {
+                fileNameSpan.textContent = "No file chosen";
+                photoPreview.innerHTML = `<p>No photo uploaded</p>`;
+            }
+        });
+    } else {
+        console.warn("Element with ID 'photo' not found in the DOM.");
+    }
 });
 
 

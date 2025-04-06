@@ -34,8 +34,8 @@
                     <?php if (is_array($sport)): ?>
                     <tr>
                         <td><?= $index + 1 ?></td>
-                        <td><?= htmlspecialchars($sport['sportName']) ?></td>
-                        <td><?= htmlspecialchars($sport['sportType']) ?></td>
+                        <td><?= htmlspecialchars($sport['sport_name']) ?></td>
+                        <td><?= htmlspecialchars($sport['sport_type']) ?></td>
                         <td>
                             <button class="view-btn">View</button>
                             <button class="edit-btn">Edit</button>
@@ -45,21 +45,21 @@
                     <?php elseif (is_object($sport)): ?>
                     <tr>
                         <td><?= $index + 1 ?></td>
-                        <td><?= htmlspecialchars($sport->sportName) ?></td>
-                        <td><?= htmlspecialchars($sport->sportType) ?></td>
+                        <td><?= htmlspecialchars($sport->sport_name) ?></td>
+                        <td><?= htmlspecialchars($sport->sport_type) ?></td>
                         <td>
                             <button class="view-btn"
-                                onclick="viewSport(<?= htmlspecialchars(json_encode($sport->sportId)) ?>)">
+                                onclick="viewSport(<?= htmlspecialchars(json_encode($sport->sport_id)) ?>)">
 
                                 View
                             </button>
                             <button class="edit-btn"
-                                onclick="editSport(<?= htmlspecialchars(json_encode($sport->sportId)) ?>, '<?= htmlspecialchars($sport->sportType) ?>')">
+                                onclick="editSport(<?= htmlspecialchars(json_encode($sport->sport_id)) ?>, '<?= htmlspecialchars($sport->sport_type) ?>')">
                                 Edit
                             </button>
 
                             <button class="delete-btn"
-                                onclick="deleteSport(<?= htmlspecialchars(json_encode($sport->sportId)) ?>)">
+                                onclick="deleteSport(<?= htmlspecialchars(json_encode($sport->sport_id)) ?>)">
                                 Delete
                             </button>
 
@@ -80,27 +80,27 @@
 </body>
 
 <script>
-function viewSport(sportId) {
+function viewSport(sport_id) {
     // Ensure the ROOT is properly encoded for use in JavaScript
     const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
 
     // Construct the URL dynamically based on the required format
-    const url = `${root}/admin/sportView/${encodeURIComponent(sportId)}`;
+    const url = `${root}/admin/sportView/${encodeURIComponent(sport_id)}`;
 
     // Redirect the browser to the constructed URL
     window.location.href = url;
 }
 
-function editSport(sportId, sportType) {
+function editSport(sport_id, sport_type) {
     // Ensure the ROOT is properly encoded for use in JavaScript
     const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
 
     // Determine the URL based on the sport type
     let url = '';
-    if (sportType === 'Individual Sport') {
-        url = `${root}/admin/indsportEdit/${encodeURIComponent(sportId)}`;
-    } else if (sportType === 'teamSport') {
-        url = `${root}/admin/teamSportEdit/${encodeURIComponent(sportId)}`;
+    if (sport_type === 'Individual Sport') {
+        url = `${root}/admin/indsportEdit/${encodeURIComponent(sport_id)}`;
+    } else if (sport_type === 'teamSport') {
+        url = `${root}/admin/teamSportEdit/${encodeURIComponent(sport_id)}`;
     } else {
         alert('Unknown sport type.');
         return; // Stop execution if the type is unknown
@@ -110,7 +110,7 @@ function editSport(sportId, sportType) {
     window.location.href = url;
 }
 
-function deleteSport(sportId) {
+function deleteSport(sport_id) {
         // Confirm before deleting
         const confirmation = confirm("Are you sure you want to delete this sport?");
         if (!confirmation) {
@@ -121,7 +121,7 @@ function deleteSport(sportId) {
         const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
 
         // Construct the URL dynamically for the delete API
-        const url = `${root}/admin/deleteSport/${encodeURIComponent(sportId)}`;
+        const url = `${root}/admin/deleteSport/${encodeURIComponent(sport_id)}`;
 
         // Send a DELETE request using Fetch API
         fetch(url, {
