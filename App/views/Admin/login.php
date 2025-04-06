@@ -28,7 +28,7 @@ if (isset($_SESSION['success_message'])) {
 <head>
     <title>Login</title>
 
-    <link rel="stylesheet" href="../../Public/css/Admin/login.css">
+    <link rel="stylesheet" href="../Public/css/Admin/login.css">
     <link rel="stylesheet" href="<?php echo ROOT ?>/Public/css/Admin/selectRole.css">
 
 </head>
@@ -38,35 +38,12 @@ if (isset($_SESSION['success_message'])) {
 
     <?php $nav->render(); ?>
 
-
     <div id="main-container">
         <div class="slider">
             <div class="slides">
                 <img src="<?php echo ROOT; ?>/public/img/roles/coach.jpeg" alt="Slide 1">
                 <img src="<?php echo ROOT; ?>/public/img/roles/coach.jpeg" alt="Slide 2">
                 <img src="<?php echo ROOT; ?>/public/img/roles/coach.jpeg" alt="Slide 3">
-
-    <div id="login-dis">
-        <div id="wel-track">Welcome to TrackMaster</div>
-
-        <div id="wel-dis">Whether you're an aspiring athlete or a seasoned professional, TrackMaster is your go-to
-            platform for
-            tracking and optimizing your sports performance. <br><br>
-            Our cutting-edge tools allow you to monitor your progress,
-            set goals, and analyze your performance with precision. From daily workouts to long-term milestones,
-            TrackMaster provides the insights you need to stay ahead of the game and achieve your full potential. Join
-            our community of dedicated sportsmen and take control of your athletic journey today!</div>
-
-    </div>
-
-    <div id="login-port">
-        <span id="login-port-logo">
-        <img src="../Public/img/logo-black.png" alt="Logo">
-        </span>
-        <form action="<?php echo ROOT ?>/loginController/login" method="POST">
-            <div>
-                <input type="text" placeholder="Enter username" name="username">
-
             </div>
             <div class="navigation">
                 <button id="prev">❮</button>
