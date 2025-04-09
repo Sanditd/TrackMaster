@@ -10,7 +10,7 @@
 <body>
 
     <?php require 'navbar.php'?>
-    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/Student/sidebar.php'?>
+    <?php require 'C:/wamp64/www/TrackMaster/App/views/Student/sidebar.php'?>
 
 <div class="about">
 
