@@ -6,12 +6,12 @@
     <title>Medical History</title>
     <link rel="stylesheet" href="/TrackMaster/Public/css/Student/medStatus.css">
 </head>
+
 <body>
 
-<?php require 'navbar.php'?>
-<?php require 'sidebar.php'?>
-
 <div id="main">
+    <?php require 'navbar.php'?>
+    <?php require 'sidebar.php'?>
 
     <div class="intro">
         <center>
@@ -210,7 +210,32 @@
                 </div>
             </div>
 
-        <div class="table-section">
+            <div class="table-section">
+                <h2>Current Medical Status</h2>
+                <p><strong>Last updated:</strong> 2021-03-24</p>
+                <p><strong>Medical Conditions:</strong> None</p>
+                <p><strong>Medication:</strong> None</p>
+                <p><strong>Notes:</strong> None</p>
+            </div> 
+
+            <div class="table-section">
+                <h2>Things to Consider</h2>
+                <p><strong>Blood Type:</strong> A+</p>
+                <p><strong>Allergies:</strong> None</p>
+                <p><strong>Special Notes:</strong> None</p>
+                <p><strong>Emergency Contact:</strong> 071 8213324</p>
+                
+                <button id="openThingsModal">
+                    <svg aria-hidden="true" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-width="2" stroke="#ffffff" d="M11 4H4C3.44772 4 3 4.44772 3 5V19C3 19.5523 3.44772 20 4 20H18C18.5523 20 19 19.5523 19 19V12" stroke-linejoin="round" stroke-linecap="round"></path>
+                        <path stroke-width="2" stroke="#ffffff" d="M17.5 3.5C18.3284 2.67157 19.6716 2.67157 20.5 3.5C21.3284 4.32843 21.3284 5.67157 20.5 6.5L12 15L8 16L9 12L17.5 3.5Z" stroke-linejoin="round" stroke-linecap="round"></path>
+                    </svg>
+                    EDIT INFORMATION
+                </button>
+            </div>
+    </div>
+
+    <div class="table-section">
             <h2>Medical History</h2>
             <table>
                 <thead>
@@ -238,25 +263,16 @@
                 ADD A NEW RECORD
             </button>
         </div>
-    </div>
-
     
-    <div class="table-section">
-            <h2>Current Medical Status</h2>
-            <p><strong>Last updated:</strong> 2021-03-24</p>
-            <p><strong>Medical Conditions:</strong> None</p>
-            <p><strong>Medication:</strong> None</p>
-            <p><strong>Notes:</strong> None</p>
-            </div> 
 </div>
 
 <!-- Modal for Adding Medical Record -->
 <div id="medicalModal" class="modal">
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close" id="closeMedical">&times;</span>
         <h2>Add a New Medical Record</h2>
-        <form action="<?php echo ROOT?>/student/saveMedicalStatus" method="POST">
-            <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']?>">
+        <form action="saveMedicalStatus" method="POST">
+            <input type="hidden" name="user_id" value="1">
 
             <label for="date">Date:</label>
             <input type="date" id="date" name="date" required><br>
@@ -275,28 +291,74 @@
     </div>
 </div>
 
-<?php require 'footer.php'; ?>
+<!-- Modal for Editing Things to Consider -->
+<div id="thingsModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeThings">&times;</span>
+        <h2>Edit Things to Consider</h2>
+        <form action="saveThingsToConsider" method="POST">
+            <input type="hidden" name="user_id" value="1">
+
+            <label for="bloodType">Blood Type:</label>
+            <input type="text" id="bloodType" name="bloodType" value="A+" required><br>
+
+            <label for="allergies">Allergies:</label>
+            <textarea id="allergies" name="allergies" placeholder="Enter any allergies">None</textarea><br>
+
+            <label for="specialNotes">Special Notes:</label>
+            <textarea id="specialNotes" name="specialNotes" placeholder="Enter any special notes">None</textarea><br>
+
+            <label for="emergencyContact">Emergency Contact:</label>
+            <input type="text" id="emergencyContact" name="emergencyContact" value="071 8213324" required><br>
+
+            <center><button class="edit-button" type="submit">Save Changes</button></center>
+        </form>
+    </div>
+</div>
+
+<?php require 'footer.php'; ?> 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const modal = document.getElementById("medicalModal");
+document.addEventListener("DOMContentLoaded", function() {
+    // Medical Record Modal
+    const medicalModal = document.getElementById("medicalModal");
     const openModalButton = document.getElementById("openModal");
-    const closeModalButton = document.querySelector(".close");
+    const closeMedicalButton = document.getElementById("closeMedical");
     const mainContent = document.getElementById("main");
 
-    openModalButton.addEventListener("click", function () {
-        modal.style.display = "flex";
-        mainContent.classList.add("blur"); 
+    openModalButton.addEventListener("click", function() {
+        medicalModal.style.display = "flex";
+        mainContent.classList.add("blur");
     });
 
-    closeModalButton.addEventListener("click", function () {
-        modal.style.display = "none";
-        mainContent.classList.remove("blur"); 
+    closeMedicalButton.addEventListener("click", function() {
+        medicalModal.style.display = "none";
+        mainContent.classList.remove("blur");
     });
 
-    window.addEventListener("click", function (event) {
-        if (event.target === modal) {
-            modal.style.display = "none";
+    // Things to Consider Modal
+    const thingsModal = document.getElementById("thingsModal");
+    const openThingsModalButton = document.getElementById("openThingsModal");
+    const closeThingsButton = document.getElementById("closeThings");
+
+    openThingsModalButton.addEventListener("click", function() {
+        thingsModal.style.display = "flex";
+        mainContent.classList.add("blur");
+    });
+
+    closeThingsButton.addEventListener("click", function() {
+        thingsModal.style.display = "none";
+        mainContent.classList.remove("blur");
+    });
+
+    // Close modals when clicking outside
+    window.addEventListener("click", function(event) {
+        if (event.target === medicalModal) {
+            medicalModal.style.display = "none";
+            mainContent.classList.remove("blur");
+        }
+        if (event.target === thingsModal) {
+            thingsModal.style.display = "none";
             mainContent.classList.remove("blur");
         }
     });
