@@ -430,7 +430,7 @@
             </div>
 
             <!-- Update Team Performance -->
-            <div class="performance-card update-team-card" onclick="showUpdateTeamModal()">
+            <div class="performance-card update-team-card" onclick="window.location.href='<?php echo ROOT; ?>/coach/match'">
                 <div class="card-icon">
                     <i class="fas fa-clipboard-list"></i>
                 </div>
@@ -523,14 +523,6 @@
             document.getElementById('playerSearch').focus();
         }
 
-        function showUpdateTeamModal() {
-            // Set default date to today
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('matchDate').value = today;
-            
-            document.getElementById('updateTeamModal').classList.add('active');
-            document.getElementById('modalOverlay').classList.add('active');
-        }
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
