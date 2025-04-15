@@ -91,7 +91,7 @@
                 <div class="section-content">
                             <h3>Medical Conditions:</h3>
                             <p>None</p>
-                            <h3>Medical Conditions:</h3>
+                            <h3>Medications:</h3>
                             <p>None</p>
                             <br>
                         <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/medicalStatus'">Update Medical Status</button>

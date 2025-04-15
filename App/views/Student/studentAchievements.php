@@ -193,7 +193,7 @@ if (!isset($_SESSION['user_id'])) {
         <path d="M11 4H4C3.44772 4 3 4.44772 3 5V19C3 19.5523 3.44772 20 4 20H18C18.5523 20 19 19.5523 19 19V12" stroke-linejoin="round" stroke-linecap="round"></path>
         <path d="M17.5 3.5C18.3284 2.67157 19.6716 2.67157 20.5 3.5C21.3284 4.32843 21.3284 5.67157 20.5 6.5L12 15L8 16L9 12L17.5 3.5Z" stroke-linejoin="round" stroke-linecap="round"></path>
     </svg>
-    ADD NEW ACHIEVEMENT
+    ADD A NEW ACHIEVEMENT
 </button>
 
         <div class="container">
