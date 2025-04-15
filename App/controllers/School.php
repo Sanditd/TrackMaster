@@ -196,6 +196,9 @@ public function deleteRecord($player_id) {
         die('Something went wrong');
     }
 }
+public function facility(){
+    $this->view('School/facility');
+}
 
 
 
