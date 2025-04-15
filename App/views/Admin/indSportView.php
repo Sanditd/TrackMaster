@@ -1,112 +1,238 @@
-<div class="container">
-    <h1><?= htmlspecialchars($sport['sportName'] ?? 'Sport') ?> Details</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-    <?php if (isset($sport)): ?>
-        <!-- General Sport Details -->
-        <div class="sport-details">
-            <h2>General Information</h2>
-            <br>
-            <br>
-            <div class="detail-row">
-                <strong>Sport Type:</strong>
-                <span><?= htmlspecialchars($sport['sportType'] ?? 'N/A') ?></span>
-            </div>
-            <div class="detail-row">
-                <strong>Duration (Minutes):</strong>
-                <span><?= htmlspecialchars($details['durationMinutes'] ?? 'N/A') ?></span>
-                <!-- <button class="edit-btn" onclick="openEditModal('Duration (Minutes)', '<?= $details['durationMinutes'] ?? '' ?>', 'durationMinutes')">Edit</button> -->
-            </div>
-            <div class="detail-row">
-                <strong>Is Indoor:</strong>
-                <span><?= htmlspecialchars($details['isIndoor'] ?? 'N/A') ?></span>
-                <!-- <button class="edit-btn" onclick="openEditModal('Is Indoor', '<?= $details['isIndoor'] ?? '' ?>', 'isIndoor')">Edit</button> -->
-            </div>
-            <div class="detail-row">
-                <strong>Created At:</strong>
-                <span><?= htmlspecialchars($details['created_at'] ?? 'N/A') ?></span>
-                
-            </div>
-            <div class="detail-row">
-                <strong>Updated At:</strong>
-                <span><?= htmlspecialchars($details['updated_at'] ?? 'N/A') ?></span>
-               
-            </div>
-        </div>
-
-        <!-- Additional Sport Details -->
-        <?php if (isset($details)): ?>
-            <div class="sport-details">
-                <h2>Additional Information</h2>
-                <br><br>
-                <div class="detail-row">
-                    <strong>Equipment:</strong>
-                    <span><?= htmlspecialchars($details['equipment'] ?? 'N/A') ?></span>
-                    <!-- <button class="edit-btn" onclick="openEditModal('Equipment', '<?= $details['equipment'] ?? '' ?>', 'equipment')">Edit</button> -->
-                </div>
-                <div class="detail-row">
-                    <strong>Categories:</strong>
-                    <span><?= htmlspecialchars($details['categories'] ?? 'N/A') ?></span>
-                    <!-- <button class="edit-btn" onclick="openEditModal('Categories', '<?= $details['categories'] ?? '' ?>', 'categories')">Edit</button> -->
-                </div>
-                <div class="detail-row">
-                    <strong>Scoring System:</strong>
-                    <span><?= htmlspecialchars($details['scoringSystem'] ?? 'N/A') ?></span>
-                    <!-- <button class="edit-btn" onclick="openEditModal('Scoring System', '<?= $details['scoringSystem'] ?? '' ?>', 'scoringSystem')">Edit</button> -->
-                </div>
-                <div class="detail-row">
-                    <strong>Rules Link:</strong>
-                    <span>
-                        <a href="<?= htmlspecialchars($details['rulesLink'] ?? '#') ?>" target="_blank">
-                            <?= htmlspecialchars($details['rulesLink'] ?? 'N/A') ?>
-                        </a>
-                    </span>
-                    <!-- <button class="edit-btn" onclick="openEditModal('Rules Link', '<?= $details['rulesLink'] ?? '' ?>', 'rulesLink')">Edit</button> -->
-                    <!-- <button class="edit-btn" onclick="openEditModal('Sport ID', '<?= $sport['sportId'] ?? '' ?>', 'sportId', '<?= $sport['id'] ?? '' ?>')" style="display:none"></button> -->
-
-                </div>
-            </div>
-        <?php else: ?>
-            <p>No additional details available for this sport.</p>
-        <?php endif; ?>
-    <?php else: ?>
-        <p>Sport not found or invalid ID provided.</p>
-    <?php endif; ?>
-
-    <!-- Back Button -->
-    <div class="back-button">
-        <a href="<?= ROOT ?>/admin/sportManage/sdas" class="btn">Back to Manage Sports</a>
-    </div>
-
-    <!-- Edit Modal -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <h3 id="editTitle">Edit</h3>
-            <form id="editForm" method="post" action="<?= ROOT ?>/admin/updateIndSportDetail">
-                <input type="hidden" name="fieldName" id="fieldName">
-                <input type="hidden" name="sportId" id="sportId" value="<?= htmlspecialchars($sport['sportId'] ?? '') ?>">
-                <input type="text" name="fieldValue" id="fieldValue">
-                <button type="submit" class="btn">Save</button>
-                <button type="button" class="btn" onclick="closeEditModal()">Cancel</button>
-            </form>
-
-        </div>
-    </div>
-</div>
-
-<script>
-function openEditModal(field, value, fieldName, sportId) {
-    document.getElementById('editTitle').textContent = 'Edit ' + field;
-    document.getElementById('fieldName').value = fieldName;
-    document.getElementById('fieldValue').value = value;
-
-    // Set the sportId in the hidden input
-    document.getElementById('sportId').value = sportId;
-
-    document.getElementById('editModal').style.display = 'block';
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
+$Success_message = $_SESSION['success_message'] ?? '';
+$Error_message = $_SESSION['error_message'] ?? '';
+unset($_SESSION['success_message'], $_SESSION['error_message']);
 
-function closeEditModal() {
-    document.getElementById('editModal').style.display = 'none';
+// These are already passed from controller
+$sport = $sport ?? null;
+$game_types = $game_types ?? [];
+$rules = $rules ?? [];
+
+$sport_id = $sport->sport_id ?? null;
+
+
+?>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Sport View</title>
+    <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
+    <link rel="stylesheet" href="../../Public/css/Admin/zoneManage.css">
+    <script src="../../Public/js/Admin/sidebar.js"></script>
+</head>
+
+<body>
+    <div class="adminNav">
+        <?php require_once 'adminNav.php' ?>
+    </div>
+
+    <div id="frame" style="margin-top: 100px; margin-left:100px">
+        <div class="container">
+            <div class="temp-container">
+                <div id="signup-port">
+                    <?php if (!empty($Success_message)): ?>
+                    <div class="alert alert-success"><?= htmlspecialchars($Success_message) ?></div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($Error_message)): ?>
+                    <div class="alert alert-danger"><?= htmlspecialchars($Error_message) ?></div>
+                    <?php endif; ?>
+
+                    <form method="post">
+                        <div class="temp2-container">
+                            <div class="column">
+                                <h3>Sport Details</h3><br>
+
+
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <label>Sport Name :</label>
+                                        <?= htmlspecialchars($sport->sport_name ?? 'N/A') ?>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <label>Base :</label>
+                                        <?= htmlspecialchars($sport->base ?? 'N/A') ?>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <label>Scoring Method :</label>
+                                        <?= htmlspecialchars($sport->scoring_method ?? 'N/A') ?>
+                                    </div>
+                                </div>
+                                <br><br>
+
+                                <div class="form-group">
+                                    <label>Game Types and Durations</label>
+                                    <br>
+                                    <div class="input-group">
+                                        <table style="width:200%;border-collapse:collapse;border:1px solid black;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Class Name</th>
+                                                    <th>maximum limit</th>
+                                                    <th>Minimum limit</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php if (!empty($game_types)): ?>
+                                                <?php foreach ($game_types as $game): ?>
+                                                <tr>
+                                                    <td><?= htmlspecialchars($game->game_format ?? 'N/A') ?></td>
+                                                    <td>
+                                                        <?php
+                                                        if ($sport->base === 'Age') {
+                                                            echo htmlspecialchars(($game->max ?? 'N/A') . ' years');
+                                                        } elseif ($sport->base === 'Height') {
+                                                            echo htmlspecialchars(($game->max ?? 'N/A') . ' meter');
+                                                        } elseif ($sport->base === 'Weight') {
+                                                            echo htmlspecialchars(($game->max ?? 'N/A') . ' Kg');
+                                                        } else {
+                                                            echo htmlspecialchars($game->max ?? 'N/A');
+                                                        }
+                                                    ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php
+                                                        if ($sport->base === 'Age') {
+                                                            echo htmlspecialchars(($game->min ?? 'N/A') . ' years');
+                                                        } elseif ($sport->base === 'Height') {
+                                                            echo htmlspecialchars(($game->min ?? 'N/A') . ' meter');
+                                                        } elseif ($sport->base === 'Weight') {
+                                                            echo htmlspecialchars(($game->min ?? 'N/A') . ' Kg');
+                                                        } else {
+                                                            echo htmlspecialchars($game->min ?? 'N/A');
+                                                        }
+                                                    ?>
+                                                    </td>
+                                                </tr>
+
+                                                <?php endforeach; ?>
+                                                <?php else: ?>
+                                                <tr>
+                                                    <td colspan="3">No game types available.</td>
+                                                </tr>
+                                                <?php endif; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column">
+                                <h3>Rules</h3><br>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <?php if (!empty($rules)): ?>
+                                        <?php foreach ($rules as $index => $rule): ?>
+                                        <strong><?= $index + 1 ?>.</strong>
+                                        <?= nl2br(htmlspecialchars($rule->rule ?? 'No description available.')) ?><br><br>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        No rules available.
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+
+
+
+                                <button type="button" style="background-color:#007BFF;width:20%" name="action"
+                                    value="edit" onclick="updateTeamSport(<?= $sport_id ?>)">
+                                    Edit
+                                </button>
+
+                                <button type="submit" style="background-color:#d10909;width:20%" name="action"
+                                    value="delete">Delete</button>
+                                <button type="button" style="background-color:#007BFF;width:20%" name="action"
+                                    value="back" onclick="goBackToManage()">Back</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert Box -->
+    <div id="customAlertOverlay">
+        <div id="customAlertBox">
+            <h2>Notice</h2>
+            <p id="customAlertMessage"></p>
+            <button id="customAlertOkBtn">OK</button>
+        </div>
+    </div>
+
+    <script>
+function reloadMainPage() {
+    window.location.href = "<?= ROOT ?>/admin/SportManage/asd"; // Redirect to SportManage page
 }
-</script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    const successMessage = <?= json_encode($Success_message) ?>;
+    const errorMessage = <?= json_encode($Error_message) ?>;
+    const okBtn = document.getElementById("customAlertOkBtn");
+
+    if (successMessage) {
+        showCustomAlert(successMessage);
+        
+        okBtn.onclick = function() {
+            hideCustomAlert();  // Hide the alert
+            setTimeout(reloadMainPage, 300);  // Wait 300ms to ensure the alert is hidden before redirecting
+        };
+    } else if (errorMessage) {
+        showCustomAlert(errorMessage);
+        
+        okBtn.onclick = function() {
+            reloadMainPage();  // Just hide the error alert
+        };
+    }
+});
+
+
+    </script>
+
+
+
+    <script id="error-message" type="application/json">
+    <?= json_encode(trim($Error_message)) ?>
+    </script>
+
+    <script id="success-message" type="application/json">
+    <?= json_encode(trim($Success_message)) ?>
+    </script>
+
+    <script>
+    function updateTeamSport(sportId) {
+        // Redirect to the updateTeamSport page with sport_id as a parameter
+        window.location.href = "<?= ROOT ?>/admin/updateIndSport/" + sportId;
+    }
+    </script>
+
+    <script>
+    function goBackToManage() {
+        window.location.href = "<?= ROOT ?>/admin/SportManage/adasd";
+    }
+    </script>
+
+    <script src="../../Public/js/Admin/formHandler.js"></script>
+
+
+</body>
+
+</html>

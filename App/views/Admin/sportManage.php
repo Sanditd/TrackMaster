@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$Success_message = $_SESSION['success_message'] ?? '';
+$Error_message = $_SESSION['error_message'] ?? '';
+unset($_SESSION['success_message'], $_SESSION['error_message']);
+
+
+
+
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Sports</title>
     <link rel="stylesheet" href="../../Public/css/Admin/sportManage.css">
+    
+    <link rel="stylesheet" href="../../Public/css/Admin/zoneManage.css">
     <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
     <script src="../../Public/js/Admin/sidebar.js"></script>
 </head>
@@ -49,10 +65,11 @@
                         <td><?= htmlspecialchars($sport->sport_type) ?></td>
                         <td>
                             <button class="view-btn"
-                                onclick="viewSport(<?= htmlspecialchars(json_encode($sport->sport_id)) ?>)">
-
+                                onclick="viewSport(<?= $sport->sport_id ?>, '<?= $sport->sport_type ?>')">
                                 View
                             </button>
+
+
                             <button class="edit-btn"
                                 onclick="editSport(<?= htmlspecialchars(json_encode($sport->sport_id)) ?>, '<?= htmlspecialchars($sport->sport_type) ?>')">
                                 Edit
@@ -77,30 +94,73 @@
             </table>
         </div>
     </div>
+
+        <!-- Custom Alert Box -->
+        <div id="customAlertOverlay">
+        <div id="customAlertBox">
+            <h2>Notice</h2>
+            <p id="customAlertMessage"></p>
+            <button onclick="hideCustomAlert()" id="customAlertBox button">OK</button>
+        </div>
+    </div>
+
+
 </body>
 
 <script>
-function viewSport(sport_id) {
-    // Ensure the ROOT is properly encoded for use in JavaScript
-    const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
+    function updateTeamSport(sportId) {
+        // Redirect to the updateTeamSport page with sport_id as a parameter
+        window.location.href = "<?= ROOT ?>/admin/updateIndSport/" + sportId;
+    }
+    </script>
 
-    // Construct the URL dynamically based on the required format
-    const url = `${root}/admin/sportView/${encodeURIComponent(sport_id)}`;
+    <script>
+    function goBackToManage() {
+        window.location.href = "<?= ROOT ?>/admin/SportManage/adasd";
+    }
+    </script>
 
-    // Redirect the browser to the constructed URL
+
+<script src="../../Public/js/Admin/formHandler.js"></script>
+
+<script>
+function viewSport(sport_id, sport_type) {
+    // Safely encode ROOT from PHP
+    const root = <?= json_encode(ROOT) ?>;
+
+    // Determine the correct view based on the sport_type
+    let view = '';
+    if (sport_type === 'IndSport') {
+        view = 'indSportView';
+    } else if (sport_type === 'teamSport') {
+        view = 'teamSportView';
+    } else {
+        // Fallback or error handling if needed
+        console.error('Unknown sport type:', sport_type);
+        return;
+    }
+
+    // Construct and redirect to the appropriate URL
+    const url = `${root}/admin/${view}/${encodeURIComponent(sport_id)}`;
     window.location.href = url;
 }
+
 
 function editSport(sport_id, sport_type) {
     // Ensure the ROOT is properly encoded for use in JavaScript
     const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
 
+    
+    console.log('Sport ID:', sport_id);  // For debugging purposes
+    console.log('Sport Type:', sport_type);  // For debugging purposes
+
+
     // Determine the URL based on the sport type
     let url = '';
-    if (sport_type === 'Individual Sport') {
-        url = `${root}/admin/indsportEdit/${encodeURIComponent(sport_id)}`;
+    if (sport_type === 'IndSport') {
+        url = `${root}/admin/updateIndSport/${encodeURIComponent(sport_id)}`;
     } else if (sport_type === 'teamSport') {
-        url = `${root}/admin/teamSportEdit/${encodeURIComponent(sport_id)}`;
+        url = `${root}/admin/updateTeamSport/${encodeURIComponent(sport_id)}`;
     } else {
         alert('Unknown sport type.');
         return; // Stop execution if the type is unknown
@@ -111,43 +171,52 @@ function editSport(sport_id, sport_type) {
 }
 
 function deleteSport(sport_id) {
-        // Confirm before deleting
-        const confirmation = confirm("Are you sure you want to delete this sport?");
-        if (!confirmation) {
-            return; // Exit if the user cancels
-        }
+    const root = <?= json_encode(ROOT) ?>; // Get root path from PHP
+    const url = `${root}/admin/deleteSport/${encodeURIComponent(sport_id)}`;
 
-        // Ensure the ROOT is properly encoded for use in JavaScript
-        const root = <?= json_encode(ROOT) ?>; // Safely encode ROOT from PHP
+    // Override the OK button action temporarily
+    const okButton = document.querySelector('#customAlertBox button');
+    const originalHandler = okButton.onclick; // Save existing handler
 
-        // Construct the URL dynamically for the delete API
-        const url = `${root}/admin/deleteSport/${encodeURIComponent(sport_id)}`;
+    // Set new handler
+    okButton.onclick = function () {
+        hideCustomAlert(); // Hide the alert first
 
-        // Send a DELETE request using Fetch API
+        // Perform DELETE request
         fetch(url, {
-            method: 'DELETE', // HTTP DELETE method
+            method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json', // Ensure proper content type
+                'Content-Type': 'application/json',
             },
         })
-            .then((response) => {
-                if (response.ok) {
-                    // If the deletion is successful, reload the page or update the table
-                    alert("Sport deleted successfully.");
-                    location.reload(); // Reload the page to refresh the list
-                } else {
-                    return response.text().then((text) => {
-                        // Show the error message from the server
-                        throw new Error(text || "Failed to delete the sport.");
-                    });
-                }
-            })
-            .catch((error) => {
-                // Handle errors and display them to the user
-                console.error("Error deleting sport:", error);
-                alert(`Error: ${error.message}`);
-            });
-    }
+        .then((response) => {
+            if (response.ok) {
+                // Show success message and trigger reload after confirmation
+                showCustomAlert("Sport deleted successfully.");
+                // Override the OK button handler again after the message is shown
+                okButton.onclick = function () {
+                    location.reload(); // Reload the page after confirmation
+                };
+            } else {
+                return response.text().then((text) => {
+                    throw new Error(text || "Failed to delete the sport.");
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Error deleting sport:", error);
+            alert(`Error: ${error.message}`);
+        });
+
+        // Restore the original OK button behavior after execution
+        okButton.onclick = originalHandler;
+    };
+
+    // Show custom confirmation message
+    showCustomAlert("Are you sure you want to delete this sport?");
+}
+
+
 </script>
 
 
