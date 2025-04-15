@@ -22,7 +22,7 @@ if (!isset($_SESSION['user_id'])) {
         <div class="title">
             <h1>Student Player Achievements</h1>
         </div>
- 
+
         <center>
     <div class="achievements-section">
         <div class="carousel">
