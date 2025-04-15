@@ -159,8 +159,8 @@ button:hover {
 
 /* Pop-up window styles */
 .popup {
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    /* backdrop-filter: blur(15px); */
+    /* -webkit-backdrop-filter: blur(15px); */
     background-color: rgba(34, 33, 33, 0.5); 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
     width: 100%;
