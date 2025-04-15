@@ -48,7 +48,7 @@ if (isset($_SESSION['error_message'])) {
             <div class="temp-container">
                 <div id="signup-port">
 
-                    <form action="<?php echo ROOT ?>/admin/addIndSport" method="post">
+                    <form action="<?php echo ROOT ?>/admin/addIndSportForm" method="post">
 
                         <div class="temp2-container">
                             <div class="column">
@@ -61,7 +61,7 @@ if (isset($_SESSION['error_message'])) {
                                 </div>
 
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div id="dynamic-types-container">
                                         <div class="input-group">
                                             <label for="types">Player Types (Click ➕ to add more types)</label>
@@ -70,9 +70,9 @@ if (isset($_SESSION['error_message'])) {
                                             <button class="add-btn" onclick="addTypeField(this)">➕</button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="duration">Game Types and Durations (Click ➕ to add more)</label>
                                     <div id="dynamic-games-container">
                                         <div class="input-group">
@@ -88,6 +88,16 @@ if (isset($_SESSION['error_message'])) {
                                             <button class="add-btn" onclick="addGameField(this)">➕</button>
                                         </div>
                                     </div>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <label for="base">Base</label>
+                                    <select name="base" id="base" placeholder="Wieght, Height, Age" style="width: 20%;"
+                                        required>
+                                        <option value="Weight">Weight</option>
+                                        <option value="Height">Height</option>
+                                        <option value="Age">Age</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-group">
@@ -106,26 +116,24 @@ if (isset($_SESSION['error_message'])) {
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="weight-classes">Weight Classes (Click ➕ to add more)</label>
+                                    <label for="weight-classes">Classes (Click ➕ to add more)</label>
                                     <div id="dynamic-weight-container">
                                         <div class="input-group">
-                                            <input type="text" id="weight-class-1" name="weightClass[]"
-                                                placeholder="Enter weight class name (e.g., Lightweight)" required>
-                                            <input type="number" name="minWeight[]" id="min-weight-1"
-                                                placeholder="Min Weight (kg/lbs)" step="0.1" required>
-                                            <input type="number" name="maxWeight[]" id="max-weight-1"
-                                                placeholder="Max Weight (kg/lbs)" step="0.1" required>
-                                            <button class="add-btn" onclick="addWeightField(this)">➕</button>
+                                            <input type="text" name="weightClass[]" placeholder="Enter class name"
+                                                required>
+                                            <input type="number" name="min[]" placeholder="Minimum" step="0.1" required>
+                                            <input type="number" name="max[]" placeholder="Maximum" step="0.1" required>
+                                            <button type="button" class="add-btn" onclick="addWeightField()">➕</button>
                                         </div>
                                     </div>
                                 </div>
-                                <br>
+
 
 
                             </div>
 
                             <div class="column">
-                                
+
 
                                 <h3>Add Rules</h3>
                                 <br>

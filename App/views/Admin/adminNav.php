@@ -22,6 +22,7 @@
                 <li><a href="<?php echo ROOT ?>/admin/sportCreate/asdad"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Add Sports</span></a></li>
                 <li><a href="<?php echo ROOT ?>/admin/sportManage/asdad"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Manage Sports</span></a></li>
                 <li><a href="<?php echo ROOT ?>/admin/zoneManage/asdad"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Manage Zones</span></a></li>
+                <li><a href="<?php echo ROOT ?>/admin/zonalSport/asdad"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Sport Assigning</span></a></li>
                 <li><a href="#"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Announcements</span></a></li>
             </ul>
         </nav>
