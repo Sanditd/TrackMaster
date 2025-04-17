@@ -199,8 +199,58 @@ public function deleteRecord($player_id) {
 public function facility(){
     $this->view('School/facility');
 }
+public function facilityForm() {
+ 
 
+    // Check if the form is submitted
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Sanitize input data
+        $filters = [
+            'facilityType' => FILTER_SANITIZE_STRING,  // Remove FILTER_REQUIRE_ARRAY if not needed
+            'otherFacility' => FILTER_SANITIZE_STRING,
+            'facilityName' => FILTER_SANITIZE_STRING,
+            'location' => FILTER_SANITIZE_STRING,
+            'dateEstablished' => FILTER_SANITIZE_STRING,
+            'size' => FILTER_SANITIZE_STRING,
+            'condition' => FILTER_SANITIZE_STRING,
+            'capacity' => FILTER_SANITIZE_NUMBER_INT,
+            'scheduleNotes' => FILTER_SANITIZE_STRING,
+            'remarks' => FILTER_SANITIZE_STRING
+        ];
 
+        $_POST = filter_input_array(INPUT_POST, $filters);
 
+        // Prepare the data to insert into the database
+        $data = [
+            'facilityType' => isset($_POST['facilityType']) ? $_POST['facilityType'] : '',
+            'otherFacility' => trim($_POST['otherFacility']),
+            'facilityName' => trim($_POST['facilityName']),
+            'location' => trim($_POST['location']),
+            'dateEstablished' => trim($_POST['dateEstablished']),
+            'size' => trim($_POST['size']),
+            'condition' => trim($_POST['condition']),
+            'capacity' => trim($_POST['capacity']),
+            'scheduleNotes' => trim($_POST['scheduleNotes']),
+            'remarks' => trim($_POST['remarks']),
+        ];
+
+        // Call the model to insert the data
+        $result = $this->SchoolModel->addFacility($data);
+
+        // Redirect to success or error page based on the result
+        if ($result) {
+            $_SESSION['success_message'] = "Facility added successfully!";
+            header('Location: ' . ROOT . '/school/facilityForm/success');
+            exit;
+        } else {
+            $_SESSION['error_message'] = "Failed to add facility. Please try again.";
+            header('Location: ' . ROOT . '/school/facilityForm/error');
+            exit;
+        }
+    }
 }
+}
+
+
+
 ?>

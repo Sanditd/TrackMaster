@@ -102,6 +102,28 @@ public function deleteRecordByPlayerId($player_id) {
     return $this->db->execute();
 }
 
-    
-    
+
+public function addFacility($data) {
+    // Prepare SQL query to insert data into the 'facilities' table
+    $sql = "INSERT INTO facilities (facility_type, other_facility, facility_name, location, date_established, size, `condition`, capacity, schedule_notes, remarks) 
+            VALUES (:facilityType, :otherFacility, :facilityName, :location, :dateEstablished, :size, :condition, :capacity, :scheduleNotes, :remarks)";
+
+    // Bind parameters
+    $this->db->query($sql);
+    $this->db->bind(':facilityType', $data['facilityType']);
+    $this->db->bind(':otherFacility', $data['otherFacility']);
+    $this->db->bind(':facilityName', $data['facilityName']);
+    $this->db->bind(':location', $data['location']);
+    $this->db->bind(':dateEstablished', $data['dateEstablished']);
+    $this->db->bind(':size', $data['size']);
+    $this->db->bind(':condition', $data['condition']);
+    $this->db->bind(':capacity', $data['capacity']);
+    $this->db->bind(':scheduleNotes', $data['scheduleNotes']);
+    $this->db->bind(':remarks', $data['remarks']);
+
+    // Execute the query and return the result
+    return $this->db->execute();
 }
+}
+    
+    
