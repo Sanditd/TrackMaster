@@ -1,65 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$Success_message = "";
+$Error_message = "";
+
+// Store success message separately
+if (isset($_SESSION['success_message'])) {
+    $Success_message = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
+}
+
+// Store error message separately
+if (isset($_SESSION['error_message'])) {
+    $Error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
+}
+
+$sport = $sport ?? null;
+$game_types = $game_types ?? [];
+$rules = $rules ?? [];
+
+// Convert JSON strings to arrays if necessary
+if (isset($sport->types) && is_string($sport->types)) {
+    $sport->types = json_decode($sport->types, true); // Convert JSON to array
+}
+
+if (isset($sport->positions) && is_string($sport->positions)) {
+    $sport->positions = json_decode($sport->positions, true); // Convert JSON to array
+}
+
+if (!empty($game_types) && is_array($game_types)) {
+    foreach ($game_types as &$game) {
+        if (is_string($game)) {
+            $game = json_decode($game); // Convert to object if needed
+        }
+    }
+}
+
+
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sport Edit View</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/sportView.css">
+    <title>TrackMaster - Admin</title>
+    <!-- <link rel="stylesheet" href="../../Public/css/Admin/form.css"> -->
     <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
+    <link rel="stylesheet" href="../../Public/css/Admin/zoneManage.css">
     <script src="../../Public/js/Admin/sidebar.js"></script>
+
+    <!-- FullCalendar CSS and JS -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script> -->
 </head>
+
 <body>
-<?php require_once "adminNav.php"; ?>
-<div class="container">
-    
-    <h1>Edit <?php echo $sportName['sportName']?> Details</h1>
-    <form action="<?php echo ROOT ?>/admin/indsportEdit/<?php echo isset($sport['sportId']) ? $sport['sportId'] : ''; ?>" method="POST">
+    <div class="adminNav">
+        <?php require_once 'adminNav.php'?>
+    </div>
 
-        <!-- Duration -->
-        <div class="form-group detail-row">
-            <label for="duration"><strong>Duration:</strong></label>
-            <input type="text" id="duration" name="duration" value="<?php echo isset($sport['durationMinutes']) ? $sport['durationMinutes'] : ''; ?>" required>
-        </div>
+    <div id="frame" style="margin-top: 100px; margin-left:100px">
+        <div class="container">
 
-        <!-- Is Indoor -->
-        <div class="form-group detail-row">
-            <label for="isIndoor"><strong>Is Indoor:</strong></label>
-            <select id="isIndoor" name="isIndoor" required>
-                <option value="Indoor" <?php echo (isset($sport['isIndoor']) && $sport['isIndoor'] == 'Indoor') ? 'selected' : ''; ?>>Indoor</option>
-                <option value="Outdoor" <?php echo (isset($sport['isIndoor']) && $sport['isIndoor'] == 'Outdoor') ? 'selected' : ''; ?>>Outdoor</option>
-            </select>
-        </div>
+            <div class="temp-container">
+                <div id="signup-port">
 
-        <!-- Equipment -->
-        <div class="form-group detail-row">
-            <label for="equipment"><strong>Equipment:</strong></label>
-            <input type="text" id="equipment" name="equipment" value="<?php echo isset($sport['equipment']) ? $sport['equipment'] : ''; ?>" required>
-        </div>
+                    <form action="<?php echo ROOT ?>/admin/updateIndSport/<?= $sportId ?>" method="post">
 
-        <!-- Categories -->
-        <div class="form-group detail-row">
-            <label for="categories"><strong>Categories:</strong></label>
-            <input type="text" id="categories" name="categories" value="<?php echo isset($sport['categories']) ? $sport['categories'] : ''; ?>" required>
-        </div>
+                        <input type="hidden" name="sport_id" value="<?php echo $sportId; ?>">
 
-        <!-- Scoring System -->
-        <div class="form-group detail-row">
-            <label for="scoringSystem"><strong>Scoring System:</strong></label>
-            <textarea id="scoringSystem" name="scoringSystem" required><?php echo isset($sport['scoringSystem']) ? htmlspecialchars($sport['scoringSystem']) : ''; ?></textarea>
-        </div>
+                        <div class="temp2-container">
+                            <div class="column">
+                                <h3>Edit Sport Details</h3>
+                                <br>
+                                <div class="form-group">
+                                    <label for="sportName">Sport Name</label>
+                                    <input type="text" id="sportName" name="sportName" placeholder="Cricket"
+                                        style="width: 30%;" required
+                                        value="<?= htmlspecialchars($sport->sport_name ?? 'N/A') ?>">
+                                </div>
 
-        <!-- Rules Link -->
-        <div class="form-group detail-row">
-            <label for="rulesLink"><strong>Rules Link:</strong></label>
-            <input type="url" id="rulesLink" name="rulesLink" value="<?php echo isset($sport['rulesLink']) ? $sport['rulesLink'] : ''; ?>" required>
-        </div>
+                                <div class="form-group">
+                                    <label for="base">Base</label>
+                                    <select name="base" id="base" placeholder="Wieght, Height, Age" style="width: 20%;"
+                                        required>
+                                        <option value="Weight"
+                                            <?= isset($sport->base) && $sport->base == 'Weight' ? 'selected' : '' ?>>
+                                            Weight</option>
+                                        <option value="Height"
+                                            <?= isset($sport->base) && $sport->base == 'Height' ? 'selected' : '' ?>>
+                                            Height</option>
+                                        <option value="Age"
+                                            <?= isset($sport->base) && $sport->base == 'Age' ? 'selected' : '' ?>>Age
+                                        </option>
+                                    </select>
+                                </div>
 
-        <!-- Save Changes Button -->
-        <div class="form-group">
-            <button type="submit">Save Changes</button>
+
+                                <div class="form-group">
+                                    <label for="duration">Class Types and Range (Click ➕ to add more)</label>
+                                    <div id="dynamic-weight-container">
+                                        <?php if (!empty($game_types) && is_array($game_types)): ?>
+                                        <?php foreach ($game_types as $index => $game): ?>
+                                        <div class="input-group">
+                                            <input type="text" name="weightClass[]" placeholder="Enter class name"
+                                                value="<?= isset($game->game_format) ? htmlspecialchars($game->game_format) : '' ?>"
+                                                required>
+
+                                            <input type="number" name="min[]" placeholder="Minimum" step="0.1"
+                                                value="<?= isset($game->min) ? htmlspecialchars($game->min) : '' ?>"
+                                                required>
+
+                                            <input type="number" name="max[]" placeholder="Maximum" step="0.1"
+                                                value="<?= isset($game->max) ? htmlspecialchars($game->max) : '' ?>"
+                                                required>
+
+                                            <?php if ($index == 0): ?>
+                                            <button class="add-btn" type="button"
+                                                onclick="addWeightField(this)">➕</button>
+                                            <?php endif; ?>
+
+                                        </div>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <div class="input-group">
+                                            <input type="text" name="weightClass[]" placeholder="Enter class name" required>
+                                            <input type="number" name="min[]" placeholder="Minimum" step="0.1" required>
+                                            <input type="number" name="max[]" placeholder="Maximum" step="0.1" required>
+                                            <button class="add-btn" type="button"
+                                                onclick="addWeightField(this)">➕</button>
+                                            <button class="remove-btn" type="button"
+                                                onclick="removeField(this)">❌</button>
+                                        </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="scoring_method">Scoring Method</label>
+                                    <select name="scoring_method" id="scoring_method"
+                                        placeholder="Goal, Point, Runs, etc...." style="width: 20%;" required>
+                                        <option value="Goal"
+                                            <?= (isset($sport->scoring_method) && trim($sport->scoring_method) == 'Goal') ? 'selected' : '' ?>>
+                                            Goal</option>
+                                        <option value="Point"
+                                            <?= (isset($sport->scoring_method) && $sport->scoring_method == 'Point') ? 'selected' : '' ?>>
+                                            Point</option>
+                                        <option value="Set"
+                                            <?= (isset($sport->scoring_method) && $sport->scoring_method == 'Set') ? 'selected' : '' ?>>
+                                            Set</option>
+                                        <option value="Match"
+                                            <?= (isset($sport->scoring_method) && $sport->scoring_method == 'Match') ? 'selected' : '' ?>>
+                                            Match</option>
+                                        <option value="Round"
+                                            <?= (isset($sport->scoring_method) && $sport->scoring_method == 'Round') ? 'selected' : '' ?>>
+                                            Round</option>
+                                        <option value="Time"
+                                            <?= (isset($sport->scoring_method) && $sport->scoring_method == 'Time') ? 'selected' : '' ?>>
+                                            Time</option>
+                                        <option value="Distance"
+                                            <?= (isset($sport->scoring_method) && $sport->scoring_method == 'Distance') ? 'selected' : '' ?>>
+                                            Distance</option>
+                                        <option value="Score"
+                                            <?= (isset($sport->scoring_method) && $sport->scoring_method == 'Score') ? 'selected' : '' ?>>
+                                            Score</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="column">
+                                <h3>Rules</h3>
+                                <br>
+                                <div id="dynamic-rules-container">
+                                    <?php if (!empty($rules) && is_array($rules)): ?>
+                                    <?php foreach ($rules as $index => $rule): ?>
+                                    <div class="input-group">
+                                        <?php if ($index == 0): ?>
+                                        <label for="rules">Rules (Click ➕ to add more rules)</label>
+                                        <?php endif; ?>
+                                        <!-- Access the 'rule' property of the object -->
+                                        <input type="text" name="rules[]" placeholder="Rule 1"
+                                            value="<?= isset($rule->rule) ? htmlspecialchars($rule->rule) : '' ?>"
+                                            required>
+                                        <?php if ($index == 0): ?>
+                                        <button class="add-btn" onclick="addRuleField(this)">➕</button>
+                                        <?php endif; ?>
+                                        <button class="remove-btn" onclick="removeField(this)">❌</button>
+                                    </div>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <!-- If no existing rules, show one input -->
+                                    <div class="input-group">
+                                        <label for="rules">Rules (Click ➕ to add more rules)</label>
+                                        <input type="text" name="rules[]" placeholder="Rule 1" required>
+                                        <button class="add-btn" onclick="addRuleField(this)">➕</button>
+                                        <button class="remove-btn" onclick="removeField(this)">❌</button>
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <br>
+
+
+                                <button type="submit" style="background-color:#007BFF;width:20%">Submit</button>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </form>
-</div>
+    </div>
+    <!-- Custom Alert Box -->
+    <div id="customAlertOverlay">
+        <div id="customAlertBox">
+            <h2>Notice</h2>
+            <p id="customAlertMessage"></p>
+            <button onclick="handleButtonClick()">OK</button>
+        </div>
+    </div>
+
 
 </body>
+
+<script id="error-message" type="application/json">
+<?= json_encode(trim($Error_message)); ?>
+</script>
+
+<script id="success-message" type="application/json">
+<?= json_encode(trim($Success_message)); ?>
+</script>
+
+<script>
+// PHP variables passed to JavaScript
+const successMessage = <?php echo json_encode($Success_message); ?>;
+const errorMessage = <?php echo json_encode($Error_message); ?>;
+
+// Logic to display the appropriate message
+if (successMessage) {
+    document.getElementById('customAlertMessage').textContent = successMessage;
+    document.getElementById('customAlertOverlay').style.display = 'block';
+} else if (errorMessage) {
+    document.getElementById('customAlertMessage').textContent = errorMessage;
+    document.getElementById('customAlertOverlay').style.display = 'block';
+}
+
+// Function to handle button click for success or error
+function handleButtonClick() {
+    if (successMessage) {
+        redirectToSportManage(); // Redirect if success
+    } else {
+        hideCustomAlert(); // Hide the alert if error
+    }
+}
+
+// Function to redirect to the sportManage page on success
+function redirectToSportManage() {
+    window.location.href = '<?= ROOT ?>/admin/sportManage/sdsd'; // Update this URL if needed
+}
+</script>
+
+<script src="../../Public/js/Admin/formHandler.js"></script>
+
+<script>
+        // Assuming your input names are like: name="weightClass[]", "min[]", "max[]"
+const weightClasses = Array.from(document.querySelectorAll('[name="weightClass[]"]')).map(input => input.value.trim());
+const mins = Array.from(document.querySelectorAll('[name="min[]"]')).map(input => input.value.trim());
+const maxes = Array.from(document.querySelectorAll('[name="max[]"]')).map(input => input.value.trim());
+
+console.log("Weight Classes:", weightClasses);
+console.log("Mins:", mins);
+console.log("Maxes:", maxes);
+
+console.log("Weight Class Count:", weightClasses.length);
+console.log("Min Count:", mins.length);
+console.log("Max Count:", maxes.length);
+
+if (weightClasses.length !== mins.length || weightClasses.length !== maxes.length) {
+    console.error("Mismatch in array lengths. Fix the form inputs.");
+} else {
+    console.log("All arrays match in length. Ready to submit.");
+}
+
+    </script>
+
+
 </html>

@@ -24,16 +24,6 @@
             <div style="font-size:10px;white-space: nowrap;">
                 <?php echo htmlspecialchars($_SESSION['role'] ?? 'Unknown'); ?>
             </div>
-
-            <div>
-                <select id="status">
-                    <option value="rest">Rest</option>
-                    <option value="practicing">Practicing</option>
-                    <option value="meet">In a Meet</option>
-                    <option value="injury">Injury</option>
-                    <option value="studying">Studying</option>
-                </select>
-            </div>
             <br>
             <hr>
         </div>
@@ -50,7 +40,6 @@
 </div>
 
 <script src="/TrackMaster/Public/js/sidebar.js"></script>
-<script src="/TrackMaster/Public/js/profile.js"></script>
 
 </body>
 </html>

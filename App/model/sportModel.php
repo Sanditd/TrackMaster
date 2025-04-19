@@ -35,14 +35,15 @@ require_once __DIR__ . '/../libraries/Database.php';
                 }
         
                 // Insert into sports table
-                $this->db->query('INSERT INTO sports (sport_name, sport_type, scoring_method, num_of_players, positions) 
-                                  VALUES (:sport_name, :sport_type, :scoring_method, :num_of_players, :positions)');
+                $this->db->query('INSERT INTO sports (sport_name, sport_type, scoring_method, num_of_players, positions,types) 
+                                  VALUES (:sport_name, :sport_type, :scoring_method, :num_of_players, :positions, :types)');
                 
                 $this->db->bind(':sport_name', $data['sportName']);
                 $this->db->bind(':sport_type', $data['sportType']);
                 $this->db->bind(':scoring_method', $data['scoring_method']);
                 $this->db->bind(':num_of_players', $data['numOfPlayers']);
                 $this->db->bind(':positions', json_encode($data['positions']));
+                $this->db->bind(':types', json_encode($data['types']));
         
                 if (!$this->db->execute()) {
                     return ['success' => false, 'error' => "Failed to insert into sports table."];
@@ -118,6 +119,43 @@ require_once __DIR__ . '/../libraries/Database.php';
                 return "Error: " . $e->getMessage();
             }
         }
+
+
+        //add class to the individual sport
+        public function addClassType($sport_id, $data) {
+            try {
+                if (!isset($data['weightClass']) || !is_array($data['weightClass'])) {
+                    throw new Exception("weightClass array is missing or invalid.");
+                }
+        
+                foreach ($data['weightClass'] as $index => $game_type) {
+                    if (!isset($data['minWeight'][$index]) || !isset($data['maxWeight'][$index])) {
+                        throw new Exception("minWeight or maxWeight is missing for index: $index.");
+                    }
+        
+                    error_log("Inserting classes: " . $game_type . " for sport_id: " . $sport_id);
+        
+                    $this->db->query('INSERT INTO game_types (sport_id, game_format, max, min) 
+                                      VALUES (:sport_id, :game_format, :max, :min)');
+        
+                    $this->db->bind(':sport_id', $sport_id);
+                    $this->db->bind(':game_format', $game_type);
+                    $this->db->bind(':max', $data['maxWeight'][$index]);
+                    $this->db->bind(':min', $data['minWeight'][$index]);
+        
+                    if (!$this->db->execute()) {
+                        throw new Exception("Failed to insert class: $game_type for sport_id: $sport_id.");
+                    }
+                }
+                return true;
+            } catch (PDOException $e) {
+                error_log("SQL Error in addClassType: " . $e->getMessage());
+                return "SQL Error: " . $e->getMessage();
+            } catch (Exception $e) {
+                error_log("General Error in addCLassType: " . $e->getMessage());
+                return "Error: " . $e->getMessage();
+            }
+        }
         
         
         
@@ -161,58 +199,65 @@ require_once __DIR__ . '/../libraries/Database.php';
         }
         
         
+        public function addIndSport($data) {
+            try {
+                // Check if the sport already exists
+                $this->db->query('SELECT sport_id FROM sports WHERE sport_name = :sport_name');
+                $this->db->bind(':sport_name', $data['sportName']);
+                $existingSport = $this->db->single();
         
-        
-        public function getSports(){
-            $this->db->query('SELECT * FROM sports');
-            $result = $this->db->resultset();
-            return $result;
-        }
-        
-        public function addindSportForm($idata) {
-            // Generate the new sportId for the sport table
-            $newSportId = $this->db->generateSportId();
-            
-            // Insert into sport table first
-            $this->db->query('INSERT INTO sports (sportId, sportName, sportType) VALUES(:sportId, :sportName, :sportType)');
-            $this->db->bind(':sportId', $newSportId);
-            $this->db->bind(':sportName', $idata['sportName']);
-            $this->db->bind(':sportType', 'Individual Sport');
-            
-            // Check if the sport insertion was successful
-            if ($this->db->execute()) {
-                // If sport was successfully added, insert into teamsport
-                $this->db->query('INSERT INTO indsport (sportId, durationMinutes, isIndoor, equipment, categories, scoringSystem, rulesLink, created_at, updated_at) 
-                                  VALUES(:sportId, :durationMinutes, :isIndoor, :equipment, :category, :scoringSystem, :rulesLink, :created_at, :updated_at)');
-                
-                // Bind the parameters for the teamsport table
-                $this->db->bind(':sportId', $newSportId);
-                $this->db->bind(':durationMinutes', $idata['gameDuration']);
-                $this->db->bind(':isIndoor', $idata['locationType']);
-                $this->db->bind(':equipment', $idata['equipment']);
-                $this->db->bind(':category', $idata['category']);
-                $this->db->bind(':scoringSystem', $idata['scoring']);
-                $this->db->bind(':rulesLink', $idata['rulesURL']);
-                $this->db->bind(':created_at', date('Y-m-d H:i:s'));
-                $this->db->bind(':updated_at', date('Y-m-d H:i:s'));
-                
-                // Insert into teamsport table and return result
-                try {
-                    return $this->db->execute();
-                } catch (PDOException $e) {
-                    error_log("Add Sport Error: " . $e->getMessage());
-                    echo "Error: " . $e->getMessage(); // For debugging
-                    return false;
+                if ($existingSport) {
+                    return ['success' => false, 'error' => "Sport already exists in the database."];
                 }
-            } else {
-                // If sport insertion fails, return false
-                return false;
+        
+                // Insert into sports table
+                $this->db->query('INSERT INTO sports (sport_name, sport_type, scoring_method, base) 
+                                  VALUES (:sport_name, :sport_type, :scoring_method, :base)');
+                
+                $this->db->bind(':sport_name', $data['sportName']);
+                $this->db->bind(':sport_type', $data['sportType']);
+                $this->db->bind(':base', $data['base']);
+                $this->db->bind(':scoring_method', $data['scoring_method']);
+                $this->db->bind(':base', $data['base']);
+        
+                if (!$this->db->execute()) {
+                    return ['success' => false, 'error' => "Failed to insert into sports table."];
+                }
+        
+                // Retrieve the last inserted sport ID
+                $sport_id = $this->db->lastInsertId();
+        
+                if (!$sport_id) {
+                    return ['success' => false, 'error' => "Could not retrieve last inserted sport ID."];
+                }
+        
+                error_log("New Sport ID: " . $sport_id);
+        
+                // Insert game types
+                $classTypeResult = $this->addClassType($sport_id, $data);
+                if ($classTypeResult !== true) {
+                    return ['success' => false, 'error' => "Failed to insert game types: " . $classTypeResult];
+                }
+        
+                // Insert game rules
+                $gameRulesResult = $this->addGameRules($sport_id, $data);
+                if ($gameRulesResult !== true) {
+                    return ['success' => false, 'error' => "Failed to insert game rules: " . $gameRulesResult];
+                }
+        
+                return ['success' => true];
+            } catch (PDOException $e) {
+                error_log("SQL Error in addTeamSport: " . $e->getMessage());
+                return ['success' => false, 'error' => $e->getMessage()];
+            } catch (Exception $e) {
+                error_log("General Error in addTeamSport: " . $e->getMessage());
+                return ['success' => false, 'error' => $e->getMessage()];
             }
         }
 
         //get sport by id
         public function getSportById($sportId) {
-            $this->db->query("SELECT * FROM sports WHERE sportId = :sportId");
+            $this->db->query("SELECT * FROM sports WHERE sport_id = :sportId");
             $this->db->bind(':sportId', $sportId);
 
             return $this->db->singleArray(); // Fetch single record
@@ -220,101 +265,485 @@ require_once __DIR__ . '/../libraries/Database.php';
     
         //get team sport details
         public function getTeamSportDetails($sportId) {
-            $this->db->query("SELECT * FROM teamsport WHERE sportId = :sportId");
-            $this->db->bind(':sportId', $sportId);
-
-            return $this->db->singleArray();
+            try {
+                $result = [];
+        
+                // 1. Fetch sport details
+                $this->db->query("SELECT * FROM sports WHERE sport_id = :sportId");
+                $this->db->bind(':sportId', $sportId);
+                $sports = $this->db->resultset();
+                if (empty($sports)) {
+                    throw new Exception("No sport found with ID: $sportId");
+                }
+                $result['sport'] = $sports[0]; // ✅ return single object, not array
+        
+                // 2. Fetch game types
+                $this->db->query("SELECT * FROM game_types WHERE sport_id = :sportId");
+                $this->db->bind(':sportId', $sportId);
+                $gameTypes = $this->db->resultset();
+                if (empty($gameTypes)) {
+                    throw new Exception("No game types found for sport ID: $sportId");
+                }
+                $result['game_types'] = $gameTypes;
+        
+                // 3. Fetch rules
+                $this->db->query("SELECT * FROM rules WHERE sport_id = :sportId");
+                $this->db->bind(':sportId', $sportId);
+                $rules = $this->db->resultset();
+                if (empty($rules)) {
+                    throw new Exception("No rules found for sport ID: $sportId");
+                }
+                $result['rules'] = $rules;
+        
+                return $result;
+        
+            } catch (PDOException $e) {
+                return [
+                    'error' => true,
+                    'message' => 'Database error: ' . $e->getMessage()
+                ];
+            } catch (Exception $e) {
+                return [
+                    'error' => true,
+                    'message' => $e->getMessage()
+                ];
+            }
         }
+        
+        
+        
     
         //get ind sport details
         public function getIndSportDetails($sportId) {
-            $this->db->query("SELECT * FROM indsport WHERE sportId = :sportId");
-            $this->db->bind(':sportId', $sportId);
-
-            return $this->db->singleArray();
-        }
-
-        public function updateIndField($sportId, $fieldName, $fieldValue){
-            $allowedFields = ['sportType', 'durationMinutes', 'isIndoor', 'created_at', 'updated_at', 'equipment', 'categories', 'scoringSystem', 'rulesLink'];
-            if (in_array($fieldName, $allowedFields)) {
-                $this->db->query("UPDATE indsport SET fieldName = :fieldValue WHERE sportId= :sportId");
-                $this->db->bind(':fieldValue', $fieldValue);
+            try {
+                $result = [];
+        
+                // 1. Fetch sport details
+                $this->db->query("SELECT * FROM sports WHERE sport_id = :sportId");
                 $this->db->bind(':sportId', $sportId);
-                return true;
+                $sports = $this->db->resultset();
+                if (empty($sports)) {
+                    throw new Exception("No sport found with ID: $sportId");
+                }
+                $result['sport'] = $sports[0]; // ✅ return single object, not array
+        
+                // 2. Fetch game types
+                $this->db->query("SELECT * FROM game_types WHERE sport_id = :sportId");
+                $this->db->bind(':sportId', $sportId);
+                $gameTypes = $this->db->resultset();
+                if (empty($gameTypes)) {
+                    throw new Exception("No game types found for sport ID: $sportId");
+                }
+                $result['game_types'] = $gameTypes;
+        
+                // 3. Fetch rules
+                $this->db->query("SELECT * FROM rules WHERE sport_id = :sportId");
+                $this->db->bind(':sportId', $sportId);
+                $rules = $this->db->resultset();
+                if (empty($rules)) {
+                    throw new Exception("No rules found for sport ID: $sportId");
+                }
+                $result['rules'] = $rules;
+        
+                return $result;
+        
+            } catch (PDOException $e) {
+                return [
+                    'error' => true,
+                    'message' => 'Database error: ' . $e->getMessage()
+                ];
+            } catch (Exception $e) {
+                return [
+                    'error' => true,
+                    'message' => $e->getMessage()
+                ];
             }
-            return false;
         }
 
-        public function indsportEdit($data) {
+       
+
+        public function updateTeamSport($data) {
+            try {
+                // Ensure sport_id is provided in the data array
+                if (!isset($data['sport_id'])) {
+                    return ['success' => false, 'error' => "Sport ID is required."];
+                }
+                
+                $sport_id = $data['sport_id']; // Extract sport_id from the data array
         
-            
-            // Prepare the query
-            $this->db->query("UPDATE indsport SET 
-                    durationMinutes = :duration,
-                    isIndoor = :isIndoor,
-                    equipment = :equipment,
-                    categories = :categories,
-                    scoringSystem = :scoringSystem,
-                    rulesLink = :rulesLink,
-                    updated_at = :updated_at
-                WHERE 
-                    sportId = :sport_id");
-            
-            // Bind the data to the query parameters
-            $this->db->bind(':duration', $data['duration']);
-            $this->db->bind(':isIndoor', $data['isIndoor']);
-            $this->db->bind(':equipment', $data['equipment']);
-            $this->db->bind(':categories', $data['categoriesJson']);
-            $this->db->bind(':scoringSystem', $data['scoringSystem']);
-            $this->db->bind(':rulesLink', $data['rulesLink']);
-            $this->db->bind(':sport_id', $data['sportId']);
-            $this->db->bind(':updated_at', date('Y-m-d H:i:s'));
-            
-            // Execute the query
-            return $this->db->execute();
+                // First, check if the sport exists
+                $this->db->query('SELECT sport_id FROM sports WHERE sport_id = :sport_id');
+                $this->db->bind(':sport_id', $sport_id);
+                $existingSport = $this->db->single();
+        
+                if (!$existingSport) {
+                    return ['success' => false, 'error' => "Sport not found in the database."];
+                }
+        
+                // Update sport details
+                $this->db->query('UPDATE sports 
+                                  SET sport_name = :sport_name, sport_type = :sport_type, scoring_method = :scoring_method, 
+                                      num_of_players = :num_of_players, positions = :positions, types = :types 
+                                  WHERE sport_id = :sport_id');
+                
+                $this->db->bind(':sport_name', $data['sportName']);
+                $this->db->bind(':sport_type', $data['sportType']);
+                $this->db->bind(':scoring_method', $data['scoring_method']);
+                $this->db->bind(':num_of_players', $data['numOfPlayers']);
+                $this->db->bind(':positions', json_encode($data['positions']));
+                $this->db->bind(':types', json_encode($data['types']));
+                $this->db->bind(':sport_id', $sport_id);
+        
+                if (!$this->db->execute()) {
+                    return ['success' => false, 'error' => "Failed to update sport details."];
+                }
+        
+                // Update game types
+                $gameTypeResult = $this->updateGameType($sport_id, $data);
+                if ($gameTypeResult !== true) {
+                    return ['success' => false, 'error' => "Failed to update game types: " . $gameTypeResult];
+                }
+        
+                // Update game rules
+                $gameRulesResult = $this->updateGameRules($sport_id, $data);
+                if ($gameRulesResult !== true) {
+                    return ['success' => false, 'error' => "Failed to update game rules: " . $gameRulesResult];
+                }
+        
+                return ['success' => true];
+            } catch (PDOException $e) {
+                error_log("SQL Error in updateTeamSport: " . $e->getMessage());
+                return ['success' => false, 'error' => $e->getMessage()];
+            } catch (Exception $e) {
+                error_log("General Error in updateTeamSport: " . $e->getMessage());
+                return ['success' => false, 'error' => $e->getMessage()];
+            }
         }
 
-        public function teamsportEdit($data) {
+        public function updateIndSport($data) {
+            try {
+                if (!isset($data['sport_id'])) {
+                    return ['success' => false, 'error' => "Sport ID is required."];
+                }
         
-            
-            // Prepare the query
-            $this->db->query("UPDATE teamsport SET 
-                    numPlayers = :numPlayers,
-                    positions = :positions,
-                    teamFormation = :teamFormation,
-                    durationMinutes = :durationMinutes,
-                    halfTimeDuration = :halfTimeDuration,
-                    isOutdoor = :isOutdoor,
-                    equipment = :equipment,
-                    rulesLink = :rulesLink,
-                    updated_at = :updated_at
-                WHERE 
-                    sportId = :sport_id");
-            
-            // Bind the data to the query parameters
-            $this->db->bind(':numPlayers', $data['numPlayers']);
-            $this->db->bind(':positions', $data['positionsJson']);
-            $this->db->bind(':teamFormation', $data['teamFormation']);
-            $this->db->bind(':durationMinutes', $data['durationMinutes']);
-            $this->db->bind(':halfTimeDuration', $data['halfTimeDuration']);
-            $this->db->bind(':isOutdoor', $data['isOutdoor']);
-            $this->db->bind(':equipment', $data['equipment']);
-            $this->db->bind(':rulesLink', $data['rulesLink']);
-            $this->db->bind(':sport_id', $data['sportId']);
-            $this->db->bind(':updated_at', date('Y-m-d H:i:s'));
-            
-            // Execute the query
-            return $this->db->execute();
+                $sport_id = $data['sport_id'];
+        
+                // Check if sport exists
+                $this->db->query('SELECT sport_id FROM sports WHERE sport_id = :sport_id');
+                $this->db->bind(':sport_id', $sport_id);
+                $existingSport = $this->db->single();
+        
+                if (!$existingSport) {
+                    return ['success' => false, 'error' => "Sport not found in the database."];
+                }
+        
+                // Update sport table
+                $this->db->query('UPDATE sports 
+                                  SET sport_name = :sport_name, sport_type = :sport_type, scoring_method = :scoring_method, 
+                                      base = :base
+                                  WHERE sport_id = :sport_id');
+                
+                $this->db->bind(':sport_name', $data['sportName']);
+                $this->db->bind(':sport_type', $data['sportType']); // should be "IndSport"
+                $this->db->bind(':scoring_method', $data['scoring_method']);
+                $this->db->bind(':base', $data['base']);
+                $this->db->bind(':sport_id', $sport_id);
+        
+                if (!$this->db->execute()) {
+                    return ['success' => false, 'error' => "Failed to update sport details."];
+                }
+        
+                // Validate game type input before proceeding
+                if (!isset($data['weightClass'], $data['min'], $data['max']) ||
+                    !is_array($data['weightClass']) || !is_array($data['min']) || !is_array($data['max'])) {
+                    return ['success' => false, 'error' => "Invalid weight class data format."];
+                }
+        
+                // Update weight classes
+                $gameTypeResult = $this->updateIndGameType($sport_id, $data);
+                if ($gameTypeResult !== true) {
+                    return ['success' => false, 'error' => "Failed to update weight classes: " . $gameTypeResult];
+                }
+        
+                // Update rules
+                $gameRulesResult = $this->updateGameRules($sport_id, $data);
+                if ($gameRulesResult !== true) {
+                    return ['success' => false, 'error' => "Failed to update rules: " . $gameRulesResult];
+                }
+        
+                return ['success' => true];
+            } catch (PDOException $e) {
+                error_log("SQL Error in updateIndSport: " . $e->getMessage());
+                return ['success' => false, 'error' => $e->getMessage()];
+            } catch (Exception $e) {
+                error_log("General Error in updateIndSport: " . $e->getMessage());
+                return ['success' => false, 'error' => $e->getMessage()];
+            }
         }
+        
+        
+        public function updateIndGameType($sport_id, $data) {
+            try {
+                // Check required keys exist and are arrays
+                if (!isset($data['weightClass'], $data['min'], $data['max']) ||
+                    !is_array($data['weightClass']) || !is_array($data['min']) || !is_array($data['max'])) {
+                    return "Missing or invalid input arrays.";
+                }
+        
+                $classes = $data['weightClass'];
+                $mins = $data['min'];
+                $maxes = $data['max'];
+        
+                if (count($classes) !== count($mins) || count($classes) !== count($maxes)) {
+                    return "Mismatch in weightClass, min, and max count.";
+                }
+        
+                // First, delete old entries
+                $this->db->query('DELETE FROM game_types WHERE sport_id = :sport_id');
+                $this->db->bind(':sport_id', $sport_id);
+                $this->db->execute();
+        
+                // Now insert the new ones
+                for ($i = 0; $i < count($classes); $i++) {
+                    $class = trim($classes[$i]);
+                    $min = $mins[$i];
+                    $max = $maxes[$i];
+        
+                    // Optional: Skip empty or invalid rows
+                    if ($class === '' || !is_numeric($min) || !is_numeric($max)) {
+                        continue;
+                    }
+        
+                    $this->db->query('INSERT INTO game_types (sport_id, game_format, min, max) 
+                                      VALUES (:sport_id, :game_format, :min, :max)');
+                    $this->db->bind(':sport_id', $sport_id);
+                    $this->db->bind(':game_format', $class);
+                    $this->db->bind(':min', $min);
+                    $this->db->bind(':max', $max);
+        
+                    if (!$this->db->execute()) {
+                        error_log("Failed inserting row $i for sport_id $sport_id");
+                        return "Failed at row $i";
+                    }
+                }
+        
+                return true;
+            } catch (Exception $e) {
+                error_log("Error in updateIndGameType: " . $e->getMessage());
+                return $e->getMessage();
+            }
+        }
+        
+        
 
         public function deleteSportById($sportId) {
+            try {
+                // Delete from rules table
+                $this->db->query("DELETE FROM rules WHERE sport_id = :sportId");
+                $this->db->bind(':sportId', $sportId);
+                if (!$this->db->execute()) {
+                    return ['success' => false, 'error' => "Failed to delete from rules table."];
+                }
+        
+                // Delete from game_types table
+                $this->db->query("DELETE FROM game_types WHERE sport_id = :sportId");
+                $this->db->bind(':sportId', $sportId);
+                if (!$this->db->execute()) {
+                    return ['success' => false, 'error' => "Failed to delete from game_types table."];
+                }
+        
+                // Delete from sports table
+                $this->db->query("DELETE FROM sports WHERE sport_id = :sportId");
+                $this->db->bind(':sportId', $sportId);
+                if (!$this->db->execute()) {
+                    return ['success' => false, 'error' => "Failed to delete from sports table."];
+                }
+        
+                return ['success' => true];
+            } catch (PDOException $e) {
+                error_log("Error in deleteSportById: " . $e->getMessage());
+                return ['success' => false, 'error' => $e->getMessage()];
+            }
+        }
+        
 
-            $this->db->query("DELETE FROM sport WHERE sportId = :sportId");
-            $this->db->bind(':sportId', $sportId);
-            $this->db->execute();
+
+        public function updateGameType($sport_id, $data) {
+            try {
+                // Check if the Gtypes array exists and is valid
+                if (!isset($data['Gtypes']) || !is_array($data['Gtypes'])) {
+                    throw new Exception("Gtypes array is missing or invalid.");
+                }
+        
+                // Delete existing game types for the sport
+                $this->db->query('DELETE FROM game_types WHERE sport_id = :sport_id');
+                $this->db->bind(':sport_id', $sport_id);
+                if (!$this->db->execute()) {
+                    throw new Exception("Failed to delete existing game types for sport_id: $sport_id.");
+                }
+        
+                // Insert new game types
+                foreach ($data['Gtypes'] as $index => $game_type) {
+                    if (!isset($data['durationType'][$index]) || !isset($data['duration'][$index])) {
+                        throw new Exception("DurationType or Duration is missing for index: $index.");
+                    }
+        
+                    error_log("Inserting Game Type: " . $game_type . " for sport_id: " . $sport_id);
+        
+                    $this->db->query('INSERT INTO game_types (sport_id, game_format, duration_type, duration_value) 
+                                      VALUES (:sport_id, :game_format, :duration_type, :duration_value)');
+                    $this->db->bind(':sport_id', $sport_id);
+                    $this->db->bind(':game_format', $game_type);
+                    $this->db->bind(':duration_type', $data['durationType'][$index]);
+                    $this->db->bind(':duration_value', $data['duration'][$index]);
+        
+                    if (!$this->db->execute()) {
+                        throw new Exception("Failed to insert game type: $game_type for sport_id: $sport_id.");
+                    }
+                }
+        
+                return true;
+            } catch (PDOException $e) {
+                error_log("SQL Error in updateGameType: " . $e->getMessage());
+                return "SQL Error: " . $e->getMessage();
+            } catch (Exception $e) {
+                error_log("General Error in updateGameType: " . $e->getMessage());
+                return "Error: " . $e->getMessage();
+            }
+        }
+        
+        public function updateGameRules($sport_id, $data) {
+            try {
+                // Check if the rules array exists and is valid
+                if (!isset($data['rules']) || !is_array($data['rules'])) {
+                    throw new Exception("Rules array is missing or invalid.");
+                }
+        
+                // Delete existing game rules for the sport
+                $this->db->query('DELETE FROM rules WHERE sport_id = :sport_id');
+                $this->db->bind(':sport_id', $sport_id);
+                if (!$this->db->execute()) {
+                    throw new Exception("Failed to delete existing game rules for sport_id: $sport_id.");
+                }
+        
+                // Insert new rules
+                foreach ($data['rules'] as $rule) {
+                    error_log("Inserting Rule: " . $rule . " for sport_id: " . $sport_id);
+        
+                    $this->db->query('INSERT INTO rules (sport_id, rule) VALUES (:sport_id, :rule)');
+                    $this->db->bind(':sport_id', $sport_id);
+                    $this->db->bind(':rule', $rule);
+        
+                    if (!$this->db->execute()) {
+                        throw new Exception("Failed to insert rule: $rule for sport_id: $sport_id.");
+                    }
+                }
+        
+                return true;
+            } catch (PDOException $e) {
+                error_log("SQL Error in updateGameRules: " . $e->getMessage());
+                return false;
+            } catch (Exception $e) {
+                error_log("General Error in updateGameRules: " . $e->getMessage());
+                return false;
+            }
+        }
+        
+        public function getZones() {
+            try {
+                $this->db->query("SELECT * FROM zone");
+                $zones = $this->db->resultset();
+        
+                if (empty($zones)) {
+                    throw new Exception("No zone found in the database.");
+                }
+        
+                return $zones;
+        
+            } catch (PDOException $e) {
+                return [
+                    'error' => true,
+                    'message' => 'Database error: ' . $e->getMessage()
+                ];
+            } catch (Exception $e) {
+                return [
+                    'error' => true,
+                    'message' => $e->getMessage()
+                ];
+            }
+        }
+        
+        public function getSports() {
+            try {
+                $this->db->query("SELECT * FROM sports");
+                $sports = $this->db->resultset();
+        
+                if (empty($sports)) {
+                    throw new Exception("No sports found in the database.");
+                }
+        
+                return $sports;
+        
+            } catch (PDOException $e) {
+                return [
+                    'error' => true,
+                    'message' => 'Database error: ' . $e->getMessage()
+                ];
+            } catch (Exception $e) {
+                return [
+                    'error' => true,
+                    'message' => $e->getMessage()
+                ];
+            }
+        }
+        
+        public function getZonalSports(){
+            try {
+                $this->db->query("SELECT * FROM zonal_sport");
+                $zonalSports = $this->db->resultset();
+        
+                if (empty($zonalSports)) {
+                    throw new Exception("No sports assign to this school.");
+                }
+        
+                return $zonalSports;
+        
+            } catch (PDOException $e) {
+                return [
+                    'error' => true,
+                    'message' => 'Database error: ' . $e->getMessage()
+                ];
+            } catch (Exception $e) {
+                return [
+                    'error' => true,
+                    'message' => $e->getMessage()
+                ];
+            }
         }
 
-
+        public function getCoaches(){
+            try {
+                $this->db->query("SELECT * FROM users WHERE role = 'coach'");
+                $coaches = $this->db->resultset();
+        
+                if (empty($coaches)) {
+                    throw new Exception("No sports assign to this school.");
+                }
+        
+                return $coaches;
+        
+            } catch (PDOException $e) {
+                return [
+                    'error' => true,
+                    'message' => 'Database error: ' . $e->getMessage()
+                ];
+            } catch (Exception $e) {
+                return [
+                    'error' => true,
+                    'message' => $e->getMessage()
+                ];
+            }
+        }
 
     }
         

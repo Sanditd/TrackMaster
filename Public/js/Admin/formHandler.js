@@ -95,19 +95,16 @@ function addGameField(element) {
 
 
 function addWeightField() {
-    let container = document.getElementById("dynamic-weight-container");
-    let index = container.getElementsByClassName("input-group").length + 1;
+    const container = document.getElementById("dynamic-weight-container");
+    const index = container.getElementsByClassName("input-group").length + 1;
 
-    let newField = document.createElement("div");
+    const newField = document.createElement("div");
     newField.classList.add("input-group");
     newField.innerHTML = `
-        <input type="text" id="weight-class-${index}" name="weightClass[]" 
-            placeholder="Enter weight class name (e.g., Heavyweight)" required>
-        <input type="number" name="minWeight[]" id="min-weight-${index}" 
-            placeholder="Min Weight (kg/lbs)" step="0.1" required>
-        <input type="number" name="maxWeight[]" id="max-weight-${index}" 
-            placeholder="Max Weight (kg/lbs)" step="0.1" required>
-            <button class="add-btn" onclick="addWeightField(this)">➕</button>
+        <input type="text" name="weightClass[]" placeholder="Enter class name" required>
+        <input type="number" name="min[]" placeholder="Minimum" step="0.1" required>
+        <input type="number" name="max[]" placeholder="Maximum" step="0.1" required>
+        <button type="button" class="add-btn" onclick="addWeightField()">➕</button>
         <button type="button" class="remove-btn" onclick="removeField(this)">➖</button>
     `;
 
@@ -119,3 +116,38 @@ function removeField(button) {
     let parent = button.parentElement;
     parent.remove();
 }
+
+//vaidate ind sports class names max>min
+document.querySelector("form").addEventListener("submit", function (e) {
+    const classNames = document.getElementsByName("weightClass[]");
+    const minWeights = document.getElementsByName("min[]");
+    const maxWeights = document.getElementsByName("max[]");
+
+    let classSet = new Set();
+    let errorMessages = [];
+
+    for (let i = 0; i < classNames.length; i++) {
+        const className = classNames[i].value.trim();
+        const min = parseFloat(minWeights[i].value);
+        const max = parseFloat(maxWeights[i].value);
+
+        // Check for duplicate class names
+        if (classSet.has(className)) {
+            errorMessages.push(`Duplicate class name found: "${className}"`);
+        } else {
+            classSet.add(className);
+        }
+
+        // Check if max > min
+        if (isNaN(min) || isNaN(max) || max <= min) {
+            errorMessages.push(`Invalid weight range for class "${className}": max must be greater than min.`);
+        }
+    }
+
+    if (errorMessages.length > 0) {
+        e.preventDefault(); // Stop form submission
+        showCustomAlert(errorMessages.join("<br>")); // Use your custom alert
+    }
+});
+
+
