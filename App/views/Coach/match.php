@@ -145,16 +145,26 @@
 </head>
 <body>
 
+
   <div class="performance-container">
     <div class="performance-header">
       <h1><i class="fas fa-cricket"></i> Record Match Performance</h1>
       <p>Enter match details and track performance of your team and players.</p>
     </div>
 
-    <form class="performance-form" id="matchForm">
+    <form class="performance-form" id="matchForm" method="POST" action="/TrackMaster/coach/saveMatch">
 
       <!-- Match Info -->
       <h3 style="margin-bottom: 15px; color: var(--primary-color);">Match Information</h3>
+      <div class="form-group">
+        <label>Select Team</label>
+        <select name="myteam" required>
+        <option value="">-- Select Team --</option>
+        <?php foreach ($data['teams'] as $team): ?>
+            <option value="<?= $team->team_id ?>"><?= htmlspecialchars($team->team_name) ?></option>
+        <?php endforeach; ?>
+    </select>
+      </div>
       <div class="form-group">
         <label>Opponent Team</label>
         <input type="text" name="opponent" required />
@@ -180,6 +190,7 @@
 
       <!-- Team Performance -->
       <h3 style="margin: 30px 0 15px; color: var(--primary-color);">Team Performance</h3>
+     
       <div class="form-group">
         <label>Total Runs</label>
         <input type="number" name="total_runs" />
@@ -193,21 +204,21 @@
         <input type="text" name="overs_played" />
       </div>
       <div class="form-group">
-        <label>Runs Given</label>
-        <input type="number" name="total_runs" />
-      </div>
-      <div class="form-group">
-        <label>Wickets Taken</label>
-        <input type="number" name="wickets_lost" />
-      </div>
-      <div class="form-group">
-        <label>Overs Bowled</label>
-        <input type="text" name="overs_played" />
-      </div>
-      <div class="form-group">
-        <label>Catches Taken</label>
-        <input type="text" name="overs_played" />
-      </div>
+  <label>Runs Given</label>
+  <input type="number" name="runs_given" /> <!-- Changed from total_runs -->
+</div>
+<div class="form-group">
+  <label>Wickets Taken</label>
+  <input type="number" name="wickets_taken" /> <!-- Changed from wickets_lost -->
+</div>
+<div class="form-group">
+  <label>Overs Bowled</label>
+  <input type="text" name="overs_bowled" /> <!-- Changed from overs_played -->
+</div>
+<div class="form-group">
+  <label>Catches Taken</label>
+  <input type="number" name="catches_taken" /> <!-- Changed from overs_played -->
+</div>
 
       <!-- Player Stats -->
       <h3 style="margin: 40px 0 20px; color: var(--primary-color);">Individual Player Stats</h3>
@@ -219,58 +230,88 @@
   </div>
 
   <script>
-    let playerIndex = 0;
+let playerIndex = 0;
+let availablePlayers = [];
 
-    function addPlayer() {
-      const container = document.getElementById('playersContainer');
+// Fetch players when team is selected
+document.querySelector('select[name="myteam"]').addEventListener('change', function() {
+    fetchPlayers(this.value);
+});
 
-      const block = document.createElement('div');
-      block.classList.add('player-block');
-      block.innerHTML = `
-        <button type="button" class="remove-btn" onclick="this.parentElement.remove()">Remove</button>
-        <h4>Player ${playerIndex + 1}</h4>
-        <div class="form-group">
-          <label>Player Name</label>
-          <input type="text" name="players[${playerIndex}][name]" required />
-        </div>
-        <div class="form-group">
-          <label>Runs Scored</label>
-          <input type="number" name="players[${playerIndex}][runs]" />
-        </div>
-        <div class="form-group">
-          <label>Balls Faced</label>
-          <input type="number" name="players[${playerIndex}][ballsFaced]" />
-        </div>
-        <div class="form-group">
-          <label>Fours</label>
-          <input type="number" name="players[${playerIndex}][fours]" />
-        </div>
-        <div class="form-group">
-          <label>Sixes</label>
-          <input type="number" name="players[${playerIndex}][sixes]" />
-        </div>
-        <div class="form-group">
-          <label>Wickets Taken</label>
-          <input type="number" name="players[${playerIndex}][wickets]" />
-        </div>
-        <div class="form-group">
-          <label>Overs Bowled</label>
-          <input type="text" name="players[${playerIndex}][oversBowled]" />
-        </div>
-        <div class="form-group">
-          <label>Runs Conceded</label>
-          <input type="number" name="players[${playerIndex}][runsConceded]" />
-        </div>
-        <div class="form-group">
-          <label>Catches Taken</label>
-          <input type="number" name="players[${playerIndex}][catches]" />
-        </div>
-      `;
-      container.appendChild(block);
-      playerIndex++;
+function fetchPlayers(teamId) {
+    if (!teamId) return;
+
+    fetch(`/TrackMaster/coach/teamPlayers/${teamId}`) 
+      .then(res => res.json())
+      .then(data => {
+        availablePlayers = data;
+        document.getElementById('playersContainer').innerHTML = '';
+        playerIndex = 0;
+        if (data.length > 0) {
+            addPlayer();
+        } else {
+            alert('No players found for this team');
+        }
+      })
+      .catch(err => console.error('Error loading players:', err));
+}
+
+function addPlayer() {
+    if (availablePlayers.length === 0) {
+        alert('Please select a team first');
+        return;
     }
 
-    window.onload = addPlayer;
-  </script>
+    const container = document.getElementById('playersContainer');
+    const block = document.createElement('div');
+    block.classList.add('player-block');
+
+    let playerOptions = `<option value="">-- Select Player --</option>`;
+    availablePlayers.forEach(player => {
+        playerOptions += `<option value="${player.player_id}">${player.player_name}</option>`;
+    });
+
+    block.innerHTML = `
+      <button type="button" class="remove-btn" onclick="this.parentElement.remove()">Remove</button>
+      <div class="form-group">
+        <label>Player</label>
+        <select name="players[${playerIndex}][player_id]" required>
+          ${playerOptions}
+        </select>
+      </div>
+      <div class="form-group"><label>Runs Scored</label>
+        <input type="number" name="players[${playerIndex}][runs]" />
+      </div>
+      <div class="form-group"><label>Balls Faced</label>
+        <input type="number" name="players[${playerIndex}][ballsFaced]" />
+      </div>
+      <div class="form-group"><label>Fours</label>
+        <input type="number" name="players[${playerIndex}][fours]" />
+      </div>
+      <div class="form-group"><label>Sixes</label>
+        <input type="number" name="players[${playerIndex}][sixes]" />
+      </div>
+      <div class="form-group"><label>Wickets Taken</label>
+        <input type="number" name="players[${playerIndex}][wickets]" />
+      </div>
+      <div class="form-group"><label>Overs Bowled</label>
+        <input type="text" name="players[${playerIndex}][oversBowled]" />
+      </div>
+      <div class="form-group"><label>Runs Conceded</label>
+        <input type="number" name="players[${playerIndex}][runsConceded]" />
+      </div>
+      <div class="form-group"><label>Catches Taken</label>
+        <input type="number" name="players[${playerIndex}][catches]" />
+      </div>
+    `;
+
+    container.appendChild(block);
+    playerIndex++;
+  }
+
+  // Optionally add the first block on load
+  // window.onload = () => fetchPlayers(document.getElementById('teamSelect').value);
+</script>
+
 </body>
 </html>

@@ -93,10 +93,6 @@
                             <span class="stat-value">221</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">Not Outs</span>
-                            <span class="stat-value">37</span>
-                        </div>
-                        <div class="stat-item">
                             <span class="stat-label">Runs</span>
                             <span class="stat-value">10943</span>
                         </div>
@@ -150,16 +146,8 @@
                             <span class="stat-value">32.8</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">Dot Ball %</span>
-                            <span class="stat-value">60%</span>
-                        </div>
-                        <div class="stat-item">
                             <span class="stat-label">Best Figures</span>
                             <span class="stat-value">5/20</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Extras Given</span>
-                            <span class="stat-value">45</span>
                         </div>
                     </div>
                 </div>
@@ -173,18 +161,6 @@
                         <div class="stat-item">
                             <span class="stat-label">Catches Taken</span>
                             <span class="stat-value">55</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Run-Outs</span>
-                            <span class="stat-value">20</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Stumpings</span>
-                            <span class="stat-value">15</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Dropped Chances</span>
-                            <span class="stat-value">8</span>
                         </div>
                     </div>
                 </div>
