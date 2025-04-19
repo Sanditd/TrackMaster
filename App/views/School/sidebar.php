@@ -28,6 +28,7 @@
                 <li><a href="<?php echo URLROOT ?>/School/StudentsData">Student Records</a></li>
                 <li><a href="<?php echo URLROOT ?>/School/records">Acedemic Records</a></li>
                 <li><a href="<?php echo URLROOT ?>/School/requests">Request Management</a></li>
+                <li><a href="<?php echo URLROOT ?>/School/facility">Facility Management</a></li>
                 
             </ul>
         </nav>
