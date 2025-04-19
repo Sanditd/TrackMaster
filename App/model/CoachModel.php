@@ -210,6 +210,90 @@ class CoachModel {
         $this->db->bind(':playerId', $playerId);
         return $this->db->execute();
     }
+
+    public function getTeamsByZoneAndSport($userId) {
+        $this->db->query('
+            SELECT t.team_id, t.team_name 
+            FROM team t
+            JOIN user_coach uc ON t.sport_id = uc.sport_id AND t.zone = uc.zone
+            WHERE uc.user_id = :userId
+        ');
+        $this->db->bind(':userId', $userId);
+        return $this->db->resultSet();
+    }
+
+    public function getPlayersFromTeamId($teamId) {
+        $this->db->query("
+            SELECT up.player_id, CONCAT(u.firstname, ' ', COALESCE(u.lname, '')) as player_name 
+            FROM cricket_team ct
+            JOIN user_player up ON ct.player_id = up.player_id
+            JOIN users u ON up.user_id = u.user_id
+            WHERE ct.team_id = :teamId
+        ");
+        $this->db->bind(':teamId', $teamId);
+        return $this->db->resultSet();
+    }
+    
+    public function saveMatchData($data) {
+        $this->db->query('
+            INSERT INTO matches 
+            (team_id, opponent_team, match_date, venue, result, 
+             team_runs_scored, team_wickets_lost, team_overs_played,
+             team_runs_conceded, team_wickets_taken, team_overs_bowled, team_catches_taken)
+            VALUES 
+            (:team_id, :opponent_team, :match_date, :venue, :result,
+             :team_runs_scored, :team_wickets_lost, :team_overs_played,
+             :team_runs_conceded, :team_wickets_taken, :team_overs_bowled, :team_catches_taken)
+        ');
+    
+        // Bind values
+        $this->db->bind(':team_id', $data['team_id']);
+        $this->db->bind(':opponent_team', $data['opponent_team']);
+        $this->db->bind(':match_date', $data['match_date']);
+        $this->db->bind(':venue', $data['venue']);
+        $this->db->bind(':result', $data['result']);
+        $this->db->bind(':team_runs_scored', $data['team_runs_scored']);
+        $this->db->bind(':team_wickets_lost', $data['team_wickets_lost']);
+        $this->db->bind(':team_overs_played', $data['team_overs_played']);
+        $this->db->bind(':team_runs_conceded', $data['team_runs_conceded']);
+        $this->db->bind(':team_wickets_taken', $data['team_wickets_taken']);
+        $this->db->bind(':team_overs_bowled', $data['team_overs_bowled']);
+        $this->db->bind(':team_catches_taken', $data['team_catches_taken']);
+    
+        // Execute
+        if ($this->db->execute()) {
+            return $this->db->lastInsertId();
+        } else {
+            return false;
+        }
+    }
+    
+    public function savePlayerPerformance($matchId, $performance) {
+        $this->db->query('
+            INSERT INTO player_match_performance 
+            (match_id, player_id, runs_scored, balls_faced, fours, sixes, 
+             wickets_taken, overs_bowled, runs_conceded, catches)
+            VALUES 
+            (:match_id, :player_id, :runs_scored, :balls_faced, :fours, :sixes,
+             :wickets_taken, :overs_bowled, :runs_conceded, :catches)
+        ');
+    
+        // Bind values
+        $this->db->bind(':match_id', $matchId);
+        $this->db->bind(':player_id', $performance['player_id']);
+        $this->db->bind(':runs_scored', $performance['runs'] ?? 0);
+        $this->db->bind(':balls_faced', $performance['ballsFaced'] ?? 0);
+        $this->db->bind(':fours', $performance['fours'] ?? 0);
+        $this->db->bind(':sixes', $performance['sixes'] ?? 0);
+        $this->db->bind(':wickets_taken', $performance['wickets'] ?? 0);
+        $this->db->bind(':overs_bowled', $performance['oversBowled'] ?? 0.0);
+        $this->db->bind(':runs_conceded', $performance['runsConceded'] ?? 0);
+        $this->db->bind(':catches', $performance['catches'] ?? 0);
+    
+        // Execute
+        return $this->db->execute();
+    }
+    
     
 }
 
