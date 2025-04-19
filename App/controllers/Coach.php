@@ -58,6 +58,20 @@ class Coach extends Controller {
 
     }
 
+    public function match(){
+        $data = [];
+
+        $this->view('Coach/match');
+
+    }
+
+    public function teamperformancetracking(){
+        $data = [];
+        
+        $this->view('Coach/teamperformancetracking');
+
+    }
+
     public function teamManagement() {
         $teams = $this->coachModel->getTeams();
         $data = ['teams' => $teams];
@@ -72,24 +86,42 @@ class Coach extends Controller {
     }
         
         
-        public function createTeam() {
-                $teamName = $_POST['teamName'] ?? '';
-                $numPlayers = $_POST['numPlayers'] ?? 0;
-        
-                if (empty($teamName) || $numPlayers <= 0) {
-                    echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
-                    return;
-                }
-        
-                // Create team
-                $teamId = $this->coachModel->createTeam($teamName, $numPlayers);
-        
-                if ($teamId) {
-                    echo json_encode(['status' => 'success', 'teamId' => $teamId]);
-                } else {
-                    echo json_encode(['status' => 'error', 'message' => 'Failed to create team']);
-                }
+    public function createTeam() {
+        // Check if user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+            return;
         }
+    
+        $teamName = $_POST['teamName'] ?? '';
+        $numPlayers = $_POST['numPlayers'] ?? 0;
+        
+        // Validate input
+        if (empty($teamName) || $numPlayers <= 0) {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
+            return;
+        }
+    
+        try {
+            // Create team with coach's sport ID
+            $teamId = $this->coachModel->createTeam($teamName, $numPlayers, $_SESSION['user_id']);
+            
+            if ($teamId) {
+                echo json_encode([
+                    'status' => 'success', 
+                    'teamId' => $teamId,
+                    'message' => 'Team created successfully'
+                ]);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to create team']);
+            }
+        } catch (Exception $e) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 
         public function filterPlayers() {
             $role = $_POST['role'] ?? null;
@@ -211,6 +243,52 @@ class Coach extends Controller {
         
             $this->coachModel->removePlayerFromTeam($teamId, $playerId);
             header('Location: ' . ROOT . '/Coach/editTeam/' . $teamId);
+        }
+
+        public function saveMatchPerformance() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                // Sanitize and validate input
+                $matchData = [
+                    'opponent' => trim($_POST['opponent']),
+                    'match_date' => trim($_POST['match_date']),
+                    'venue' => trim($_POST['venue'] ?? ''),
+                    'result' => trim($_POST['result']),
+                    'total_runs' => intval($_POST['total_runs'] ?? 0),
+                    'wickets_lost' => intval($_POST['wickets_lost'] ?? 0),
+                    'overs_played' => floatval($_POST['overs_played'] ?? 0),
+                    'runs_given' => intval($_POST['runs_given'] ?? 0),
+                    'wickets_taken' => intval($_POST['wickets_taken'] ?? 0),
+                    'overs_bowled' => floatval($_POST['overs_bowled'] ?? 0),
+                    'catches_taken' => intval($_POST['catches_taken'] ?? 0),
+                    'players' => []
+                ];
+    
+                // Process player data
+                if (!empty($_POST['players'])) {
+                    foreach ($_POST['players'] as $player) {
+                        $matchData['players'][] = [
+                            'player_id' => intval($player['player_id']),
+                            'runs' => intval($player['runs'] ?? 0),
+                            'ballsFaced' => intval($player['ballsFaced'] ?? 0),
+                            'fours' => intval($player['fours'] ?? 0),
+                            'sixes' => intval($player['sixes'] ?? 0),
+                            'wickets' => intval($player['wickets'] ?? 0),
+                            'oversBowled' => floatval($player['oversBowled'] ?? 0),
+                            'runsConceded' => intval($player['runsConceded'] ?? 0),
+                            'catches' => intval($player['catches'] ?? 0)
+                        ];
+                    }
+                }
+    
+                // Save to database
+                $result = $this->coachModel->saveMatchPerformance($matchData);
+    
+                if ($result) {
+                    echo json_encode(['status' => 'success', 'message' => 'Match performance saved successfully', 'matchId' => $result]);
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to save match performance']);
+                }
+            }
         }
         
 }       

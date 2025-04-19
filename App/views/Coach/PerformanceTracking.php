@@ -444,7 +444,7 @@
             </div>
 
             <!-- Update Player Performance -->
-            <div class="performance-card update-player-card" onclick="showPlayerSearchModal()">
+            <div class="performance-card update-team-card" onclick="window.location.href='<?php echo ROOT; ?>/coach/teamperformancetracking'">
                 <div class="card-icon">
                     <i class="fas fa-running"></i>
                 </div>
