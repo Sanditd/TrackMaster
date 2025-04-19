@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/form.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/dashboard.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
-    <link rel="stylesheet" href="../../../Public/css/Admin/userManage.css">
-    <script src="../../Public/js/Admin/sidebar.js"></script>
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/form.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/dashboard.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
+    <!-- <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/userManage.css"> -->
+    <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
 
     <!-- FullCalendar CSS and JS -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet" />
