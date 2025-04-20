@@ -248,6 +248,42 @@ public function facilityForm() {
             exit;
             
         }
+    
+    }
+}
+
+// In your School.php controller
+public function approveRequest() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $requestType = $_POST['request_type'];
+        $requestId = $_POST['request_id'];
+        
+        if ($requestType == 'facility') {
+            $this->schoolModel->updateFacilityRequestStatus($requestId, 'approved');
+        } else if ($requestType == 'extraclass') {
+            $this->schoolModel->updateExtraClassRequestStatus($requestId, 'approved');
+        }
+        
+        // Redirect back to requests page
+        header('Location: ' . ROOT . '/school/getrequests');
+        exit;
+    }
+}
+
+public function declineRequest() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $requestType = $_POST['request_type'];
+        $requestId = $_POST['request_id'];
+        
+        if ($requestType == 'facility') {
+            $this->schoolModel->updateFacilityRequestStatus($requestId, 'declined');
+        } else if ($requestType == 'extraclass') {
+            $this->schoolModel->updateExtraClassRequestStatus($requestId, 'declined');
+        }
+        
+        // Redirect back to requests page
+        header('Location: ' . ROOT . '/school/getrequests');
+        exit;
     }
 }
 }

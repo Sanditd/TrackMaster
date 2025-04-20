@@ -124,6 +124,55 @@ public function addFacility($data) {
     // Execute the query and return the result
     return $this->db->execute();
 }
+
+public function getFacilityRequests() {
+    $this->db->query("
+        SELECT fr.request_id, fr.event_name, fr.coach_name, 
+               fr.date, fr.start_time, fr.end_time, fr.status
+        FROM facility_requests fr
+        WHERE fr.status = 'pending'
+    ");
+
+    return $this->db->resultSet();
+}
+
+public function getExtraClassRequests() {
+    $this->db->query("
+        SELECT ecr.request_id, u.firstname as student_name, 
+               ecr.subject_name, ecr.notes, ecr.status
+        FROM extra_class_requests ecr
+        JOIN users u ON ecr.student_id = u.user_id
+        WHERE ecr.status = 'pending'
+    ");
+
+    return $this->db->resultSet();
+}
+
+public function updateFacilityRequestStatus($requestId, $status) {
+    $this->db->query("
+        UPDATE facility_requests 
+        SET status = :status 
+        WHERE request_id = :request_id
+    ");
+    
+    $this->db->bind(':status', $status);
+    $this->db->bind(':request_id', $requestId);
+    
+    return $this->db->execute();
+}
+
+public function updateExtraClassRequestStatus($requestId, $status) {
+    $this->db->query("
+        UPDATE extra_class_requests 
+        SET status = :status 
+        WHERE request_id = :request_id
+    ");
+    
+    $this->db->bind(':status', $status);
+    $this->db->bind(':request_id', $requestId);
+    
+    return $this->db->execute();
+}
 }
     
     
