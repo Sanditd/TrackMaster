@@ -439,8 +439,192 @@ class CoachModel {
         
         return $this->db->resultSet();
     }
+
     
+    public function getPlayerDetails($playerId) {
+        $this->db->query('
+            SELECT 
+                up.player_id,
+                CONCAT(u.firstname, " ", COALESCE(u.lname, "")) AS player_name,
+                u.age,
+                u.gender,
+                u.photo,
+                cs.role
+            FROM user_player up
+            JOIN users u ON up.user_id = u.user_id
+            LEFT JOIN cricket_stats cs ON up.player_id = cs.player_id
+            WHERE up.player_id = :playerId
+        ');
+        $this->db->bind(':playerId', $playerId);
+        return $this->db->single();
+    }
     
+    public function getPlayerStatsById($playerId) {
+        $this->db->query('
+            SELECT 
+                matches, innings, runs, batting_avg, strike_rate, boundaries,
+                high_score, fifties, hundreds, wickets, bowling_avg,
+                bowling_strike_rate, best_bowling_figures, economy_rate
+            FROM cricket_stats
+            WHERE player_id = :playerId
+        ');
+        $this->db->bind(':playerId', $playerId);
+        return $this->db->single();
+    }
+    
+    public function getPlayerRecentPerformances($playerId, $limit = 5) {
+        $this->db->query('
+            SELECT 
+                pmp.*,
+                m.match_date,
+                m.opponent_team,
+                m.venue,
+                m.result
+            FROM player_match_performance pmp
+            JOIN matches m ON pmp.match_id = m.match_id
+            WHERE pmp.player_id = :playerId
+            ORDER BY m.match_date DESC
+            LIMIT :limit
+        ');
+        $this->db->bind(':playerId', $playerId);
+        $this->db->bind(':limit', $limit);
+        return $this->db->resultSet();
+    }
+
+    public function getTeamsByCoach($coachId) {
+        // First get coach's sport and zone
+        $this->db->query('SELECT sport_id, zone FROM user_coach WHERE user_id = :coachId');
+        $this->db->bind(':coachId', $coachId);
+        $coach = $this->db->single();
+    
+        if (!$coach) {
+            throw new Exception('Coach record not found');
+        }
+    
+        // Get teams with same sport and zone
+        $this->db->query('
+            SELECT 
+                t.team_id, 
+                t.team_name,
+                t.number_of_players,
+                s.sport_name
+            FROM team t
+            JOIN sports s ON t.sport_id = s.sport_id
+            WHERE t.sport_id = :sportId AND t.zone = :zone
+            ORDER BY t.team_name
+        ');
+        $this->db->bind(':sportId', $coach->sport_id);
+        $this->db->bind(':zone', $coach->zone);
+        
+        return $this->db->resultSet();
+    }
+
+    public function getTeamStats($teamId) {
+        $this->db->query('
+            SELECT 
+                COUNT(*) as total_matches,
+                SUM(CASE WHEN result = "won" THEN 1 ELSE 0 END) as wins,
+                SUM(CASE WHEN result = "lost" THEN 1 ELSE 0 END) as losses,
+                SUM(CASE WHEN result = "tie" THEN 1 ELSE 0 END) as ties,
+                SUM(CASE WHEN result = "no result" THEN 1 ELSE 0 END) as no_results,
+                AVG(team_runs_scored) as avg_runs_scored,
+                AVG(team_runs_conceded) as avg_runs_conceded,
+                SUM(team_runs_scored) as total_runs_scored,
+                SUM(team_wickets_taken) as total_wickets_taken,
+                SUM(team_wickets_lost) as total_wickets_lost,
+                SUM(team_catches_taken) as total_catches
+            FROM matches
+            WHERE team_id = :teamId
+        ');
+        $this->db->bind(':teamId', $teamId);
+        $stats = $this->db->single();
+        
+        // Calculate win percentage
+        if ($stats->total_matches > 0) {
+            $stats->win_percentage = round(($stats->wins / $stats->total_matches) * 100, 1);
+        } else {
+            $stats->win_percentage = 0;
+        }
+        
+        return $stats;
+    }
+    
+    public function getTeamRecentMatches($teamId, $limit = 5) {
+        $this->db->query('
+            SELECT 
+                match_id,
+                opponent_team,
+                match_date,
+                venue,
+                result,
+                team_runs_scored,
+                team_wickets_lost,
+                team_runs_conceded,
+                team_wickets_taken
+            FROM matches
+            WHERE team_id = :teamId
+            ORDER BY match_date DESC
+            LIMIT :limit
+        ');
+        $this->db->bind(':teamId', $teamId);
+        $this->db->bind(':limit', $limit);
+        return $this->db->resultSet();
+    }
+    
+    public function getTeamMatches($teamId) {
+        $this->db->query('
+            SELECT 
+                match_id,
+                opponent_team,
+                match_date,
+                venue,
+                result,
+                team_runs_scored,
+                team_wickets_lost,
+                team_runs_conceded,
+                team_wickets_taken
+            FROM matches
+            WHERE team_id = :teamId
+            ORDER BY match_date DESC
+        ');
+        $this->db->bind(':teamId', $teamId);
+        return $this->db->resultSet();
+    }
+    
+    public function getTeamRecentForm($teamId, $limit = 5) {
+        $this->db->query('
+            SELECT result
+            FROM matches
+            WHERE team_id = :teamId
+            ORDER BY match_date DESC
+            LIMIT :limit
+        ');
+        $this->db->bind(':teamId', $teamId);
+        $this->db->bind(':limit', $limit);
+        $results = $this->db->resultSet();
+        
+        $form = [];
+        foreach ($results as $match) {
+            $form[] = $match->result;
+        }
+        
+        return $form;
+    }
+    
+    public function getTeamDetails($teamId) {
+        $this->db->query('
+            SELECT 
+                t.team_id,
+                t.team_name,
+                t.number_of_players,
+                s.sport_name
+            FROM team t
+            JOIN sports s ON t.sport_id = s.sport_id
+            WHERE t.team_id = :teamId
+        ');
+        $this->db->bind(':teamId', $teamId);
+        return $this->db->single();
+    }
 }
 
 
