@@ -298,6 +298,7 @@ class Coach extends Controller {
     if ($matchId && !empty($data['player_performances'])) {
         foreach ($data['player_performances'] as $performance) {
             $this->coachModel->savePlayerPerformance($matchId, $performance);
+            $this->coachModel->updateCricketStats($performance);
         }
     }
 
@@ -306,5 +307,34 @@ class Coach extends Controller {
     exit();
 }
 
+public function getPlayersForCoach() {
+    // Check if user is logged in and is a coach
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+        return;
+    }
+
+    try {
+        // Get players for the current coach's sport and zone
+        $players = $this->coachModel->getPlayersByCoachZone($_SESSION['user_id']);
         
-}       
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'success',
+            'players' => $players
+        ]);
+    } catch (Exception $e) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+
+
+}
+
+
+              
