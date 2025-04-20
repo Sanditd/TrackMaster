@@ -9,7 +9,7 @@
 <body>
 
 <?php require 'navbar.php'?>
-<?php require 'C:/wamp64/www/TrackMaster/App/views/Student/sidebar.php'?>
+
 
 <div>
         <div class="intro">
