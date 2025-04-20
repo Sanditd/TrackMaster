@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Sport Details</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/sportView.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
-    <script src="../../Public/js/Admin/sidebar.js"></script>
-    <script src="../../../Public/js/Admin/sportView.js" defer></script>
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/sportView.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
+    <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
+    <script src="<?php echo ROOT?>/Public/js/Admin/sportView.js" defer></script>
 </head>
 
 <body>

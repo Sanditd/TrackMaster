@@ -764,7 +764,6 @@
 
                 // Handle "Not Selected" case (coachId is null or 0 or invalid)
                 if (empty($coachId) || !$coachId || $coachId === 0) {
-                    // Save with coach_id = 0 and active = 0
                     $result = $this->sportModel->assignCoachToSport($zoneId, $sportId, 0, 0);
                     if (!empty($result['error'])) {
                         $_SESSION['error_message'] = "Error saving coach: Zone $zoneId, Sport $sportId — " . $result['message'];
@@ -773,7 +772,6 @@
                     continue;
                 }
 
-                // Check coach validity
                 $coachExists = false;
                 foreach ($FromCoaches as $coach) {
                     if ((int)$coach->coach_id === (int)$coachId) {
@@ -800,13 +798,9 @@
             $_SESSION['success_message'] = "Coach assignments saved successfully.";
         }
 
-        return $this->view('/Admin/zonalSport', [
-            'zones' => $zones,
-            'sports' => $sports,
-            'zonalSports' => $zonalSports,
-            'users' => $users,
-            'FromCoaches' => $FromCoaches,
-        ]);
+        // Redirect to avoid resubmission
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
     }
 
     // GET request
@@ -849,6 +843,7 @@
         return $this->view('/Admin/zonalSport');
     }
 }
+
 
 
         

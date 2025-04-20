@@ -325,7 +325,7 @@ form.addEventListener('submit', function (e) {
 
 <script id="error-message" type="application/json"><?= json_encode(trim($Error_message)) ?></script>
 <script id="success-message" type="application/json"><?= json_encode(trim($Success_message)) ?></script>
-<script src="../../Public/js/Admin/formHandler.js"></script>
+<script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const errorMessage = JSON.parse(document.getElementById('error-message').textContent);
