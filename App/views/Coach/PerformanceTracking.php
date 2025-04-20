@@ -418,7 +418,7 @@
 
         <div class="performance-grid">
             <!-- Team Performance Section -->
-            <div class="performance-card team-card" onclick="window.location.href='<?php echo ROOT; ?>/coach/teamManagement'">
+            <div class="performance-card team-card" onclick="showteamSelectModal()">
                 <div class="card-icon">
                     <i class="fas fa-users"></i>
                 </div>
@@ -460,72 +460,10 @@
             </div>
 
             <!-- Update Player Performance -->
-            <div class="performance-card update-team-card" onclick="window.location.href='<?php echo ROOT; ?>/coach/teamperformancetracking'">
-                <div class="card-icon">
-                    <i class="fas fa-running"></i>
-                </div>
-                <div class="card-content">
-                    <h2>Update Player</h2>
-                    <p>Record individual player achievements, match performances, and training metrics.</p>
-                    <div class="card-footer">
-                        <span>Select Player <i class="fas fa-arrow-right"></i></span>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 
-    <!-- Player Search Modal -->
-    <div id="playerSearchModal" class="performance-modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('playerSearchModal')">&times;</span>
-            <h3><i class="fas fa-search"></i> Find Player</h3>
-            <form id="playerSearchForm" onsubmit="searchPlayer(event)">
-                <div class="form-group">
-                    <label for="playerSearch">Search by Name or ID</label>
-                    <input type="text" id="playerSearch" placeholder="e.g. John Smith or P1001" required>
-                </div>
-                <button type="submit" class="search-btn">
-                    <i class="fas fa-search"></i> Search Players
-                </button>
-                <div class="search-results" id="searchResults">
-                    <!-- Results will appear here -->
-                    <div class="no-results">Enter a player name or ID to search</div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Update Team Modal -->
-    <div id="updateTeamModal" class="performance-modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('updateTeamModal')">&times;</span>
-            <h3><i class="fas fa-clipboard-check"></i> Record Team Performance</h3>
-            <form id="teamPerformanceForm">
-                <div class="form-group">
-                    <label for="matchDate">Match Date</label>
-                    <input type="date" id="matchDate" required>
-                </div>
-                <div class="form-group">
-                    <label for="opponent">Opponent Team</label>
-                    <input type="text" id="opponent" placeholder="Enter opponent team name" required>
-                </div>
-                <div class="form-group">
-                    <label for="matchType">Match Format</label>
-                    <select id="matchType" required>
-                        <option value="">Select format</option>
-                        <option value="test">Test Match</option>
-                        <option value="odi">One Day International</option>
-                        <option value="t20">T20</option>
-                        <option value="practice">Practice Match</option>
-                    </select>
-                </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-save"></i> Save Match Data
-                </button>
-            </form>
-        </div>
-    </div>
 
     <div id="playerSelectModal" class="performance-modal">
     <div class="modal-content">
@@ -536,6 +474,26 @@
                 <label for="playerDropdown">Choose Player:</label>
                 <select id="playerDropdown" class="form-control" required>
                     <option value="">-- Select a Player --</option>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-chart-line"></i> View Performance
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<div id="teamSelectModal" class="performance-modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('teamSelectModal')">&times;</span>
+        <h3><i class="fas fa-users"></i> Select Team</h3>
+        <form id="teamSelectForm">
+            <div class="form-group">
+                <label for="teamDropdown">Choose Team:</label>
+                <select id="teamDropdown" class="form-control" required>
+                    <option value="">-- Select a Team --</option>
                     <!-- Options will be populated by JavaScript -->
                 </select>
             </div>
@@ -598,9 +556,61 @@
             e.preventDefault();
             const playerId = document.getElementById('playerDropdown').value;
             if (playerId) {
-                window.location.href = `<?php echo ROOT; ?>/coach/playerperformance`;
+                window.location.href = `<?php echo ROOT; ?>/coach/playerperformance/${playerId}`;
             }
         });
+
+        document.querySelector('.team-card').onclick = function(e) {
+        e.preventDefault();
+        showTeamSelectModal();
+    };
+
+    function showTeamSelectModal() {
+        // Show loading state
+        document.getElementById('teamDropdown').innerHTML = '<option value="">Loading teams...</option>';
+        
+        // Show modal
+        document.getElementById('teamSelectModal').classList.add('active');
+        document.getElementById('modalOverlay').classList.add('active');
+        
+        // Fetch teams via AJAX
+        fetchTeamsForCoach();
+    }
+
+    function fetchTeamsForCoach() {
+        fetch('<?php echo ROOT; ?>/coach/getTeamsForCoach')
+            .then(response => response.json())
+            .then(data => {
+                const dropdown = document.getElementById('teamDropdown');
+                dropdown.innerHTML = '<option value="">-- Select a Team --</option>';
+                
+                if (data.teams && data.teams.length > 0) {
+                    data.teams.forEach(team => {
+                        const option = document.createElement('option');
+                        option.value = team.team_id;
+                        option.textContent = team.team_name;
+                        dropdown.appendChild(option);
+                    });
+                } else {
+                    dropdown.innerHTML = '<option value="">No teams found</option>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching teams:', error);
+                document.getElementById('teamDropdown').innerHTML = '<option value="">Error loading teams</option>';
+            });
+    }
+
+    // Handle team form submission
+    document.getElementById('teamSelectForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const teamId = document.getElementById('teamDropdown').value;
+        if (teamId) {
+            window.location.href = `<?php echo ROOT; ?>/coach/teamperformance/${teamId}`;
+        }
+    });
+
+    // (Keep all your existing JavaScript functions)
     </script>
 </body>
 </html>

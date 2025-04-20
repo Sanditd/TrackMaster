@@ -46,10 +46,6 @@ class Coach extends Controller {
         $this->view('Coach/EditProfile');
     }
 
-    public function playerPerformance() {
-        $data = [];
-        $this->view('Coach/PlayerPerformance');
-    }
 
     public function creataddplayers(){
         $data = [];
@@ -58,12 +54,6 @@ class Coach extends Controller {
 
     }
 
-    public function teamperformancetracking(){
-        $data = [];
-        
-        $this->view('Coach/teamperformancetracking');
-
-    }
 
     public function teamManagement() {
         $teams = $this->coachModel->getTeams();
@@ -329,6 +319,97 @@ public function getPlayersForCoach() {
             'status' => 'error',
             'message' => $e->getMessage()
         ]);
+    }
+}
+
+public function playerPerformance($playerId = null) {
+    // If no player ID provided, redirect to selection
+    if (!$playerId) {
+        redirect('coach/performanceTracking');
+    }
+
+    try {
+        // Get player details
+        $player = $this->coachModel->getPlayerDetails($playerId);
+        
+        // Get player stats
+        $stats = $this->coachModel->getPlayerStatsById($playerId);
+        
+        // Get recent performances
+        $performances = $this->coachModel->getPlayerRecentPerformances($playerId);
+        
+        $data = [
+            'player' => $player,
+            'stats' => $stats,
+            'performances' => $performances
+        ];
+        
+        $this->view('Coach/PlayerPerformance', $data);
+    } catch (Exception $e) {
+        flash('player_error', $e->getMessage());
+        redirect('coach/performanceTracking');
+    }
+}
+
+public function getTeamsForCoach() {
+    // Check if user is logged in and is a coach
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+        return;
+    }
+
+    try {
+        // Get teams for the current coach's sport and zone
+        $teams = $this->coachModel->getTeamsByCoach($_SESSION['user_id']);
+        
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'success',
+            'teams' => $teams
+        ]);
+    } catch (Exception $e) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+public function teamperformance($teamId = null) {
+    // If no team ID provided, redirect to selection
+    if (!$teamId) {
+        redirect('coach/performanceTracking');
+    }
+
+    try {
+        // Get team details
+        $team = $this->coachModel->getTeamDetails($teamId);
+        
+        // Get team stats
+        $stats = $this->coachModel->getTeamStats($teamId);
+        
+        // Get recent matches (last 5)
+        $recentMatches = $this->coachModel->getTeamRecentMatches($teamId, 5);
+        
+        // Get all matches for the team
+        $allMatches = $this->coachModel->getTeamMatches($teamId);
+        
+        // Calculate recent form (last 5 matches)
+        $recentForm = $this->coachModel->getTeamRecentForm($teamId, 5);
+        
+        $data = [
+            'team' => $team,
+            'stats' => $stats,
+            'recentMatches' => $recentMatches,
+            'allMatches' => $allMatches,
+            'recentForm' => $recentForm
+        ];
+        
+        $this->view('Coach/TeamPerformance', $data);
+    } catch (Exception $e) {
+        flash('team_error', $e->getMessage());
+        redirect('coach/performanceTracking');
     }
 }
 
