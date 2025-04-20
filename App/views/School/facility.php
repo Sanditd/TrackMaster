@@ -6,7 +6,7 @@
         body {
             background-color: #f3f3f3;
         }
-        *{
+        * {
             font-family: Arial, sans-serif;
         }
         .header {
@@ -63,6 +63,16 @@
         .btn-submit:hover {
             background-color: #e69500;
         }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px auto;
+            max-width: 700px;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -74,12 +84,14 @@
     <h1>Update School Facilities</h1>
 </div>
 
+<?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
+    <div class="success-message">
+        ✅ Data updated successfully!
+    </div>
+<?php endif; ?>
+
 <div class="form-container">
-    <!-- Change the form action to point to the PHP script -->
     <form method="post" action="<?php echo URLROOT; ?>/school/facilityForm">
-
-
-
         <div class="form-group">
             <label>Facility Type</label>
             <div class="checkbox-group">

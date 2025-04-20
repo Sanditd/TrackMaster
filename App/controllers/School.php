@@ -235,17 +235,18 @@ public function facilityForm() {
         ];
 
         // Call the model to insert the data
-        $result = $this->SchoolModel->addFacility($data);
+        $result = $this->schoolModel->addFacility($data);
 
         // Redirect to success or error page based on the result
         if ($result) {
             $_SESSION['success_message'] = "Facility added successfully!";
-            header('Location: ' . ROOT . '/school/facilityForm/success');
+            header('Location: ' . ROOT . '/school/facilityForm');
             exit;
         } else {
             $_SESSION['error_message'] = "Failed to add facility. Please try again.";
             header('Location: ' . ROOT . '/school/facilityForm/error');
             exit;
+            
         }
     }
 }
