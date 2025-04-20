@@ -388,6 +388,22 @@
             .card-content p {
                 font-size: 0.95rem;
             }
+
+            .form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+    margin-bottom: 15px;
+}
+
+.form-control:focus {
+    border-color: var(--secondary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
+}
         }
     </style>
 </head>
@@ -416,7 +432,7 @@
             </div>
 
             <!-- Player Performance Section -->
-            <div class="performance-card player-card" onclick="window.location.href='<?php echo ROOT; ?>/coach/playerperformance'">
+            <div class="performance-card player-card" onclick="showPlayerSelectModal()">
                 <div class="card-icon">
                     <i class="fas fa-user"></i>
                 </div>
@@ -511,144 +527,79 @@
         </div>
     </div>
 
+    <div id="playerSelectModal" class="performance-modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('playerSelectModal')">&times;</span>
+        <h3><i class="fas fa-users"></i> Select Player</h3>
+        <form id="playerSelectForm">
+            <div class="form-group">
+                <label for="playerDropdown">Choose Player:</label>
+                <select id="playerDropdown" class="form-control" required>
+                    <option value="">-- Select a Player --</option>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-chart-line"></i> View Performance
+            </button>
+        </form>
+    </div>
+</div>
+
     <div class="modal-overlay" id="modalOverlay"></div>
 
     <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
     
     <script>
         // Enhanced JavaScript for modals and interactions
-        function showPlayerSearchModal() {
-            document.getElementById('playerSearchModal').classList.add('active');
-            document.getElementById('modalOverlay').classList.add('active');
-            document.getElementById('playerSearch').focus();
-        }
-
-
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
-            document.getElementById('modalOverlay').classList.remove('active');
+            document.getElementById('modalOverlay').classList.remove('active'); 
         }
 
-        function searchPlayer(event) {
-            event.preventDefault();
-            const searchTerm = document.getElementById('playerSearch').value.trim();
-            const resultsContainer = document.getElementById('searchResults');
-            
-            if (searchTerm.length < 2) {
-                resultsContainer.innerHTML = '<div class="no-results">Please enter at least 2 characters</div>';
-                return;
-            }
-            
+        function showPlayerSelectModal() {
             // Show loading state
-            resultsContainer.innerHTML = '<div class="no-results"><i class="fas fa-spinner fa-spin"></i> Searching players...</div>';
+            document.getElementById('playerDropdown').innerHTML = '<option value="">Loading players...</option>';
             
-            // Simulate API call with timeout
-            setTimeout(() => {
-                // Mock results - replace with actual API call
-                const mockPlayers = [
-                    {
-                        id: 'P1001',
-                        name: 'John Smith',
-                        role: 'Batsman',
-                        team: 'Team Blue',
-                        avatar: '../Public/img/players/default.jpg'
-                    },
-                    {
-                        id: 'P1002',
-                        name: 'Michael Johnson',
-                        role: 'Bowler',
-                        team: 'Team Blue',
-                        avatar: '../Public/img/players/default.jpg'
-                    },
-                    {
-                        id: 'P1003',
-                        name: 'David Warner',
-                        role: 'All-rounder',
-                        team: 'Team Red',
-                        avatar: '../Public/img/players/default.jpg'
+            // Show modal
+            document.getElementById('playerSelectModal').classList.add('active');
+            document.getElementById('modalOverlay').classList.add('active');
+            
+            // Fetch players via AJAX
+            fetchPlayersForCoach();
+        }
+
+        function fetchPlayersForCoach() {
+            fetch('<?php echo ROOT; ?>/coach/getPlayersForCoach')
+                .then(response => response.json())
+                .then(data => {
+                    const dropdown = document.getElementById('playerDropdown');
+                    dropdown.innerHTML = '<option value="">-- Select a Player --</option>';
+                    
+                    if (data.players && data.players.length > 0) {
+                        data.players.forEach(player => {
+                            const option = document.createElement('option');
+                            option.value = player.player_id;
+                            option.textContent = player.player_name;
+                            dropdown.appendChild(option);
+                        });
+                    } else {
+                        dropdown.innerHTML = '<option value="">No players found</option>';
                     }
-                ];
-                
-                const filteredPlayers = mockPlayers.filter(player => 
-                    player.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                    player.id.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-                
-                if (filteredPlayers.length === 0) {
-                    resultsContainer.innerHTML = '<div class="no-results">No players found matching your search</div>';
-                    return;
-                }
-                
-                let resultsHTML = '';
-                filteredPlayers.forEach(player => {
-                    resultsHTML += `
-                        <div class="player-result">
-                            <div class="player-info">
-                                <img src="${player.avatar}" alt="${player.name}" width="40" height="40">
-                                <div>
-                                    <h4>${player.name}</h4>
-                                    <p>${player.role} | ${player.team}</p>
-                                </div>
-                            </div>
-                            <button class="select-btn" onclick="selectPlayer('${player.id}')">
-                                Select <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
-                    `;
+                })
+                .catch(error => {
+                    console.error('Error fetching players:', error);
+                    document.getElementById('playerDropdown').innerHTML = '<option value="">Error loading players</option>';
                 });
-                
-                resultsContainer.innerHTML = resultsHTML;
-            }, 800);
         }
 
-        function selectPlayer(playerId) {
-            // Redirect to player performance update page with the player ID
-            window.location.href = `<?php echo ROOT; ?>/coach/updatePlayerPerformance/${playerId}`;
-        }
-
-        // Close modal when clicking on overlay
-        document.getElementById('modalOverlay').addEventListener('click', function() {
-            document.querySelectorAll('.performance-modal.active').forEach(modal => {
-                modal.classList.remove('active');
-            });
-            this.classList.remove('active');
-        });
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                document.querySelectorAll('.performance-modal.active').forEach(modal => {
-                    modal.classList.remove('active');
-                });
-                document.getElementById('modalOverlay').classList.remove('active');
-            }
-        });
-
-        // Form submission for team performance
-        document.getElementById('teamPerformanceForm').addEventListener('submit', function(e) {
+        // Handle form submission
+        document.getElementById('playerSelectForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Get form values
-            const matchDate = document.getElementById('matchDate').value;
-            const opponent = document.getElementById('opponent').value;
-            const matchType = document.getElementById('matchType').value;
-            
-            // Validate inputs
-            if (!matchDate || !opponent || !matchType) {
-                alert('Please fill in all required fields');
-                return;
+            const playerId = document.getElementById('playerDropdown').value;
+            if (playerId) {
+                window.location.href = `<?php echo ROOT; ?>/coach/playerperformance`;
             }
-            
-            // Here you would typically make an AJAX call to save the data
-            console.log('Submitting match data:', { matchDate, opponent, matchType });
-            
-            // Show success message
-            alert('Match data saved successfully!');
-            
-            // Close the modal
-            closeModal('updateTeamModal');
-            
-            // In a real app, you might refresh the team performance data
         });
     </script>
 </body>

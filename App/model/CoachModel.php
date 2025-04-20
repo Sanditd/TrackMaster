@@ -294,6 +294,152 @@ class CoachModel {
         return $this->db->execute();
     }
     
+
+    public function updateCricketStats($performance) {
+        $playerId = $performance['player_id'];
+    
+        // Check if a cricket_stats row exists
+        $this->db->query("SELECT * FROM cricket_stats WHERE player_id = :player_id");
+        $this->db->bind(':player_id', $playerId);
+        $existing = $this->db->single();
+    
+        // Extract stats from performance
+        $runs = $performance['runs'] ?? 0;
+        $balls = $performance['ballsFaced'] ?? 0;
+        $fours = $performance['fours'] ?? 0;
+        $sixes = $performance['sixes'] ?? 0;
+        $wickets = $performance['wickets'] ?? 0;
+        $overs = $performance['oversBowled'] ?? 0.0;
+        $runsConceded = $performance['runsConceded'] ?? 0;
+    
+        // If no existing stats, insert new
+        if (!$existing) {
+            $strikeRate = $balls > 0 ? ($runs / $balls) * 100 : 0.00;
+            $economy = $overs > 0 ? $runsConceded / $overs : 0.00;
+            $battingAverage = $runs; // 1 inning, not out handling later
+            $bowlingAverage = $wickets > 0 ? $runsConceded / $wickets : 0;
+            $bowlingStrikeRate = $wickets > 0 ? ($overs * 6) / $wickets : 0;
+            
+            $this->db->query("
+                INSERT INTO cricket_stats 
+                (player_id, matches, innings, runs, strike_rate, batting_avg, boundaries, high_score, fifties, hundreds, 
+                 wickets, economy_rate, bowling_avg, bowling_strike_rate, best_bowling_figures)
+                VALUES 
+                (:player_id, 1, 1, :runs, :strike_rate, :batting_average, :boundaries, :high_score, :fifties, :hundreds, 
+                 :wickets, :economy_rate, :bowling_average, :bowling_strike_rate, :bbf)
+            ");
+            $this->db->bind(':batting_average', $battingAverage);
+            $this->db->bind(':bowling_average', $bowlingAverage);
+            $this->db->bind(':bowling_strike_rate', $bowlingStrikeRate);
+            $this->db->bind(':player_id', $playerId);
+            $this->db->bind(':runs', $runs);
+            $this->db->bind(':strike_rate', $strikeRate);
+            $this->db->bind(':boundaries', $fours + $sixes);
+            $this->db->bind(':high_score', $runs);
+            $this->db->bind(':fifties', $runs >= 50 && $runs < 100 ? 1 : 0);
+            $this->db->bind(':hundreds', $runs >= 100 ? 1 : 0);
+            $this->db->bind(':wickets', $wickets);
+            $this->db->bind(':economy_rate', $economy);
+            $this->db->bind(':bbf', $wickets > 0 ? "$wickets/$runsConceded" : '0/0');
+            $this->db->execute();
+        } else {
+            // Update existing stats
+            $matches = $existing->matches + 1;
+            $innings = $existing->innings + 1;
+            $newRuns = $existing->runs + $runs;
+            $totalBalls = $existing->innings * ($existing->strike_rate > 0 ? ($existing->runs / $existing->strike_rate) * 100 : 0) + $balls;
+            $newSR = $totalBalls > 0 ? ($newRuns / $totalBalls) * 100 : 0.00;
+    
+            $totalOvers = $existing->innings * ($existing->economy_rate > 0 ? ($existing->runs / $existing->economy_rate) : 0) + $overs;
+            $newEconomy = $totalOvers > 0 ? ($existing->runs + $runsConceded) / $totalOvers : 0.00;
+    
+            $boundaries = $existing->boundaries + $fours + $sixes;
+            $highScore = max($existing->high_score, $runs);
+            $fifties = $existing->fifties + (($runs >= 50 && $runs < 100) ? 1 : 0);
+            $hundreds = $existing->hundreds + ($runs >= 100 ? 1 : 0);
+            $totalWickets = $existing->wickets + $wickets;
+    
+            $bestFigures = $existing->best_bowling_figures;
+            if ($wickets > 0) {
+                [$prevWkts, $prevRuns] = explode('/', $existing->best_bowling_figures);
+                if ($wickets > (int)$prevWkts || ($wickets == (int)$prevWkts && $runsConceded < (int)$prevRuns)) {
+                    $bestFigures = "$wickets/$runsConceded";
+                }
+            }
+
+
+    
+            $totalBallsBowled = $totalOvers * 6 + ($overs * 6); // assuming 6 balls per over
+            $battingAverage = $innings > 0 ? $newRuns / $innings : 0;
+            $bowlingAverage = $totalWickets > 0 ? ($existing->economy_rate * $existing->innings * 6 + $runsConceded) / $totalWickets : 0;
+            $bowlingStrikeRate = $totalWickets > 0 ? $totalBallsBowled / $totalWickets : 0;
+            
+            $this->db->query("
+                UPDATE cricket_stats SET
+                matches = :matches,
+                innings = :innings,
+                runs = :runs,
+                strike_rate = :strike_rate,
+                batting_avg = :batting_average,
+                boundaries = :boundaries,
+                high_score = :high_score,
+                fifties = :fifties,
+                hundreds = :hundreds,
+                wickets = :wickets,
+                economy_rate = :economy_rate,
+                bowling_avg = :bowling_average,
+                bowling_strike_rate = :bowling_strike_rate,
+                best_bowling_figures = :bbf
+                WHERE player_id = :player_id
+            ");
+            $this->db->bind(':batting_average', $battingAverage);
+            $this->db->bind(':bowling_average', $bowlingAverage);
+            $this->db->bind(':bowling_strike_rate', $bowlingStrikeRate);            
+            $this->db->bind(':matches', $matches);
+            $this->db->bind(':innings', $innings);
+            $this->db->bind(':runs', $newRuns);
+            $this->db->bind(':strike_rate', $newSR);
+            $this->db->bind(':boundaries', $boundaries);
+            $this->db->bind(':high_score', $highScore);
+            $this->db->bind(':fifties', $fifties);
+            $this->db->bind(':hundreds', $hundreds);
+            $this->db->bind(':wickets', $totalWickets);
+            $this->db->bind(':economy_rate', $newEconomy);
+            $this->db->bind(':bbf', $bestFigures);
+            $this->db->bind(':player_id', $playerId);
+            $this->db->execute();
+        }
+    }
+    
+    public function getPlayersByCoachZone($coachId) {
+        // First get coach's sport and zone
+        $this->db->query('SELECT sport_id, zone FROM user_coach WHERE user_id = :coachId');
+        $this->db->bind(':coachId', $coachId);
+        $coach = $this->db->single();
+    
+        if (!$coach) {
+            throw new Exception('Coach record not found');
+        }
+    
+        // Get players with same sport and zone
+        $this->db->query('
+            SELECT 
+                up.player_id, 
+                CONCAT(u.firstname, " ", COALESCE(u.lname, "")) AS player_name,
+                u.photo,
+                cs.role
+            FROM user_player up
+            JOIN users u ON up.user_id = u.user_id
+            LEFT JOIN cricket_stats cs ON up.player_id = cs.player_id
+            WHERE up.sport_id = :sportId AND up.zone = :zone
+            ORDER BY u.firstname
+        ');
+        $this->db->bind(':sportId', $coach->sport_id);
+        $this->db->bind(':zone', $coach->zone);
+        
+        return $this->db->resultSet();
+    }
+    
     
 }
 
