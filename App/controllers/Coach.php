@@ -58,6 +58,13 @@ class Coach extends Controller {
 
     }
 
+    public function teamperformancetracking(){
+        $data = [];
+        
+        $this->view('Coach/teamperformancetracking');
+
+    }
+
     public function teamManagement() {
         $teams = $this->coachModel->getTeams();
         $data = ['teams' => $teams];
@@ -72,24 +79,42 @@ class Coach extends Controller {
     }
         
         
-        public function createTeam() {
-                $teamName = $_POST['teamName'] ?? '';
-                $numPlayers = $_POST['numPlayers'] ?? 0;
-        
-                if (empty($teamName) || $numPlayers <= 0) {
-                    echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
-                    return;
-                }
-        
-                // Create team
-                $teamId = $this->coachModel->createTeam($teamName, $numPlayers);
-        
-                if ($teamId) {
-                    echo json_encode(['status' => 'success', 'teamId' => $teamId]);
-                } else {
-                    echo json_encode(['status' => 'error', 'message' => 'Failed to create team']);
-                }
+    public function createTeam() {
+        // Check if user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+            return;
         }
+    
+        $teamName = $_POST['teamName'] ?? '';
+        $numPlayers = $_POST['numPlayers'] ?? 0;
+        
+        // Validate input
+        if (empty($teamName) || $numPlayers <= 0) {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
+            return;
+        }
+    
+        try {
+            // Create team with coach's sport ID
+            $teamId = $this->coachModel->createTeam($teamName, $numPlayers, $_SESSION['user_id']);
+            
+            if ($teamId) {
+                echo json_encode([
+                    'status' => 'success', 
+                    'teamId' => $teamId,
+                    'message' => 'Team created successfully'
+                ]);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to create team']);
+            }
+        } catch (Exception $e) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 
         public function filterPlayers() {
             $role = $_POST['role'] ?? null;
@@ -212,5 +237,104 @@ class Coach extends Controller {
             $this->coachModel->removePlayerFromTeam($teamId, $playerId);
             header('Location: ' . ROOT . '/Coach/editTeam/' . $teamId);
         }
+
+
+        public function match() {
+            // Debug: Check if session exists and user_id is set
+            if (!isset($_SESSION['user_id'])) {
+                die('User not logged in - Session user_id not found');
+            }
+            
+            $teams = $this->coachModel->getTeamsByZoneAndSport($_SESSION['user_id']);
+            $data = ['teams' => $teams];
+            
+            $this->view('Coach/match', $data);
+        }
+
+        public function teamPlayers($teamId) {
+            try {
+                $players = $this->coachModel->getPlayersFromTeamId($teamId);
+                header('Content-Type: application/json');
+                echo json_encode($players);
+            } catch (Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => 'Failed to fetch players']);
+            }
+            exit();
+        }
+
+        public function saveMatch() {
+    // Validate input
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        redirect('coach/match');
+    }
+
+    // Sanitize POST data
+    $data = [
+        'team_id' => trim($_POST['myteam']),
+        'opponent_team' => trim($_POST['opponent']),
+        'match_date' => trim($_POST['match_date']),
+        'venue' => trim($_POST['venue']),
+        'result' => trim($_POST['result']),
+        'team_runs_scored' => isset($_POST['total_runs']) ? (int)$_POST['total_runs'] : null,
+        'team_wickets_lost' => isset($_POST['wickets_lost']) ? (int)$_POST['wickets_lost'] : null,
+        'team_overs_played' => isset($_POST['overs_played']) ? (float)$_POST['overs_played'] : null,
+        'team_runs_conceded' => isset($_POST['runs_given']) ? (int)$_POST['runs_given'] : null,
+        'team_wickets_taken' => isset($_POST['wickets_taken']) ? (int)$_POST['wickets_taken'] : null,
+        'team_overs_bowled' => isset($_POST['overs_bowled']) ? (float)$_POST['overs_bowled'] : null,
+        'team_catches_taken' => isset($_POST['catches_taken']) ? (int)$_POST['catches_taken'] : null,
+        'player_performances' => isset($_POST['players']) ? $_POST['players'] : []
+    ];
+
+    // Validate required fields
+    if (empty($data['team_id']) || empty($data['opponent_team']) || empty($data['match_date']) || empty($data['result'])) {
+        flash('match_error', 'Please fill in all required fields');
+        redirect('coach/match');
+    }
+
+    // Save match data
+    $matchId = $this->coachModel->saveMatchData($data);
+
+    if ($matchId && !empty($data['player_performances'])) {
+        foreach ($data['player_performances'] as $performance) {
+            $this->coachModel->savePlayerPerformance($matchId, $performance);
+            $this->coachModel->updateCricketStats($performance);
+        }
+    }
+
+    $_SESSION['match_success'] = 'Match record saved successfully';
+    header('Location: ' . URLROOT . '/coach/match');
+    exit();
+}
+
+public function getPlayersForCoach() {
+    // Check if user is logged in and is a coach
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+        return;
+    }
+
+    try {
+        // Get players for the current coach's sport and zone
+        $players = $this->coachModel->getPlayersByCoachZone($_SESSION['user_id']);
         
-}       
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'success',
+            'players' => $players
+        ]);
+    } catch (Exception $e) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+
+
+}
+
+
+              
