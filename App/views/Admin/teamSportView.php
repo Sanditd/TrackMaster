@@ -22,9 +22,9 @@ $sport_id = $sport->sport_id ?? null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Sport View</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/zoneManage.css">
-    <script src="../../Public/js/Admin/sidebar.js"></script>
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/zoneManage.css">
+    <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
 </head>
 
 <body>
@@ -211,7 +211,7 @@ $sport_id = $sport->sport_id ?? null;
     }
     </script>
 
-    <script src="../../Public/js/Admin/formHandler.js"></script>
+    <script src=".<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
 </body>
 
 </html>

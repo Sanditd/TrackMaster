@@ -8,8 +8,8 @@
 
 <head>
     <title>Signup</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/login.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/signup.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/login.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/signup.css">
 </head>
 <?php $nav->render(); ?>
 

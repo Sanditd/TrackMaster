@@ -23,9 +23,9 @@ if (isset($_SESSION['error_message'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create a Sport</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/sportCreate.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/popupSport.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/sportCreate.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/popupSport.css">
 </head>
 
 <body>
@@ -65,7 +65,7 @@ console.log("Message Element:", document.getElementById('customAlertMessage'));
 
     </script>
 
-    <script src="../../Public/js/Admin/sidebar.js"></script>
+    <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
     <script src="<?php echo ROOT?>/Public/js/error.js">
         console.log("error.js is loaded successfully");
 

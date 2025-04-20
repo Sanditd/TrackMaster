@@ -19,11 +19,11 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Sports</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/sportManage.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/sportManage.css">
     
-    <link rel="stylesheet" href="../../Public/css/Admin/zoneManage.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
-    <script src="../../Public/js/Admin/sidebar.js"></script>
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/zoneManage.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
+    <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
 </head>
 
 <body>
@@ -121,7 +121,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
     </script>
 
 
-<script src="../../Public/js/Admin/formHandler.js"></script>
+<script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
 
 <script>
 function viewSport(sport_id, sport_type) {
