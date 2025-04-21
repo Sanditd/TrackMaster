@@ -24,6 +24,23 @@ require_once __DIR__ . '/../libraries/Database.php';
             }
         }
 
+        public function checkAdminLoginCredentials($username, $password) {
+            // Prepare the query to fetch user details by username
+            $this->db->query("SELECT * FROM admin WHERE username = :username");
+            $this->db->bind(':username', $username);
+            
+            // Execute the query
+            $user = $this->db->single();
+    
+            // If user exists, verify password
+            if ($user && password_verify($password, $user->password)) {
+                return $user; // Return user data if login is successful
+            } else {
+                return false; // Return false if credentials are incorrect
+            }
+        }
+
+
     // Insert new user into the database for signup
     public function signUpUser($data) {
 
@@ -165,6 +182,16 @@ public function getSchools(){
     return $result;
 }
 
+public function getAdminById($userId){
 
-    }
+    $this->db->query("SELECT * FROM admin WHERE admin_id = :userId");
+    $this->db->bind(':userId', $userId);
+    $result = $this->db->resultSet();
+    return $result;
+}
+    
+
+
+}
+
 ?>

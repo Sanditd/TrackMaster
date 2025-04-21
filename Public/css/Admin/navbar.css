@@ -96,6 +96,10 @@ body {
     display: none;
 }
 
+.menu-text {
+    margin-left: 10px;
+}
+
 /* Top Navigation Bar */
 header {
     width: 100%;
