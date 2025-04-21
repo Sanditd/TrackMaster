@@ -147,6 +147,11 @@
             margin-top: 15px;
         }
 
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
         /* Player List */
         .player-list {
             list-style: none;
@@ -174,42 +179,72 @@
             background: var(--light-color);
         }
 
-        /* Player Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 15px;
+        /* Player Stats Table */
+        .stats-table-container {
+            margin-top: 20px;
+            overflow-x: auto;
         }
 
-        .player-card {
-            background: var(--light-color);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            border: 1px solid #eee;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .player-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--box-shadow);
-        }
-
-        .player-card h4 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        .player-card p {
-            margin: 5px 0;
-            color: var(--gray-color);
-        }
-
-        .player-card .btn.add-player {
-            margin-top: 15px;
+        .player-stats-table {
             width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .player-stats-table th,
+        .player-stats-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .player-stats-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .player-stats-table tr:nth-child(even) {
+            background-color: rgba(0, 38, 77, 0.03);
+        }
+
+        .player-stats-table tr:hover {
+            background-color: rgba(0, 38, 77, 0.05);
+        }
+
+        .player-stats-table .btn.add-player {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        /* Team Progress */
+        .team-progress {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            border: 1px solid #eee;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--secondary-color);
+            border-radius: 5px;
+            transition: width 0.3s ease;
         }
 
         /* Hidden Class */
@@ -223,6 +258,36 @@
             top: 10px;
             right: 10px;
             z-index: 1000;
+        }
+
+        /* Player Role Badge */
+        .role-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .role-batsman {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #2980b9;
+        }
+
+        .role-bowler {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .role-allrounder {
+            background-color: rgba(155, 89, 182, 0.2);
+            color: #8e44ad;
+        }
+
+        .role-wicketkeeper {
+            background-color: rgba(230, 126, 34, 0.2);
+            color: #d35400;
         }
 
         /* Responsive Design */
@@ -239,8 +304,13 @@
                 padding: 20px 15px;
             }
             
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .player-stats-table {
+                font-size: 0.9rem;
+            }
+            
+            .player-stats-table th,
+            .player-stats-table td {
+                padding: 10px 8px;
             }
         }
 
@@ -256,6 +326,10 @@
             .btn {
                 font-size: 0.95rem;
                 padding: 10px 15px;
+            }
+            
+            .player-stats-table {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -331,8 +405,27 @@
                         <div class="progress" id="progressBar" style="width: 0%"></div>
                     </div>
                 </div>
-                <div id="statsContainer" class="stats-grid">
-                    <!-- Player stats cards will be populated here -->
+                
+                <div class="stats-table-container">
+                    <table id="playerStatsTable" class="player-stats-table">
+                        <thead>
+                            <tr>
+                                <th>Player</th>
+                                <th>Role</th>
+                                <th>Matches</th>
+                                <th>Batting Avg</th>
+                                <th>Strike Rate</th>
+                                <th>50s/100s</th>
+                                <th>Wickets</th>
+                                <th>Bowling Avg</th>
+                                <th>Economy</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="statsTableBody">
+                            <!-- Player stats rows will be populated here -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -344,6 +437,7 @@
         let currentTeamId = null;
         let currentPlayerCount = 0;
         let maxPlayerCount = 0;
+        let selectedPlayers = new Set(); // Keep track of selected players
 
         function createTeamAndShowPlayerFilter() {        
             const teamName = document.getElementById('teamName').value;
@@ -399,14 +493,14 @@
 
         function comparePlayers() {
             // Get all selected players
-            const selectedPlayers = [];
+            const selectedPlayerIds = [];
             const checkboxes = document.querySelectorAll('input[name="selectedPlayers"]:checked');
             checkboxes.forEach(checkbox => {
-                selectedPlayers.push(checkbox.value);
+                selectedPlayerIds.push(checkbox.value);
             });
 
             // If no players are selected, alert the user
-            if (selectedPlayers.length === 0) {
+            if (selectedPlayerIds.length === 0) {
                 showNotification('error', 'Please select at least one player to compare.');
                 return;
             }
@@ -419,45 +513,51 @@
                 if (xhr.status === 200) {
                     const response = JSON.parse(xhr.responseText);
                     if (response.status === 'success') {
-                        displaySelectedPlayersStats(response.players);
+                        displayPlayerStatsTable(response.players);
                     } else {
                         showNotification('error', 'Error fetching player stats: ' + response.message);
                     }
                 }
             };
-            xhr.send(`playerIds=${selectedPlayers.join(',')}`);
+            xhr.send(`playerIds=${selectedPlayerIds.join(',')}`);
         }
 
-        function displaySelectedPlayersStats(players) {
-            const statsContainer = document.getElementById('statsContainer');
-            statsContainer.innerHTML = ''; // Clear previous results
+        function displayPlayerStatsTable(players) {
+            const statsTableBody = document.getElementById('statsTableBody');
+            statsTableBody.innerHTML = ''; // Clear previous results
 
             players.forEach(player => {
-                const playerCard = document.createElement('div');
-                playerCard.classList.add('player-card');
-
-                playerCard.innerHTML = `
-                    <h4>${player.firstname}</h4>
-                    <p><strong>ID:</strong> ${player.player_id}</p>
-                    <p><strong>Role:</strong> ${player.role}</p>
-                    <p><strong>Gender:</strong> ${player.gender}</p>
-                    <div class="stats-details">
-                        <p><strong>Matches:</strong> ${player.matches}</p>
-                        <p><strong>Batting Avg:</strong> ${player.batting_avg || 'N/A'}</p>
-                        <p><strong>Strike Rate:</strong> ${player.strike_rate || 'N/A'}</p>
-                        <p><strong>Fifties:</strong> ${player.fifties || 'N/A'}</p>
-                        <p><strong>Hundreds:</strong> ${player.hundreds || 'N/A'}</p>
-                        <p><strong>Wickets:</strong> ${player.wickets || 'N/A'}</p>
-                        <p><strong>Bowling Avg:</strong> ${player.bowling_avg || 'N/A'}</p>
-                        <p><strong>Bowling SR:</strong> ${player.bowling_strike_rate || 'N/A'}</p>
-                        <p><strong>Economy Rate:</strong> ${player.economy_rate || 'N/A'}</p>
-                    </div>
-                    <button type="button" class="btn add-player" onclick="addPlayerToTeam(${player.player_id})">
-                        <i class="fas fa-user-plus"></i> Add to Team
-                    </button>
+                const row = document.createElement('tr');
+                
+                // Get role class for styling
+                const roleClass = `role-${player.role.toLowerCase()}`;
+                
+                row.innerHTML = `
+                    <td>${player.firstname}</td>
+                    <td><span class="role-badge ${roleClass}">${player.role}</span></td>
+                    <td>${player.matches || '0'}</td>
+                    <td>${player.batting_avg || 'N/A'}</td>
+                    <td>${player.strike_rate || 'N/A'}</td>
+                    <td>${player.fifties || '0'}/${player.hundreds || '0'}</td>
+                    <td>${player.wickets || 'N/A'}</td>
+                    <td>${player.bowling_avg || 'N/A'}</td>
+                    <td>${player.economy_rate || 'N/A'}</td>
+                    <td>
+                        <button type="button" class="btn add-player" id="btn_${player.player_id}" 
+                            ${selectedPlayers.has(player.player_id.toString()) ? 'disabled' : ''} 
+                            onclick="addPlayerToTeam(${player.player_id})">
+                            ${selectedPlayers.has(player.player_id.toString()) ? 
+                                '<i class="fas fa-check"></i> Added' : 
+                                '<i class="fas fa-user-plus"></i> Add'}
+                        </button>
+                    </td>
                 `;
                 
-                statsContainer.appendChild(playerCard);
+                if (selectedPlayers.has(player.player_id.toString())) {
+                    row.querySelector('.btn.add-player').style.backgroundColor = '#28a745';
+                }
+                
+                statsTableBody.appendChild(row);
             });
 
             // Show the selected players' stats section
@@ -479,6 +579,7 @@
                     <input type="checkbox" id="player_${player.user_id}" name="selectedPlayers" value="${player.user_id}">
                     <div>
                         <strong>${player.firstname}</strong>
+                        <span class="role-badge role-${player.role.toLowerCase()}">${player.role}</span>
                         <span class="player-stats">
                             Batting Avg: ${player.batting_avg || 'N/A'}, Bowling Avg: ${player.bowling_avg || 'N/A'}
                         </span>
@@ -505,8 +606,12 @@
                         updateTeamProgress();
                         showNotification('success', response.message);
                         
+                        // Add to selected players set
+                        selectedPlayers.add(playerId.toString());
+                        
                         // Disable the button that was clicked
-                        const clickedButton = event.target.closest('.btn.add-player');
+                        const btnId = `btn_${playerId}`;
+                        const clickedButton = document.getElementById(btnId);
                         if (clickedButton) {
                             clickedButton.disabled = true;
                             clickedButton.innerHTML = '<i class="fas fa-check"></i> Added';
