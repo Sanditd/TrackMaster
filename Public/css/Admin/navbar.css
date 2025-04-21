@@ -1,3 +1,6 @@
+
+
+
 /* General Reset */
 * {
     margin: 0;
@@ -24,7 +27,7 @@ body {
     color: white;
     transition: width 0.3s ease;
     overflow: hidden;
-    z-index: 1000;
+    z-index: 9;
     padding-top: 20px;
 }
 
@@ -100,20 +103,44 @@ body {
     margin-left: 10px;
 }
 
+.menu-link .menu-text {
+    transition: color 0.2s ease;
+    color: #ffffff;
+}
+
+li:hover .menu-text {
+    color: #00AFFB;
+    font-weight: bold;
+}
+
+.icon {
+    transition: opacity 0.2s ease;
+}
+
+.sidebar-menu li.active .menu-text {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.sidebar-menu li.active img.icon {
+    filter: brightness(1.2);
+}
+
+
 /* Top Navigation Bar */
 header {
     width: 100%;
     background-color: black;
     color: white;
     height: 80px;
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     display: flex;
     justify-content: space-between; /* Align logo and account section */
     align-items: center;
     padding: 0 20px;
-    z-index: 999;
+    z-index: 10;
 }
 
 .navbar {
@@ -160,6 +187,7 @@ header {
     display: flex;
     flex-direction: column;
     margin-right: 20px;
+    margin-left: 10px;
     color: #ddd;
 }
 
@@ -172,20 +200,28 @@ header {
     color: #bbb;
 }
 
-.account-settings {
+.account-settings img{
     text-decoration: none;
     color: white;
     font-size: 16px;
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    width: 40px;
+    height: 40px;
     transition: background 0.3s, color 0.3s;
 }
 
-.account-settings:hover {
-    background: #ddd;
-    color: black;
+.account-icon {
+    width: 50px;
+    height: 50px;
+    transition: opacity 0.9s ease-in-out;
 }
+
+.notification-icon img{
+    width: 10px;
+    height: 10px;
+    transition: opacity 0.9s ease-in-out;
+}
+
+  
 
 /* Responsive Design for Mobile */
 @media (max-width: 768px) {

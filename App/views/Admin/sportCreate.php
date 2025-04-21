@@ -56,11 +56,12 @@ if (isset($_SESSION['error_message'])) {
     <div id="popup" class="popup-modal">
         <div class="popup-content">
             <h2>Select Sport Type</h2>
-            <button id="teamSportBtn">
-                <a href="<?php echo ROOT ?>/admin/teamSportForm/asdad">Team Sports</a>
+            <button id="teamSportBtn" style="background-color: aqua;">
+            <a href="<?php echo ROOT ?>/admin/teamSportForm/asdad" style="color: black;">Team Sports</a>
+
             </button>
-            <button id="individualSportBtn">
-                <a href="<?php echo ROOT ?>/admin/addindSportForm/asdad">Individual Sports</a>
+            <button id="individualSportBtn" style="background-color: aqua;">
+                <a href="<?php echo ROOT ?>/admin/addindSportForm/asdad" style="color: black;">Individual Sports</a>
             </button>
             <button id="close">
                 <a href="<?php echo ROOT ?>/admin/dashboard/asdad" style="text-decoration: none; color: inherit;">Close</a>

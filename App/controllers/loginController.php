@@ -97,6 +97,7 @@ class loginController extends Controller {
                     if ($user) {
                         $_SESSION['user_id'] = $user->admin_id;
                         $_SESSION['role'] = 'Admin';
+                        $_SESSION['username'] = $user->username; // Store username in session
                         header('Location: ' . ROOT . '/admin/Dashboard');
                         exit;
                     }

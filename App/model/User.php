@@ -132,9 +132,10 @@ class User {
         $school_id = (int) $data['school'];  // Ensure school_id is an integer
         $zone = (string) $data['zone'];  // Ensure zone is a string
         $bio = (string) $data['bio'];  // Ensure bio is a string
+        $playerRole = (string) $data['playerRole'];  // Ensure bio is a string
     
-        $query = "INSERT INTO user_player (user_id, sport_id, school_id, zone, bio)
-                  VALUES (:user_id, :sport_id, :school_id, :zone, :bio)";
+        $query = "INSERT INTO user_player (user_id, sport_id, school_id, zone, bio,role)
+                  VALUES (:user_id, :sport_id, :school_id, :zone, :bio,:role)";
         
         $this->db->query($query);
         $this->db->bind(':user_id', $user_id);
@@ -142,6 +143,7 @@ class User {
         $this->db->bind(':school_id', $school_id);
         $this->db->bind(':zone', $zone);
         $this->db->bind(':bio', $bio);
+        $this->db->bind(':role', $playerRole);
     
         return $this->db->execute();
     }
