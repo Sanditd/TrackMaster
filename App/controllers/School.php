@@ -252,19 +252,17 @@ public function facilityForm() {
     }
 }
 
-// In your School.php controller
 public function approveRequest() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $requestType = $_POST['request_type'];
-        $requestId = $_POST['request_id'];
-        
-        if ($requestType == 'facility') {
-            $this->schoolModel->updateFacilityRequestStatus($requestId, 'approved');
-        } else if ($requestType == 'extraclass') {
-            $this->schoolModel->updateExtraClassRequestStatus($requestId, 'approved');
+        $requestType = htmlspecialchars(trim($_POST['request_type']));
+        $requestId = filter_var($_POST['request_id'], FILTER_VALIDATE_INT);
+
+        if ($this->updateRequestStatus($requestType, $requestId, 'approved')) {
+            $_SESSION['flash_message'] = 'Request approved successfully!';
+        } else {
+            $_SESSION['flash_message'] = 'Failed to approve request.';
         }
-        
-        // Redirect back to requests page
+
         header('Location: ' . ROOT . '/school/getrequests');
         exit;
     }
@@ -272,21 +270,125 @@ public function approveRequest() {
 
 public function declineRequest() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $requestType = $_POST['request_type'];
-        $requestId = $_POST['request_id'];
-        
-        if ($requestType == 'facility') {
-            $this->schoolModel->updateFacilityRequestStatus($requestId, 'declined');
-        } else if ($requestType == 'extraclass') {
-            $this->schoolModel->updateExtraClassRequestStatus($requestId, 'declined');
+        $requestType = htmlspecialchars(trim($_POST['request_type']));
+        $requestId = filter_var($_POST['request_id'], FILTER_VALIDATE_INT);
+
+        if ($this->updateRequestStatus($requestType, $requestId, 'declined')) {
+            $_SESSION['flash_message'] = 'Request declined successfully!';
+        } else {
+            $_SESSION['flash_message'] = 'Failed to decline request.';
         }
-        
-        // Redirect back to requests page
+
         header('Location: ' . ROOT . '/school/getrequests');
         exit;
     }
 }
+
+private function updateRequestStatus($type, $id, $status) {
+    if ($type === 'facility') {
+        return $this->schoolModel->updateFacilityRequestStatus($id, $status);
+    } else if ($type === 'extraclass') {
+        return $this->schoolModel->updateExtraClassRequestStatus($id, $status);
+    }
+    return false;
 }
+public function extraClassForm() {
+    $userId = $_SESSION['user_id']; // Adjust based on your session key
+
+    // Load the model to get school info
+    $school = $this->schoolModel->getSchoolByUserId($userId); // Assumes this returns row with school_name
+
+    $this->view('extra_class_form', ['school' => $school]);
+}
+public function scheduleExtraClass() {
+    // Check if the form is submitted
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Sanitize and validate the form inputs
+        $filters = [
+            'players' => FILTER_SANITIZE_STRING,
+            'subject' => FILTER_SANITIZE_STRING,
+            'description' => FILTER_SANITIZE_STRING,
+            'date' => FILTER_SANITIZE_STRING,
+            'venue' => FILTER_SANITIZE_STRING
+        ];
+        
+        $_POST = filter_input_array(INPUT_POST, $filters);
+
+        // Prepare data to insert into the database
+        $data = [
+            'players' => isset($_POST['players']) ? implode(',', $_POST['players']) : '', // For multiple players
+            'subject' => trim($_POST['subject']),
+            'description' => trim($_POST['description']),
+            'date' => trim($_POST['date']),
+            'venue' => trim($_POST['venue'])
+        ];
+
+        // Call the model method to add the extra class
+        $result = $this->schoolModel->addExtraClass($data);
+
+        // Check the result and provide feedback
+        if ($result) {
+            $_SESSION['success_message'] = "Extra class scheduled successfully!";
+            header('Location: ' . ROOT . '/class/scheduleExtraClass');
+            exit;
+        } else {
+            $_SESSION['error_message'] = "Failed to schedule extra class. Please try again.";
+            header('Location: ' . ROOT . '/class/scheduleExtraClass/error');
+            exit;
+        }
+    }
+}
+public function scheduleExtra(){
+    $this->view('School/scheduleEx');
+}
+
+public function scheduleEx() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        // Sanitize non-array fields
+        $subject = filter_input(INPUT_POST, 'subject', FILTER_SANITIZE_STRING);
+        $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+        $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
+        $venue = filter_input(INPUT_POST, 'venue', FILTER_SANITIZE_STRING);
+
+        // Handle array input (players[])
+        $players = isset($_POST['players']) && is_array($_POST['players'])
+            ? array_map('htmlspecialchars', $_POST['players'])
+            : [];
+
+        // Prepare data for database
+        $data = [
+            'players' => implode(", ", $players),
+            'subject' => trim($subject ?? ''),
+            'description' => trim($description ?? ''),
+            'date' => trim($date ?? ''),
+            'venue' => trim($venue ?? '')
+        ];
+
+        // Save to DB
+        $result = $this->schoolModel->addExtraClass($data);
+
+        // Redirect accordingly
+        if ($result) {
+            $_SESSION['success_message'] = "Extra class scheduled successfully!";
+            header('Location: ' . ROOT . '/school/scheduleEx');
+            exit;
+        } else {
+            $_SESSION['error_message'] = "Failed to schedule extra class. Please try again.";
+            header('Location: ' . ROOT . '/school/scheduleEx/error');
+            exit;
+        }
+
+    } else {
+        // GET request: load the form
+        $this->view('School/scheduleEx');
+    }
+}
+
+}
+
+
+
 
 
 
