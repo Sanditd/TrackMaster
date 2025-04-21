@@ -21,14 +21,35 @@ class Coach extends Controller {
         $this->view('Coach/Dashboard');
     }
 
+    public function Attendance() {
+        $data = [];
+        $this->view('Coach/Attendance');
+    }
+
     public function profilemanagement() {
         $data = [];
         $this->view('Coach/ProfileManagement');
     }
 
     public function viewProfile() {
-        $data = [];
-        $this->view('Coach/ViewProfile');
+        // Check if user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            redirect('users/login');
+        }
+    
+        try {
+            // Get coach details from database
+            $coach = $this->coachModel->getCoachDetails($_SESSION['user_id']);
+            
+            $data = [
+                'coach' => $coach
+            ];
+            
+            $this->view('Coach/ViewProfile', $data);
+        } catch (Exception $e) {
+            flash('profile_error', $e->getMessage());
+            $this->view('Coach/ViewProfile');
+        }
     }
 
     public function eventManagement() {
@@ -42,10 +63,101 @@ class Coach extends Controller {
     }
 
     public function editProfile() {
-        $data = [];
-        $this->view('Coach/EditProfile');
+        // Check if user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            redirect('users/login');
+        }
+    
+        // Get coach data from database
+        $coach = $this->coachModel->getCoachDetais($_SESSION['user_id']);
+    
+        $data = [
+            'coach' => $coach
+        ];
+    
+        $this->view('Coach/EditProfile', $data);
     }
-
+    
+    public function updateProfile() {
+        // Check if user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . URLROOT . '/users/login');
+            exit();
+        }
+    
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize POST data for PHP 8.1+
+            $_POST = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+            foreach ($_POST as $key => $value) {
+                $_POST[$key] = htmlspecialchars(trim($value));
+            }
+    
+            // Initialize data array
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'firstname' => $_POST['first_name'] ?? '',
+                'lname' => $_POST['last_name'] ?? '',
+                'email' => $_POST['email'] ?? '',
+                'phonenumber' => $_POST['phone'] ?? '',
+                'address' => $_POST['address'] ?? '',
+                'gender' => $_POST['gender'] ?? '',
+                'dob' => $_POST['birthday'] ?? '',
+                'bio' => $_POST['description'] ?? '',
+                'educational_qualifications' => $_POST['educational_qualifications'] ?? '',
+                'professional_playing_experience' => $_POST['playing_experience'] ?? '',
+                'coaching_experience' => $_POST['coaching_experience'] ?? '',
+                'key_achievements' => $_POST['key_achievements'] ?? '',
+                'photo' => null,
+                'firstname_err' => '',
+                'email_err' => ''
+            ];
+    
+            // Validate required fields
+            if (empty($data['firstname'])) {
+                $data['firstname_err'] = 'Please enter first name';
+            }
+    
+            if (empty($data['email'])) {
+                $data['email_err'] = 'Please enter email';
+            } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $data['email_err'] = 'Please enter a valid email';
+            }
+    
+            // Handle file upload
+            if (!empty($_FILES['profile_image']['name'])) {
+                // Check if file is an image
+                $file_info = getimagesize($_FILES['profile_image']['tmp_name']);
+                if ($file_info !== false) {
+                    // Read the file content
+                    $photo = file_get_contents($_FILES['profile_image']['tmp_name']);
+                    $data['photo'] = $photo;
+                } else {
+                    // Set flash message directly in session
+                    $_SESSION['profile_error'] = 'Please upload a valid image file';
+                    header('Location: ' . URLROOT . '/coach/editProfile');
+                    exit();
+                }
+            }
+    
+            // Make sure there are no errors
+            if (empty($data['firstname_err']) && empty($data['email_err'])) {
+                // Update profile
+                if ($this->coachModel->updateCoachProfile($data)) {
+                    $_SESSION['profile_message'] = 'Profile updated successfully';
+                    header('Location: ' . URLROOT . '/coach/viewProfile');
+                    exit();
+                } else {
+                    die('Something went wrong');
+                }
+            } else {
+                // Load view with errors
+                $this->view('Coach/EditProfile', $data);
+            }
+        } else {
+            header('Location: ' . URLROOT . '/coach/editProfile');
+            exit();
+        }
+    }
 
     public function creataddplayers(){
         $data = [];

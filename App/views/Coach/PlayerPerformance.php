@@ -476,13 +476,15 @@
         
         <!-- Player Info Section -->
         <div class="player-info-section">
-            <div class="player-avatar">
-                <?php if (!empty($data['player']->photo)): ?>
-                    <img src="data:image/jpeg;base64,<?= base64_encode($data['player']->photo) ?>" alt="Player Photo">
-                <?php else: ?>
-                    <i class="fas fa-user"></i>
-                <?php endif; ?>
-            </div>
+        <div class="player-avatar">
+    <?php if (!empty($data['player']->photo)): ?>
+        <img src="data:image/jpeg;base64,<?= base64_encode($data['player']->photo) ?>" 
+             alt="Player Photo" 
+             style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+    <?php else: ?>
+        <i class="fas fa-user"></i>
+    <?php endif; ?>
+</div>
             <div class="player-details">
                 <h2><?= htmlspecialchars($data['player']->player_name) ?></h2>
                 <span class="player-role">
