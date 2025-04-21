@@ -27,6 +27,7 @@
                 <li><a href="<?php echo ROOT ?>/coach/teammanagement">Team Management</a></li>
                 <li><a href="<?php echo ROOT ?>/coach/eventmanagement">Event Management</a></li>
                 <li><a href="<?php echo ROOT ?>/coach/profilemanagement">Profile Management</a></li>
+                <li><a href="<?php echo ROOT ?>/coach/Attendance">Attendance</a></li>
             </ul>
         </nav>
         </span>
