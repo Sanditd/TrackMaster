@@ -32,24 +32,24 @@ class loginController extends Controller {
                         // Start session and store user information
                         
                         $_SESSION['user_id'] = $user->user_id; // Corrected to object access
-                        // $_SESSION['role'] = $user->role; // Storing the user's role in session
+                        $_SESSION['role'] = $user->role; // Storing the user's role in session
         
                         // Redirect to the appropriate dashboard based on the role
                         switch ($user->role) {
                             case 'admin':
-                                header('Location: ' . ROOT . '/admin/dashboard/ads');
+                                $this->view('admin/dashboard');
                                 break;
                             case 'coach':
-                                header('Location: ' . ROOT . '/Coach/Dashboard');
+                                $this->view('coach/dashboard');
                                 break;
-                            case 'student':
-                                header('Location: ' . ROOT . '/student/dashboard');
+                            case 'player':
+                                $this->view('student/Dashboard');
                                 break;
                             case 'school':
-                                header('Location: ' . ROOT . '/school/dashboard');
+                                $this->view('school/dashboard');
                                 break;
                             case 'parent':
-                                header('Location: ' . ROOT . '/guardian/dashboard');
+                                $this->view('parent/dashboard');
                                 break;
                             default:
                                 header('Location: ' . ROOT . '/userController/dashboard');
@@ -72,6 +72,45 @@ class loginController extends Controller {
             $this->view('/Admin/login', ['error' => $error]);
 
         }
+
+
+        public function adminLogin() {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            } else {
+                session_unset();     // Remove all session variables
+                session_destroy();   // Destroy the session
+                session_start();     // Start a fresh session again
+            }
+        
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $username = $_POST['username'] ?? '';
+                $password = $_POST['password'] ?? '';
+        
+                if (empty($username) || empty($password)) {
+                    $_SESSION['error_message'] = 'Please fill in both fields.';
+                    header('Location: ' . ROOT . '/logincontroller/adminLogin');
+                    exit;
+                } else {
+                    $user = $this->login->checkAdminLoginCredentials($username, $password);
+        
+                    if ($user) {
+                        $_SESSION['user_id'] = $user->admin_id;
+                        $_SESSION['role'] = 'Admin';
+                        header('Location: ' . ROOT . '/admin/Dashboard');
+                        exit;
+                    }
+        
+                    $_SESSION['error_message'] = "Login Failed! Try Again.";
+                    header('Location: ' . ROOT . '/logincontroller/adminLogin');
+                    exit;
+                }
+            }
+        
+            $this->view('Admin/adminLogin');
+        }
+        
+        
 
         public function logout(){
             unset($_SESSION['user_id']);

@@ -71,6 +71,13 @@
 
             $this->view('SignUp/SelectRole');
         }
+
+        //adminsignupview
+        public function adminsignupview() {
+            $data = [];
+
+            $this->view('SignUp/Admin', $data);
+        }
         
 
 
@@ -525,6 +532,93 @@
                     $this->view('signupcontroller/coachsignupview', $data);
                     exit;
                 }
+            }
+        }
+
+
+        public function Admin() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                error_log("Form submitted.");
+                error_log(print_r($_POST, true));
+                error_log(print_r($_FILES, true));
+        
+                $filters = [
+                    'username' => FILTER_SANITIZE_STRING,
+                    'password' => FILTER_SANITIZE_STRING,
+                    'confirm-password' => FILTER_SANITIZE_STRING
+                ];
+        
+                // Sanitize POST data
+                $_POST = filter_input_array(INPUT_POST, $filters);
+                error_log("Sanitized POST data:");
+                error_log(print_r($_POST, true));
+        
+                // Initialize data array
+                $data = [
+                    'email' => trim($_POST['email'] ?? ''),
+                    'username' => trim($_POST['username'] ?? ''),
+                    'password' => trim($_POST['password'] ?? ''),
+                    'confirmPassword' => trim($_POST['confirm-password'] ?? ''),
+                ];
+
+                if (strlen($data['username']) >= 10) {
+                    if (session_status() === PHP_SESSION_NONE) {
+                        session_start();
+                    }
+                
+                    error_log("Username is too short: " . $data['username']);
+                    error_log("Length: " . strlen($data['username']));
+                
+                    $_SESSION['error'] = "Username must be less than 10 characters.";
+                    $this->view('SignUp/Admin');
+                    exit;
+                }
+                
+                        // Check if email or username already exists
+                if ($this->userModel->checkUserExists($data['email'], $data['username'])) {
+                    $_SESSION['error'] = "Email or username is already taken.";
+                    $this->view('SignUp/Admin');
+                    exit;
+                }
+
+                
+        
+                // Validate password match
+                if ($data['password'] !== $data['confirmPassword']) {
+                    error_log("Password: " . $data['password']);
+                    error_log("Confirm Password: " . $data['confirmPassword']);
+
+                    session_start(); // Ensure session is started
+                    $_SESSION['error'] = "Passwords do not match. Try again.";
+                    $this->view('SignUp/Admin');
+                    exit;
+                }
+
+                
+
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        
+                // Insert user data
+                if ($this->userModel->createAdmin($data)) {
+                    error_log("User created successfully.");
+
+        
+                    // Redirect to login with success message
+                    //session_start(); // Ensure session is started
+                    $_SESSION['success_message'] = "Registration successful! Please log in.";
+                    header('Location: ' . ROOT . '/logincontroller/login');
+                    exit;
+                } else {
+                    error_log("Failed to create user.");
+                    session_start(); // Ensure session is started
+                    $_SESSION['error'] = "An error occure.";
+                    $this->view('SignUp/Admin');
+                    exit;
+                }
+            }else{
+                // Load the admin signup view (HTML)
+                $data=[];
+                $this->view('SignUp/Admin',$data);
             }
         }
     }

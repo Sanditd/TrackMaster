@@ -735,110 +735,121 @@
             }
         }
 
-        public function zonalSport(){
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                // Filter and sanitize POST data
-                header('Content-Type: application/json');
-                
-                $filters = [
-                    'sportName' => FILTER_SANITIZE_STRING,
-                    'numOfPlayers' => FILTER_SANITIZE_NUMBER_INT,
-                    'sport_id' => FILTER_SANITIZE_NUMBER_INT,
-                    'positions' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
-                    'types' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
-                    'Gtypes' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
-                    'durationType' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
-                    'duration' => ['filter' => FILTER_SANITIZE_NUMBER_INT, 'flags' => FILTER_REQUIRE_ARRAY],
-                    'scoring_method' => FILTER_SANITIZE_STRING,
-                    'rules' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY]
-                ];
-        
-                $_POST = filter_input_array(INPUT_POST, $filters);
-        
-                $data = [
-                    'sportName' => trim($_POST['sportName']),
-                    'sport_id' => trim($_POST['sport_id']),
-                    'sportType' => 'teamSport',
-                    'numOfPlayers' => trim($_POST['numOfPlayers']),
-                    'positions' => isset($_POST['positions']) ? array_map('trim', $_POST['positions']) : [],
-                    'types' => $_POST['types'],
-                    'Gtypes' => isset($_POST['Gtypes']) ? array_map('trim', $_POST['Gtypes']) : [],
-                    'durationType' => isset($_POST['durationType']) ? $_POST['durationType'] : [],
-                    'duration' => isset($_POST['duration']) ? $_POST['duration'] : [],
-                    'scoring_method' => trim($_POST['scoring_method']),
-                    'rules' => isset($_POST['rules']) ? $_POST['rules'] : [],
-                ];
-        
-                // Call model method to update team sport
-                $result = $this->sportModel->updateTeamSport($data);
-        
-                if ($result['success']) {
-                    session_start();
-                    $_SESSION['success_message'] = "Sport update successfully.";
-                    
-                    // Redirect with sport_id in the URL
-                    header('Location: ' . ROOT . '/admin/updateTeamSport/' );
-                    exit;
-                } else {
-                    session_start();
-                    $_SESSION['error_message'] = $result['error'];
-                    error_log("Database Insert Failed: " . $result['error']);
-                    
-                    // Redirect with sport_id in the URL
-                    header('Location: ' . ROOT . '/admin/updateTeamSport/');
-                    exit;
+        public function zonalSport()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $selections = $_POST['coach_selection'] ?? [];
+
+        $zones = $this->sportModel->getZones();
+        $sports = $this->sportModel->getSports();
+        $zonalSports = $this->sportModel->getZonalSports();
+        $users = $this->sportModel->getCoaches();
+        $FromCoaches = $this->sportModel->getFromCoaches();
+
+        foreach ($selections as $zoneId => $sportsArray) {
+            $zoneId = filter_var($zoneId, FILTER_VALIDATE_INT);
+            if ($zoneId === false) {
+                $_SESSION['error_message'] = "Invalid Zone ID.";
+                break;
+            }
+
+            foreach ($sportsArray as $sportId => $coachId) {
+                $sportId = filter_var($sportId, FILTER_VALIDATE_INT);
+                $coachId = filter_var($coachId, FILTER_VALIDATE_INT);
+
+                if ($sportId === false) {
+                    $_SESSION['error_message'] = "Invalid Sport ID in Zone ID: $zoneId.";
+                    break 2;
                 }
-                
-            } else {
-                // Load the view for editing the sport
-                try {
-                    // Fetch sport details from the model
-                    $zones = $this->sportModel->getZones();
-                    $sports = $this->sportModel->getSports();
-                    $zonalSports = $this->sportModel->getZonalSports();
-                    $coaches = $this->sportModel->getCoaches();
-                
-                    // Separate validation for each data
-                    if (!$zones || isset($zones['error'])) {
-                        $_SESSION['error_message'] = "Error fetching zones from the database.";
-                        return $this->view('/Admin/zonalSport');
+
+                // Handle "Not Selected" case (coachId is null or 0 or invalid)
+                if (empty($coachId) || !$coachId || $coachId === 0) {
+                    $result = $this->sportModel->assignCoachToSport($zoneId, $sportId, 0, 0);
+                    if (!empty($result['error'])) {
+                        $_SESSION['error_message'] = "Error saving coach: Zone $zoneId, Sport $sportId — " . $result['message'];
+                        break 2;
                     }
-                
-                    if (!$sports || isset($sports['error'])) {
-                        $_SESSION['error_message'] = "Error fetching sports from the database.";
-                        return $this->view('/Admin/zonalSport');
-                    }
-                
-                    if (!$coaches || isset($coaches['error'])) {
-                        $_SESSION['error_message'] = "Error fetching coaches from the database.";
-                        return $this->view('/Admin/zonalSport');
-                    }
-                
-                    if (!$zonalSports || isset($zonalSports['error'])) {
-                        $_SESSION['error_message'] = "No sport assigning data found.";
-                        // optional: not returning here so you can still pass other data to view
-                    }
-                
-                    // Pass all required data to the view
-                    return $this->view('/Admin/zonalSport', [
-                        'zones' => $zones,
-                        'sports' => $sports,
-                        'zonalSports' => $zonalSports,
-                        'coaches' => $coaches,
-                    ]);
-                
-                } catch (Exception $e) {
-                    $_SESSION['error_message'] = $e->getMessage();
-                    return $this->view('/Admin/zonalSport');
+                    continue;
                 }
-                
+
+                $coachExists = false;
+                foreach ($FromCoaches as $coach) {
+                    if ((int)$coach->coach_id === (int)$coachId) {
+                        $coachExists = true;
+                        break;
+                    }
+                }
+
+                if (!$coachExists) {
+                    $_SESSION['error_message'] = "Invalid coach (ID: $coachId) for Sport ID: $sportId in Zone ID: $zoneId.";
+                    break 2;
+                }
+
+                // Save with active = 1
+                $result = $this->sportModel->assignCoachToSport($zoneId, $sportId, $coachId, 1);
+                if (!empty($result['error'])) {
+                    $_SESSION['error_message'] = "Error assigning coach: Zone $zoneId, Sport $sportId — " . $result['message'];
+                    break 2;
+                }
             }
         }
-        
-        
 
+        if (!isset($_SESSION['error_message'])) {
+            $_SESSION['success_message'] = "Coach assignments saved successfully.";
+        }
+
+        // Redirect to avoid resubmission
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
     }
 
-    
+    // GET request
+    try {
+        $zones = $this->sportModel->getZones();
+        $sports = $this->sportModel->getSports();
+        $zonalSports = $this->sportModel->getZonalSports();
+        $users = $this->sportModel->getCoaches();
+        $FromCoaches = $this->sportModel->getFromCoaches();
+
+        if (!$zones || isset($zones['error'])) {
+            $_SESSION['error_message'] = "Error fetching zones.";
+        }
+
+        if (!$sports || isset($sports['error'])) {
+            $_SESSION['error_message'] = "Error fetching sports.";
+        }
+
+        if (!$users || isset($users['error'])) {
+            $_SESSION['error_message'] = "Error fetching coaches.";
+        }
+
+        if (!$zonalSports || isset($zonalSports['error'])) {
+            $_SESSION['error_message'] = "Error fetching ZonalSport.";
+        }
+
+        if (!$FromCoaches || isset($FromCoaches['error'])) {
+            $_SESSION['error_message'] = "Error fetching FromCoaches.";
+        }
+
+        return $this->view('/Admin/zonalSport', [
+            'zones' => $zones,
+            'sports' => $sports,
+            'zonalSports' => $zonalSports,
+            'users' => $users,
+            'FromCoaches' => $FromCoaches,
+        ]);
+    } catch (Exception $e) {
+        $_SESSION['error_message'] = "An error occurred: " . $e->getMessage();
+        return $this->view('/Admin/zonalSport');
+    }
+}
+
+
+
+        
+
+        
+
+        }
 
     ?>

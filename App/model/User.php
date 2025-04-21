@@ -226,5 +226,31 @@ class User {
     
             return $this->db->rowCount() > 0; // Returns true if a user exists, false otherwise
         }
+
+        public function createAdmin($data) {
+            error_log("Data received in createUser: " . print_r($data, true)); // Debugging
+        
+            $query = "INSERT INTO admin 
+                      (email, password, username)
+                      VALUES (:email, :password, :username)";
+            
+            $this->db->query($query);
+            
+            // Bind parameters (Updated key names)
+        
+            $this->db->bind(':email', $data['email']);
+            $this->db->bind(':password', $data['password']);
+            $this->db->bind(':username', $data['username']);
+
+    
+            if ($this->db->execute()) {
+                return true;
+            } else {
+                // Log database errors
+                $errorInfo = $this->db->errorInfo();
+                error_log("Database error: " . $errorInfo[2]);
+                return false;
+            }
+        }
     }
 ?>

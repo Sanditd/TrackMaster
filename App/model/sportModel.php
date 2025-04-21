@@ -651,7 +651,7 @@ require_once __DIR__ . '/../libraries/Database.php';
         
         public function getZones() {
             try {
-                $this->db->query("SELECT * FROM zone");
+                $this->db->query("SELECT zoneId,zoneName,provinceName,DisName FROM zone");
                 $zones = $this->db->resultset();
         
                 if (empty($zones)) {
@@ -675,7 +675,7 @@ require_once __DIR__ . '/../libraries/Database.php';
         
         public function getSports() {
             try {
-                $this->db->query("SELECT * FROM sports");
+                $this->db->query("SELECT sport_id,sport_name,sport_type FROM sports");
                 $sports = $this->db->resultset();
         
                 if (empty($sports)) {
@@ -699,7 +699,7 @@ require_once __DIR__ . '/../libraries/Database.php';
         
         public function getZonalSports(){
             try {
-                $this->db->query("SELECT * FROM zonal_sport");
+                $this->db->query("SELECT * FROM zonal_sports");
                 $zonalSports = $this->db->resultset();
         
                 if (empty($zonalSports)) {
@@ -723,7 +723,7 @@ require_once __DIR__ . '/../libraries/Database.php';
 
         public function getCoaches(){
             try {
-                $this->db->query("SELECT * FROM users WHERE role = 'coach'");
+                $this->db->query("SELECT user_id,firstname,lname FROM users WHERE role = 'coach'");
                 $coaches = $this->db->resultset();
         
                 if (empty($coaches)) {
@@ -744,6 +744,91 @@ require_once __DIR__ . '/../libraries/Database.php';
                 ];
             }
         }
+
+        public function getFromCoaches(){
+            try {
+                $this->db->query("SELECT coach_id,user_id,zone FROM user_coach");
+                $fromCoaches = $this->db->resultset();
+        
+                if (empty($fromCoaches)) {
+                    throw new Exception("Some Thing is wrong on coach table.");
+                }
+        
+                return $fromCoaches;
+        
+            } catch (PDOException $e) {
+                return [
+                    'error' => true,
+                    'message' => 'Database error: ' . $e->getMessage()
+                ];
+            } catch (Exception $e) {
+                return [
+                    'error' => true,
+                    'message' => $e->getMessage()
+                ];
+            }
+        }
+
+        public function assignCoachToSport($zoneId, $sportId, $coachId) {
+            try {
+                // First check if a record already exists for this zone & sport
+                $this->db->query("SELECT zs_id FROM zonal_sports WHERE zone_id = :zoneId AND sport_id = :sportId");
+                $this->db->bind(':zoneId', $zoneId);
+                $this->db->bind(':sportId', $sportId);
+                $existing = $this->db->single();
+        
+                if ($existing) {
+                    // Update the existing record
+                    $this->db->query("UPDATE zonal_sports SET coach_id = :coachId WHERE zs_id = :zs_id");
+                    $this->db->bind(':coachId', $coachId);
+                    $this->db->bind(':zs_id', $existing->zs_id);
+                    $this->db->execute();
+                } else {
+                    // Insert a new record
+                    $this->db->query("INSERT INTO zonal_sports (zone_id, sport_id, coach_id) VALUES (:zoneId, :sportId, :coachId)");
+                    $this->db->bind(':zoneId', $zoneId);
+                    $this->db->bind(':sportId', $sportId);
+                    $this->db->bind(':coachId', $coachId);
+                    $this->db->execute();
+                }
+        
+                return [
+                    'error' => false,
+                    'message' => 'Coach assigned successfully.'
+                ];
+        
+            } catch (PDOException $e) {
+                return [
+                    'error' => true,
+                    'message' => 'Database error: ' . $e->getMessage()
+                ];
+            } catch (Exception $e) {
+                return [
+                    'error' => true,
+                    'message' => $e->getMessage()
+                ];
+            }
+        }
+
+        public function getCoachId($userId)
+{
+    try {
+        $this->db->query("SELECT coach_id FROM user_coach WHERE user_id = :user_id");
+        $this->db->bind(':user_id', $userId);
+        $row = $this->db->single();
+
+        if ($row && isset($row->coach_id)) {
+            return $row->coach_id;
+        } else {
+            return false;
+        }
+    } catch (PDOException $e) {
+        // Optional: Log error or return debug info
+        return false;
+    }
+}
+
+        
 
     }
         

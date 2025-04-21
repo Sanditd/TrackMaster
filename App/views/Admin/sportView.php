@@ -1,3 +1,36 @@
+<?php
+//Check if session user ID exists
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['error_message']='Invalid Login! Please login again.';
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
+}
+
+$userId = (int) $_SESSION['user_id'];
+
+//Load required model file if not already loaded
+ require_once __DIR__ . '/../../model/loginPage.php';
+ // Adjust path as needed
+
+// Create login model instance
+$loginModel = new loginPage();
+
+$user = $loginModel->getAdminById($userId);
+
+
+
+
+//If user does not exist in DB, destroy session and redirect
+if (!$user) {
+    session_unset();
+    session_destroy();
+    $_SESSION['error_message']='Login Failed! Try Again.';
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,10 +38,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Sport Details</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/sportView.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
-    <script src="../../Public/js/Admin/sidebar.js"></script>
-    <script src="../../../Public/js/Admin/sportView.js" defer></script>
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/sportView.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
+    <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
+    <script src="<?php echo ROOT?>/Public/js/Admin/sportView.js" defer></script>
 </head>
 
 <body>

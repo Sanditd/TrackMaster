@@ -5,25 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="../../../Public/css/Admin/navbar.css">
-    <script src="../../../Public/js/Admin/sidebar.js"></script>
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
+    <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
 </head>
 
 <body>
     <!-- Side Navigation Bar -->
     <div id="sidebar" class="sidebar">
         <div class="sidebar-header">
-            <img src="https://via.placeholder.com/40" alt="Logo" class="sidebar-logo">
+            <!-- <img src="<?php echo ROOT?>/public/img/icon/logo.png" alt="Logo" class="sidebar-logo"> -->
         </div>
         <nav class="sidebar-menu">
             <ul>
-                <li><a href="<?php echo ROOT ?>/admin/dashboard/ads"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Dashboard</span></a></li>
-                <li><a href="<?php echo ROOT ?>/admin/userManage/asdasd"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Manage Users</span></a></li>
-                <li><a href="<?php echo ROOT ?>/admin/sportCreate/asdad"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Add Sports</span></a></li>
-                <li><a href="<?php echo ROOT ?>/admin/sportManage/asdad"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Manage Sports</span></a></li>
-                <li><a href="<?php echo ROOT ?>/admin/zoneManage/asdad"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Manage Zones</span></a></li>
-                <li><a href="<?php echo ROOT ?>/admin/zonalSport/asdad"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Sport Assigning</span></a></li>
-                <li><a href="#"><img src="https://via.placeholder.com/20" class="icon"><span class="menu-text">Announcements</span></a></li>
+                <li><a href="<?php echo ROOT ?>/admin/dashboard/ads"><img src="<?php echo ROOT?>/public/img/icon/dashboard.png" class="icon"><span class="menu-text">Dashboard</span></a></li>
+                <li><a href="<?php echo ROOT ?>/admin/userManage/asdasd"><img src="<?php echo ROOT?>/public/img/icon/users.png" class="icon"><span class="menu-text">Manage Users</span></a></li>
+                <li><a href="<?php echo ROOT ?>/admin/sportCreate/asdad"><img src="<?php echo ROOT?>/public/img/icon/sports.png" class="icon" ><span class="menu-text">Add Sports</span></a></li>
+                <li><a href="<?php echo ROOT ?>/admin/sportManage/asdad"><img src="<?php echo ROOT?>/public/img/icon/manageSports.png" class="icon"><span class="menu-text">Manage Sports</span></a></li>
+                <li><a href="<?php echo ROOT ?>/admin/zoneManage/asdad"><img src="<?php echo ROOT?>/public/img/icon/zones.png" class="icon"><span class="menu-text">Manage Zones</span></a></li>
+                <li><a href="<?php echo ROOT ?>/admin/zonalSport/asdad"><img src="<?php echo ROOT?>/public/img/icon/assign.png" class="icon"><span class="menu-text">Sport Assigning</span></a></li>
+                <li><a href="#"><img src="<?php echo ROOT?>/public/img/icon/announcement.png" class="icon"><span class="menu-text">Announcements</span></a></li>
             </ul>
         </nav>
     </div>
@@ -37,7 +37,7 @@
         
 
         <div class="track-logo">
-            <img src="../../Public/img/logo.png" alt="Track Master Logo"> <!-- Track Master Logo in the middle -->
+            <img src="<?php echo ROOT?>/public/img/icon/logo.png" alt="Track Master Logo"> <!-- Track Master Logo in the middle -->
         </div>
 
         <div class="account-section">
