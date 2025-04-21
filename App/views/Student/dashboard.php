@@ -87,16 +87,21 @@
 
             <!-- Medical Section -->
             <div class="dashboard-section">
-                <h2>Current Medical Status</h2>
-                <div class="section-content">
-                            <h3>Medical Conditions:</h3>
-                            <p>None</p>
-                            <h3>Medications:</h3>
-                            <p>None</p>
-                            <br>
+            <h2>Current Medical Status</h2>
+            <?php if(isset($data['currentStatus']) && $data['currentStatus']): ?>
+                <p><strong>Last updated:</strong> <?php echo htmlspecialchars($data['currentStatus']->date); ?></p>
+                <p><strong>Medical Conditions:</strong> <?php echo htmlspecialchars($data['currentStatus']->medical_condition); ?></p>
+                <p><strong>Medication:</strong> <?php echo htmlspecialchars($data['currentStatus']->medication); ?></p>
+                <p><strong>Notes:</strong> <?php echo htmlspecialchars($data['currentStatus']->notes); ?></p>
+            <?php else: ?>
+                <p><strong>Last updated:</strong> N/A</p>
+                <p><strong>Medical Conditions:</strong> None</p>
+                <p><strong>Medication:</strong> None</p>
+                <p><strong>Notes:</strong> None</p>
+            <?php endif; ?>
                         <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/medicalStatus'">Update Medical Status</button>
                 </div>
-            </div>
+
 
             <!-- Calendar Section -->
             <div class="dashboard-section">
