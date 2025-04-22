@@ -156,30 +156,11 @@ public function updateFacilityRequestStatus($requestId, $status) {
     $this->db->bind(':request_id', $requestId);
     return $this->db->execute();
 }
-
-public function updateExtraClassRequestStatus($requestId, $status) {
-    $this->db->query("
-        UPDATE extra_class_requests 
-        SET status = :status 
-        WHERE request_id = :request_id
-    ");
-    $this->db->bind(':status', $status);
-    $this->db->bind(':request_id', $requestId);
-
-    // Execute and check if any row was affected
-    if ($this->db->execute()) {
-        return $this->db->rowCount() > 0;  // Return true if a row was updated
-    }
-    return false;  // Return false if no rows were affected
-}
-
-// Method to add a new extra class
 public function addExtraClass($data) {
-    // Prepare SQL query to insert data into the 'extra_classes' table
     $sql = "INSERT INTO extra_classes (players, subject, description, class_date, venue) 
             VALUES (:players, :subject, :description, :date, :venue)";
 
-    // Bind parameters
+    // Prepare the query and bind the parameters
     $this->db->query($sql);
     $this->db->bind(':players', $data['players']);
     $this->db->bind(':subject', $data['subject']);
@@ -189,13 +170,30 @@ public function addExtraClass($data) {
 
     // Execute the query and return the result
     if ($this->db->execute()) {
-        return $this->db->lastInsertId();  // Return the last inserted ID
+        return $this->db->lastInsertId();
     }
-    return false;  // If execution fails, return false
+    return false;
 }
+
+// Method to update the status of an extra class request
+public function updateExtraClassRequestStatus($requestId, $status) {
+    $this->db->query("
+        UPDATE extra_class_requests 
+        SET status = :status 
+        WHERE request_id = :request_id
+    ");
+    $this->db->bind(':status', $status);
+    $this->db->bind(':request_id', $requestId);
+
+    // Execute the query and return whether a row was affected
+    return $this->db->execute() && $this->db->rowCount() > 0;
+}
+
 public function getPlayersBySchoolId($schoolId) {
     // Query to fetch players associated with the school_id
-    $sql = "SELECT name FROM users WHERE school_id = :school_id AND role = 'player'";  // Assuming 'role' is a column for player identification
+    // Change 'full_name' to the correct column name
+    $sql = "SELECT full_name FROM users WHERE school_id = :school_id AND role = 'player'";  // Update 'full_name' with the correct column name
+
     $this->db->query($sql);
     $this->db->bind(':school_id', $schoolId);
     
@@ -204,6 +202,3 @@ public function getPlayersBySchoolId($schoolId) {
 }
 
 }
-
-    
-    

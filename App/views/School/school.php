@@ -79,7 +79,13 @@
                 <span>Grade 10 </span> Kamal Perera <br>
                 <span>Grade 11 </span> Hashan Jayamal 24<br>
                                </div>
-            </div>
+                               <center>
+    <button class="profile-button" onclick="window.location.href='<?php echo URLROOT ?>/school/scheduleEx'">
+    Schedule Extra Class'
+    </button>
+</center>
+
+</div>
 
            <div class="section activity-log">
                 <h2>Study performance</h2>

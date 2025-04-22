@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../libraries/Database.php';
 
-class User {
+class UserModel {
     private $db;
 
     public function __construct() {
@@ -226,10 +226,13 @@ class User {
     
             return $this->db->rowCount() > 0; // Returns true if a user exists, false otherwise
         }
+
         public function getAllPlayers() {
-            $this->db->query("SELECT id, name FROM users WHERE role = 'player'");
+            $this->db->query("SELECT name FROM users WHERE role = 'player'");
             return $this->db->resultSet();
         }
         
-    }
+        }
+        
+    
 ?>

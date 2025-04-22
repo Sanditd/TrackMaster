@@ -58,7 +58,7 @@ class loginController extends Controller {
                         exit;
                     } else {
                         // Redirect to the sign-up page if login fails
-                        header('Location: ' . ROOT . '/signUpController/signUp');
+                        header('Location: ' . ROOT . '/loginController/login');
                         exit;
 
                     }

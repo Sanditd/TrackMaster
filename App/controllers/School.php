@@ -4,6 +4,7 @@ class School extends Controller{
 
     public function __construct() {
         $this->schoolModel = $this->model('SchoolModel');
+        $this->userModel = $this->model('UserModel');
 
     }
 
@@ -368,7 +369,6 @@ public function scheduleEx() {
         // Save to DB
         $result = $this->schoolModel->addExtraClass($data);
 
-        // Redirect accordingly
         if ($result) {
             $_SESSION['success_message'] = "Extra class scheduled successfully!";
             header('Location: ' . ROOT . '/school/scheduleEx');
@@ -380,10 +380,26 @@ public function scheduleEx() {
         }
 
     } else {
-        // GET request: load the form
-        $this->view('School/scheduleEx');
+        try {
+            // Load players from userModel
+            $players = $this->userModel->getAllPlayers(); // Make sure userModel is loaded
+
+            if (!$players) {
+                $_SESSION['error_message'] = "No players found.";
+                return $this->view('School/scheduleEx');
+            }
+
+            return $this->view('School/scheduleEx', [
+                'players' => $players
+            ]);
+
+        } catch (Exception $e) {
+            $_SESSION['error_message'] = "Error: " . $e->getMessage();
+            return $this->view('School/scheduleEx');
+        }
     }
 }
+
 
 }
 
