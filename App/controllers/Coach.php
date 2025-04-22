@@ -214,16 +214,28 @@ class Coach extends Controller {
         }
     }
 
-        public function filterPlayers() {
-            $role = $_POST['role'] ?? null;
-            $gender = $_POST['gender'] ?? null;
-    
-            // Call the model's filterPlayers method
+    public function filterPlayers() {
+        $role = $_POST['role'] ?? null;
+        $gender = $_POST['gender'] ?? null;
+        
+        try {
+            if (!$role || !$gender) {
+                throw new Exception('Both role and gender filters are required');
+            }
+            
             $players = $this->coachModel->filterPlayers($role, $gender);
-    
-            // Return the filtered players as a JSON response
+            
+            // If no players with stats found, return empty array to trigger fallback
+            if (empty($players)) {
+                echo json_encode(['players' => []]);
+                return;
+            }
+            
             echo json_encode(['players' => $players]);
+        } catch (Exception $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
+    }
         
         public function getPlayerStats() {
             $playerIds = $_POST['playerIds'] ?? '';

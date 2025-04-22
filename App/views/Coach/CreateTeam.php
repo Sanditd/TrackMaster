@@ -469,27 +469,7 @@
             xhr.send(`teamName=${teamName}&numPlayers=${numPlayers}`);
         } 
 
-        function filterPlayers() {
-            const role = document.getElementById('filterBy').value;
-            const gender = document.getElementById('genderFilter').value;
-
-            if (!role || !gender) {
-                showNotification('error', 'Please select both role and gender filters.');
-                return;
-            }
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'filterPlayers', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    const players = response.players;
-                    displayPlayerList(players);
-                }
-            };
-            xhr.send(`role=${role}&gender=${gender}`);
-        }
+        
 
         function comparePlayers() {
             // Get all selected players
@@ -523,46 +503,100 @@
         }
 
         function displayPlayerStatsTable(players) {
-            const statsTableBody = document.getElementById('statsTableBody');
-            statsTableBody.innerHTML = ''; // Clear previous results
+    const statsTableBody = document.getElementById('statsTableBody');
+    statsTableBody.innerHTML = ''; // Clear previous results
 
-            players.forEach(player => {
-                const row = document.createElement('tr');
-                
-                // Get role class for styling
-                const roleClass = `role-${player.role.toLowerCase()}`;
-                
-                row.innerHTML = `
-                    <td>${player.firstname}</td>
-                    <td><span class="role-badge ${roleClass}">${player.role}</span></td>
-                    <td>${player.matches || '0'}</td>
-                    <td>${player.batting_avg || 'N/A'}</td>
-                    <td>${player.strike_rate || 'N/A'}</td>
-                    <td>${player.fifties || '0'}/${player.hundreds || '0'}</td>
-                    <td>${player.wickets || 'N/A'}</td>
-                    <td>${player.bowling_avg || 'N/A'}</td>
-                    <td>${player.economy_rate || 'N/A'}</td>
-                    <td>
-                        <button type="button" class="btn add-player" id="btn_${player.player_id}" 
-                            ${selectedPlayers.has(player.player_id.toString()) ? 'disabled' : ''} 
-                            onclick="addPlayerToTeam(${player.player_id})">
-                            ${selectedPlayers.has(player.player_id.toString()) ? 
-                                '<i class="fas fa-check"></i> Added' : 
-                                '<i class="fas fa-user-plus"></i> Add'}
-                        </button>
-                    </td>
-                `;
-                
-                if (selectedPlayers.has(player.player_id.toString())) {
-                    row.querySelector('.btn.add-player').style.backgroundColor = '#28a745';
-                }
-                
-                statsTableBody.appendChild(row);
-            });
-
-            // Show the selected players' stats section
-            document.getElementById('selectedPlayersStats').classList.remove('hidden');
+    players.forEach(player => {
+        const row = document.createElement('tr');
+        
+        // Get role class for styling
+        const roleClass = player.role ? `role-${player.role.toLowerCase()}` : 'role-unknown';
+        const roleDisplay = player.role || 'N/A';
+        
+        row.innerHTML = `
+            <td>${player.firstname}</td>
+            <td><span class="role-badge ${roleClass}">${roleDisplay}</span></td>
+            <td>${player.matches || '0'}</td>
+            <td>${player.batting_avg || 'N/A'}</td>
+            <td>${player.strike_rate || 'N/A'}</td>
+            <td>${player.fifties || '0'}/${player.hundreds || '0'}</td>
+            <td>${player.wickets || 'N/A'}</td>
+            <td>${player.bowling_avg || 'N/A'}</td>
+            <td>${player.economy_rate || 'N/A'}</td>
+            <td>
+                <button type="button" class="btn add-player" id="btn_${player.player_id}" 
+                    ${selectedPlayers.has(player.player_id.toString()) ? 'disabled' : ''} 
+                    onclick="addPlayerToTeam(${player.player_id})">
+                    ${selectedPlayers.has(player.player_id.toString()) ? 
+                        '<i class="fas fa-check"></i> Added' : 
+                        '<i class="fas fa-user-plus"></i> Add'}
+                </button>
+            </td>
+        `;
+        
+        if (selectedPlayers.has(player.player_id.toString())) {
+            row.querySelector('.btn.add-player').style.backgroundColor = '#28a745';
         }
+        
+        statsTableBody.appendChild(row);
+    });
+
+    // Show the selected players' stats section
+    document.getElementById('selectedPlayersStats').classList.remove('hidden');
+}
+
+function filterPlayers() {
+    const role = document.getElementById('filterBy').value;
+    const gender = document.getElementById('genderFilter').value;
+
+    if (!role || !gender) {
+        showNotification('error', 'Please select both role and gender filters.');
+        return;
+    }
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'filterPlayers', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            const players = response.players;
+            
+            // If no players with stats found, load all players from coach's zone
+            if (players.length === 0) {
+                loadAllPlayersFromZone(role, gender);
+            } else {
+                displayPlayerStatsTable(players);
+            }
+        }
+    };
+    xhr.send(`role=${role}&gender=${gender}`);
+}
+
+function loadAllPlayersFromZone(role, gender) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'getPlayersForCoach', true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.status === 'success') {
+                // Filter the players by the selected role and gender
+                const filteredPlayers = response.players.filter(player => {
+                    const roleMatch = !role || (player.role && player.role.toLowerCase().includes(role.toLowerCase()));
+                    const genderMatch = !gender || (player.gender && player.gender.toLowerCase() === gender.toLowerCase());
+                    return roleMatch && genderMatch;
+                });
+                
+                if (filteredPlayers.length === 0) {
+                    showNotification('info', 'No players found matching your criteria in your zone.');
+                } else {
+                    displayPlayerStatsTable(filteredPlayers);
+                }
+            }
+        }
+    };
+    xhr.send();
+}
 
         function displayPlayerList(players) {
             const playerList = document.getElementById('playerList');
