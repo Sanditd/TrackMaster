@@ -421,12 +421,25 @@ class CoachModel {
             throw new Exception('Coach record not found');
         }
     
-        // Get players with same sport and zone
+        // Get players with same sport and zone, including those without stats
         $this->db->query('
             SELECT 
                 up.player_id, 
                 CONCAT(u.firstname, " ", COALESCE(u.lname, "")) AS player_name,
-                cs.role
+                cs.role,
+                u.user_id,
+                u.firstname,
+                u.lname,
+                u.gender,
+                up.role,
+                cs.matches,
+                cs.batting_avg,
+                cs.strike_rate,
+                cs.fifties,
+                cs.hundreds,
+                cs.wickets,
+                cs.bowling_avg,
+                cs.economy_rate
             FROM user_player up
             JOIN users u ON up.user_id = u.user_id
             LEFT JOIN cricket_stats cs ON up.player_id = cs.player_id
@@ -435,9 +448,10 @@ class CoachModel {
         ');
         $this->db->bind(':sportId', $coach->sport_id);
         $this->db->bind(':zone', $coach->zone);
-        
+    
         return $this->db->resultSet();
     }
+    
 
     
     public function getPlayerDetails($playerId) {
