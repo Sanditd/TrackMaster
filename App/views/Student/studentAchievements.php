@@ -5,129 +5,170 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Achievements</title>
     <link rel="stylesheet" href="/TrackMaster/Public/css/Student/achievements.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.7);
-        }
+       /* Modal Styles */
+       
+.modal {
+    color:  #ffa500;
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            border-radius: 5px;
-            width: 60%;
-            max-width: 600px;
-            animation: modalopen 0.5s;
-        }
+.modal-content {
+    background-color: #fefefe;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    animation: modalopen 0.4s;
+}
 
-        @keyframes modalopen {
-            from {opacity: 0; transform: translateY(-60px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
+@keyframes modalopen {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
 
-        .close-modal {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: #666;
+    cursor: pointer;
+    transition: var(--transition);
+}
 
-        .close-modal:hover,
-        .close-modal:focus {
-            color: #000;
-            text-decoration: none;
-        }
+.close-modal:hover {
+    color: #00264d;
+}
 
-        .add-achievement-btn {
-            background-color: #ffa500;
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            margin: 20px auto;
-            display: block;
-            transition: all 0.3s ease-in-out;
-        }
+.modal-content h3 {
+    color: #ffa500;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        .add-achievement-btn:hover {
-            background-color: #cc8400;
-            transform: scale(1.05);
-        }
+.form-group {
+    margin-bottom: 20px;
+}
 
-        .modal .form-section {
-            width: 100%;
-            padding: 15px;
-            border: none;
-        }
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color:  #00264d;
+}
 
-        /* Delete confirmation modal */
-        .confirm-modal {
-            display: none;
-            position: fixed;
-            z-index: 1010;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.7);
-        }
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: var(--transition);
+}
 
-        .confirm-modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            border-radius: 5px;
-            width: 40%;
-            max-width: 400px;
-            text-align: center;
-            animation: modalopen 0.5s;
-        }
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
 
-        .confirm-modal-title {
-            margin-bottom: 20px;
-            color: #00264d;
-        }
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #ffa500;
+    box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
+    outline: none;
+}
 
-        .confirm-modal-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
 
-        .confirm-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-        .confirm-yes {
-            background-color: #ff0000;
-            color: white;
-        }
+.radio-option input[type="radio"] {
+    margin: 0;
+}
 
-        .confirm-no {
-            background-color: #ccc;
-            color: #333;
-        }
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    background-color: #ffa500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.confirm-modal-content {
+    text-align: center;
+    max-width: 450px;
+}
+
+.confirm-modal-content p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.warning-text {
+    color: #f44336;
+    font-weight: 500;
+}
+
+.delete-confirm-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.delete-confirm-btn:hover {
+    background-color: #d32f2f;
+}
+
     </style>
 </head>
 <body>
@@ -142,9 +183,10 @@ if (!isset($_SESSION['user_id'])) {
 }?>
 
     <div id="main">
-        <div class="title">
-            <h1>Student Player Achievements</h1>
-        </div>
+    <center><div class="title">
+                <h1><i class="fas fa-medal"></i> Student Achievements</h1>
+                <p>Track and manage your sports accomplishments and milestones</p>
+            </div></center>
 
         <center>
     <div class="achievements-section">
@@ -188,12 +230,8 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 </center>
 
-<button class="add-achievement-btn" onclick="openAchievementModal()">
-    <svg aria-hidden="true" stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11 4H4C3.44772 4 3 4.44772 3 5V19C3 19.5523 3.44772 20 4 20H18C18.5523 20 19 19.5523 19 19V12" stroke-linejoin="round" stroke-linecap="round"></path>
-        <path d="M17.5 3.5C18.3284 2.67157 19.6716 2.67157 20.5 3.5C21.3284 4.32843 21.3284 5.67157 20.5 6.5L12 15L8 16L9 12L17.5 3.5Z" stroke-linejoin="round" stroke-linecap="round"></path>
-    </svg>
-    ADD A NEW ACHIEVEMENT
+<button class="btn add-achievement-btn" onclick="openAchievementModal()">
+        <i class="fas fa-plus-circle"></i> Add New Achievement
 </button>
 
         <div class="container">
@@ -217,8 +255,8 @@ if (!isset($_SESSION['user_id'])) {
                                 <td><?php echo $achievement->description; ?></td>
                                 <td><?php echo $achievement->date; ?></td>
                                 <td>
-                                    <button class="Edit-button" onclick="location.href='<?php echo URLROOT.'Student/editAchievement/'.$achievement->achievement_id ?>'">Edit</button>
-                                    <button class="delete-button" onclick="openDeleteConfirmModal('<?php echo $achievement->achievement_id; ?>')">Delete</button>
+                                    <button class="Edit-button" onclick="location.href='<?php echo URLROOT.'Student/editAchievement/'.$achievement->achievement_id ?>'"><i class="fas fa-edit"></i></button>
+                                    <button class="delete-button" onclick="openDeleteConfirmModal('<?php echo $achievement->achievement_id; ?>')"><i class="fas fa-trash-alt"></i></button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -230,86 +268,111 @@ if (!isset($_SESSION['user_id'])) {
 
     <!-- Add Achievement Modal -->
     <div id="achievementModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeAchievementModal()">&times;</span>
-            <div class="form-section">
-                <h2>Add a New Achievement</h2>
-                <form action="<?php echo ROOT?>/student/saveAchievement" method="POST">  
-                    <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']?>">
-                    
-                    <label for="place">Place/Rank:</label> 
-                    <textarea id="place" name="place" required></textarea>  
-
-                    <label for="level">Level:</label>
-                    <input type="radio" id="level1" name="level" value="zonal" required> Zonal Level </br>
-                    <input type="radio" id="level2" name="level" value="provincial" required> Provincial Level</br>
-                    <input type="radio" id="level3" name="level" value="national" required> National Level</br>
-           
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description"></textarea>
-
-                    <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" required>
-                       
-                    <center>
-                        <button class="edit-button" type="submit">Add</button>
-                        <button class="edit-button" type="button" onclick="closeAchievementModal()">Cancel</button>
-                    </center>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div id="deleteConfirmModal" class="confirm-modal">
-        <div class="confirm-modal-content">
-            <h3 class="confirm-modal-title">Confirm Deletion</h3>
-            <p>Are you sure you want to delete this achievement?</p>
-            <p>This action cannot be undone.</p>
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeAchievementModal()"><i class="fas fa-times"></i></span>
+        <h3><i class="fas fa-trophy"></i> Add New Achievement</h3>
+        <form action="<?php echo ROOT?>/student/saveAchievement" method="POST">  
+            <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']?>">
             
-            <div class="confirm-modal-buttons">
-                <form id="deleteForm" action="" method="POST">
-                    <button type="submit" class="confirm-btn confirm-yes">Yes, Delete</button>
-                </form>
-                <button class="confirm-btn confirm-no" onclick="closeDeleteConfirmModal()">Cancel</button>
+            <div class="form-group">
+                <label for="place"><i class="fas fa-medal"></i> Place/Rank:</label> 
+                <input type="text" id="place" name="place" required placeholder="E.g., First Place, Gold Medal">
             </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-layer-group"></i> Achievement Level:</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="level1" name="level" value="zonal" required>
+                        <label for="level1">Zonal</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="level2" name="level" value="provincial" required>
+                        <label for="level2">Provincial</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="level3" name="level" value="national" required>
+                        <label for="level3">National</label>
+                    </div>
+                </div>
+            </div>
+   
+            <div class="form-group">
+                <label for="description"><i class="fas fa-align-left"></i> Description:</label>
+                <textarea id="description" name="description" placeholder="Describe your achievement..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="date"><i class="fas fa-calendar-alt"></i> Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+               
+            <div class="form-actions">
+                <button class="btn" type="submit">
+                    <i class="fas fa-save"></i> Save Achievement
+                </button>
+                <button class="btn btn-secondary" type="button" onclick="closeAchievementModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmModal" class="modal">
+    <div class="modal-content confirm-modal-content">
+        <h3><i class="fas fa-exclamation-triangle"></i> Confirm Deletion</h3>
+        <p>Are you sure you want to delete this achievement?</p>
+        <p class="warning-text">This action cannot be undone.</p>
+        
+        <div class="form-actions">
+            <form id="deleteForm" action="" method="POST">
+                <button type="submit" class="btn delete-confirm-btn">
+                    <i class="fas fa-trash-alt"></i> Yes, Delete
+                </button>
+            </form>
+            <button class="btn btn-secondary" onclick="closeDeleteConfirmModal()">
+                <i class="fas fa-times"></i> Cancel
+            </button>
         </div>
     </div>
-
+</div>
     <?php require 'footer.php'?>
 
     <script src="/TrackMaster/Public/js/Student/carousel.js"></script>
     <script>
-        function openAchievementModal() {
-            document.getElementById("achievementModal").style.display = "block";
-        }
+// Modal functions
+function openAchievementModal() {
+        document.getElementById("achievementModal").style.display = "flex";
+    }
 
-        function closeAchievementModal() {
-            document.getElementById("achievementModal").style.display = "none";
-        }
+    function closeAchievementModal() {
+        document.getElementById("achievementModal").style.display = "none";
+    }
 
-        // Delete confirmation functionality
-        function openDeleteConfirmModal(achievementId) {
-            const deleteForm = document.getElementById("deleteForm");
-            deleteForm.action = "<?php echo URLROOT; ?>/Student/deleteAchievement/" + achievementId;
-            document.getElementById("deleteConfirmModal").style.display = "block";
-        }
+    function openDeleteConfirmModal(achievementId) {
+        const deleteForm = document.getElementById("deleteForm");
+        deleteForm.action = "<?php echo URLROOT; ?>/Student/deleteAchievement/" + achievementId;
+        document.getElementById("deleteConfirmModal").style.display = "flex";
+    }
 
-        function closeDeleteConfirmModal() {
-            document.getElementById("deleteConfirmModal").style.display = "none";
-        }
+    function closeDeleteConfirmModal() {
+        document.getElementById("deleteConfirmModal").style.display = "none";
+    }
 
-        // Close modals when clicking outside of them
-        window.onclick = function(event) {
-            const addModal = document.getElementById("achievementModal");
-            const deleteModal = document.getElementById("deleteConfirmModal");
-            
-            if (event.target == addModal) {
-                addModal.style.display = "none";
-            } else if (event.target == deleteModal) {
-                deleteModal.style.display = "none";
-            }
+    // Close modals when clicking outside
+    window.onclick = function(event) {
+        const addModal = document.getElementById("achievementModal");
+        const deleteModal = document.getElementById("deleteConfirmModal");
+        
+        if (event.target == addModal) {
+            addModal.style.display = "none";
+        } else if (event.target == deleteModal) {
+            deleteModal.style.display = "none";
         }
+    }
+
     </script>
     <script src="/TrackMaster/Public/js/Student/achievements.js"></script>
 </body>

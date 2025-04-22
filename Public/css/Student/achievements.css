@@ -10,24 +10,32 @@ body {
 }
 
 .title{
-    width: 100%;
-    height: 200px;
-    background-color: #000;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
+    width: 90%;
+    text-align: center;
+    margin: 30px;
+    padding: 25px;
+    background:  #00264d;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 38, 77, 0.1);
 }
 
-h1 {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    width: 100%;
-    padding: 30px;
-    color: #ffffff;
-    text-align: center;
-    font-size: 38px;
-  }  
+.title h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.title p {
+    color: #f4f4f9;
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto;
+}
 
 .container {
     display: flex;
@@ -57,7 +65,7 @@ p{
 }
 
 .add-achievement-btn {
-    background-color: #1aff66 !important;
+    background-color:  #ffa500 !important;
     color: #fff !important;
     border: none;
     padding: 12px 24px;
@@ -76,13 +84,8 @@ p{
 }
 
 .add-achievement-btn:hover {
-    background-color: #3d8b40!important;
+    background-color:  #ffa500!important;
     transform: scale(1.05);
-}
-
-.add-achievement-btn svg {
-    width: 20px;
-    height: 20px;
 }
 
 .form-section {
