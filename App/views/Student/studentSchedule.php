@@ -68,7 +68,7 @@
         .main-content {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 45px;
+            gap: 55px;
             margin-top: 20px;
         }
 
@@ -80,7 +80,7 @@
             box-shadow: var(--box-shadow);
             transition: var(--transition);
             border: 1px solid rgba(0, 38, 77, 0.1);
-            padding: 25px;
+            padding: 40px;
         }
 
         .dashboard-section:hover {
@@ -605,7 +605,7 @@
             <!-- Request Extra Classes Section -->
             <div class="dashboard-section">
                 <h2>Request Extra Classes</h2>
-                <p><i class="fas fa-info-circle"></i> Need additional training or academic support? Request extra classes here</p>
+                <p><i class="fas fa-info-circle"></i> Need additional academic support? Request extra classes here</p>
                 <div class="form-container">
                     <form id="scheduleExtraClassForm" class="schedule-form">
                         <div class="form-group">
@@ -619,13 +619,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="school_name" class="required-field">School:</label>
-                            <input type="text" id="school_name" placeholder="Enter your school name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="notes" class="required-field">Notes:</label>
-                            <textarea id="notes" placeholder="Provide details about what you need help with..." required></textarea>
+                            <label for="notes" class="required-field">Reason:</label>
+                            <textarea id="reason" placeholder="Provide details about what you need help with..." required></textarea>
                         </div>
                             
                         <div class="form-buttons">

@@ -19,6 +19,7 @@
     <div class="dashboard-header">
         <div class="header-content">
             <h1><i class="fas fa-money-bill-wave"></i> Student Financial Status</h1>
+            <p>To Provide Financial Aids for Students with Financial Insecurities</p>
         </div>
     </div>
 
