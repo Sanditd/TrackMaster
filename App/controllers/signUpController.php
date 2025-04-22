@@ -460,10 +460,23 @@
             $description = $notification['description'];
             $type = $notification['type'];
         
-            foreach ($adminIds as $adminId) {
-                $this->notificationModel->createNotification($title, $description, $type, $adminId);
-                error_log("Notification sent to admin ID: $adminId");
+            foreach ($adminIds as $admin) {
+                $data = [
+                    'title' => $title,
+                    'description' => $description,
+                    'type' => $type,
+                    'toWhom' => $admin['admin_id']
+                ];
+            
+                $result = $this->notificationModel->createNotification($data);
+            
+                if ($result['success']) {
+                    error_log("Notification sent to admin ID: " . $admin['admin_id']);
+                } else {
+                    error_log("Failed to send notification to admin ID: " . $admin['admin_id'] . ". Reason: " . $result['error']);
+                }
             }
+            
         }
         
         
