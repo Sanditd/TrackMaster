@@ -83,6 +83,12 @@ class StudentModel {
         $this->db->bind(':userId', $userId);
         return $this->db->single(); // Return a single record
     }
+
+    public function getPlayerStatus($userId) {
+        $this->db->query("SELECT * FROM user_players WHERE user_id = :userId");
+        $this->db->bind(':userId', $userId);
+        return $this->db->single(); // Return a single record
+    }
     
     
 }
