@@ -10,5 +10,5 @@ define('DB_USER','root');
 define('DB_PASSWORD','');
 
 
-define('DB_NAME','trackmaster');
+define('DB_NAME','track_master');
 

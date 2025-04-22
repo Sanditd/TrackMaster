@@ -49,8 +49,8 @@ class User {
         error_log("Data received in createUser: " . print_r($data, true)); // Debugging
     
         $query = "INSERT INTO users 
-                  (firstname, phonenumber, address, email, password, username, photo, role, province, district,regDate,zone)
-                  VALUES (:firstname, :phone, :address, :email, :password, :username, :photo,  :role, :province, :district, :regDate, :zone)";
+                  (firstname, phonenumber, address, email, password, username, photo, role, province, district,regDate)
+                  VALUES (:firstname, :phone, :address, :email, :password, :username, :photo,  :role, :province, :district, :regDate)";
         
         $this->db->query($query);
         
@@ -65,7 +65,6 @@ class User {
         $this->db->bind(':province', $data['province']);
         $this->db->bind(':district', $data['district']);
         $this->db->bind(':regDate', $data['created_at']);
-        $this->db->bind(':zone', $data['zone']);
         $this->db->bind(':role', $data['role']);
 
         if ($this->db->execute()) {
@@ -156,7 +155,7 @@ class User {
     }
 
     public function getSchools() {
-        $this->db->query("SELECT school_name FROM user_school");
+        $this->db->query("SELECT school_name,zone FROM user_school");
         $result = $this->db->resultset();
         return $result;
 

@@ -215,6 +215,7 @@ if (monthDiff < 0 || (monthDiff===0 && dayDiff < 0)) { age--; } ageInput.value=a
 
     zoneSelect.addEventListener("change", function () {
             console.log("Selected zone value:", zoneSelect.value);
+            updateSchools( zoneSelect.value);
         });
 
     
@@ -222,3 +223,30 @@ if (monthDiff < 0 || (monthDiff===0 && dayDiff < 0)) { age--; } ageInput.value=a
     console.warn(`No zones found for district: ${selectedDistrict}`);
     }
     }
+
+    function updateSchools(zoneId) {
+    const schoolSelect = document.getElementById('school');
+
+    // Clear existing options
+    schoolSelect.innerHTML = '<option value="" disabled selected>Select School</option>';
+    schoolSelect.disabled = true; // 🔒 Disable first
+
+    // Filter schools by selected zone
+    const filteredSchools = schoolsData.filter(school => school.zone == zoneId);
+
+    if (filteredSchools.length > 0) {
+        filteredSchools.forEach(school => {
+            const option = document.createElement('option');
+            option.value = school.school_name;
+            option.textContent = school.school_name;
+            schoolSelect.appendChild(option);
+        });
+        schoolSelect.disabled = false; // 🔓 Enable if schools found
+    } else {
+        const option = document.createElement('option');
+        option.value = "";
+        option.textContent = "No school available";
+        schoolSelect.appendChild(option);
+    }
+}
+

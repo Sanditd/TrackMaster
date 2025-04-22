@@ -44,6 +44,8 @@ var errorMessage = "";
 
 <script>
 var districts = <?= json_encode($data['districts']); ?>;
+const schoolsData = <?= json_encode($data['schools']) ?>;
+console.log("Schools Data:", schoolsData);
 </script>
 
 <body>
@@ -54,6 +56,7 @@ var districts = <?= json_encode($data['districts']); ?>;
             <img src="../Public/img/logo-black.png" alt="TrackMaster Logo">
         </span> -->
             <h2>Sign Up - Student/Player</h2>
+            <?php print_r($data['schools']) ?>
 
             <div class="container">
 
@@ -118,20 +121,7 @@ var districts = <?= json_encode($data['districts']); ?>;
                     <div class="column">
 
 
-                        <div class="form-group">
-                            <label for="School">School</label>
-                            <select id="school" name="school" required>
-                                <option value="" disabled selected>Select School</option>
-                                <?php if (!empty($schools)) : ?>
-                                <?php foreach ($schools as $school) : ?>
-                                <option value="<?= htmlspecialchars($school->school_name) ?>">
-                                    <?= htmlspecialchars($school->school_name) ?></option>
-                                <?php endforeach; ?>
-                                <?php else: ?>
-                                <option value="">No school available</option>
-                                <?php endif; ?>
-                            </select>
-                        </div>
+                        
 
                         <div class="form-group">
                             <label for="sport">Sport</label>
@@ -185,6 +175,13 @@ var districts = <?= json_encode($data['districts']); ?>;
                             <label for="zone">Zone</label>
                             <select id="zone" name="zone" required>
                                 <option value="" disabled selected>Select Zone</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="School">School</label>
+                            <select id="school" name="school" required>
+                            <option value="" disabled selected>Select School</option>
                             </select>
                         </div>
 
