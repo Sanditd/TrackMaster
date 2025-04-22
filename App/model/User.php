@@ -13,8 +13,8 @@ class User {
         error_log("Data received in createUser: " . print_r($data, true)); // Debugging
     
         $query = "INSERT INTO users 
-                  (firstname, lname, phonenumber, address, email, password, username, photo, age, dob, role, gender, province, district,regDate,zone)
-                  VALUES (:firstname, :lastname, :phone, :address, :email, :password, :username, :photo, :age, :dob, :role, :gender, :province, :district, :regDate, :zone)";
+                  (firstname, lname, phonenumber, address, email, password, username, photo, age, dob, role, gender, province, district,regDate)
+                  VALUES (:firstname, :lastname, :phone, :address, :email, :password, :username, :photo, :age, :dob, :role, :gender, :province, :district, :regDate)";
         
         $this->db->query($query);
         
@@ -33,15 +33,14 @@ class User {
         $this->db->bind(':province', $data['province']);
         $this->db->bind(':district', $data['district']);
         $this->db->bind(':regDate', $data['created_at']);
-        $this->db->bind(':zone', $data['zone']);
         $this->db->bind(':role', $data['role']);
 
         if ($this->db->execute()) {
             return true;
         } else {
             // Log database errors
-            $errorInfo = $this->db->errorInfo();
-            error_log("Database error: " . $errorInfo[2]);
+            // $errorInfo = $this->db->errorInfo();
+            // error_log("Database error: " . $errorInfo[2]);
             return false;
         }
     }
@@ -253,6 +252,13 @@ class User {
                 error_log("Database error: " . $errorInfo[2]);
                 return false;
             }
+        }
+
+        public function getAdminUserIds(){
+            $query = "SELECT admin_id FROM admin ";
+            $this->db->query($query);
+            $result = $this->db->resultset();
+            return $result ? $result : false; // Return user_id or false if not found
         }
     }
 ?>

@@ -86,13 +86,16 @@ class zoneModel {
     }
     
     public function getDistrictsAndZones() {
-        $query = "SELECT DisName AS district_name, zoneId AS zone_id, zoneName AS zone_name FROM zone ORDER BY DisName, zoneName;";
+        $query = "SELECT DisName AS district_name,zoneId AS zone_id, zoneName AS zone_name FROM zone ORDER BY DisName, zoneName;";
         $this->db->query($query);
-        $results = $this->db->resultset(); // Use resultset() to fetch all rows
+        $results = $this->db->resultset(); // resultset() returns an array of objects
         $districts = [];
     
         foreach ($results as $row) {
-            $districts[$row->district_name][] = $row->zone_name; // Use object properties since resultset() returns objects
+            $districts[$row->district_name][] = [
+                'id' => $row->zone_id,
+                'name' => $row->zone_name
+            ];
         }
     
         return $districts;

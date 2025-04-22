@@ -207,10 +207,17 @@ if (monthDiff < 0 || (monthDiff===0 && dayDiff < 0)) { age--; } ageInput.value=a
     console.log("Zones for district:", normalizedDistricts[normalizedSelectedDistrict]);
     normalizedDistricts[normalizedSelectedDistrict].forEach(zone => {
     const option = document.createElement('option');
-    option.value = zone;
-    option.textContent = zone;
+    option.value = zone.id;
+    option.textContent = zone.name;
+
     zoneSelect.appendChild(option);
     });
+
+    zoneSelect.addEventListener("change", function () {
+            console.log("Selected zone value:", zoneSelect.value);
+        });
+
+    
     } else {
     console.warn(`No zones found for district: ${selectedDistrict}`);
     }

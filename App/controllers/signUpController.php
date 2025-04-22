@@ -4,11 +4,14 @@
         private $userModel;
         private $zoneModel;
         private $schoolModel;
+        private $notificationModel;
+        
 
         public function __construct() {
             $this->userModel = $this->model('User');
             $this->zoneModel =$this->model('zoneModel');
             $this->schoolModel = $this->model('schoolRecords');
+            $this->notificationModel = $this->model('Notification'); 
         }
 
         public function index() {
@@ -215,7 +218,6 @@
         
                 // Convert sport name and zone to their respective IDs
                 $data['sportName'] = $this->userModel->getSportIdByName($data['sportName']);
-                $data['zone'] = $this->zoneModel->getZoneId($data['zone']);
                 $data['school'] = $this->schoolModel->findSchoolId($data['school']);
         
                 // Validate sport ID
@@ -276,7 +278,7 @@
                     'bio' => FILTER_SANITIZE_STRING,
                     'province' => FILTER_SANITIZE_STRING,
                     'district' => FILTER_SANITIZE_STRING,
-                    'zone' => FILTER_SANITIZE_STRING,
+                    'zone' => FILTER_SANITIZE_NUMBER_INT,
                 ];
         
                 // Sanitize POST data
@@ -318,6 +320,8 @@
                     header('Location: ' . ROOT . '/signupcontroller/coachsignupview');
                     exit;
                 }
+
+                
         
               // Handle file upload
                 if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
@@ -387,7 +391,7 @@
         
                 // Convert sport name and zone to their respective IDs
                 $data['sportName'] = $this->userModel->getSportIdByName($data['sportName']);
-                $data['zone'] = $this->zoneModel->getZoneId($data['zone']);
+                // $data['zone'] = $this->zoneModel->getZoneId($data['zone']);
         
                 // Validate sport ID
                 if (!$data['sportName']) {
@@ -406,6 +410,20 @@
         
                     // Insert coach data
                     $this->userModel->insertCoach($data);
+
+                    $sportId=$this->userModel->getSportIdByName($data['sportName']);
+
+                            // Create notification data
+                            $notification[] = [
+                                'title' => "New Coach Registration",
+                                'description' => "A new coach ({$data['firstname']} {$data['lastname']}) has registered for $sportId",
+                                'type' => "registration",
+                            ];
+                            // This is a custom type for your notification system
+            
+
+                    // Send notification to admin(s)
+                    $this->sendAdminNotification($notification);
         
                     // Redirect to login with success message
                     session_start(); // Ensure session is started
@@ -421,6 +439,34 @@
                 }
             }
         }
+
+        private function sendAdminNotification($notification) {
+            $requiredKeys = ['title', 'description', 'type'];
+            foreach ($requiredKeys as $key) {
+                if (!isset($notification[$key])) {
+                    error_log("Missing '$key' in notification array.");
+                    return;
+                }
+            }
+        
+            $adminIds = $this->userModel->getAdminUserIds();
+        
+            if (empty($adminIds)) {
+                error_log("No admin users found to notify about new coach signup.");
+                return;
+            }
+        
+            $title = $notification['title'];
+            $description = $notification['description'];
+            $type = $notification['type'];
+        
+            foreach ($adminIds as $adminId) {
+                $this->notificationModel->createNotification($title, $description, $type, $adminId);
+                error_log("Notification sent to admin ID: $adminId");
+            }
+        }
+        
+        
         
         public function schoolsignup() {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -509,8 +555,6 @@
 
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         
-                // Convert sport name and zone to their respective IDs
-                $data['zone'] = $this->zoneModel->getZoneId($data['zone']);
         
             
                 // Insert user data

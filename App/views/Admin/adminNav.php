@@ -41,7 +41,9 @@ if (!$user) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/notification.css">
     <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
+    <script src="<?php echo ROOT?>/Public/js/notification.js"></script>
 </head>
 
 <body>
@@ -51,6 +53,8 @@ if (!$user) {
         <!-- Top Navigation Bar -->
         <header>
             <nav class="navbar">
+
+                
 
                 <img src="<?php echo ROOT ?>/public/img/icon/admin_profile.png" alt="admin profile"
                     class="admin-profile" style="width: 55px; height: 55px; margin-left:-10px">
@@ -68,13 +72,34 @@ if (!$user) {
                     <!-- Track Master Logo in the middle -->
                 </div>
 
+                
+
                 <div class="account-section">
-                <div class="account-settings">
+
+                <div class="notification-num">
+                    <i class="fa fa-bell"></i>
+                    <span class="notification-count">0</span>
+                    <div class="notification-panel">
+                        <div class="notification-header">
+                            <h3>Notifications</h3>
+                            <button class="mark-all-read">Mark all as read</button>
+                        </div>
+                        <div class="notification-list">
+                            <!-- Notifications will be loaded here -->
+                        </div>
+                        <div class="notification-footer">
+                            <a href="notifications.php">View all notifications</a>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="account-settings">
                         <a href="#">
                             <img src="<?php echo ROOT ?>/public/img/icon/notification.png" alt="acc setting"
                                 class="notification-icon"
                                 onmouseover="this.src='<?php echo ROOT ?>/public/img/icon/notification-hover.png';"
-                                onmouseout="this.src='<?php echo ROOT ?>/public/img/icon/notification.png';" style="width: 33px; height: 33px;margin-right: 10px;">
+                                onmouseout="this.src='<?php echo ROOT ?>/public/img/icon/notification.png';"
+                                style="width: 33px; height: 33px;margin-right: 10px;">
                         </a>
                     </div>
 
