@@ -339,58 +339,7 @@ select:focus {
         <p>Create, manage and track events for your students and teams</p>
     </div>
 
-    <div class="container">
-    <!-- Flash messages -->
-    <?php flash('event_message'); ?>
     
-    <!-- Left Side: Event Creation Form -->
-    <div class="form-section">
-        <h2><i class="fas fa-plus-circle"></i> Create Event</h2>
-        <form action="<?php echo URLROOT; ?>/coach/createEventRequest" method="post">
-            <label for="event-name">Event Name:</label>
-            <input type="text" id="event-name" name="event-name" 
-                   class="<?php echo (!empty($data['event_name_err'])) ? 'is-invalid' : ''; ?>"
-                   value="<?php echo $data['event_name'] ?? ''; ?>" 
-                   placeholder="Enter event name" required>
-            <span class="invalid-feedback"><?php echo $data['event_name_err'] ?? ''; ?></span>
-
-            <label for="date">Date:</label>
-            <input type="date" id="date" name="date" 
-                   class="<?php echo (!empty($data['date_err'])) ? 'is-invalid' : ''; ?>"
-                   value="<?php echo $data['event_date'] ?? ''; ?>" required>
-            <span class="invalid-feedback"><?php echo $data['date_err'] ?? ''; ?></span>
-
-            <label for="time-from">Time From:</label>
-            <input type="time" id="time-from" name="time-from" 
-                   class="<?php echo (!empty($data['time_err'])) ? 'is-invalid' : ''; ?>"
-                   value="<?php echo $data['time_from'] ?? ''; ?>" required>
-
-            <label for="time-to">Time To:</label>
-            <input type="time" id="time-to" name="time-to" 
-                   class="<?php echo (!empty($data['time_err'])) ? 'is-invalid' : ''; ?>"
-                   value="<?php echo $data['time_to'] ?? ''; ?>" required>
-            <span class="invalid-feedback"><?php echo $data['time_err'] ?? ''; ?></span>
-
-            <label for="venue">Venue</label>
-            <select id="venue" name="venue" 
-                    class="<?php echo (!empty($data['venue_err'])) ? 'is-invalid' : ''; ?>" required>
-                <option value="">Select a venue</option>
-                <?php foreach ($data['schools'] as $school) : ?>
-                    <option value="<?php echo $school->school_id; ?>" 
-                        <?php echo (isset($data['school_id']) && $data['school_id'] == $school->school_id) ? 'selected' : ''; ?>>
-                        <?php echo $school->school_name; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <span class="invalid-feedback"><?php echo $data['venue_err'] ?? ''; ?></span>
-
-            <label for="description">Facilities Required:</label>
-            <textarea id="description" name="description" rows="4" 
-                      placeholder="Enter required facilities"><?php echo $data['facilities_required'] ?? ''; ?></textarea>
-
-            <button type="submit"><i class="fas fa-paper-plane"></i> Send Request</button>
-        </form>
-    </div>
 
         <!-- Right Side: Event List and Created Events Table -->
         <div class="table-section">
