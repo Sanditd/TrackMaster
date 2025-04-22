@@ -64,11 +64,11 @@ if (monthDiff < 0 || (monthDiff===0 && dayDiff < 0)) { age--; } ageInput.value=a
             showCustomAlert("Check your birth day. Your age doesn't match the age criteria for a coach.");
             return false;
         }
-
         if (role === "student" && (age < 13 || age > 21)) {
-            showCustomAlert("Check your birth day. Your age doesn't match the age criteria for a player.");
-            return false;
-        }
+    showCustomAlert("Check your birth day. Your age doesn't match the age criteria for a player.");
+    return false;
+}
+
 
         return true;
     }

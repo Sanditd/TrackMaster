@@ -10,25 +10,23 @@
 
 
 <?php
-// Start session only if it's not already started
+$Success_message = "";
+$Error_message = "";
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Check if there's a success message in the session
 if (isset($_SESSION['success_message'])) {
-    $successMessage = $_SESSION['success_message'];
-    unset($_SESSION['success_message']); // Remove the message after retrieving it
-} else {
-    $successMessage = "";
+    $Success_message = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
 }
 
 if (isset($_SESSION['error_message'])) {
-    $successMessage = $_SESSION['error_message'];
-    unset($_SESSION['error_message']); // Remove the message after retrieving it
-} else {
-    $successMessage = "";
+    $Error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
 }
+
 ?>
 
 
@@ -40,6 +38,25 @@ if (isset($_SESSION['error_message'])) {
 </head>
 
 <body id="loginbody">
+
+<?php if ($Success_message): ?>
+<div class="alert alert-success"><?= htmlspecialchars($Success_message) ?></div>
+<?php endif; ?>
+<?php if ($Error_message): ?>
+<div class="alert alert-danger"><?= htmlspecialchars($Error_message) ?></div>
+<?php endif; ?>
+
+<div id="customAlertOverlay">
+    <div id="customAlertBox">
+        <h2>Notice</h2>
+        <p id="customAlertMessage"></p>
+        <button onclick="hideCustomAlert()">OK</button>
+    </div>
+</div>
+
+<script id="error-message" type="application/json"><?= json_encode(trim($Error_message)) ?></script>
+<script id="success-message" type="application/json"><?= json_encode(trim($Success_message)) ?></script>
+<script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
 
 
     <?php $nav->render(); ?>
@@ -58,7 +75,7 @@ if (isset($_SESSION['error_message'])) {
         </div>
 
         <div id="login-dis">
-            <div id="wel-track">Welcome to TrackMaster</div>
+            <div id="wel-track">Welcome Admin</div>
 
             <div id="wel-dis">Whether you're an aspiring athlete striving to break personal records or a seasoned
                 professional aiming for peak performance, TrackMaster is your ultimate partner in achieving success. Our
@@ -90,7 +107,7 @@ if (isset($_SESSION['error_message'])) {
             <span id="login-port-logo">
                 <img src="<?php echo ROOT?>/Public\img\logo-black.png" alt="Logo">
             </span>
-            <form action="<?php echo ROOT ?>/loginController/login" method="POST">
+            <form action="<?php echo ROOT ?>/loginController/adminLogin" method="POST">
                 <div>
                     <input type="text" placeholder="Enter username" name="username">
                 </div>
@@ -101,7 +118,7 @@ if (isset($_SESSION['error_message'])) {
             </form>
             <div class="or">Or</div>
             <div class="or"><button id="frogetPW-button">Frogot Password</button></div>
-            <div class="or"><a href="<?php echo ROOT ?>/signUpController/selectrole">Register Here</a></div>
+            <div class="or"><a href="<?php echo ROOT ?>/signUpController/Admin">Register Here</a></div>
 
         </div>
 
@@ -140,34 +157,11 @@ if (isset($_SESSION['error_message'])) {
             document.querySelector(".popup").style.display = "none";
         });
 
-
-        function showCustomAlert(message) {
-            document.getElementById('customAlertMessage').innerText = message;
-            document.getElementById('customAlertOverlay').style.display = 'block';
-        }
-
-        function hideCustomAlert() {
-            document.getElementById('customAlertOverlay').style.display = 'none';
-        }
-
-        // Show the alert if a success message exists
-        window.onload = function() {
-            var successMessage = "<?php echo addslashes($successMessage); ?>";
-            if (successMessage) {
-                showCustomAlert(successMessage);
-            }
-        };
         </script>
 
     </div>
 
-    <div id="customAlertOverlay" style="display: none;">
-        <div id="customAlertBox">
-            <h2>Notice</h2>
-            <p id="customAlertMessage"></p>
-            <button onclick="hideCustomAlert()">OK</button>
-        </div>
-    </div>
+  
 
 </body>
 

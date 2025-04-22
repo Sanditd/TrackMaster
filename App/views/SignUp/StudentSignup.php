@@ -33,17 +33,17 @@ if (isset($_SESSION['error'])) {
 ?>
 
 <?php if (!empty($Erro_message)) : ?>
-    <script>
-        var errorMessage = <?= json_encode(addslashes($Erro_message)); ?>;
-    </script>
+<script>
+var errorMessage = <?= json_encode(addslashes($Erro_message)); ?>;
+</script>
 <?php else: ?>
-    <script>
-        var errorMessage = "";
-    </script>
+<script>
+var errorMessage = "";
+</script>
 <?php endif; ?>
 
 <script>
-    var districts = <?= json_encode($data['districts']); ?>; 
+var districts = <?= json_encode($data['districts']); ?>;
 </script>
 
 <body>
@@ -57,7 +57,8 @@ if (isset($_SESSION['error'])) {
 
             <div class="container">
 
-                <form action="<?php echo ROOT ?>/signUpController/studentsignup" method="POST"  onsubmit="return validatePassword() && validateAge()">
+                <form action="<?php echo ROOT ?>/signUpController/studentsignup" method="POST"
+                    onsubmit="return validatePassword() && validateAge()">
                     <!-- Column 1 -->
                     <div class="column">
                         <div class="form-group">
@@ -144,6 +145,16 @@ if (isset($_SESSION['error'])) {
                                 <?php else: ?>
                                 <option value="">No sports available</option>
                                 <?php endif; ?>
+                            </select>
+                        </div>
+
+                        <!-- Hidden by default: Role dropdown -->
+                        <div class="form-group" id="cricketRoleContainer" style="display: none;">
+                            <label for="cricketRole">Role</label>
+                            <select id="cricketRole" name="playerRole">
+                                <option value="" disabled selected>Select Role</option>
+                                <option value="Batsman">Batsman</option>
+                                <option value="Bowler">Bowler</option>
                             </select>
                         </div>
 
@@ -236,6 +247,22 @@ if (isset($_SESSION['error'])) {
         </div>
     </div>
 
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sportSelect = document.getElementById("sport");
+        const roleContainer = document.getElementById("cricketRoleContainer");
+
+        sportSelect.addEventListener("change", function () {
+            const selectedSport = sportSelect.value.trim().toLowerCase();
+            if (selectedSport === "cricket") {
+                roleContainer.style.display = "block";
+            } else {
+                roleContainer.style.display = "none";
+            }
+        });
+    });
+</script>
 
 </body>
 
