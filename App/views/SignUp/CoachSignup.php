@@ -267,6 +267,11 @@ if (isset($_SESSION['error'])) {
 
 </body>
 
+<script>
+    const zone = <?php echo json_encode($zone); ?>;
+    console.log("Zone array from PHP:", zone);
+</script>
+
 
 <script src="<?php echo ROOT?>/Public/js/signUpjs.php"></script>
 

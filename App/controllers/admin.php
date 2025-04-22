@@ -735,8 +735,7 @@
             }
         }
 
-        public function zonalSport()
-{
+        public function zonalSport(){
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $selections = $_POST['coach_selection'] ?? [];
 
