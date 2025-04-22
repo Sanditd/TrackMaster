@@ -52,10 +52,6 @@ class Coach extends Controller {
         }
     }
 
-    public function eventManagement() {
-        $data = [];
-        $this->view('Coach/EventManagement');
-    }
 
     public function performanceTracking() {
         $data = [];
@@ -525,8 +521,78 @@ public function teamperformance($teamId = null) {
     }
 }
 
+public function createEventRequest() {
+    // Check if user is logged in and is a coach
+    if (!isset($_SESSION['user_id'])) {
+        redirect('users/login');
+    }
 
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Sanitize POST data
+        $_POST = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
+        $data = [
+            'coach_id' => $_SESSION['user_id'],
+            'school_id' => trim($_POST['venue']),
+            'event_name' => trim($_POST['event-name']),
+            'event_date' => trim($_POST['date']),
+            'time_from' => trim($_POST['time-from']),
+            'time_to' => trim($_POST['time-to']),
+            'facilities_required' => trim($_POST['description']),
+            'event_name_err' => '',
+            'date_err' => '',
+            'time_err' => '',
+            'venue_err' => ''
+        ];
+
+        // Validate data
+        if (empty($data['event_name'])) {
+            $data['event_name_err'] = 'Please enter event name';
+        }
+        if (empty($data['event_date'])) {
+            $data['date_err'] = 'Please select date';
+        }
+        if (empty($data['time_from']) || empty($data['time_to'])) {
+            $data['time_err'] = 'Please select both start and end times';
+        } elseif ($data['time_from'] >= $data['time_to']) {
+            $data['time_err'] = 'End time must be after start time';
+        }
+        if (empty($data['school_id'])) {
+            $data['venue_err'] = 'Please select a venue';
+        }
+
+        // If no errors, proceed
+        if (empty($data['event_name_err']) && empty($data['date_err']) && 
+            empty($data['time_err']) && empty($data['venue_err'])) {
+            
+            if ($this->coachModel->createEventRequest($data)) {
+                flash('event_message', 'Event request submitted successfully');
+                redirect('coach/eventManagement');
+            } else {
+                die('Something went wrong');
+            }
+        } else {
+            // Load view with errors
+            $this->view('coach/eventManagement', $data);
+        }
+    } else {
+        // Load empty form
+        $this->view('coach/eventManagement');
+    }
+}
+
+public function eventManagement() {
+    // Check if user is logged in
+    if (!isset($_SESSION['user_id'])) {
+        redirect('users/login');
+    }
+
+    $data = [
+        'schools' => $this->coachModel->getSchoolsForDropdown($_SESSION['user_id'])
+    ];
+
+    $this->view('Coach/EventManagement', $data);
+}
 }
 
 

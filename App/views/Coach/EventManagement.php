@@ -296,6 +296,39 @@
                 font-size: 0.8rem;
             }
         }
+
+        label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+  font-size: 16px;
+}
+
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 16px;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23333' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px 6px;
+}
+
+select:focus {
+
+  outline: none;
+  background-color: #fff;
+}
+
+
     </style>
 </head>
 <body>
@@ -307,31 +340,57 @@
     </div>
 
     <div class="container">
-        <!-- Left Side: Event Creation Form -->
-        <div class="form-section">
-            <h2><i class="fas fa-plus-circle"></i> Create Event</h2>
-            <form>
-                <label for="event-name">Event Name:</label>
-                <input type="text" id="event-name" name="event-name" placeholder="Enter event name" required>
+    <!-- Flash messages -->
+    <?php flash('event_message'); ?>
+    
+    <!-- Left Side: Event Creation Form -->
+    <div class="form-section">
+        <h2><i class="fas fa-plus-circle"></i> Create Event</h2>
+        <form action="<?php echo URLROOT; ?>/coach/createEventRequest" method="post">
+            <label for="event-name">Event Name:</label>
+            <input type="text" id="event-name" name="event-name" 
+                   class="<?php echo (!empty($data['event_name_err'])) ? 'is-invalid' : ''; ?>"
+                   value="<?php echo $data['event_name'] ?? ''; ?>" 
+                   placeholder="Enter event name" required>
+            <span class="invalid-feedback"><?php echo $data['event_name_err'] ?? ''; ?></span>
 
-                <label for="date">Date:</label>
-                <input type="date" id="date" name="date" required>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" 
+                   class="<?php echo (!empty($data['date_err'])) ? 'is-invalid' : ''; ?>"
+                   value="<?php echo $data['event_date'] ?? ''; ?>" required>
+            <span class="invalid-feedback"><?php echo $data['date_err'] ?? ''; ?></span>
 
-                <label for="time-from">Time From:</label>
-                <input type="time" id="time-from" name="time-from" required>
+            <label for="time-from">Time From:</label>
+            <input type="time" id="time-from" name="time-from" 
+                   class="<?php echo (!empty($data['time_err'])) ? 'is-invalid' : ''; ?>"
+                   value="<?php echo $data['time_from'] ?? ''; ?>" required>
 
-                <label for="time-to">Time To:</label>
-                <input type="time" id="time-to" name="time-to" required>
+            <label for="time-to">Time To:</label>
+            <input type="time" id="time-to" name="time-to" 
+                   class="<?php echo (!empty($data['time_err'])) ? 'is-invalid' : ''; ?>"
+                   value="<?php echo $data['time_to'] ?? ''; ?>" required>
+            <span class="invalid-feedback"><?php echo $data['time_err'] ?? ''; ?></span>
 
-                <label for="venue">Venue:</label>
-                <input type="text" id="venue" name="venue" placeholder="Enter venue" required>
+            <label for="venue">Venue</label>
+            <select id="venue" name="venue" 
+                    class="<?php echo (!empty($data['venue_err'])) ? 'is-invalid' : ''; ?>" required>
+                <option value="">Select a venue</option>
+                <?php foreach ($data['schools'] as $school) : ?>
+                    <option value="<?php echo $school->school_id; ?>" 
+                        <?php echo (isset($data['school_id']) && $data['school_id'] == $school->school_id) ? 'selected' : ''; ?>>
+                        <?php echo $school->school_name; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <span class="invalid-feedback"><?php echo $data['venue_err'] ?? ''; ?></span>
 
-                <label for="description">Description:</label>
-                <textarea id="description" name="description" rows="4" placeholder="Enter event description"></textarea>
+            <label for="description">Facilities Required:</label>
+            <textarea id="description" name="description" rows="4" 
+                      placeholder="Enter required facilities"><?php echo $data['facilities_required'] ?? ''; ?></textarea>
 
-                <button type="submit"><i class="fas fa-paper-plane"></i> Send Request</button>
-            </form>
-        </div>
+            <button type="submit"><i class="fas fa-paper-plane"></i> Send Request</button>
+        </form>
+    </div>
 
         <!-- Right Side: Event List and Created Events Table -->
         <div class="table-section">
@@ -371,7 +430,6 @@
                             <td>May 20, 2025</td>
                             <td><span class="status status-rejected">Rejected</span></td>
                             <td>
-                                <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
                             </td>
                         </tr>
@@ -389,7 +447,6 @@
                             <th>Date</th>
                             <th>Time</th>
                             <th>Venue</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -398,27 +455,18 @@
                             <td>May 8, 2025</td>
                             <td>8:00 PM - 11:00 PM</td>
                             <td>S.Thomas College</td>
-                            <td>
-                                <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                            </td>
                         </tr>
                         <tr>
                             <td>Session 24</td>
                             <td>May 5, 2025</td>
                             <td>10:00 AM - 5:00 PM</td>
                             <td>S.Thomas College</td>
-                            <td>
-                                <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                            </td>
                         </tr>
                         <tr>
                             <td>Training Camp</td>
                             <td>April 28, 2025</td>
                             <td>9:00 AM - 3:00 PM</td>
                             <td>National Stadium</td>
-                            <td>
-                                <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                            </td>
                         </tr>
                     </tbody>
                 </table>

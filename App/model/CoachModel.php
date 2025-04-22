@@ -786,6 +786,52 @@ class CoachModel {
         // Merge the data
         return (object) array_merge((array) $coach, (array) $coachDetails);
     }
+
+    public function createEventRequest($data) {
+        $this->db->query('
+            INSERT INTO event_requests 
+            (coach_id, school_id, event_name, event_date, time_from, time_to, facilities_required)
+            VALUES 
+            (:coach_id, :school_id, :event_name, :event_date, :time_from, :time_to, :facilities)
+        ');
+        
+        $this->db->bind(':coach_id', $data['coach_id']);
+        $this->db->bind(':school_id', $data['school_id']);
+        $this->db->bind(':event_name', $data['event_name']);
+        $this->db->bind(':event_date', $data['event_date']);
+        $this->db->bind(':time_from', $data['time_from']);
+        $this->db->bind(':time_to', $data['time_to']);
+        $this->db->bind(':facilities', $data['facilities_required']);
+        
+        return $this->db->execute();
+    }
+    
+    public function getSchoolsForDropdown($userId) {
+        // First get the coach's zone from user_coach table
+        $this->db->query('
+            SELECT uc.zone 
+            FROM user_coach uc
+            JOIN users u ON uc.user_id = u.user_id
+            WHERE u.user_id = :user_id
+        ');
+        $this->db->bind(':user_id', $userId);
+        $coachZone = $this->db->single();
+        
+        if (!$coachZone || !$coachZone->zone) {
+            return []; // Return empty array if coach or zone not found
+        }
+        
+        // Get schools in the same zone
+        $this->db->query('
+            SELECT school_id, school_name 
+            FROM user_school 
+            WHERE zone = :zone
+            ORDER BY school_name
+        ');
+        $this->db->bind(':zone', $coachZone->zone);
+        return $this->db->resultSet();
+    }
+
 }
 
 
