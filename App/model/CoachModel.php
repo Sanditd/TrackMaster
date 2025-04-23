@@ -801,24 +801,6 @@ class CoachModel {
         return (object) array_merge((array) $coach, (array) $coachDetails);
     }
 
-    public function createEventRequest($data) {
-        $this->db->query('
-            INSERT INTO event_requests 
-            (coach_id, school_id, event_name, event_date, time_from, time_to, facilities_required)
-            VALUES 
-            (:coach_id, :school_id, :event_name, :event_date, :time_from, :time_to, :facilities)
-        ');
-        
-        $this->db->bind(':coach_id', $data['coach_id']);
-        $this->db->bind(':school_id', $data['school_id']);
-        $this->db->bind(':event_name', $data['event_name']);
-        $this->db->bind(':event_date', $data['event_date']);
-        $this->db->bind(':time_from', $data['time_from']);
-        $this->db->bind(':time_to', $data['time_to']);
-        $this->db->bind(':facilities', $data['facilities_required']);
-        
-        return $this->db->execute();
-    }
     
     public function getSchoolsForDropdown($userId) {
         // First get the coach's zone from user_coach table
@@ -846,8 +828,118 @@ class CoachModel {
         return $this->db->resultSet();
     }
 
+
+    public function getEventRequests($userId) {
+        // First get the coach ID for this user
+        $this->db->query('SELECT coach_id FROM user_coach WHERE user_id = :user_id');
+        $this->db->bind(':user_id',     $userId);
+        $coachData = $this->db->single();
+        
+        if (!$coachData || !isset($coachData->coach_id)) {
+            return []; // Return empty array if coach not found
+        }
+        
+        // Now get the event requests using the coach_id
+        $this->db->query('
+            SELECT er.*, us.school_name 
+            FROM event_requests er
+            JOIN user_school us ON er.school_id = us.school_id
+            WHERE er.coach_id = :coach_id
+            ORDER BY er.event_date DESC, er.time_from DESC
+        ');
+        $this->db->bind(':coach_id', $coachData->coach_id);
+        return $this->db->resultSet();
+    }   
+    
+    public function getScheduledEvents($userId) {
+        // First get the coach ID for this user
+        $this->db->query('SELECT coach_id FROM user_coach WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $userId);
+        $coachData = $this->db->single();
+        
+        if (!$coachData || !isset($coachData->coach_id)) {
+            return []; // Return empty array if coach not found
+        }
+        
+        // Now get the scheduled events using the coach_id
+        $this->db->query('
+            SELECT se.*, us.school_name 
+            FROM scheduled_events se
+            JOIN user_school us ON se.school_id = us.school_id
+            WHERE se.coach_id = :coach_id
+            ORDER BY se.event_date DESC, se.time_from DESC
+        ');
+        $this->db->bind(':coach_id', $coachData->coach_id);
+        return $this->db->resultSet();
+    }
+
+
+
+public function createEventRequest($data) {
+    $this->db->query('
+        INSERT INTO event_requests 
+        (coach_id, school_id, event_name, event_date, time_from, time_to, facilities_required)
+        VALUES 
+        (:coach_id, :school_id, :event_name, :event_date, :time_from, :time_to, :facilities_required)
+    ');
+    
+    $this->db->bind(':coach_id', $data['coach_id']);
+    $this->db->bind(':school_id', $data['school_id']);
+    $this->db->bind(':event_name', $data['event_name']);
+    $this->db->bind(':event_date', $data['event_date']);
+    $this->db->bind(':time_from', $data['time_from']);
+    $this->db->bind(':time_to', $data['time_to']);
+    $this->db->bind(':facilities_required', $data['facilities_required']);
+    
+    return $this->db->execute();
 }
 
+public function deleteEventRequest($requestId) {
+    $this->db->query('DELETE FROM event_requests WHERE request_id = :request_id');
+    $this->db->bind(':request_id', $requestId);
+    return $this->db->execute();
+}
+
+public function getEventRequestById($requestId) {
+    $this->db->query('SELECT * FROM event_requests WHERE request_id = :request_id');
+    $this->db->bind(':request_id', $requestId);
+    return $this->db->single();
+}
+
+public function createScheduledEvent($data) {
+    $this->db->query('
+        INSERT INTO scheduled_events 
+        (request_id, event_name, event_date, time_from, time_to, school_id, facilities_used, coach_id)
+        VALUES 
+        (:request_id, :event_name, :event_date, :time_from, :time_to, :school_id, :facilities_used, :coach_id)
+    ');
+    
+    $this->db->bind(':request_id', $data['request_id']);
+    $this->db->bind(':event_name', $data['event_name']);
+    $this->db->bind(':event_date', $data['event_date']);
+    $this->db->bind(':time_from', $data['time_from']);
+    $this->db->bind(':time_to', $data['time_to']);
+    $this->db->bind(':school_id', $data['school_id']);
+    $this->db->bind(':facilities_used', $data['facilities_used']);
+    $this->db->bind(':coach_id', $data['coach_id']);
+    
+    return $this->db->execute();
+}
+
+public function deleteScheduledEvent($eventId) {
+    $this->db->query('DELETE FROM scheduled_events WHERE event_id = :event_id');
+    $this->db->bind(':event_id', $eventId);
+    return $this->db->execute();
+}
+
+public function getCoachByUserId($userId) {
+    $this->db->query('SELECT coach_id FROM user_coach WHERE user_id = :user_id');
+    $this->db->bind(':user_id', $userId);
+    return $this->db->single();
+}
+
+
+}
 
     
 ?>
