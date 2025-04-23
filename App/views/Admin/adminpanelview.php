@@ -62,6 +62,8 @@ if (!$user) {
             <div class="chart">
                 <div id="topic">
                     Matrix
+                    <?php print_r($unreadCount)?>
+
                 </div>
             </div>
 

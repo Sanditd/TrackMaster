@@ -1,10 +1,10 @@
 <?php
-require_once 'models/Notification.php';
+require_once __DIR__ .'/../model/Notification.php';
 
 class NotificationController extends Controller{
     private $notificationModel;
     
-    public function __construct($database) {
+    public function __construct() {
         $this->notificationModel = $this->model('Notification');
     }
     
@@ -30,6 +30,24 @@ class NotificationController extends Controller{
             'count' => $count
         ]);
     }
+
+
+    public function getAdminNotifications() {
+        session_start();
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode(['error' => 'User not logged in']);
+            return;
+        }
+        
+        $userId = $_SESSION['user_id'];
+        $notifications = $this->notificationModel->getAdminNotifications($userId);
+        $count = $this->notificationModel->getAdminUnreadCount($userId);
+        
+        echo json_encode([
+            'notifications' => $notifications,
+            'count' => $count
+        ]);
+    }
     
     // Mark notification as read (AJAX endpoint)
     public function markAsRead() {
@@ -37,12 +55,24 @@ class NotificationController extends Controller{
             echo json_encode(['error' => 'Notification ID required']);
             return;
         }
-        
+    
         $notificationId = $_POST['notification_id'];
-        $success = $this->notificationModel->markAsRead($notificationId);
-        
-        echo json_encode(['success' => $success]);
+        $redirect_url = $_POST['redirect_url'] ?? ROOT."/admin/dashboard";
+        $result = $this->notificationModel->markAsRead($notificationId);
+
+        header("Location: $redirect_url");
+        exit;
+    
+        if (isset($result['success']) && $result['success']) {
+            echo json_encode([
+                'success' => true,
+                'redirect' => $_SERVER['HTTP_REFERER'] // redirects back to the same page
+            ]);
+        } else {
+            echo json_encode($result); // contains success: false and error
+        }
     }
+    
     
     // Mark all notifications as read (AJAX endpoint)
     public function markAllAsRead() {
