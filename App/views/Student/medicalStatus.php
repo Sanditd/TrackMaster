@@ -330,6 +330,37 @@
             resize: vertical;
         }
 
+        /* Error message styles */
+        .invalid-feedback {
+            display: block;
+            color: #dc3545;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .is-invalid {
+            border-color: #dc3545;
+        }
+
+        /* Flash message styles */
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .medical-content {
@@ -383,6 +414,8 @@
             <h1><i class="fas fa-heartbeat"></i> Medical History</h1>
             <p>Monitor and update your health information for optimal performance</p>
         </div>
+
+        <?php flash('medical_message'); ?>
 
         <div class="medical-content">
             <!-- Current Status Section -->
@@ -444,7 +477,7 @@
                 </div>
                 
                 <?php if(isset($data['currentStatus']) && $data['currentStatus']): ?>
-                    <p><strong><i class="fas fa-calendar-check"></i> Last updated:</strong> <?php echo htmlspecialchars($data['currentStatus']->date); ?></p>
+                    <p><strong><i class="fas fa-calendar-check"></i> Last updated:</strong> <?php echo date('d/m/Y', strtotime($data['currentStatus']->date)); ?></p>
                     <p><strong><i class="fas fa-heartbeat"></i> Medical Conditions:</strong> <?php echo htmlspecialchars($data['currentStatus']->medical_condition); ?></p>
                     <p><strong><i class="fas fa-pills"></i> Medication:</strong> <?php echo htmlspecialchars($data['currentStatus']->medication); ?></p>
                     <p><strong><i class="fas fa-clipboard"></i> Notes:</strong> <?php echo htmlspecialchars($data['currentStatus']->notes); ?></p>
@@ -518,27 +551,37 @@
         <div class="modal-content">
             <span class="close" id="closeMedical">&times;</span>
             <h2>Add a New Medical Record</h2>
-            <form action="<?php echo htmlspecialchars(URLROOT); ?>/medicalStatus/saveMedicalStatus" method="POST">
-                <input type="hidden" name="user_id" value="<?php echo isset($data['user_id']) ? htmlspecialchars($data['user_id']) : '1'; ?>">
-                
+            <form action="<?php echo URLROOT; ?>/medicalStatus/saveMedicalStatus" method="POST">
                 <div class="form-group">
                     <label for="date"><i class="fas fa-calendar"></i> Date:</label>
-                    <input type="date" id="date" name="date" class="form-control" required>
+                    <input type="date" id="date" name="date" class="form-control <?php echo isset($data['errors']['date']) ? 'is-invalid' : ''; ?>" value="<?php echo date('Y-m-d'); ?>" required>
+                    <?php if(isset($data['errors']['date'])): ?>
+                        <span class="invalid-feedback"><?php echo $data['errors']['date']; ?></span>
+                    <?php endif; ?>
                 </div>
 
                 <div class="form-group">
                     <label for="condition"><i class="fas fa-heartbeat"></i> Medical Condition:</label>
-                    <input type="text" id="condition" name="condition" class="form-control" placeholder="Enter any ongoing medical conditions" required>
+                    <input type="text" id="condition" name="condition" class="form-control <?php echo isset($data['errors']['condition']) ? 'is-invalid' : ''; ?>" placeholder="Enter any ongoing medical conditions" required>
+                    <?php if(isset($data['errors']['condition'])): ?>
+                        <span class="invalid-feedback"><?php echo $data['errors']['condition']; ?></span>
+                    <?php endif; ?>
                 </div>
 
                 <div class="form-group">
                     <label for="medication"><i class="fas fa-pills"></i> Medication:</label>
-                    <textarea id="medication" name="medication" class="form-control" placeholder="List any medications you're currently taking" required></textarea>
+                    <textarea id="medication" name="medication" class="form-control <?php echo isset($data['errors']['medication']) ? 'is-invalid' : ''; ?>" placeholder="List any medications you're currently taking"></textarea>
+                    <?php if(isset($data['errors']['medication'])): ?>
+                        <span class="invalid-feedback"><?php echo $data['errors']['medication']; ?></span>
+                    <?php endif; ?>
                 </div>
 
                 <div class="form-group">
                     <label for="notes"><i class="fas fa-sticky-note"></i> Notes:</label>
-                    <textarea id="notes" name="notes" class="form-control" placeholder="Add any additional notes or concerns" required></textarea>
+                    <textarea id="notes" name="notes" class="form-control <?php echo isset($data['errors']['notes']) ? 'is-invalid' : ''; ?>" placeholder="Add any additional notes or concerns"></textarea>
+                    <?php if(isset($data['errors']['notes'])): ?>
+                        <span class="invalid-feedback"><?php echo $data['errors']['notes']; ?></span>
+                    <?php endif; ?>
                 </div>
 
                 <center>
@@ -555,27 +598,37 @@
         <div class="modal-content">
             <span class="close" id="closeThings">&times;</span>
             <h2>Edit Health Information</h2>
-            <form action="<?php echo htmlspecialchars(URLROOT); ?>/medicalStatus/saveThingsToConsider" method="POST">
-                <input type="hidden" name="user_id" value="<?php echo isset($data['user_id']) ? htmlspecialchars($data['user_id']) : '1'; ?>">
-                
+            <form action="<?php echo URLROOT; ?>/medicalStatus/saveThingsToConsider" method="POST">
                 <div class="form-group">
                     <label for="bloodType"><i class="fas fa-tint"></i> Blood Type:</label>
-                    <input type="text" id="bloodType" name="bloodType" class="form-control" value="<?php echo isset($data['thingsToConsider']) && $data['thingsToConsider']->blood_type ? htmlspecialchars($data['thingsToConsider']->blood_type) : 'A+'; ?>" required>
+                    <input type="text" id="bloodType" name="bloodType" class="form-control <?php echo isset($data['errors']['blood_type']) ? 'is-invalid' : ''; ?>" value="<?php echo isset($data['thingsToConsider']) && $data['thingsToConsider']->blood_type ? htmlspecialchars($data['thingsToConsider']->blood_type) : ''; ?>" required>
+                    <?php if(isset($data['errors']['blood_type'])): ?>
+                        <span class="invalid-feedback"><?php echo $data['errors']['blood_type']; ?></span>
+                    <?php endif; ?>
                 </div>
 
                 <div class="form-group">
                     <label for="allergies"><i class="fas fa-exclamation-triangle"></i> Allergies:</label>
-                    <textarea id="allergies" name="allergies" class="form-control" placeholder="List any allergies you have"><?php echo isset($data['thingsToConsider']) && $data['thingsToConsider']->allergies ? htmlspecialchars($data['thingsToConsider']->allergies) : 'None'; ?></textarea>
+                    <textarea id="allergies" name="allergies" class="form-control <?php echo isset($data['errors']['allergies']) ? 'is-invalid' : ''; ?>" placeholder="List any allergies you have"><?php echo isset($data['thingsToConsider']) && $data['thingsToConsider']->allergies ? htmlspecialchars($data['thingsToConsider']->allergies) : ''; ?></textarea>
+                    <?php if(isset($data['errors']['allergies'])): ?>
+                        <span class="invalid-feedback"><?php echo $data['errors']['allergies']; ?></span>
+                    <?php endif; ?>
                 </div>
 
                 <div class="form-group">
                     <label for="specialNotes"><i class="fas fa-info-circle"></i> Special Notes:</label>
-                    <textarea id="specialNotes" name="specialNotes" class="form-control" placeholder="Add any important health information"><?php echo isset($data['thingsToConsider']) && $data['thingsToConsider']->special_notes ? htmlspecialchars($data['thingsToConsider']->special_notes) : 'None'; ?></textarea>
+                    <textarea id="specialNotes" name="specialNotes" class="form-control <?php echo isset($data['errors']['special_notes']) ? 'is-invalid' : ''; ?>" placeholder="Add any important health information"><?php echo isset($data['thingsToConsider']) && $data['thingsToConsider']->special_notes ? htmlspecialchars($data['thingsToConsider']->special_notes) : ''; ?></textarea>
+                    <?php if(isset($data['errors']['special_notes'])): ?>
+                        <span class="invalid-feedback"><?php echo $data['errors']['special_notes']; ?></span>
+                    <?php endif; ?>
                 </div>
 
                 <div class="form-group">
                     <label for="emergencyContact"><i class="fas fa-phone"></i> Emergency Contact:</label>
-                    <input type="text" id="emergencyContact" name="emergencyContact" class="form-control" value="<?php echo isset($data['thingsToConsider']) && $data['thingsToConsider']->emergency_contact ? htmlspecialchars($data['thingsToConsider']->emergency_contact) : '071 8213324'; ?>" required>
+                    <input type="text" id="emergencyContact" name="emergencyContact" class="form-control <?php echo isset($data['errors']['emergency_contact']) ? 'is-invalid' : ''; ?>" value="<?php echo isset($data['thingsToConsider']) && $data['thingsToConsider']->emergency_contact ? htmlspecialchars($data['thingsToConsider']->emergency_contact) : ''; ?>" required>
+                    <?php if(isset($data['errors']['emergency_contact'])): ?>
+                        <span class="invalid-feedback"><?php echo $data['errors']['emergency_contact']; ?></span>
+                    <?php endif; ?>
                 </div>
 
                 <center>

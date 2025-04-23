@@ -38,9 +38,6 @@
             display: grid;
             grid-template-columns: 1fr 1.5fr;
             gap: 30px;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
         }
 
         /* Dashboard Header */
@@ -296,42 +293,10 @@
                 font-size: 0.8rem;
             }
         }
-
-        label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #333;
-  font-size: 16px;
-}
-
-select {
-  width: 100%;
-  padding: 10px 12px;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  font-size: 16px;
-
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23333' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 10px 6px;
-}
-
-select:focus {
-
-  outline: none;
-  background-color: #fff;
-}
-
-
     </style>
 </head>
-<body>
+
+<html><body>
     <?php require 'CoachNav.php'; ?>
 
     <div class="dashboard-header">
@@ -339,56 +304,56 @@ select:focus {
         <p>Create, manage and track events for your students and teams</p>
     </div>
 
-    
+    <div class="container">
+        <!-- Left Side: Event Creation Form -->
+        <div class="form-section">
+            <h2><i class="fas fa-plus-circle"></i> Create Event</h2>
+            <form action="<?php echo URLROOT; ?>/coach/createEventRequest" method="post">
+                <label for="event_name">Event Name:</label>
+                <input type="text" id="event_name" name="event_name" placeholder="Enter event name" required
+                    value="<?php echo isset($_POST['event_name']) ? $_POST['event_name'] : ''; ?>">
+                <span class="error"><?php echo isset($data['event_name_err']) ? $data['event_name_err'] : ''; ?></span>
+
+                <label for="school_id">Venue (School):</label>
+                <select id="school_id" name="school_id" required>
+                    <option value="">Select School</option>
+                    <?php foreach($data['schools'] as $school): ?>
+                        <option value="<?php echo $school->school_id; ?>">
+                            <?php echo $school->school_name; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
+                <label for="event_date">Date:</label>
+                <input type="date" id="event_date" name="event_date" required
+                    value="<?php echo isset($_POST['event_date']) ? $_POST['event_date'] : ''; ?>">
+                <span class="error"><?php echo isset($data['event_date_err']) ? $data['event_date_err'] : ''; ?></span>
+
+                <label for="time_from">Time From:</label>
+                <input type="time" id="time_from" name="time_from" required
+                    value="<?php echo isset($_POST['time_from']) ? $_POST['time_from'] : ''; ?>">
+                <span class="error"><?php echo isset($data['time_from_err']) ? $data['time_from_err'] : ''; ?></span>
+
+                <label for="time_to">Time To:</label>
+                <input type="time" id="time_to" name="time_to" required
+                    value="<?php echo isset($_POST['time_to']) ? $_POST['time_to'] : ''; ?>">
+                <span class="error"><?php echo isset($data['time_to_err']) ? $data['time_to_err'] : ''; ?></span>
+
+                <label for="facilities_required">Facilities Required:</label>
+                <textarea id="facilities_required" name="facilities_required" rows="4" 
+                    placeholder="Enter required facilities"><?php echo isset($_POST['facilities_required']) ? $_POST['facilities_required'] : ''; ?></textarea>
+
+                <button type="submit"><i class="fas fa-paper-plane"></i> Send Request</button>
+            </form>
+        </div>
 
         <!-- Right Side: Event List and Created Events Table -->
         <div class="table-section">
             <div class="table-card">
                 <h2><i class="fas fa-list-alt"></i> Event Requests</h2>
-                <!-- Events Table -->
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Event Name</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Session 25</td>
-                            <td>May 10, 2025</td>
-                            <td><span class="status status-pending">Pending</span></td>
-                            <td>
-                                <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                                <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Session 26</td>
-                            <td>May 15, 2025</td>
-                            <td><span class="status status-approved">Approved</span></td>
-                            <td>
-                                <button class="create-btn"><i class="fas fa-check"></i> Create</button>
-                                <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Practice Match</td>
-                            <td>May 20, 2025</td>
-                            <td><span class="status status-rejected">Rejected</span></td>
-                            <td>
-                                <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="table-card">
-                <h2><i class="fas fa-calendar-check"></i> Created Events</h2>
-                <!-- Created Events Table -->
+                <?php flash('event_message'); ?>
+                <?php flash('event_error', 'error'); ?>
+                
                 <table>
                     <thead>
                         <tr>
@@ -396,34 +361,121 @@ select:focus {
                             <th>Date</th>
                             <th>Time</th>
                             <th>Venue</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php if(empty($data['eventRequests'])): ?>
+                            <tr>
+                                <td colspan="6" style="text-align: center;">No event requests found</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach($data['eventRequests'] as $request): ?>
+                                <tr>
+                                    <td><?php echo $request->event_name; ?></td>
+                                    <td><?php echo date('M j, Y', strtotime($request->event_date)); ?></td>
+                                    <td><?php echo date('g:i A', strtotime($request->time_from)) . ' - ' . date('g:i A', strtotime($request->time_to)); ?></td>
+                                    <td><?php echo $request->school_name; ?></td>
+                                    <td>
+                                        <span class="status status-<?php echo strtolower($request->status); ?>">
+                                            <?php echo ucfirst($request->status); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <?php if($request->status == 'approved'): ?>
+                                            <form action="<?php echo URLROOT; ?>/coach/createScheduledEvent/<?php echo $request->request_id; ?>" method="post" style="display: inline;">
+                                                <button type="submit" class="create-btn"><i class="fas fa-check"></i> Create</button>
+                                            </form>
+                                        <?php endif; ?>
+                                        
+                                        <?php if($request->status == 'pending'): ?>
+                                            <button class="edit-btn" onclick="editRequest(<?php echo $request->request_id; ?>)">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                        <?php endif; ?>
+                                        
+                                        <form action="<?php echo URLROOT; ?>/coach/deleteEventRequest/<?php echo $request->request_id; ?>" method="post" style="display: inline;">
+                                            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure?')">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-card">
+                <h2><i class="fas fa-calendar-check"></i> Scheduled Events</h2>
+                <table>
+                    <thead>
                         <tr>
-                            <td>Session 25</td>
-                            <td>May 8, 2025</td>
-                            <td>8:00 PM - 11:00 PM</td>
-                            <td>S.Thomas College</td>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Venue</th>
+                            <th>Actions</th>
                         </tr>
-                        <tr>
-                            <td>Session 24</td>
-                            <td>May 5, 2025</td>
-                            <td>10:00 AM - 5:00 PM</td>
-                            <td>S.Thomas College</td>
-                        </tr>
-                        <tr>
-                            <td>Training Camp</td>
-                            <td>April 28, 2025</td>
-                            <td>9:00 AM - 3:00 PM</td>
-                            <td>National Stadium</td>
-                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if(empty($data['scheduledEvents'])): ?>
+                            <tr>
+                                <td colspan="5" style="text-align: center;">No scheduled events found</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach($data['scheduledEvents'] as $event): ?>
+                                <tr>
+                                    <td><?php echo $event->event_name; ?></td>
+                                    <td><?php echo date('M j, Y', strtotime($event->event_date)); ?></td>
+                                    <td><?php echo date('g:i A', strtotime($event->time_from)) . ' - ' . date('g:i A', strtotime($event->time_to)); ?></td>
+                                    <td><?php echo $event->school_name; ?></td>
+                                    <td>
+                                        <button class="edit-btn" onclick="editEvent(<?php echo $event->event_id; ?>)">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <form action="<?php echo URLROOT; ?>/coach/deleteScheduledEvent/<?php echo $event->event_id; ?>" method="post" style="display: inline;">
+                                            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure?')">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
+    <?php require APPROOT . '/views/footer.php'; ?>
     
+    <script>
+        function editRequest(requestId) {
+            // Here you would implement the edit functionality
+            // For now, just show an alert
+            alert('Edit functionality for request ID: ' + requestId + ' will be implemented');
+        }
+
+        function editEvent(eventId) {
+            // Here you would implement the edit functionality
+            // For now, just show an alert
+            alert('Edit functionality for event ID: ' + eventId + ' will be implemented');
+        }
+
+        // Form submission with validation
+        document.querySelector('.form-section form').addEventListener('submit', function(e) {
+            const timeFrom = document.getElementById('time_from').value;
+            const timeTo = document.getElementById('time_to').value;
+            
+            if (timeFrom && timeTo && timeTo <= timeFrom) {
+                e.preventDefault();
+                alert('End time must be after start time');
+            }
+        });
+    </script>
 </body>
 </html>

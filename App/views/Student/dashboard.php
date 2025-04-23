@@ -493,7 +493,8 @@
     <div class="dashboard-container">
         <div class="dashboard-header">
             <h1><i class="fas fa-user-graduate"></i> Student Dashboard</h1>
-            <p>Welcome, <?php echo htmlspecialchars($_SESSION['username'] ?? 'Guest'); ?> - Track your sports activities, achievements, and performance</p>
+            <p>Welcome to TrackMaster,
+                 Where You Can Track Your Progress, Achievements, and Performance</p>
         </div>
 
         <div class="main-content">

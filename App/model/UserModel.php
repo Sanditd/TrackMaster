@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../libraries/Database.php';
 
-class User {
+class UserModel {
     private $db;
 
     public function __construct() {
@@ -13,8 +13,8 @@ class User {
         error_log("Data received in createUser: " . print_r($data, true)); // Debugging
     
         $query = "INSERT INTO users 
-                  (firstname, lname, phonenumber, address, email, password, username, photo, age, dob, role, gender, province, district,regDate)
-                  VALUES (:firstname, :lastname, :phone, :address, :email, :password, :username, :photo, :age, :dob, :role, :gender, :province, :district, :regDate)";
+                  (firstname, lname, phonenumber, address, email, password, username, photo, age, dob, role, gender, province, district,regDate,zone)
+                  VALUES (:firstname, :lastname, :phone, :address, :email, :password, :username, :photo, :age, :dob, :role, :gender, :province, :district, :regDate, :zone)";
         
         $this->db->query($query);
         
@@ -33,14 +33,15 @@ class User {
         $this->db->bind(':province', $data['province']);
         $this->db->bind(':district', $data['district']);
         $this->db->bind(':regDate', $data['created_at']);
+        $this->db->bind(':zone', $data['zone']);
         $this->db->bind(':role', $data['role']);
 
         if ($this->db->execute()) {
             return true;
         } else {
             // Log database errors
-            // $errorInfo = $this->db->errorInfo();
-            // error_log("Database error: " . $errorInfo[2]);
+            $errorInfo = $this->db->errorInfo();
+            error_log("Database error: " . $errorInfo[2]);
             return false;
         }
     }
@@ -49,8 +50,8 @@ class User {
         error_log("Data received in createUser: " . print_r($data, true)); // Debugging
     
         $query = "INSERT INTO users 
-                  (firstname, phonenumber, address, email, password, username, photo, role, province, district,regDate)
-                  VALUES (:firstname, :phone, :address, :email, :password, :username, :photo,  :role, :province, :district, :regDate)";
+                  (firstname, phonenumber, address, email, password, username, photo, role, province, district,regDate,zone)
+                  VALUES (:firstname, :phone, :address, :email, :password, :username, :photo,  :role, :province, :district, :regDate, :zone)";
         
         $this->db->query($query);
         
@@ -65,6 +66,7 @@ class User {
         $this->db->bind(':province', $data['province']);
         $this->db->bind(':district', $data['district']);
         $this->db->bind(':regDate', $data['created_at']);
+        $this->db->bind(':zone', $data['zone']);
         $this->db->bind(':role', $data['role']);
 
         if ($this->db->execute()) {
@@ -114,16 +116,6 @@ class User {
         return $result ? $result->sport_id : false; // Return sport_id or false if not found
     }
     
-    public function getSportNameById($sport_id) {
-        $query = "SELECT sport_name FROM sports WHERE sport_id = :sport_id";
-        $this->db->query($query);
-        $this->db->bind(':sport_id', $sport_id);
-        $result = $this->db->single();
-
-        
-        return $result ? $result->sport_name : false; // Return sport_id or false if not found
-    }
-
     public function getSchoolIdByName($schoolName) {
         $query = "SELECT school_id FROM user_school WHERE school_name = :school_name";
         $this->db->query($query);
@@ -140,10 +132,9 @@ class User {
         $school_id = (int) $data['school'];  // Ensure school_id is an integer
         $zone = (string) $data['zone'];  // Ensure zone is a string
         $bio = (string) $data['bio'];  // Ensure bio is a string
-        $playerRole = (string) $data['playerRole'];  // Ensure bio is a string
     
-        $query = "INSERT INTO user_player (user_id, sport_id, school_id, zone, bio,role)
-                  VALUES (:user_id, :sport_id, :school_id, :zone, :bio,:role)";
+        $query = "INSERT INTO user_player (user_id, sport_id, school_id, zone, bio)
+                  VALUES (:user_id, :sport_id, :school_id, :zone, :bio)";
         
         $this->db->query($query);
         $this->db->bind(':user_id', $user_id);
@@ -151,7 +142,6 @@ class User {
         $this->db->bind(':school_id', $school_id);
         $this->db->bind(':zone', $zone);
         $this->db->bind(':bio', $bio);
-        $this->db->bind(':role', $playerRole);
     
         return $this->db->execute();
     }
@@ -165,7 +155,7 @@ class User {
     }
 
     public function getSchools() {
-        $this->db->query("SELECT school_name,zone FROM user_school");
+        $this->db->query("SELECT school_name FROM user_school");
         $result = $this->db->resultset();
         return $result;
 
@@ -236,46 +226,13 @@ class User {
     
             return $this->db->rowCount() > 0; // Returns true if a user exists, false otherwise
         }
-<<<<<<< HEAD
+
         public function getAllPlayers() {
-            $this->db->query("SELECT id, name FROM users WHERE role = 'player'");
+            $this->db->query("SELECT name FROM users WHERE role = 'player'");
             return $this->db->resultSet();
         }
         
-=======
-
-        public function createAdmin($data) {
-            error_log("Data received in createUser: " . print_r($data, true)); // Debugging
+        }
         
-            $query = "INSERT INTO admin 
-                      (email, password, username)
-                      VALUES (:email, :password, :username)";
-            
-            $this->db->query($query);
-            
-            // Bind parameters (Updated key names)
-        
-            $this->db->bind(':email', $data['email']);
-            $this->db->bind(':password', $data['password']);
-            $this->db->bind(':username', $data['username']);
-
     
-            if ($this->db->execute()) {
-                return true;
-            } else {
-                // Log database errors
-                $errorInfo = $this->db->errorInfo();
-                error_log("Database error: " . $errorInfo[2]);
-                return false;
-            }
-        }
-
-        public function getAdminUserIds(){
-            $query = "SELECT admin_id FROM admin ";
-            $this->db->query($query);
-            $result = $this->db->resultset();
-            return $result ? $result : false; // Return user_id or false if not found
-        }
->>>>>>> 04c0cb838b923ba63a4a740d6e900d19e8b164a5
-    }
 ?>

@@ -528,28 +528,31 @@
         }
 
         function fetchPlayersForCoach() {
-            fetch('<?php echo ROOT; ?>/coach/getPlayersForCoach')
-                .then(response => response.json())
-                .then(data => {
-                    const dropdown = document.getElementById('playerDropdown');
-                    dropdown.innerHTML = '<option value="">-- Select a Player --</option>';
-                    
-                    if (data.players && data.players.length > 0) {
-                        data.players.forEach(player => {
-                            const option = document.createElement('option');
-                            option.value = player.player_id;
-                            option.textContent = player.player_name;
-                            dropdown.appendChild(option);
-                        });
-                    } else {
-                        dropdown.innerHTML = '<option value="">No players found</option>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching players:', error);
-                    document.getElementById('playerDropdown').innerHTML = '<option value="">Error loading players</option>';
+    fetch('<?php echo ROOT; ?>/coach/getPlayersForCoach')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Received data:', data); // Add this line
+            const dropdown = document.getElementById('playerDropdown');
+            dropdown.innerHTML = '<option value="">-- Select a Player --</option>';
+            
+            if (data.players && data.players.length > 0) {
+                console.log('Players array:', data.players); // Check the array
+                data.players.forEach(player => {
+                    console.log('Player object:', player); // Check each player
+                    const option = document.createElement('option');
+                    option.value = player.player_id;
+                    option.textContent = player.player_name || 'Unnamed Player'; // Fallback text
+                    dropdown.appendChild(option);
                 });
-        }
+            } else {
+                dropdown.innerHTML = '<option value="">No players found</option>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching players:', error);
+            document.getElementById('playerDropdown').innerHTML = '<option value="">Error loading players</option>';
+        });
+}
 
         // Handle form submission
         document.getElementById('playerSelectForm').addEventListener('submit', function(e) {
