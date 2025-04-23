@@ -124,6 +124,81 @@ public function addFacility($data) {
     // Execute the query and return the result
     return $this->db->execute();
 }
+
+public function getFacilityRequests() {
+    $this->db->query("
+        SELECT fr.request_id, fr.event_name, fr.coach_name, 
+               fr.date, fr.start_time, fr.end_time, fr.status
+        FROM facility_requests fr
+        WHERE fr.status = 'pending'
+    ");
+    return $this->db->resultSet();
 }
+
+public function getExtraClassRequests() {
+    $this->db->query("
+        SELECT ecr.request_id, u.firstname as student_name, 
+               ecr.subject_name, ecr.notes, ecr.status
+        FROM extra_class_requests ecr
+        JOIN users u ON ecr.student_id = u.user_id
+        WHERE ecr.status = 'pending'
+    ");
+    return $this->db->resultSet();
+}
+
+public function updateFacilityRequestStatus($requestId, $status) {
+    $this->db->query("
+        UPDATE facility_requests 
+        SET status = :status 
+        WHERE request_id = :request_id
+    ");
+    $this->db->bind(':status', $status);
+    $this->db->bind(':request_id', $requestId);
+    return $this->db->execute();
+}
+public function addExtraClass($data) {
+    $sql = "INSERT INTO extra_classes (players, subject, description, class_date, venue) 
+            VALUES (:players, :subject, :description, :date, :venue)";
+
+    // Prepare the query and bind the parameters
+    $this->db->query($sql);
+    $this->db->bind(':players', $data['players']);
+    $this->db->bind(':subject', $data['subject']);
+    $this->db->bind(':description', $data['description']);
+    $this->db->bind(':date', $data['date']);
+    $this->db->bind(':venue', $data['venue']);
+
+    // Execute the query and return the result
+    if ($this->db->execute()) {
+        return $this->db->lastInsertId();
+    }
+    return false;
+}
+
+// Method to update the status of an extra class request
+public function updateExtraClassRequestStatus($requestId, $status) {
+    $this->db->query("
+        UPDATE extra_class_requests 
+        SET status = :status 
+        WHERE request_id = :request_id
+    ");
+    $this->db->bind(':status', $status);
+    $this->db->bind(':request_id', $requestId);
+
+    // Execute the query and return whether a row was affected
+    return $this->db->execute() && $this->db->rowCount() > 0;
+}
+
+public function getPlayersBySchoolId($schoolId) {
+    // Query to fetch players associated with the school_id
+    // Change 'full_name' to the correct column name
+    $sql = "SELECT full_name FROM users WHERE school_id = :school_id AND role = 'player'";  // Update 'full_name' with the correct column name
+
+    $this->db->query($sql);
+    $this->db->bind(':school_id', $schoolId);
     
-    
+    // Fetch and return the result
+    return $this->db->resultSet();  // Returns an array of player names
+}
+
+}

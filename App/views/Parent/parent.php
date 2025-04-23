@@ -51,13 +51,9 @@
                 <div class="appointment">
                     <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
                     <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
-                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
-                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
-                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
-                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
-                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
+                  
                  </div>
-                 <center><button class="edit-button">View Attendence</button></center>
+                
             </div>
 
 
@@ -66,11 +62,7 @@
                 <div class="appointment">
                     <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
                     <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                    <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                    <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                    <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                    <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                    <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
+                  
                 </div>
                
             </div>
