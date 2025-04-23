@@ -8,9 +8,118 @@ class StudentModel {
         $this->db = new Database();
     }
 
-    // Add a new achievement
+    // Training Status Methods
+    public function updateTrainingStatus($data) {
+        // Check if status exists for user
+        $this->db->query('SELECT id FROM training_status WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $data['user_id']);
+        $exists = $this->db->single();
+
+        if ($exists) {
+            // Update existing status
+            $this->db->query('UPDATE training_status SET status = :status, updated_at = NOW() WHERE user_id = :user_id');
+        } else {
+            // Insert new status
+            $this->db->query('INSERT INTO training_status (user_id, status) VALUES (:user_id, :status)');
+        }
+
+        $this->db->bind(':user_id', $data['user_id']);
+        $this->db->bind(':status', $data['status']);
+
+        try {
+            return $this->db->execute();
+        } catch (Exception $e) {
+            error_log('Error updating training status: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getTrainingStatus($userId) {
+        $this->db->query('SELECT status FROM training_status WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $userId);
+        try {
+            $result = $this->db->single();
+            return $result ? $result->status : 'Practicing'; // Default status
+        } catch (Exception $e) {
+            error_log('Error fetching training status: ' . $e->getMessage());
+            return 'Practicing';
+        }
+    }
+
+    // Calendar Note Methods
+    public function addCalendarNote($data) {
+        $this->db->query('INSERT INTO calendar_notes (user_id, note_date, note_text) VALUES (:user_id, :note_date, :note_text)');
+        $this->db->bind(':user_id', $data['user_id']);
+        $this->db->bind(':note_date', $data['note_date']);
+        $this->db->bind(':note_text', $data['note_text']);
+    
+        try {
+            $result = $this->db->execute();
+            if (!$result) {
+                error_log('Failed to execute query for calendar note. Data: ' . json_encode($data));
+            }
+            return $result;
+        } catch (Exception $e) {
+            error_log('Error adding calendar note: ' . $e->getMessage() . ' | Data: ' . json_encode($data));
+            return false;
+        }
+    }
+    
+
+    public function getCalendarNotes($userId, $month, $year) {
+        $startDate = date('Y-m-d', strtotime("$year-$month-01"));
+        $endDate = date('Y-m-t', strtotime($startDate)); // Last day of the month
+
+        $this->db->query('SELECT note_date, note_text FROM calendar_notes WHERE user_id = :user_id AND note_date BETWEEN :start_date AND :end_date');
+        $this->db->bind(':user_id', $userId);
+        $this->db->bind(':start_date', $startDate);
+        $this->db->bind(':end_date', $endDate);
+
+        try {
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log('Error fetching calendar notes: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    // Medical Status Methods (if not handled by MedicalModel)
+    public function updateMedicalStatus($data) {
+        // Assuming a medical_status table exists; otherwise, this should be in MedicalModel
+        $this->db->query('INSERT INTO medical_status (user_id, medical_condition, medication, notes, date) VALUES (:user_id, :medical_condition, :medication, :notes, :date)
+                          ON DUPLICATE KEY UPDATE medical_condition = :medical_condition, medication = :medication, notes = :notes, date = :date');
+        $this->db->bind(':user_id', $data['user_id']);
+        $this->db->bind(':medical_condition', $data['medical_condition']);
+        $this->db->bind(':medication', $data['medication']);
+        $this->db->bind(':notes', $data['notes']);
+        $this->db->bind(':date', $data['date']);
+
+        try {
+            return $this->db->execute();
+        } catch (Exception $e) {
+            error_log('Error updating medical status: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Registered Sports Method
+    public function getRegisteredSports($userId) {
+        // Assuming a table `player_sports` links players to sports
+        $this->db->query('SELECT s.sport_name FROM sports s
+                          JOIN player_sports ps ON s.sport_id = ps.sport_id
+                          JOIN user_player up ON ps.player_id = up.player_id
+                          WHERE up.user_id = :user_id');
+        $this->db->bind(':user_id', $userId);
+        try {
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log('Error fetching registered sports: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    // Existing Methods (unchanged)
     public function addAchievement($data) {
-        // Make sure the user is adding an achievement to their own account
         if ($data['user_id'] != $_SESSION['user_id']) {
             return false; // Unauthorized access
         }
@@ -25,14 +134,12 @@ class StudentModel {
              VALUES (:player_id, :place, :level, :description, :date)'
         );
     
-        // Bind all parameters
         $this->db->bind(':player_id', $player_id);
         $this->db->bind(':place', $data['place']);
         $this->db->bind(':level', $data['level']);
         $this->db->bind(':description', $data['description']);
         $this->db->bind(':date', $data['date']);
     
-        // Execute the query
         try {
             return $this->db->execute();
         } catch (Exception $e) {
@@ -41,16 +148,15 @@ class StudentModel {
         }
     }
     
-    // Get achievements for currently logged-in user only
     public function getAchievements() {
         if (!isset($_SESSION['user_id'])) {
-            return []; // Return empty if not logged in
+            return [];
         }
         
         $player_id = $this->getPlayerIdByUserId($_SESSION['user_id']);
         
         if (!$player_id) {
-            return []; // Return empty if no player associated with user
+            return [];
         }
         
         $this->db->query('SELECT * FROM achievements WHERE player_id = :player_id');
@@ -63,13 +169,11 @@ class StudentModel {
         }
     }
 
-    // Get a single achievement by ID (with permission check)
     public function getAchievementById($id) {
         if (!isset($_SESSION['user_id'])) {
-            return false; // Not logged in
+            return false;
         }
         
-        // First get the achievement
         $this->db->query('SELECT * FROM achievements WHERE achievement_id = :id');
         $this->db->bind(':id', $id);
         try {
@@ -80,28 +184,25 @@ class StudentModel {
         }
         
         if (!$achievement) {
-            return false; // Achievement not found
+            return false;
         }
         
-        // Check if this achievement belongs to the logged-in user
         $player_id = $this->getPlayerIdByUserId($_SESSION['user_id']);
         if ($achievement->player_id != $player_id) {
-            return false; // Unauthorized access
+            return false;
         }
         
         return $achievement;
     }
 
-    // Update an achievement (with permission check)
     public function updateAchievement($data) {
         if (!isset($_SESSION['user_id'])) {
-            return false; // Not logged in
+            return false;
         }
         
-        // Verify the achievement belongs to this user
         $achievement = $this->getAchievementById($data['id']);
         if (!$achievement) {
-            return false; // Either not found or not authorized
+            return false;
         }
         
         $this->db->query('UPDATE achievements SET place = :place, level = :level, description = :description, date = :date WHERE achievement_id = :id');
@@ -118,16 +219,14 @@ class StudentModel {
         }
     }
 
-    // Delete an achievement (with permission check)
     public function deleteAchievement($id) {
         if (!isset($_SESSION['user_id'])) {
-            return false; // Not logged in
+            return false;
         }
         
-        // Verify the achievement belongs to this user
         $achievement = $this->getAchievementById($id);
         if (!$achievement) {
-            return false; // Either not found or not authorized
+            return false;
         }
         
         $this->db->query('DELETE FROM achievements WHERE achievement_id = :id');
@@ -145,8 +244,8 @@ class StudentModel {
         $this->db->bind(':user_id', $user_id);
         try {
             $this->db->execute();
-            $result = $this->db->single(); // Fetches a single row as an object
-            return $result ? $result->player_id : null; // Access the player_id property
+            $result = $this->db->single();
+            return $result ? $result->player_id : null;
         } catch (Exception $e) {
             error_log('Error fetching player ID: ' . $e->getMessage());
             return null;
@@ -154,9 +253,8 @@ class StudentModel {
     }
     
     public function getAchievementsByUser($userId) {
-        // Check if the current user is authorized to view this user's achievements
         if ($_SESSION['user_id'] != $userId && $_SESSION['user_role'] != 'admin') {
-            return []; // Unauthorized access
+            return [];
         }
         
         $player_id = $this->getPlayerIdByUserId($userId);
@@ -175,25 +273,23 @@ class StudentModel {
     }
     
     public function getUserDetails($userId) {
-        // Check if the current user is authorized to view this user's details
         if ($_SESSION['user_id'] != $userId && $_SESSION['user_role'] != 'admin') {
-            return false; // Unauthorized access
+            return false;
         }
         
         $this->db->query("SELECT * FROM users WHERE user_id = :userId");
         $this->db->bind(':userId', $userId);
         try {
-            return $this->db->single(); // Return a single record
+            return $this->db->single();
         } catch (Exception $e) {
             error_log('Error fetching user details: ' . $e->getMessage());
             return false;
         }
     }
 
-    // Add a new financial aid application
     public function addFinancialApplication($data) {
         if ($data['user_id'] != $_SESSION['user_id']) {
-            return false; // Unauthorized access
+            return false;
         }
 
         $this->db->query(
@@ -219,7 +315,6 @@ class StudentModel {
         }
     }
 
-    // Get financial applications for the logged-in user
     public function getFinancialApplications() {
         if (!isset($_SESSION['user_id'])) {
             return [];
@@ -235,10 +330,9 @@ class StudentModel {
         }
     }
 
-    // Get a single financial application by ID (with permission check)
     public function getFinancialApplicationById($id) {
         if (!isset($_SESSION['user_id'])) {
-            return false; // Not logged in
+            return false;
         }
 
         $this->db->query('SELECT * FROM financial_applications WHERE id = :id');
@@ -251,11 +345,11 @@ class StudentModel {
         }
 
         if (!$application) {
-            return false; // Application not found
+            return false;
         }
 
         if ($application->user_id != $_SESSION['user_id']) {
-            return false; // Unauthorized access
+            return false;
         }
 
         return $application;

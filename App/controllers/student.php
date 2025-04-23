@@ -20,10 +20,63 @@ class Student extends Controller {
     
         $userId = $_SESSION['user_id'];
     
+        // Get medical status from MedicalModel
         $medicalModel = $this->model('MedicalModel');
-        $data = $medicalModel->index($userId);
+        $medicalStatus = $medicalModel->index($userId);
+    
+        // Get training status
+        $trainingStatus = $this->studentModel->getTrainingStatus($userId);
+    
+        // Get registered sports (assuming a method exists in StudentModel)
+        $sports = $this->studentModel->getRegisteredSports($userId);
+    
+        $data = [
+            'currentStatus' => $medicalStatus,
+            'trainingStatus' => $trainingStatus,
+            'sports' => $sports
+        ];
     
         $this->view('Student/dashboard', $data);
+    }
+
+    public function updateStatus() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . URLROOT . '/users/login');
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'status' => trim($_POST['status']),
+                'errors' => []
+            ];
+
+            // Validate status
+            $validStatuses = ['Practicing', 'In a Meet', 'At Rest', 'Injured'];
+            if (!in_array($data['status'], $validStatuses)) {
+                $data['errors'][] = 'Invalid status selected.';
+            }
+
+            if (empty($data['errors'])) {
+                if ($this->studentModel->updateTrainingStatus($data)) {
+                    $_SESSION['message'] = 'Training status updated successfully.';
+                    $_SESSION['message_type'] = 'success';
+                } else {
+                    $_SESSION['message'] = 'Failed to update training status.';
+                    $_SESSION['message_type'] = 'error';
+                }
+            } else {
+                $_SESSION['message'] = implode(' ', $data['errors']);
+                $_SESSION['message_type'] = 'error';
+            }
+
+            header('Location: ' . URLROOT . '/Student/studentDashboard');
+            exit();
+        } else {
+            header('Location: ' . URLROOT . '/Student/studentDashboard');
+            exit();
+        }
     }
 
     public function editStudentProfile() {
@@ -275,8 +328,46 @@ class Student extends Controller {
     }
 
     public function medicalStatus() {
-        $data = [];
-        $this->view('Student/medicalStatus');
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . URLROOT . '/users/login');
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'medical_condition' => trim($_POST['medical_condition']),
+                'medication' => trim($_POST['medication']),
+                'notes' => trim($_POST['notes']),
+                'date' => date('Y-m-d'),
+                'errors' => []
+            ];
+
+            // Validate inputs
+            if (empty($data['medical_condition'])) {
+                $data['errors'][] = 'Medical condition is required.';
+            }
+
+            if (!empty($data['errors'])) {
+                $_SESSION['message'] = implode(' ', $data['errors']);
+                $_SESSION['message_type'] = 'error';
+                $this->view('Student/medicalStatus', $data);
+            } else {
+                if ($this->studentModel->updateMedicalStatus($data)) {
+                    $_SESSION['message'] = 'Medical status updated successfully.';
+                    $_SESSION['message_type'] = 'success';
+                    header('Location: ' . URLROOT . '/Student/studentDashboard');
+                    exit();
+                } else {
+                    $_SESSION['message'] = 'Failed to update medical status.';
+                    $_SESSION['message_type'] = 'error';
+                    $this->view('Student/medicalStatus', $data);
+                }
+            }
+        } else {
+            $data = [];
+            $this->view('Student/medicalStatus');
+        }
     }
 
     public function coachProfile() {
@@ -297,6 +388,58 @@ class Student extends Controller {
     public function Playerperformance() {
         $data = [];
         $this->view('Student/Playerperformance');
+    }
+
+    public function saveCalendarNote() {
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode(['success' => false, 'message' => 'User not logged in.']);
+            exit();
+        }
+    
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Read JSON input
+            $input = json_decode(file_get_contents('php://input'), true);
+            
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'note_date' => isset($input['note_date']) ? trim($input['note_date']) : '',
+                'note_text' => isset($input['note_text']) ? trim($input['note_text']) : '',
+                'errors' => []
+            ];
+    
+            // Validate inputs
+            if (empty($data['note_date']) || !strtotime($data['note_date'])) {
+                $data['errors'][] = 'Valid date is required.';
+            }
+            if (empty($data['note_text'])) {
+                $data['errors'][] = 'Note text is required.';
+            }
+    
+            if (empty($data['errors'])) {
+                if ($this->studentModel->addCalendarNote($data)) {
+                    echo json_encode(['success' => true, 'message' => 'Note saved successfully.']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to save note.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'message' => implode(' ', $data['errors'])]);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
+        }
+        exit();
+    }
+    
+    public function getCalendarNotes($month, $year) {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . URLROOT . '/users/login');
+            exit();
+        }
+
+        $userId = $_SESSION['user_id'];
+        $notes = $this->studentModel->getCalendarNotes($userId, $month, $year);
+        echo json_encode(['success' => true, 'notes' => $notes]);
+        exit();
     }
 
     private function generateCsrfToken() {
