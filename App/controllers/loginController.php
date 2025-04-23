@@ -46,7 +46,7 @@ class loginController extends Controller {
                                 $this->view('student/Dashboard');
                                 break;
                             case 'school':
-                                $this->view('school/dashboard');
+                                $this->view('school/school');
                                 break;
                             case 'parent':
                                 $this->view('parent/dashboard');
