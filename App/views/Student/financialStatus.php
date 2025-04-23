@@ -23,12 +23,19 @@
         </div>
     </div>
 
+    <?php if(isset($_SESSION['message'])): ?>
+    <div class="status-message status-<?php echo $_SESSION['message_type']; ?>">
+        <?php echo $_SESSION['message']; ?>
+    </div>
+    <?php unset($_SESSION['message']); unset($_SESSION['message_type']); ?>
+    <?php endif; ?>
+
     <div class="stats-cards">
         <div class="card card-primary">
             <i class="fas fa-hand-holding-usd"></i>
             <div class="card-content">
                 <span>Financial Aid Status</span>
-                <strong>Pending</strong>
+                <strong><?php echo $data['status'] ?? 'No Application'; ?></strong>
             </div>
         </div>
         <div class="card card-secondary">
@@ -63,14 +70,54 @@
             </div>
         </div>
 
-        <!-- Middle Row -->
+        <!-- Previous Applications Section -->
+        <?php if(!empty($data['applications'])): ?>
+        <div class="middle-row">
+            <div class="section previous-applications">
+                <div class="section-header">
+                    <h2><i class="fas fa-history"></i> Your Previous Applications</h2>
+                </div>
+                <div class="applications-list">
+                    <table class="applications-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Annual Income</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($data['applications'] as $application): ?>
+                            <tr>
+                                <td><?php echo date('M d, Y', strtotime($application->application_date)); ?></td>
+                                <td>₹<?php echo number_format($application->annual_income, 2); ?></td>
+                                <td>
+                                    <span class="status-badge status-<?php echo strtolower($application->application_status); ?>">
+                                        <?php echo $application->application_status; ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="/TrackMaster/Student/viewApplication/<?php echo $application->id; ?>" class="action-button view-button">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <!-- Application Form -->
         <div class="middle-row">
             <div class="section application-form">
                 <div class="section-header">
                     <h2><i class="fas fa-file-invoice-dollar"></i> Apply For Financial Funds</h2>
-                    <div class="status-indicator">Application Status: <span class="status-pending">Pending</span></div>
                 </div>
-                <form id="fundApplication" method="post" action="submit_application.php" enctype="multipart/form-data">
+                <form id="fundApplication" method="post" action="/TrackMaster/Student/submitApplication" enctype="multipart/form-data">
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="studentName"><i class="fas fa-user-graduate"></i> Student Name</label>
@@ -125,10 +172,6 @@
     </div>
 </div>
 
-<div id="applicationStatus" class="status-message">
-    <!-- Status messages will appear here after form submission -->
-</div>
-
 <?php require 'footer.php'; ?>
 
 <script>
@@ -176,23 +219,34 @@
         });
         
         function showMessage(message, type) {
-            const statusDiv = document.getElementById('applicationStatus');
-            statusDiv.textContent = message;
+            const statusDiv = document.createElement('div');
             statusDiv.className = 'status-message status-' + type;
-            statusDiv.style.display = 'block';
+            statusDiv.textContent = message;
+            
+            // Insert after dashboard header
+            const dashboardHeader = document.querySelector('.dashboard-header');
+            dashboardHeader.parentNode.insertBefore(statusDiv, dashboardHeader.nextSibling);
             
             // Auto-hide after 5 seconds
             setTimeout(() => {
                 statusDiv.style.opacity = '0';
                 setTimeout(() => {
-                    statusDiv.style.display = 'none';
-                    statusDiv.style.opacity = '1';
-                    statusDiv.className = 'status-message';
+                    statusDiv.remove();
                 }, 500);
             }, 5000);
         }
-    });
         
+        // Auto-hide status messages
+        const statusMessages = document.querySelectorAll('.status-message');
+        statusMessages.forEach(message => {
+            setTimeout(() => {
+                message.style.opacity = '0';
+                setTimeout(() => {
+                    message.remove();
+                }, 500);
+            }, 5000);
+        });
+    });
 </script>
 </body>
 </html>
