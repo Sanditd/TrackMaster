@@ -653,9 +653,9 @@
             <div class="dashboard-section">
                 <h2>Financial Status</h2>
                 <div class="section-content">
-                    <p><strong><i class="fas fa-money-check-alt"></i> Financial Aid Status:</strong> Receive Funds</p>
+                    <p><i class="fas fa-money-check-alt"></i> If you have any financial concerns, please reach out to the administration.</p>
                     <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/financialStatus'">
-                        <i class="fas fa-wallet"></i> Update Financial Status
+                        <i class="fas fa-wallet"></i> Apply for Financial Funds
                     </button> 
                 </div>
             </div>
