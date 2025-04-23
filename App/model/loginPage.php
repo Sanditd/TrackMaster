@@ -183,14 +183,18 @@ public function getSchools(){
 }
 
 public function getAdminById($userId){
-
     $this->db->query("SELECT * FROM admin WHERE admin_id = :userId");
     $this->db->bind(':userId', $userId);
     $result = $this->db->resultSet();
     return $result;
 }
     
-
+public function getAdminActivation($userId){
+    $this->db->query("SELECT active FROM admin WHERE admin_id = :userId");
+    $this->db->bind(':userId', $userId);
+    $result = $this->db->resultSet();
+    return $result;
+}
 
 }
 

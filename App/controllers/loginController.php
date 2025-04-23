@@ -30,9 +30,20 @@ class loginController extends Controller {
                     // If user is found and credentials are correct
                     if ($user) {
                         // Start session and store user information
+                        if ($user->active == 0) {
+                            session_unset();      // Unset all session variables
+                            session_destroy(); 
+                            // If the account is not activated, redirect to the activation page
+                            $_SESSION['error_message'] = 'Your account is not activated. Please contact system Admins.';
+                            header('Location: ' . ROOT . '/loginController/login');
+                            exit;
+                        }
                         
                         $_SESSION['user_id'] = $user->user_id; // Corrected to object access
                         $_SESSION['role'] = $user->role; // Storing the user's role in session
+                        $_SESSION['active'] = $user->active; // Storing the user's account activation status
+
+                       
         
                         // Redirect to the appropriate dashboard based on the role
                         switch ($user->role) {
@@ -95,9 +106,18 @@ class loginController extends Controller {
                     $user = $this->login->checkAdminLoginCredentials($username, $password);
         
                     if ($user) {
+                        if ($user->active == 0) {
+                            session_unset();      // Unset all session variables
+                            session_destroy(); 
+                            // If the account is not activated, redirect to the activation page
+                            $_SESSION['error_message'] = 'Your account is not activated. Please contact system Admins.';
+                            header('Location: ' . ROOT . '/loginController/AdminLogin');
+                            exit;
+                        }
                         $_SESSION['user_id'] = $user->admin_id;
                         $_SESSION['role'] = 'Admin';
                         $_SESSION['username'] = $user->username; // Store username in session
+                        $_SESSION['active'] = $user->active; // Store username in session
                         header('Location: ' . ROOT . '/admin/Dashboard');
                         exit;
                     }

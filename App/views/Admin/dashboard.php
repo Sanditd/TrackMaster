@@ -21,11 +21,25 @@ $userId = (int) $_SESSION['user_id'];
 
 // Create login model instance
 $loginModel = new loginPage();
+// Create activity model instance
 
 $user = $loginModel->getAdminById($userId);
+$userActive = $loginModel->getAdminActivation($userId);
 
-
-
+//check user account active status
+if ($userActive['active'] == 0) {
+    session_unset();
+    session_destroy();
+    $_SESSION['error_message']='Login Failed! Try Again.';
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
+} else if($userActive['active'] !== 1) {
+    session_unset();
+    session_destroy();
+    $_SESSION['error_message']='Login Failed! Try Again.';
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
+}
 
 //If user does not exist in DB, destroy session and redirect
 if (!$user) {

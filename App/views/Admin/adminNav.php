@@ -27,9 +27,7 @@ $notificationController = new NotificationController();
 $user = $loginModel->getAdminById($userId);
 $notifications = $NotificationModel->getAdminNotifications($userId, 10);
 $unreadCount = $NotificationModel->getAdminUnreadCount($userId);
-
-
-
+$userActive = $loginModel->getAdminActivation($userId);
 
 //If user does not exist in DB, destroy session and redirect
 if (!$user) {
@@ -39,6 +37,18 @@ if (!$user) {
     header('Location: ' . ROOT . '/loginController/adminLogin');
     exit;
 }
+
+//check user account active status
+if ($userActive[0]->active != 1) {
+    $_SESSION['error_message'] = 'Login Failed! Try Again.';
+    session_unset();
+    session_destroy();
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
+}
+
+
+
 ?>
 
 
