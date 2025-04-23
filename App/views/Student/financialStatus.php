@@ -84,7 +84,6 @@
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Annual Income</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -93,7 +92,6 @@
                             <?php foreach($data['applications'] as $application): ?>
                             <tr>
                                 <td><?php echo htmlspecialchars(date('M d, Y', strtotime($application->application_date))); ?></td>
-                                <td>Rs.<?php echo htmlspecialchars(number_format($application->annual_income, 2)); ?></td>
                                 <td>
                                     <span class="status-badge status-<?php echo strtolower(htmlspecialchars($application->application_status)); ?>">
                                         <?php echo htmlspecialchars($application->application_status); ?>

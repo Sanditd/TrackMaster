@@ -30,14 +30,12 @@
             color: var(--dark-color);
         }
 
-        /* Dashboard Container */
         .dashboard-container {
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
         }
 
-        /* Header Section */
         .dashboard-header {
             text-align: center;
             margin-bottom: 30px;
@@ -64,7 +62,6 @@
             margin: 0 auto;
         }
 
-        /* Main Content Grid */
         .main-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -72,7 +69,6 @@
             margin-top: 20px;
         }
 
-        /* Dashboard Section Cards */
         .dashboard-section {
             background: white;
             border-radius: var(--border-radius);
@@ -112,7 +108,6 @@
             line-height: 1.5;
         }
 
-        /* Status Section */
         .radio-group {
             display: flex;
             flex-wrap: wrap;
@@ -171,7 +166,6 @@
             background: var(--secondary-color);
         }
 
-        /* Sports Section */
         .section-content {
             display: flex;
             flex-direction: column;
@@ -191,7 +185,6 @@
             font-size: 1.2rem;
         }
 
-        /* Buttons */
         .btn {
             background: var(--secondary-color);
             color: white;
@@ -223,105 +216,83 @@
             border-color: #ccc;
         }
 
-        /* Achievement Section */
         .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 5em;
-    font-weight: 900;
-    color: #e10600;
-    position: relative;
-    transition: all 1s ease;
-    text-align: center;
-  }
-  
-  .container__star {
-    transition: all .7s ease-in-out;
-  }
-  
-  .first {
-    position: absolute;
-    top: 20px;
-    left: 50px;
-    transition: all .7s ease-in-out;
-  }
-  
-  .svg-icon {
-    position: absolute;
-    fill: #e94822;
-    z-index: 1;
-  }
-  
-  .star-eight {
-    background: #efd510;
-    width: 150px;
-    height: 150px;
-    position: relative;
-    text-align: center;
-    animation: rot 3s  infinite;
-  }
-  
-  .star-eight::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 150px;
-    width: 150px;
-    background: #efd510;
-    transform: rotate(135deg);
-  }
-  
-  .container:hover .container__star {
-    transform: rotateX(70deg) translateY(250px);
-    box-shadow: 0px 0px 120px -100px #e4e727;
-  }
-  
-  .container:hover .svg-icon {
-    animation: grow 1s linear infinite;
-  }
-  
-  @keyframes rot {
-    0% {
-      transform: rotate(0deg);
-    }
-  
-    50% {
-      transform: rotate(340deg);
-    }
-  
-    100% {
-      transform: rotate(0deg);
-    }
-  }
-  
-  @keyframes grow {
-    0% {
-      transform: rotate(0deg);
-    }
-  
-    25% {
-      transform: rotate(-5deg);
-    }
-  
-    75% {
-      transform: rotate(5deg);
-    }
-  
-    100% {
-      transform: scale(1) rotate(0deg);
-    }
-  }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+            font-weight: 900;
+            color: #e10600;
+            position: relative;
+            transition: all 1s ease;
+            text-align: center;
+        }
 
-        /* Medical Status */
+        .container__star {
+            transition: all .7s ease-in-out;
+        }
+
+        .first {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            transition: all .7s ease-in-out;
+        }
+
+        .svg-icon {
+            position: absolute;
+            fill: #e94822;
+            z-index: 1;
+        }
+
+        .star-eight {
+            background: #efd510;
+            width: 150px;
+            height: 150px;
+            position: relative;
+            text-align: center;
+            animation: rot 3s infinite;
+        }
+
+        .star-eight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 150px;
+            width: 150px;
+            background: #efd510;
+            transform: rotate(135deg);
+        }
+
+        .container:hover .container__star {
+            transform: rotateX(70deg) translateY(250px);
+            box-shadow: 0px 0px 120px -100px #e4e727;
+        }
+
+        .container:hover .svg-icon {
+            animation: grow 1s linear infinite;
+        }
+
+        @keyframes rot {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(340deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        @keyframes grow {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
         .dashboard-section p strong {
             color: var(--primary-color);
             font-weight: 600;
         }
 
-        /* Calendar */
         .calendar-container {
             margin-bottom: 15px;
         }
@@ -400,7 +371,6 @@
             border-radius: 50%;
         }
 
-        /* Modal */
         .modal {
             position: fixed;
             top: 0;
@@ -447,7 +417,6 @@
             gap: 10px;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .dashboard-header {
                 padding: 20px 15px;
@@ -493,123 +462,105 @@
     <div class="dashboard-container">
         <div class="dashboard-header">
             <h1><i class="fas fa-user-graduate"></i> Student Dashboard</h1>
-            <p>Welcome to TrackMaster,
-                 Where You Can Track Your Progress, Achievements, and Performance</p>
+            <p>Welcome to TrackMaster, Where You Can Track Your Progress, Achievements, and Performance</p>
         </div>
 
         <div class="main-content">
-
-<div class="dashboard-section">
+    <div class="dashboard-section">
     <h2>Current Training Status</h2>
-    <form action="<?php echo ROOT ?>/Student/updateStatus" method="POST">
-    <p><i class="fas fa-info-circle"></i> Update your current training status</p>
-    <div class="radio-group">
-        <input class="radio-input" name="status" id="radio1" type="radio" value="Practicing" checked>
-        <label class="radio-label" for="radio1">
-            <span class="radio-inner-circle"></span>
-            <i class="fas fa-running"></i> Practicing
-        </label>
+    <form action="<?php echo URLROOT ?>/Student/updateStatus" method="POST">
+        <p><i class="fas fa-info-circle"></i> Update your current training status</p>
+        <div class="radio-group">
+            <input class="radio-input" name="status" id="radio1" type="radio" value="Practicing" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'Practicing') ? 'checked' : ''; ?>>
+            <label class="radio-label" for="radio1">
+                <span class="radio-inner-circle"></span>
+                <i class="fas fa-running"></i> Practicing
+            </label>
 
-        <input class="radio-input" name="status" id="radio2" type="radio" value="In a Meet">
-        <label class="radio-label" for="radio2">
-            <span class="radio-inner-circle"></span>
-            <i class="fas fa-trophy"></i> In a Meet
-        </label>
+            <input class="radio-input" name="status" id="radio2" type="radio" value="In a Meet" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'In a Meet') ? 'checked' : ''; ?>>
+            <label class="radio-label" for="radio2">
+                <span class="radio-inner-circle"></span>
+                <i class="fas fa-trophy"></i> In a Meet
+            </label>
 
-        <input class="radio-input" name="status" id="radio3" type="radio" value="At Rest">
-        <label class="radio-label" for="radio3">
-            <span class="radio-inner-circle"></span>
-            <i class="fas fa-bed"></i> At Rest
-        </label>
+            <input class="radio-input" name="status" id="radio3" type="radio" value="At Rest" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'At Rest') ? 'checked' : ''; ?>>
+            <label class="radio-label" for="radio3">
+                <span class="radio-inner-circle"></span>
+                <i class="fas fa-bed"></i> At Rest
+            </label>
 
-        <input class="radio-input" name="status" id="radio4" type="radio" value="Injured">
-        <label class="radio-label" for="radio4">
-            <span class="radio-inner-circle"></span>
-            <i class="fas fa-medkit"></i> Injured
-        </label>
-    </div>
+            <input class="radio-input" name="status" id="radio4" type="radio" value="Injured" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'Injured') ? 'checked' : ''; ?>>
+            <label class="radio-label" for="radio4">
+                <span class="radio-inner-circle"></span>
+                <i class="fas fa-medkit"></i> Injured
+            </label>
+        </div>
+        <button class="btn" type="submit" style="margin-top: 15px;">
+            <i class="fas fa-save"></i> Save Status
+        </button>
+    </form>
+</div>
 
-    <button class="btn" type="submit" style="margin-top: 15px;">
-        <i class="fas fa-save"></i> Save Status
-    </button>
-</form>
-
-            </div>
-
-            <!-- Sports Section -->
             <div class="dashboard-section">
                 <h2>Registered Sports</h2>
                 <div class="section-content">
-                    <div class="sports">
-                        <h3><i class="fas fa-cricket"></i> Cricket</h3>
-                        <button class="btn" onclick="window.location.href='<?php echo ROOT ?>/Student/coachProfile'">
-                            <i class="fas fa-user-tie"></i> View My Coach
-                        </button>
-                        <button class="btn" onclick="window.location.href='<?php echo ROOT ?>/Student/PlayerPerformance'">
-                            <i class="fas fa-chart-line"></i> Track My Performance
-                        </button>
-                    </div>
-                    <div class="sports">
-                        <h3><i class="fas fa-running"></i> Athletics</h3>
-                        <button class="btn" onclick="window.location.href='<?php echo ROOT ?>/Student/coachProfile'">
-                            <i class="fas fa-user-tie"></i> View My Coach
-                        </button>
-                        <button class="btn" onclick="window.location.href='<?php echo ROOT ?>/Student/PlayerPerformance'">
-                            <i class="fas fa-chart-line"></i> Track My Performance
-                        </button>
-                    </div>
+                    <?php foreach ($data['sports'] as $sport): ?>
+                        <div class="sports">
+                            <h3><i class="fas <?php echo ($sport->sport_name == 'Cricket') ? 'fa-cricket' : 'fa-running'; ?>"></i> <?php echo htmlspecialchars($sport->sport_name); ?></h3>
+                            <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/coachProfile'">
+                                <i class="fas fa-user-tie"></i> View My Coach
+                            </button>
+                            <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/Playerperformance'">
+                                <i class="fas fa-chart-line"></i> Track My Performance
+                            </button>
+                        </div>
+                    <?php endforeach; ?>
+                    <?php if (empty($data['sports'])): ?>
+                        <p>No sports registered.</p>
+                    <?php endif; ?>
                 </div>
             </div>
 
-            <!-- Achievement Section -->
             <div class="dashboard-section">
                 <h2>My Achievements</h2>
-                <br>
-                <br>
+                <br><br>
                 <div class="container">
-                <svg class="svg-icon" height="100" preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100" width="100" x="0" xmlns="http://www.w3.org/2000/svg" y="0">
-                    <path d="M62.11,53.93c22.582-3.125,22.304-23.471,18.152-29.929-4.166-6.444-10.36-2.153-10.36-2.153v-4.166H30.099v4.166s-6.194-4.291-10.36,2.153c-4.152,6.458-4.43,26.804,18.152,29.929l5.236,7.777v8.249s-.944,4.597-4.833,4.986c-3.903,.389-7.791,4.028-7.791,7.374h38.997c0-3.347-3.889-6.986-7.791-7.374-3.889-.389-4.833-4.986-4.833-4.986v-8.249l5.236-7.777Zm7.388-24.818s2.833-3.097,5.111-1.347c2.292,1.75,2.292,15.86-8.999,18.138l3.889-16.791Zm-44.108-1.347c2.278-1.75,5.111,1.347,5.111,1.347l3.889,16.791c-11.291-2.278-11.291-16.388-8.999-18.138Z">
-                    </path>
-                </svg>  
-                <div class="container__star">
-                    
-                    <div class="star-eight"></div>
+                    <svg class="svg-icon" height="100" preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100" width="100" x="0" xmlns="http://www.w3.org/2000/svg" y="0">
+                        <path d="M62.11,53.93c22.582-3.125,22.304-23.471,18.152-29.929-4.166-6.444-10.36-2.153-10.36-2.153v-4.166H30.099v4.166s-6.194-4.291-10.36,2.153c-4.152,6.458-4.43,26.804,18.152,29.929l5.236,7.777v8.249s-.944,4.597-4.833,4.986c-3.903,.389-7.791,4.028-7.791,7.374h38.997c0-3.347-3.889-6.986-7.791-7.374-3.889-.389-4.833-4.986-4.833-4.986v-8.249l5.236-7.777Zm7.388-24.818s2.833-3.097,5.111-1.347c2.292,1.75,2.292,15.86-8.999,18.138l3.889-16.791Zm-44.108-1.347c2.278-1.75,5.111,1.347,5.111,1.347l3.889,16.791c-11.291-2.278-11.291-16.388-8.999-18.138Z">
+                        </path>
+                    </svg>  
+                    <div class="container__star">
+                        <div class="star-eight"></div>
+                    </div>
                 </div>
-  
-            <div></div>
+                <br><br><br><br>
+                <center>
+                    <div class="action-buttons">
+                        <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAchievements'">
+                            <i class="fas fa-medal"></i> View My Achievements
+                        </button>
+                    </div>
+                </center>
             </div>
-            <br>
-            <br>
-            <br>
-            <br>
 
-                <center><div class="action-buttons">
-                    <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAchievements'">
-                        <i class="fas fa-medal"></i> View My Achievements
+            <div class="dashboard-section">
+                <h2>Current Medical Status</h2>
+                <?php if (isset($data['currentStatus']['currentStatus']) && !empty($data['currentStatus']['currentStatus'])): ?>
+                    <p><strong>Condition:</strong> <?php echo htmlspecialchars($data['currentStatus']['currentStatus']->medical_condition ?? 'N/A'); ?></p>
+                    <p><strong>Medication:</strong> <?php echo htmlspecialchars($data['currentStatus']['currentStatus']->medication ?? 'N/A'); ?></p>
+                    <p><strong>Notes:</strong> <?php echo htmlspecialchars($data['currentStatus']['currentStatus']->notes ?? 'N/A'); ?></p>
+                    <p><strong>Last Updated:</strong> <?php echo !empty($data['currentStatus']['currentStatus']->date) ? date('d/m/Y', strtotime($data['currentStatus']['currentStatus']->date)) : 'N/A'; ?></p>
+                    <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/medicalStatus'">
+                        <i class="fas fa-first-aid"></i> Update Medical Status
                     </button>
-                </div></center>
+                <?php else: ?>
+                    <p>No medical status available.</p>
+                    <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/medicalStatus'">
+                        <i class="fas fa-first-aid"></i> Update Medical Status
+                    </button>
+                <?php endif; ?>
             </div>
 
-            <!-- Medical Section -->
-<div class="dashboard-section">
-    <h2>Current Medical Status</h2>
-    <?php if (isset($data['currentStatus']) && $data['currentStatus']): ?>
-        <p><strong>Condition:</strong> <?php echo htmlspecialchars($data['currentStatus']->medical_condition); ?></p>
-        <p><strong>Medication:</strong> <?php echo htmlspecialchars($data['currentStatus']->medication); ?></p>
-        <p><strong>Notes:</strong> <?php echo htmlspecialchars($data['currentStatus']->notes); ?></p>
-        <p><strong>Last Updated:</strong> <?php echo date('d/m/Y', strtotime($data['currentStatus']->date)); ?></p>
-        <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/medicalStatus'">
-                    <i class="fas fa-first-aid"></i> Update Medical Status
-                </button>
-    <?php else: ?>
-        <p>No medical status available.</p>
-        <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/medicalStatus'">
-                    <i class="fas fa-first-aid"></i> Update Medical Status
-                </button>
-    <?php endif; ?>
-</div>
-
-            <!-- Calendar Section -->
             <div class="dashboard-section">
                 <h2>My Calendar</h2>
                 <div class="calendar-container">
@@ -649,7 +600,6 @@
                 <p><i class="fas fa-info-circle"></i> Click on any date to add or view notes</p>
             </div>
 
-            <!-- Financial Section -->
             <div class="dashboard-section">
                 <h2>Financial Status</h2>
                 <div class="section-content">
@@ -665,6 +615,120 @@
     <?php require 'footer.php'?>
 
     <script src="/TrackMaster/Public/js/Student/carousel.js"></script>
-    <script src="/TrackMaster/Public/js/Student/calender.js"></script>
+    <script>
+        // Calendar JavaScript
+        const calendar = document.getElementById('calendar');
+        const monthYear = document.getElementById('monthYear');
+        const prevMonth = document.getElementById('prevMonth');
+        const nextMonth = document.getElementById('nextMonth');
+        const dates = document.getElementById('dates');
+        const noteModal = document.getElementById('noteModal');
+        const noteTitle = document.getElementById('noteTitle');
+        const noteInput = document.getElementById('noteInput');
+        const saveNote = document.getElementById('saveNote');
+        const closeModal = document.getElementById('closeModal');
+
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+        let selectedDate = null;
+
+        function renderCalendar() {
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const today = new Date();
+            const isCurrentMonth = currentMonth === today.getMonth() && currentYear === today.getFullYear();
+
+            monthYear.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${currentYear}`;
+            dates.innerHTML = '';
+
+            // Add empty divs for days before the first day
+            for (let i = 0; i < firstDay; i++) {
+                dates.innerHTML += '<div></div>';
+            }
+
+            // Fetch notes for the current month
+            fetch(`<?php echo URLROOT ?>/Student/getCalendarNotes/${currentMonth + 1}/${currentYear}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const notes = data.notes.reduce((acc, note) => {
+                            acc[note.note_date] = note.note_text;
+                            return acc;
+                        }, {});
+
+                        // Add date divs
+                        for (let i = 1; i <= lastDate; i++) {
+                            const date = new Date(currentYear, currentMonth, i);
+                            const dateString = date.toISOString().split('T')[0];
+                            const isToday = isCurrentMonth && i === today.getDate();
+                            const hasNote = notes[dateString] ? 'has-note' : '';
+                            dates.innerHTML += `<div class="${isToday ? 'today' : ''} ${hasNote}" data-date="${dateString}">${i}</div>`;
+                        }
+
+                        // Add click event listeners to dates
+                        document.querySelectorAll('#dates div:not(:empty)').forEach(date => {
+                            date.addEventListener('click', () => {
+                                selectedDate = date.dataset.date;
+                                noteInput.value = notes[selectedDate] || '';
+                                noteTitle.textContent = `Note for ${new Date(selectedDate).toLocaleDateString()}`;
+                                noteModal.classList.remove('hidden');
+                            });
+                        });
+                    }
+                });
+        }
+
+        prevMonth.addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            currentDate = new Date(currentYear, currentMonth, 1);
+            renderCalendar();
+        });
+
+        nextMonth.addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            currentDate = new Date(currentYear, currentMonth, 1);
+            renderCalendar();
+        });
+
+        saveNote.addEventListener('click', () => {
+    const noteText = noteInput.value.trim();
+    if (noteText && selectedDate) {
+        fetch('<?php echo URLROOT ?>/Student/saveCalendarNote', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ note_date: selectedDate, note_text: noteText })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            if (data.success) {
+                noteModal.classList.add('hidden');
+                renderCalendar();
+            }
+        })
+        .catch(error => {
+            console.error('Error saving note:', error);
+            alert('Failed to save note. Check console for details.');
+        });
+    } else {
+        alert('Please enter a note and select a date.');
+    }
+});
+
+        closeModal.addEventListener('click', () => {
+            noteModal.classList.add('hidden');
+        });
+
+        renderCalendar();
+    </script>
 </body>
 </html>
