@@ -82,7 +82,7 @@
 }
 
 .notification-item.active-notification {
-    background-color: #6edefa; /* light blue or any color you like */
+    background-color: #f0f7ff; /* light blue or any color you like */
 }
 
 .notification-item.active-notification .description{

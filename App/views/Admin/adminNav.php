@@ -103,7 +103,7 @@ if ($userActive[0]->active != 1) {
                                 <h3>Notifications</h3>
                                 <button class="mark-all-read">Mark all as read</button>
                             </div>
-                            <div class="notifications-list">
+                            <div class="notification-list">
                                 <?php if (is_array($notifications)): ?>
                                 <?php foreach ($notifications['notifications'] as $notification): ?>
                                 <div class="notification-item <?php echo $notification->active == 1 ? 'active-notification' : ''; ?>">
@@ -131,7 +131,7 @@ if ($userActive[0]->active != 1) {
 
                             </div>
                             <div class="notification-footer">
-                                <a href="notifications.php">View all notifications</a>
+                                <a href="<?php echo ROOT ?>/admin/notification">View all notifications</a>
                             </div>
                         </div>
                     </div>
@@ -237,6 +237,14 @@ function isActive($pathPart) {
                         <img src="<?php echo ROOT ?>/public/img/icon/<?= isActive('/admin/zonalSport') ? 'assign-hover' : 'assign' ?>.png"
                             class="icon" data-icon-name="assign">
                         <span class="menu-text">Sport Assigning</span>
+                    </a>
+                </li>
+                <li class="<?= isActive('/admin/notification') ? 'active' : '' ?>" onmouseover="hoverLi(this, true)"
+                    onmouseout="hoverLi(this, false)">
+                    <a href="<?php echo ROOT ?>/admin/notification" class="menu-link">
+                        <img src="<?php echo ROOT ?>/public/img/icon/<?= isActive('/admin/notification') ? 'notification-hover' : 'notification' ?>.png"
+                            class="icon" data-icon-name="notification">
+                        <span class="menu-text">Notification</span>
                     </a>
                 </li>
                 <li class="<?= isActive('/announcement') ? 'active' : '' ?>" onmouseover="hoverLi(this, true)"

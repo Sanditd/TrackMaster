@@ -5,11 +5,13 @@
         private $calmodel;
         private $zoneModel;
         private $activityModel;
+        private $notificationModel;
         public function __construct(){
           $this->sportModel=$this->model('sportModel');
           $this->userModel =$this->model('User');
           $this->zoneModel =$this->model('zoneModel');
           $this->activityModel =$this->model('activityModel');
+            $this->notificationModel =$this->model('Notification');
           //$this->calmodel =$this->model('calenderModel');
         }
 
@@ -45,6 +47,12 @@
                 'username'=>$name
             ];
             $this->view('/Admin/userManage');
+        }
+
+        public function notification(){
+            $user_id = $_SESSION['user_id']; // Assuming you have the user ID in the session
+            $data=$this->notificationModel->getAdminNotifications($user_id);
+            $this->view('/Admin/notification',$data);
         }
 
         //to load sportManege.php
