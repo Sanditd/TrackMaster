@@ -72,7 +72,7 @@ if ($userActive[0]->active != 1) {
             <div class="chart">
                 <div id="topic">
                     Matrix
-                    <?php print_r($unreadCount)?>
+                    <?php print_r($notifications)?>
                     <br>
                     <?php print_r($userActive)?>
 
