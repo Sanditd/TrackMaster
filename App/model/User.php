@@ -13,8 +13,8 @@ class User {
         error_log("Data received in createUser: " . print_r($data, true)); // Debugging
     
         $query = "INSERT INTO users 
-                  (firstname, lname, phonenumber, address, email, password, username, photo, age, dob, role, gender, province, district,regDate)
-                  VALUES (:firstname, :lastname, :phone, :address, :email, :password, :username, :photo, :age, :dob, :role, :gender, :province, :district, :regDate)";
+                  (firstname, lname, phonenumber, address, email, password, username, photo, age, dob, role, gender, province, district,regDate, active)
+                  VALUES (:firstname, :lastname, :phone, :address, :email, :password, :username, :photo, :age, :dob, :role, :gender, :province, :district, :regDate, :active)";
         
         $this->db->query($query);
         
@@ -34,6 +34,7 @@ class User {
         $this->db->bind(':district', $data['district']);
         $this->db->bind(':regDate', $data['created_at']);
         $this->db->bind(':role', $data['role']);
+        $this->db->bind(':active', '0'); // Default value for active
 
         if ($this->db->execute()) {
             return true;
@@ -49,8 +50,8 @@ class User {
         error_log("Data received in createUser: " . print_r($data, true)); // Debugging
     
         $query = "INSERT INTO users 
-                  (firstname, phonenumber, address, email, password, username, photo, role, province, district,regDate)
-                  VALUES (:firstname, :phone, :address, :email, :password, :username, :photo,  :role, :province, :district, :regDate)";
+                  (firstname, phonenumber, address, email, password, username, photo, role, province, district,regDate,active)
+                  VALUES (:firstname, :phone, :address, :email, :password, :username, :photo,  :role, :province, :district, :regDate, :active)";
         
         $this->db->query($query);
         
@@ -66,6 +67,7 @@ class User {
         $this->db->bind(':district', $data['district']);
         $this->db->bind(':regDate', $data['created_at']);
         $this->db->bind(':role', $data['role']);
+        $this->db->bind(':active', '0');
 
         if ($this->db->execute()) {
             return true;
@@ -236,20 +238,30 @@ class User {
     
             return $this->db->rowCount() > 0; // Returns true if a user exists, false otherwise
         }
-<<<<<<< HEAD
+
+        public function checkAdminExists($email, $username) {
+            $this->db->query("SELECT * FROM admin WHERE email = :email OR username = :username");
+            $this->db->bind(':email', $email);
+            $this->db->bind(':username', $username);
+            
+            $row = $this->db->single(); // Fetch one matching row (if exists)
+            return $row ? true : false;
+        }
+        
+
         public function getAllPlayers() {
             $this->db->query("SELECT id, name FROM users WHERE role = 'player'");
             return $this->db->resultSet();
         }
         
-=======
+
 
         public function createAdmin($data) {
             error_log("Data received in createUser: " . print_r($data, true)); // Debugging
         
             $query = "INSERT INTO admin 
-                      (email, password, username)
-                      VALUES (:email, :password, :username)";
+                      (email, password, username, active)
+                      VALUES (:email, :password, :username, :active)";
             
             $this->db->query($query);
             
@@ -258,6 +270,7 @@ class User {
             $this->db->bind(':email', $data['email']);
             $this->db->bind(':password', $data['password']);
             $this->db->bind(':username', $data['username']);
+            $this->db->bind(':active', '0');
 
     
             if ($this->db->execute()) {
@@ -276,6 +289,8 @@ class User {
             $result = $this->db->resultset();
             return $result ? $result : false; // Return user_id or false if not found
         }
->>>>>>> 04c0cb838b923ba63a4a740d6e900d19e8b164a5
+
+        
+
     }
 ?>

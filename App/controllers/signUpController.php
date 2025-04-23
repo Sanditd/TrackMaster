@@ -593,7 +593,12 @@
 
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         
-        
+                //check School already exisits on db
+                if ($this->userModel->checkUserExists($data['email'], $data['username'])) {
+                    $_SESSION['error_message'] = "Email or username is already taken.";
+                    header('Location: ' . ROOT . '/logincontroller/login');
+                    exit;
+                }
             
                 // Insert user data
                 if ($this->userModel->createSchoolUser($data)) {
@@ -637,6 +642,7 @@
                 error_log(print_r($_FILES, true));
         
                 $filters = [
+                    'email' => FILTER_SANITIZE_EMAIL,
                     'username' => FILTER_SANITIZE_STRING,
                     'password' => FILTER_SANITIZE_STRING,
                     'confirm-password' => FILTER_SANITIZE_STRING
@@ -667,15 +673,14 @@
                     $this->view('SignUp/Admin');
                     exit;
                 }
-                
-                        // Check if email or username already exists
-                if ($this->userModel->checkUserExists($data['email'], $data['username'])) {
-                    $_SESSION['error'] = "Email or username is already taken.";
-                    $this->view('SignUp/Admin');
+
+                if ($this->userModel->checkAdminExists($data['email'], $data['username'])) {
+                    $_SESSION['error_message'] = "Email or username is already taken.";
+                    header('Location: ' . ROOT . '/logincontroller/AdminLogin');
                     exit;
                 }
-
                 
+                 
         
                 // Validate password match
                 if ($data['password'] !== $data['confirmPassword']) {
@@ -683,7 +688,7 @@
                     error_log("Confirm Password: " . $data['confirmPassword']);
 
                     session_start(); // Ensure session is started
-                    $_SESSION['error'] = "Passwords do not match. Try again.";
+                    $_SESSION['error_message'] = "Passwords do not match. Try again.";
                     $this->view('SignUp/Admin');
                     exit;
                 }
@@ -696,16 +701,24 @@
                 if ($this->userModel->createAdmin($data)) {
                     error_log("User created successfully.");
 
+                    $notification = [
+                        'title' => "New Admin Registration",
+                        'description' => "A new admin ({$data['userName']})  has registered for System Admin",
+                        'type' => "Admin registration",
+                    ];
+
+                    $this->sendAdminNotification($notification);
+
         
                     // Redirect to login with success message
                     //session_start(); // Ensure session is started
                     $_SESSION['success_message'] = "Registration successful! Please log in.";
-                    header('Location: ' . ROOT . '/logincontroller/login');
+                    header('Location: ' . ROOT . '/logincontroller/adminLogin');
                     exit;
                 } else {
                     error_log("Failed to create user.");
                     session_start(); // Ensure session is started
-                    $_SESSION['error'] = "An error occure.";
+                    $_SESSION['error_message'] = "An error occure.";
                     $this->view('SignUp/Admin');
                     exit;
                 }

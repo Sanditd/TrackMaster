@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Student</title>
-    <link rel="stylesheet" href="../Public/css/Coach/CoachSignup.css">
+    <link rel="stylesheet" href="<?php echo ROOT ?>/Public/css/Coach/CoachSignup.css">
     <link rel="stylesheet" href="<?php echo ROOT ?>/Public/css/Admin/login.css">
 
 
@@ -27,9 +27,9 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Check if there's a success message in the session
-if (isset($_SESSION['error'])) {
-    $Erro_message = $_SESSION['error'];
-    unset($_SESSION['error']); // Remove the message after retrieving it
+if (isset($_SESSION['error_message'])) {
+    $Erro_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']); // Remove the message after retrieving it
 } else {
     $Erro_message = "";
 }
@@ -53,11 +53,12 @@ if (isset($_SESSION['error'])) {
 <body>
     <?php $nav->render(); ?>
     <div class="temp-container">
-        <div id="signup-port">
+        <div id="signup-port" style="width: 400px;margin-top: 5%;">
             <!-- <span id="signup-port-logo">
             <img src="../Public/img/logo-black.png" alt="TrackMaster Logo">
         </span> -->
             <h2>Sign Up - Coach</h2>
+            <br>
 
             <div class="container">
                 <!-- Column 1 -->
