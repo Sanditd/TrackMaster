@@ -1,6 +1,6 @@
 <?php
-    //require "../../config/init.php";
-    //require "../core/init.php";
+    //require " echo ROOT/config/init.php";
+    //require " echo ROOT/core/init.php";
     require_once 'nav.php';
     $nav = new Nav();
 ?>
@@ -22,13 +22,19 @@ if (isset($_SESSION['success_message'])) {
 } else {
     $successMessage = "";
 }
+
+if (isset($_SESSION['error_message'])) {
+    $successMessage = $_SESSION['error_message'];
+    unset($_SESSION['error_message']); // Remove the message after retrieving it
+} else {
+    $successMessage = "";
+}
 ?>
 
 
 <head>
     <title>Login</title>
-
-    <link rel="stylesheet" href="../Public/css/Admin/login.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/login.css">
     <link rel="stylesheet" href="<?php echo ROOT ?>/Public/css/Admin/selectRole.css">
 
 </head>
@@ -102,7 +108,7 @@ if (isset($_SESSION['success_message'])) {
         <div class="popup">
             <div id="frogetPW-port">
                 <span id="login-port-logo">
-                    <img src="../../public/assets/icon/logo-black.png" alt="trackmaster logo">
+                    <img src="<?php echo ROOT?>/public/assets/icon/logo-black.png" alt="trackmaster logo">
                 </span>
                 <form method="POST">
                     <div>

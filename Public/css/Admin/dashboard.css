@@ -12,6 +12,7 @@ html, body {
     background-color: #f8f9fa; /* Light gray background */
     height: 100%; /* Full height of parent */
     box-sizing: border-box; /* Ensure padding is included */
+     /* Adjust to overlap with navbar */
 }
 
 /* Grid items for custom layout */

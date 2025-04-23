@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achievements</title>
+    <title>Edit Achievement</title>
     <link rel="stylesheet" href="/TrackMaster/Public/css/Student/achievements.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Modal Styles */
-        .modal-container {
-            display: block; /* Always visible */
+        .modal {
+            color: #ffa500;
+            display: flex; /* Always visible */
             position: fixed;
             z-index: 1000;
             left: 0;
@@ -16,76 +18,130 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.7);
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-content {
             background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            border-radius: 5px;
-            width: 60%;
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
             max-width: 600px;
-            animation: modalopen 0.5s;
+            position: relative;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            animation: modalopen 0.4s;
         }
 
         @keyframes modalopen {
-            from {opacity: 0; transform: translateY(-60px);}
+            from {opacity: 0; transform: translateY(-20px);}
             to {opacity: 1; transform: translateY(0);}
         }
 
         .close-modal {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #666;
             cursor: pointer;
+            transition: var(--transition);
         }
 
-        .close-modal:hover,
-        .close-modal:focus {
-            color: #000;
-            text-decoration: none;
-        }
-
-        .form-section {
-            width: 100%;
-            padding: 15px;
-            border: none;
-        }
-
-        .form-section h2 {
-            margin-bottom: 20px;
+        .close-modal:hover {
             color: #00264d;
         }
 
-        .form-section label {
+        .modal-content h3 {
+            color: #ffa500;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
             display: block;
-            margin: 15px 0 5px;
+            margin-bottom: 8px;
             font-weight: 600;
-            color: #333;
+            color: #00264d;
         }
 
-        .form-section textarea, 
-        .form-section input[type="date"] {
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: var(--transition);
         }
 
-        .form-section textarea {
-            min-height: 80px;
+        .form-group textarea {
+            min-height: 100px;
             resize: vertical;
         }
 
-        .form-section input[type="radio"] {
-            margin-right: 8px;
-            margin-bottom: 8px;
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #ffa500;
+            box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
+            outline: none;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radio-option input[type="radio"] {
+            margin: 0;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #ffa500;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .error-message {
@@ -96,90 +152,77 @@
             padding: 10px;
             margin-bottom: 20px;
         }
-
-        .edit-button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            margin: 10px 5px;
-        }
-
-        .edit-button[type="submit"] {
-            background-color: #ffa500;
-            color: white;
-        }
-
-        .edit-button[type="submit"]:hover {
-            background-color: #cc8400;
-        }
-
-        .edit-button[type="button"] {
-            background-color: #ccc;
-            color: #333;
-        }
-
-        .edit-button[type="button"]:hover {
-            background-color: #b3b3b3;
-        }
     </style>
 </head>
 <body>
 
-<?php require 'navbar.php'; ?>
-<?php require 'sidebar.php'; ?>
-<?php 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . ROOT . '/loginController/login');
-    exit;
-}?>
-
-<!-- Fixed modal structure that won't interfere with form submission -->
-<div class="modal-container">
+<!-- Edit Achievement Modal -->
+<div id="editAchievementModal" class="modal">
     <div class="modal-content">
-        <span class="close-modal" onclick="window.location.href='<?php echo URLROOT; ?>/Student/studentAchievements'">&times;</span>
-        <div class="form-section">
-            <h2>Edit Achievement</h2>
+        <span class="close-modal" onclick="window.location.href='<?php echo URLROOT; ?>/Student/studentAchievements'">
+            <i class="fas fa-times"></i>
+        </span>
+        <h3><i class="fas fa-trophy"></i> Edit Achievement</h3>
+        
+        <!-- Display error if any -->
+        <?php if (!empty($data['error'])): ?>
+            <div class="error-message">
+                <?php echo htmlspecialchars($data['error']); ?>
+            </div>
+        <?php endif; ?>
+        
+        <form action="<?php echo URLROOT; ?>/Student/editAchievement/<?php echo htmlspecialchars($data['achievement']->achievement_id); ?>" method="POST">
+            <div class="form-group">
+                <label for="place"><i class="fas fa-medal"></i> Place/Rank:</label> 
+                <input type="text" id="place" name="place" required value="<?php echo htmlspecialchars($data['achievement']->place ?? ''); ?>">
+            </div>
             
-            <!-- Display error if any -->
-            <?php if (!empty($data['error'])): ?>
-                <p class="error-message"><?php echo htmlspecialchars($data['error']); ?></p>
-            <?php endif; ?>
-
-            <form action="<?php echo URLROOT; ?>/Student/editAchievement/<?php echo htmlspecialchars($data['achievement']->achievement_id); ?>" method="POST">  
-                <label for="place">Place/Rank:</label> 
-                <textarea id="place" name="place" required><?php echo htmlspecialchars($data['achievement']->place ?? ''); ?></textarea>  
-
-                <label for="level">Level:</label>
-                <input type="radio" id="level1" name="level" value="zonal" <?php echo ($data['achievement']->level ?? '') == 'zonal' ? 'checked' : ''; ?> required> Zonal Level </br>
-                <input type="radio" id="level2" name="level" value="provincial" <?php echo ($data['achievement']->level ?? '') == 'provincial' ? 'checked' : ''; ?> required> Provincial Level</br>
-                <input type="radio" id="level3" name="level" value="national" <?php echo ($data['achievement']->level ?? '') == 'national' ? 'checked' : ''; ?> required> National Level</br>
-
-                <label for="description">Description:</label>
-                <textarea id="description" name="description"><?php echo htmlspecialchars($data['achievement']->description ?? ''); ?></textarea>
-
-                <label for="date">Date:</label>
+            <div class="form-group">
+                <label><i class="fas fa-layer-group"></i> Achievement Level:</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="level1" name="level" value="zonal" <?php echo ($data['achievement']->level ?? '') == 'zonal' ? 'checked' : ''; ?> required>
+                        <label for="level1">Zonal</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="level2" name="level" value="provincial" <?php echo ($data['achievement']->level ?? '') == 'provincial' ? 'checked' : ''; ?> required>
+                        <label for="level2">Provincial</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="level3" name="level" value="national" <?php echo ($data['achievement']->level ?? '') == 'national' ? 'checked' : ''; ?> required>
+                        <label for="level3">National</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="description"><i class="fas fa-align-left"></i> Description:</label>
+                <textarea id="description" name="description" placeholder="Describe your achievement..."><?php echo htmlspecialchars($data['achievement']->description ?? ''); ?></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="date"><i class="fas fa-calendar-alt"></i> Date:</label>
                 <input type="date" id="date" name="date" value="<?php echo htmlspecialchars($data['achievement']->date ?? ''); ?>" required>
-
-                <center>
-                    <button class="edit-button" type="submit">Save</button>
-                    <button class="edit-button" type="button" onclick="window.location.href='<?php echo URLROOT; ?>/Student/studentAchievements'">Cancel</button>
-                </center>
-            </form>
-        </div>
+            </div>
+            
+            <div class="form-actions">
+                <button class="btn" type="submit">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <button class="btn btn-secondary" type="button" onclick="window.location.href='<?php echo URLROOT; ?>/Student/studentAchievements'">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
-<?php require 'footer.php'; ?>
-
 <script>
-    // Add any JavaScript needed for the page
     document.addEventListener('DOMContentLoaded', function() {
         // Make sure form submission works correctly
         const form = document.querySelector('form');
         form.addEventListener('submit', function(e) {
-            // You can add validation here if needed
+            // Form validation can be added here if needed
             console.log('Form is being submitted');
             // Let the form submit normally
         });

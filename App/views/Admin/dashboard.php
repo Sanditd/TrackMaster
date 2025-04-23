@@ -4,16 +4,40 @@ if (!defined('LOADED_FROM_MAIN')) {
     require_once 'adminNav.php';
 }
 
-session_start();
 
-// Check if the session variables are set
+
+//Check if session user ID exists
 if (!isset($_SESSION['user_id'])) {
-    // User is not logged in, redirect to the login page
-    header('Location: ' . ROOT . '/loginController/login');
+    $_SESSION['error_message']='Invalid Login! Please login again.';
+    header('Location: ' . ROOT . '/loginController/adminLogin');
     exit;
 }
 
+$userId = (int) $_SESSION['user_id'];
+
+//Load required model file if not already loaded
+ require_once __DIR__ . '/../../model/loginPage.php';
+ // Adjust path as needed
+
+// Create login model instance
+$loginModel = new loginPage();
+
+$user = $loginModel->getAdminById($userId);
+
+
+
+
+//If user does not exist in DB, destroy session and redirect
+if (!$user) {
+    session_unset();
+    session_destroy();
+    $_SESSION['error_message']='Login Failed! Try Again.';
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
+}
 ?>
+
+
 
 <div class="container">
         <div class="chart">

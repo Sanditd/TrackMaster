@@ -134,24 +134,25 @@ class Student extends Controller {
     }
 
     //medical status
-    public function saveMedicalStatus(){
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Process form
-            $data = [
-                'user_id' => trim($_POST['user_id']),
-                'date' => trim($_POST['date']),
-                'conditions' => trim($_POST['condition']),
-                'medications' => trim($_POST['medication']),
-                'notes' => trim($_POST['notes'])
-            ];
+    // public function saveMedicalStatus(){
+    //     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    //         // Process form
+    //         $data = [
+    //             'user_id' => trim($_POST['user_id']),
+    //             'date' => trim($_POST['date']),
+    //             'conditions' => trim($_POST['condition']),
+    //             'medications' => trim($_POST['medication']),
+    //             'notes' => trim($_POST['notes'])
+    //         ];
 
-            if ($this->studentModel->addMedicalStatus($data)) {
-                header('Location: ' . URLROOT . '/Student/medicalStatus');
-            } else {
-                die('Something went wrong');
-            }
-        } 
-    }
+    //         if ($this->studentModel->addMedicalStatus($data)) {
+    //             header('Location: ' . URLROOT . '/Student/medicalStatus');
+    //         } else {
+    //             die('Something went wrong');
+    //         }
+    //     } 
+    // }
+
 
 
 
@@ -230,6 +231,15 @@ class Student extends Controller {
         ];
     
         // Load the view
+        $this->view('Student/dashboard', $data);
+    }
+
+
+    public function getStudentStatus(){
+        $userId = $_SESSION['user_id'];
+        $studentStatus = $this->studentModel->getPlayerStatus($userId);
+    
+        $data = ['status' => $studentStatus];
         $this->view('Student/dashboard', $data);
     }
     

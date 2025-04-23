@@ -21,20 +21,37 @@ class Coach extends Controller {
         $this->view('Coach/Dashboard');
     }
 
+    public function Attendance() {
+        $data = [];
+        $this->view('Coach/Attendance');
+    }
+
     public function profilemanagement() {
         $data = [];
         $this->view('Coach/ProfileManagement');
     }
 
     public function viewProfile() {
-        $data = [];
-        $this->view('Coach/ViewProfile');
+        // Check if user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            redirect('users/login');
+        }
+    
+        try {
+            // Get coach details from database
+            $coach = $this->coachModel->getCoachDetails($_SESSION['user_id']);
+            
+            $data = [
+                'coach' => $coach
+            ];
+            
+            $this->view('Coach/ViewProfile', $data);
+        } catch (Exception $e) {
+            flash('profile_error', $e->getMessage());
+            $this->view('Coach/ViewProfile');
+        }
     }
 
-    public function eventManagement() {
-        $data = [];
-        $this->view('Coach/EventManagement');
-    }
 
     public function performanceTracking() {
         $data = [];
@@ -42,13 +59,100 @@ class Coach extends Controller {
     }
 
     public function editProfile() {
-        $data = [];
-        $this->view('Coach/EditProfile');
+        // Check if user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            redirect('users/login');
+        }
+    
+        // Get coach data from database
+        $coach = $this->coachModel->getCoachDetais($_SESSION['user_id']);
+    
+        $data = [
+            'coach' => $coach
+        ];
+    
+        $this->view('Coach/EditProfile', $data);
     }
-
-    public function playerPerformance() {
-        $data = [];
-        $this->view('Coach/PlayerPerformance');
+    
+    public function updateProfile() {
+        // Check if user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . URLROOT . '/users/login');
+            exit();
+        }
+    
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize POST data for PHP 8.1+
+            $_POST = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+            foreach ($_POST as $key => $value) {
+                $_POST[$key] = htmlspecialchars(trim($value));
+            }
+    
+            // Initialize data array
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'firstname' => $_POST['first_name'] ?? '',
+                'lname' => $_POST['last_name'] ?? '',
+                'email' => $_POST['email'] ?? '',
+                'phonenumber' => $_POST['phone'] ?? '',
+                'address' => $_POST['address'] ?? '',
+                'gender' => $_POST['gender'] ?? '',
+                'dob' => $_POST['birthday'] ?? '',
+                'bio' => $_POST['description'] ?? '',
+                'educational_qualifications' => $_POST['educational_qualifications'] ?? '',
+                'professional_playing_experience' => $_POST['playing_experience'] ?? '',
+                'coaching_experience' => $_POST['coaching_experience'] ?? '',
+                'key_achievements' => $_POST['key_achievements'] ?? '',
+                'photo' => null,
+                'firstname_err' => '',
+                'email_err' => ''
+            ];
+    
+            // Validate required fields
+            if (empty($data['firstname'])) {
+                $data['firstname_err'] = 'Please enter first name';
+            }
+    
+            if (empty($data['email'])) {
+                $data['email_err'] = 'Please enter email';
+            } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $data['email_err'] = 'Please enter a valid email';
+            }
+    
+            // Handle file upload
+            if (!empty($_FILES['profile_image']['name'])) {
+                // Check if file is an image
+                $file_info = getimagesize($_FILES['profile_image']['tmp_name']);
+                if ($file_info !== false) {
+                    // Read the file content
+                    $photo = file_get_contents($_FILES['profile_image']['tmp_name']);
+                    $data['photo'] = $photo;
+                } else {
+                    // Set flash message directly in session
+                    $_SESSION['profile_error'] = 'Please upload a valid image file';
+                    header('Location: ' . URLROOT . '/coach/editProfile');
+                    exit();
+                }
+            }
+    
+            // Make sure there are no errors
+            if (empty($data['firstname_err']) && empty($data['email_err'])) {
+                // Update profile
+                if ($this->coachModel->updateCoachProfile($data)) {
+                    $_SESSION['profile_message'] = 'Profile updated successfully';
+                    header('Location: ' . URLROOT . '/coach/viewProfile');
+                    exit();
+                } else {
+                    die('Something went wrong');
+                }
+            } else {
+                // Load view with errors
+                $this->view('Coach/EditProfile', $data);
+            }
+        } else {
+            header('Location: ' . URLROOT . '/coach/editProfile');
+            exit();
+        }
     }
 
     public function creataddplayers(){
@@ -57,6 +161,7 @@ class Coach extends Controller {
         $this->view('Coach/CreateTeam');
 
     }
+
 
     public function teamManagement() {
         $teams = $this->coachModel->getTeams();
@@ -72,24 +177,42 @@ class Coach extends Controller {
     }
         
         
-        public function createTeam() {
-                $teamName = $_POST['teamName'] ?? '';
-                $numPlayers = $_POST['numPlayers'] ?? 0;
-        
-                if (empty($teamName) || $numPlayers <= 0) {
-                    echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
-                    return;
-                }
-        
-                // Create team
-                $teamId = $this->coachModel->createTeam($teamName, $numPlayers);
-        
-                if ($teamId) {
-                    echo json_encode(['status' => 'success', 'teamId' => $teamId]);
-                } else {
-                    echo json_encode(['status' => 'error', 'message' => 'Failed to create team']);
-                }
+    public function createTeam() {
+        // Check if user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+            return;
         }
+    
+        $teamName = $_POST['teamName'] ?? '';
+        $numPlayers = $_POST['numPlayers'] ?? 0;
+        
+        // Validate input
+        if (empty($teamName) || $numPlayers <= 0) {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
+            return;
+        }
+    
+        try {
+            // Create team with coach's sport ID
+            $teamId = $this->coachModel->createTeam($teamName, $numPlayers, $_SESSION['user_id']);
+            
+            if ($teamId) {
+                echo json_encode([
+                    'status' => 'success', 
+                    'teamId' => $teamId,
+                    'message' => 'Team created successfully'
+                ]);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to create team']);
+            }
+        } catch (Exception $e) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 
         public function filterPlayers() {
             $role = $_POST['role'] ?? null;
@@ -212,5 +335,265 @@ class Coach extends Controller {
             $this->coachModel->removePlayerFromTeam($teamId, $playerId);
             header('Location: ' . ROOT . '/Coach/editTeam/' . $teamId);
         }
+
+
+        public function match() {
+            // Debug: Check if session exists and user_id is set
+            if (!isset($_SESSION['user_id'])) {
+                die('User not logged in - Session user_id not found');
+            }
+            
+            $teams = $this->coachModel->getTeamsByZoneAndSport($_SESSION['user_id']);
+            $data = ['teams' => $teams];
+            
+            $this->view('Coach/match', $data);
+        }
+
+        public function teamPlayers($teamId) {
+            try {
+                $players = $this->coachModel->getPlayersFromTeamId($teamId);
+                header('Content-Type: application/json');
+                echo json_encode($players);
+            } catch (Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => 'Failed to fetch players']);
+            }
+            exit();
+        }
+
+        public function saveMatch() {
+    // Validate input
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        redirect('coach/match');
+    }
+
+    // Sanitize POST data
+    $data = [
+        'team_id' => trim($_POST['myteam']),
+        'opponent_team' => trim($_POST['opponent']),
+        'match_date' => trim($_POST['match_date']),
+        'venue' => trim($_POST['venue']),
+        'result' => trim($_POST['result']),
+        'team_runs_scored' => isset($_POST['total_runs']) ? (int)$_POST['total_runs'] : null,
+        'team_wickets_lost' => isset($_POST['wickets_lost']) ? (int)$_POST['wickets_lost'] : null,
+        'team_overs_played' => isset($_POST['overs_played']) ? (float)$_POST['overs_played'] : null,
+        'team_runs_conceded' => isset($_POST['runs_given']) ? (int)$_POST['runs_given'] : null,
+        'team_wickets_taken' => isset($_POST['wickets_taken']) ? (int)$_POST['wickets_taken'] : null,
+        'team_overs_bowled' => isset($_POST['overs_bowled']) ? (float)$_POST['overs_bowled'] : null,
+        'team_catches_taken' => isset($_POST['catches_taken']) ? (int)$_POST['catches_taken'] : null,
+        'player_performances' => isset($_POST['players']) ? $_POST['players'] : []
+    ];
+
+    // Validate required fields
+    if (empty($data['team_id']) || empty($data['opponent_team']) || empty($data['match_date']) || empty($data['result'])) {
+        flash('match_error', 'Please fill in all required fields');
+        redirect('coach/match');
+    }
+
+    // Save match data
+    $matchId = $this->coachModel->saveMatchData($data);
+
+    if ($matchId && !empty($data['player_performances'])) {
+        foreach ($data['player_performances'] as $performance) {
+            $this->coachModel->savePlayerPerformance($matchId, $performance);
+            $this->coachModel->updateCricketStats($performance);
+        }
+    }
+
+    $_SESSION['match_success'] = 'Match record saved successfully';
+    header('Location: ' . URLROOT . '/coach/match');
+    exit();
+}
+
+public function getPlayersForCoach() {
+    // Check if user is logged in and is a coach
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+        return;
+    }
+
+    try {
+        // Get players for the current coach's sport and zone
+        $players = $this->coachModel->getPlayersByCoachZone($_SESSION['user_id']);
         
-}       
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'success',
+            'players' => $players
+        ]);
+    } catch (Exception $e) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+public function playerPerformance($playerId = null) {
+    // If no player ID provided, redirect to selection
+    if (!$playerId) {
+        redirect('coach/performanceTracking');
+    }
+
+    try {
+        // Get player details
+        $player = $this->coachModel->getPlayerDetails($playerId);
+        
+        // Get player stats
+        $stats = $this->coachModel->getPlayerStatsById($playerId);
+        
+        // Get recent performances
+        $performances = $this->coachModel->getPlayerRecentPerformances($playerId);
+        
+        $data = [
+            'player' => $player,
+            'stats' => $stats,
+            'performances' => $performances
+        ];
+        
+        $this->view('Coach/PlayerPerformance', $data);
+    } catch (Exception $e) {
+        flash('player_error', $e->getMessage());
+        redirect('coach/performanceTracking');
+    }
+}
+
+public function getTeamsForCoach() {
+    // Check if user is logged in and is a coach
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+        return;
+    }
+
+    try {
+        // Get teams for the current coach's sport and zone
+        $teams = $this->coachModel->getTeamsByCoach($_SESSION['user_id']);
+        
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'success',
+            'teams' => $teams
+        ]);
+    } catch (Exception $e) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+public function teamperformance($teamId = null) {
+    // If no team ID provided, redirect to selection
+    if (!$teamId) {
+        redirect('coach/performanceTracking');
+    }
+
+    try {
+        // Get team details
+        $team = $this->coachModel->getTeamDetails($teamId);
+        
+        // Get team stats
+        $stats = $this->coachModel->getTeamStats($teamId);
+        
+        // Get recent matches (last 5)
+        $recentMatches = $this->coachModel->getTeamRecentMatches($teamId, 5);
+        
+        // Get all matches for the team
+        $allMatches = $this->coachModel->getTeamMatches($teamId);
+        
+        // Calculate recent form (last 5 matches)
+        $recentForm = $this->coachModel->getTeamRecentForm($teamId, 5);
+        
+        $data = [
+            'team' => $team,
+            'stats' => $stats,
+            'recentMatches' => $recentMatches,
+            'allMatches' => $allMatches,
+            'recentForm' => $recentForm
+        ];
+        
+        $this->view('Coach/TeamPerformance', $data);
+    } catch (Exception $e) {
+        flash('team_error', $e->getMessage());
+        redirect('coach/performanceTracking');
+    }
+}
+
+public function createEventRequest() {
+    // Check if user is logged in and is a coach
+    if (!isset($_SESSION['user_id'])) {
+        redirect('users/login');
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Sanitize POST data
+        $_POST = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+        $data = [
+            'coach_id' => $_SESSION['user_id'],
+            'school_id' => trim($_POST['venue']),
+            'event_name' => trim($_POST['event-name']),
+            'event_date' => trim($_POST['date']),
+            'time_from' => trim($_POST['time-from']),
+            'time_to' => trim($_POST['time-to']),
+            'facilities_required' => trim($_POST['description']),
+            'event_name_err' => '',
+            'date_err' => '',
+            'time_err' => '',
+            'venue_err' => ''
+        ];
+
+        // Validate data
+        if (empty($data['event_name'])) {
+            $data['event_name_err'] = 'Please enter event name';
+        }
+        if (empty($data['event_date'])) {
+            $data['date_err'] = 'Please select date';
+        }
+        if (empty($data['time_from']) || empty($data['time_to'])) {
+            $data['time_err'] = 'Please select both start and end times';
+        } elseif ($data['time_from'] >= $data['time_to']) {
+            $data['time_err'] = 'End time must be after start time';
+        }
+        if (empty($data['school_id'])) {
+            $data['venue_err'] = 'Please select a venue';
+        }
+
+        // If no errors, proceed
+        if (empty($data['event_name_err']) && empty($data['date_err']) && 
+            empty($data['time_err']) && empty($data['venue_err'])) {
+            
+            if ($this->coachModel->createEventRequest($data)) {
+                flash('event_message', 'Event request submitted successfully');
+                redirect('coach/eventManagement');
+            } else {
+                die('Something went wrong');
+            }
+        } else {
+            // Load view with errors
+            $this->view('coach/eventManagement', $data);
+        }
+    } else {
+        // Load empty form
+        $this->view('coach/eventManagement');
+    }
+}
+
+public function eventManagement() {
+    // Check if user is logged in
+    if (!isset($_SESSION['user_id'])) {
+        redirect('users/login');
+    }
+
+    $data = [
+        'schools' => $this->coachModel->getSchoolsForDropdown($_SESSION['user_id'])
+    ];
+
+    $this->view('Coach/EventManagement', $data);
+}
+}
+
+
+              

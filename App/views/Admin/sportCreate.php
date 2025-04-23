@@ -2,10 +2,32 @@
 <html lang="en">
 
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+//Check if session user ID exists
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['error_message']='Invalid Login! Please login again.';
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
 }
 
+$userId = (int) $_SESSION['user_id'];
+
+//Load required model file if not already loaded
+ require_once __DIR__ . '/../../model/loginPage.php';
+ // Adjust path as needed
+
+// Create login model instance
+$loginModel = new loginPage();
+
+$user = $loginModel->getAdminById($userId);
+
+//If user does not exist in DB, destroy session and redirect
+if (!$user) {
+    session_unset();
+    session_destroy();
+    $_SESSION['error_message']='Login Failed! Try Again.';
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
+}
 $Error_message  = "";
 
 if (isset($_SESSION['success_message'])) {
@@ -23,9 +45,9 @@ if (isset($_SESSION['error_message'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create a Sport</title>
-    <link rel="stylesheet" href="../../Public/css/Admin/sportCreate.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/navbar.css">
-    <link rel="stylesheet" href="../../Public/css/Admin/popupSport.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/sportCreate.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/popupSport.css">
 </head>
 
 <body>
@@ -34,11 +56,12 @@ if (isset($_SESSION['error_message'])) {
     <div id="popup" class="popup-modal">
         <div class="popup-content">
             <h2>Select Sport Type</h2>
-            <button id="teamSportBtn">
-                <a href="<?php echo ROOT ?>/admin/teamSportForm/asdad">Team Sports</a>
+            <button id="teamSportBtn" style="background-color: aqua;">
+            <a href="<?php echo ROOT ?>/admin/teamSportForm/asdad" style="color: black;">Team Sports</a>
+
             </button>
-            <button id="individualSportBtn">
-                <a href="<?php echo ROOT ?>/admin/addindSportForm/asdad">Individual Sports</a>
+            <button id="individualSportBtn" style="background-color: aqua;">
+                <a href="<?php echo ROOT ?>/admin/addindSportForm/asdad" style="color: black;">Individual Sports</a>
             </button>
             <button id="close">
                 <a href="<?php echo ROOT ?>/admin/dashboard/asdad" style="text-decoration: none; color: inherit;">Close</a>
@@ -65,7 +88,7 @@ console.log("Message Element:", document.getElementById('customAlertMessage'));
 
     </script>
 
-    <script src="../../Public/js/Admin/sidebar.js"></script>
+    <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
     <script src="<?php echo ROOT?>/Public/js/error.js">
         console.log("error.js is loaded successfully");
 

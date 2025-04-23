@@ -33,17 +33,19 @@ if (isset($_SESSION['error'])) {
 ?>
 
 <?php if (!empty($Erro_message)) : ?>
-    <script>
-        var errorMessage = <?= json_encode(addslashes($Erro_message)); ?>;
-    </script>
+<script>
+var errorMessage = <?= json_encode(addslashes($Erro_message)); ?>;
+</script>
 <?php else: ?>
-    <script>
-        var errorMessage = "";
-    </script>
+<script>
+var errorMessage = "";
+</script>
 <?php endif; ?>
 
 <script>
-    var districts = <?= json_encode($data['districts']); ?>; 
+var districts = <?= json_encode($data['districts']); ?>;
+const schoolsData = <?= json_encode($data['schools']) ?>;
+console.log("Schools Data:", schoolsData);
 </script>
 
 <body>
@@ -54,10 +56,12 @@ if (isset($_SESSION['error'])) {
             <img src="../Public/img/logo-black.png" alt="TrackMaster Logo">
         </span> -->
             <h2>Sign Up - Student/Player</h2>
+            //<?php print_r($data['schools']) ?>
 
             <div class="container">
 
-                <form action="<?php echo ROOT ?>/signUpController/studentsignup" method="POST"  onsubmit="return validatePassword() && validateAge()">
+                <form action="<?php echo ROOT ?>/signUpController/studentsignup" method="POST"
+                    onsubmit="return validatePassword() && validateAge()">
                     <!-- Column 1 -->
                     <div class="column">
                         <div class="form-group">
@@ -117,20 +121,7 @@ if (isset($_SESSION['error'])) {
                     <div class="column">
 
 
-                        <div class="form-group">
-                            <label for="School">School</label>
-                            <select id="school" name="school" required>
-                                <option value="" disabled selected>Select School</option>
-                                <?php if (!empty($schools)) : ?>
-                                <?php foreach ($schools as $school) : ?>
-                                <option value="<?= htmlspecialchars($school->school_name) ?>">
-                                    <?= htmlspecialchars($school->school_name) ?></option>
-                                <?php endforeach; ?>
-                                <?php else: ?>
-                                <option value="">No school available</option>
-                                <?php endif; ?>
-                            </select>
-                        </div>
+                        
 
                         <div class="form-group">
                             <label for="sport">Sport</label>
@@ -144,6 +135,16 @@ if (isset($_SESSION['error'])) {
                                 <?php else: ?>
                                 <option value="">No sports available</option>
                                 <?php endif; ?>
+                            </select>
+                        </div>
+
+                        <!-- Hidden by default: Role dropdown -->
+                        <div class="form-group" id="cricketRoleContainer" style="display: none;">
+                            <label for="cricketRole">Role</label>
+                            <select id="cricketRole" name="playerRole">
+                                <option value="" disabled selected>Select Role</option>
+                                <option value="Batsman">Batsman</option>
+                                <option value="Bowler">Bowler</option>
                             </select>
                         </div>
 
@@ -174,6 +175,13 @@ if (isset($_SESSION['error'])) {
                             <label for="zone">Zone</label>
                             <select id="zone" name="zone" required>
                                 <option value="" disabled selected>Select Zone</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="School">School</label>
+                            <select id="school" name="school" required>
+                            <option value="" disabled selected>Select School</option>
                             </select>
                         </div>
 
@@ -236,6 +244,22 @@ if (isset($_SESSION['error'])) {
         </div>
     </div>
 
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sportSelect = document.getElementById("sport");
+        const roleContainer = document.getElementById("cricketRoleContainer");
+
+        sportSelect.addEventListener("change", function () {
+            const selectedSport = sportSelect.value.trim().toLowerCase();
+            if (selectedSport === "cricket") {
+                roleContainer.style.display = "block";
+            } else {
+                roleContainer.style.display = "none";
+            }
+        });
+    });
+</script>
 
 </body>
 

@@ -64,11 +64,11 @@ if (monthDiff < 0 || (monthDiff===0 && dayDiff < 0)) { age--; } ageInput.value=a
             showCustomAlert("Check your birth day. Your age doesn't match the age criteria for a coach.");
             return false;
         }
-
         if (role === "student" && (age < 13 || age > 21)) {
-            showCustomAlert("Check your birth day. Your age doesn't match the age criteria for a player.");
-            return false;
-        }
+    showCustomAlert("Check your birth day. Your age doesn't match the age criteria for a player.");
+    return false;
+}
+
 
         return true;
     }
@@ -207,11 +207,46 @@ if (monthDiff < 0 || (monthDiff===0 && dayDiff < 0)) { age--; } ageInput.value=a
     console.log("Zones for district:", normalizedDistricts[normalizedSelectedDistrict]);
     normalizedDistricts[normalizedSelectedDistrict].forEach(zone => {
     const option = document.createElement('option');
-    option.value = zone;
-    option.textContent = zone;
+    option.value = zone.id;
+    option.textContent = zone.name;
+
     zoneSelect.appendChild(option);
     });
+
+    zoneSelect.addEventListener("change", function () {
+            console.log("Selected zone value:", zoneSelect.value);
+            updateSchools( zoneSelect.value);
+        });
+
+    
     } else {
     console.warn(`No zones found for district: ${selectedDistrict}`);
     }
     }
+
+    function updateSchools(zoneId) {
+    const schoolSelect = document.getElementById('school');
+
+    // Clear existing options
+    schoolSelect.innerHTML = '<option value="" disabled selected>Select School</option>';
+    schoolSelect.disabled = true; // 🔒 Disable first
+
+    // Filter schools by selected zone
+    const filteredSchools = schoolsData.filter(school => school.zone == zoneId);
+
+    if (filteredSchools.length > 0) {
+        filteredSchools.forEach(school => {
+            const option = document.createElement('option');
+            option.value = school.school_name;
+            option.textContent = school.school_name;
+            schoolSelect.appendChild(option);
+        });
+        schoolSelect.disabled = false; // 🔓 Enable if schools found
+    } else {
+        const option = document.createElement('option');
+        option.value = "";
+        option.textContent = "No school available";
+        schoolSelect.appendChild(option);
+    }
+}
+
