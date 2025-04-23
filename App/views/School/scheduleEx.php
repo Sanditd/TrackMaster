@@ -4,23 +4,27 @@
     <meta charset="UTF-8">
     <title>Schedule Extra Class Request</title>
     <link rel="stylesheet" href="<?php echo ROOT; ?>/css/style.css">
-   <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/School/schedule.css">
-    
+    <link rel="stylesheet" href="/TrackMaster/Public/css/school/schedule.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body><!-- First Dashboard Section for Requests -->
+<body>
+<?php require 'navbar.php'; ?>
+<?php require 'sidebar.php'; ?>
+
+<!-- First Dashboard Section for Requests -->
 <div class="dashboard-section">
     <div class="dashboard-header">
-        <center><h1>Extra Class Requests</h1></center><br>
+        <center><h1><i class="fas fa-calendar-plus"></i> Extra Class Requests</h1></center><br>
     </div> 
 
     <div class="request-form">
         <table class="event-list">
             <thead>
                 <tr>
-                    <th>Student Name</th>
-                    <th>Subject Name</th>
-                    <th>Notes</th>
-                    <th>Actions</th>
+                    <th><i class="fas fa-user"></i> Student Name</th>
+                    <th><i class="fas fa-book"></i> Subject Name</th>
+                    <th><i class="fas fa-sticky-note"></i> Notes</th>
+                    <th><i class="fas fa-cogs"></i> Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,20 +38,20 @@
                             <form action="<?php echo ROOT; ?>/school/approveRequest" method="post" style="display:inline;">
                                 <input type="hidden" name="request_type" value="extraclass">
                                 <input type="hidden" name="request_id" value="<?php echo $request->request_id; ?>">
-                                <button type="submit" class="btn approve-btn">Approve</button>
+                                <button type="submit" class="btn approve-btn"><i class="fas fa-check-circle"></i> Approve</button>
                             </form>
                             
                             <form action="<?php echo ROOT; ?>/school/declineRequest" method="post" style="display:inline;">
                                 <input type="hidden" name="request_type" value="extraclass">
                                 <input type="hidden" name="request_id" value="<?php echo $request->request_id; ?>">
-                                <button type="submit" class="btn decline-btn">Decline</button>
+                                <button type="submit" class="btn decline-btn"><i class="fas fa-times-circle"></i> Decline</button>
                             </form>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="4" class="no-requests">No pending extra class requests</td>
+                        <td colspan="4" class="no-requests"><i class="fas fa-info-circle"></i> No pending extra class requests</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -58,21 +62,21 @@
 <!-- Second Dashboard Section for Scheduling -->
 <div class="dashboard-section">
     <div class="dashboard-header">
-        <center><h1>Schedule Extra</h1></center><br>
+        <center><h1><i class="fas fa-calendar-alt"></i> Schedule Extra</h1></center><br>
     </div> 
 
     <?php if (isset($_SESSION['success_message'])): ?>
-        <div class="message success"><?= $_SESSION['success_message'] ?></div>
+        <div class="message success"><i class="fas fa-check-circle"></i> <?= $_SESSION['success_message'] ?></div>
         <?php unset($_SESSION['success_message']); ?>
     <?php elseif (isset($_SESSION['error_message'])): ?>
-        <div class="message error"><?= $_SESSION['error_message'] ?></div>
+        <div class="message error"><i class="fas fa-exclamation-circle"></i> <?= $_SESSION['error_message'] ?></div>
         <?php unset($_SESSION['error_message']); ?>
     <?php endif; ?>
 
     <form method="post" action="<?php echo ROOT; ?>/school/scheduleEx">
         <div class="form-group">
             <fieldset>
-                <legend>Select Players</legend>
+                <legend><i class="fas fa-users"></i> Select Players</legend>
                 <?php if (!empty($players)): ?>
                     <?php foreach ($players as $player): ?>
                         <label>
@@ -81,35 +85,36 @@
                         </label>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p>No players available for selection.</p>
+                    <p><i class="fas fa-exclamation-circle"></i> No players available for selection.</p>
                 <?php endif; ?>
             </fieldset>
         </div>
 
         <div class="form-group">
-            <label for="subject">Subject</label>
+            <label for="subject"><i class="fas fa-book"></i> Subject</label>
             <input type="text" id="subject" name="subject" placeholder="Enter subject" required>
-        </div>
+        
 
-        <div class="form-group">
-            <label for="description">Description</label>
+        
+            <label for="description"><i class="fas fa-align-left"></i> Description</label>
             <textarea id="description" name="description" rows="4" placeholder="Write a brief description"></textarea>
-        </div>
+      
 
-        <div class="form-group">
-            <label for="date">Class Date</label>
+     
+            <label for="date"><i class="fas fa-calendar-day"></i> Class Date</label>
             <input type="date" id="date" name="date" required>
-        </div>
+        
 
-        <div class="form-group">
-            <label for="venue">Venue</label>
+        
+            <label for="venue"><i class="fas fa-map-marker-alt"></i> Venue</label>
             <input type="text" id="venue" name="venue" placeholder="Enter class venue" required>
         </div>
 
         <div class="form-actions">
-            <button type="submit">Submit Request</button>
+            <button type="submit"><i class="fas fa-paper-plane"></i> Submit Request</button>
         </div>
     </form>
 </div>
-                </body>
-                </html>
+<?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
+</body>
+</html>

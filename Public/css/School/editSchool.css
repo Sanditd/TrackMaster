@@ -1,156 +1,123 @@
-/* styles.css */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f7fa;
-}
-
-.container {
-    width: 60%;
+/* Profile Card Styles */
+.profile-card {
+    max-width: 800px;
     margin: 2rem auto;
     padding: 2rem;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
 }
 
-.header {
+/* Header Section */
+.profile-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
 }
 
-.header h2 {
-    font-size: 1.5rem;
-    color: #4a4a4a;
-}
-
-.edit-button {
-    background-color: #ffa500;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: all 0.3s ease-in-out;
-}
-
-.edit-button:hover {
-    background-color: #cc8400;
-    transform: scale(1.05);
-}
-
-.profile-form {
-    display: flex;
-    gap: 2rem;
-}
-
-.left-section, .right-section {
+.profile-info {
     flex: 1;
 }
 
-.profile-picture{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+.profile-name {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.2rem;
+}
+
+.profile-title {
+    font-size: 1.1rem;
+    color: #7f8c8d;
     margin-bottom: 1rem;
+    font-weight: 500;
 }
 
-#profile-pic-input{
-    margin-left: 10px;
-}
-
-.profile-picture img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 5px solid #ffa500;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-}
-
-.profile-picture img:hover {
-    transform: scale(1.1);
-}
-
-
-.input-group {
-    margin-bottom: 1rem;
-}
-
-.input-group label {
-    display: block;
-    font-size: 0.9rem;
-    color: #4a4a4a;
-    margin-bottom: 0.5rem;
-    margin-top: 0.8rem;
-}
-
-.input-group input,
-.input-group select {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-
-
-
-.input-group textarea {
-    width: 100%;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    resize: none; /* Disable resizing */
-    text-align: justify;
-
-}
-
-.btns{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 40px;
-}
-.checkbox-container {
-    margin: 10px;
-    border: 1px solid #ccc;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+.profile-contact {
     margin-top: 0.5rem;
-    padding: 10px;
-}
-
-.checkbox-container label {
     font-size: 0.9rem;
-    color: #4a4a4a;
+    color: #555;
 }
 
-select {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.profile-contact p {
+    margin: 0.3rem 0;
+}
+
+/* About Me Section */
+.section-title {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin: 1.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f1f1f1;
+}
+
+.about-me {
     font-size: 1rem;
-    background-color: #fff;
-    color: #4a4a4a;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
 }
 
-select:focus {
-    outline: none;
-    border-color: #ffa500;
-    box-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
+.motto {
+    font-style: italic;
+    background-color: #f8f9fa;
+    padding: 0.8rem;
+    border-left: 4px solid #ffa500;
+    margin: 1rem 0;
 }
 
+/* School Information Section */
+.info-list {
+    list-style-type: none;
+    margin: 1rem 0;
+}
+
+.info-list li {
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+}
+
+.info-list strong {
+    min-width: 120px;
+    display: inline-block;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.view-link {
+    color: #3498db;
+    text-decoration: none;
+    margin-left: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.view-link:hover {
+    text-decoration: underline;
+}
+
+/* Divider Line */
+.divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 1.5rem 0;
+}
+
+/* Profile Picture Placeholder */
+.profile-pic-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 0.8rem;
+    text-align: center;
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
