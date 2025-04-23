@@ -1,9 +1,10 @@
 <?php
 
 class School extends Controller{
+    private $schoolModel;
 
     public function __construct() {
-        $this->schoolModel = $this->model('SchoolModel');
+        $schoolModel=$this->schoolModel = $this->model('SchoolModel');
 
     }
 

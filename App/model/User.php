@@ -114,6 +114,16 @@ class User {
         return $result ? $result->sport_id : false; // Return sport_id or false if not found
     }
     
+    public function getSportNameById($sport_id) {
+        $query = "SELECT sport_name FROM sports WHERE sport_id = :sport_id";
+        $this->db->query($query);
+        $this->db->bind(':sport_id', $sport_id);
+        $result = $this->db->single();
+
+        
+        return $result ? $result->sport_name : false; // Return sport_id or false if not found
+    }
+
     public function getSchoolIdByName($schoolName) {
         $query = "SELECT school_id FROM user_school WHERE school_name = :school_name";
         $this->db->query($query);
