@@ -498,75 +498,42 @@
         </div>
 
         <div class="main-content">
-            <!-- Status Section -->
-            <div class="dashboard-section">
 
-            
-            
 <div class="dashboard-section">
     <h2>Current Training Status</h2>
-    <?php if (isset($data['status']) && $data['status']): ?>
-        <p><strong>Status:</strong> <?php echo htmlspecialchars($data['status']->status); ?></p>
-        <p><strong>Last Updated:</strong> <?php echo htmlspecialchars($data['status']->last_updated); ?></p>
-    <?php else: ?>
-        <p><strong>Status:</strong> Not Available</p>
-    <?php endif; ?>
-</div>
+    <form action="<?php echo ROOT ?>/Student/updateStatus" method="POST">
+    <p><i class="fas fa-info-circle"></i> Update your current training status</p>
+    <div class="radio-group">
+        <input class="radio-input" name="status" id="radio1" type="radio" value="Practicing" checked>
+        <label class="radio-label" for="radio1">
+            <span class="radio-inner-circle"></span>
+            <i class="fas fa-running"></i> Practicing
+        </label>
 
+        <input class="radio-input" name="status" id="radio2" type="radio" value="In a Meet">
+        <label class="radio-label" for="radio2">
+            <span class="radio-inner-circle"></span>
+            <i class="fas fa-trophy"></i> In a Meet
+        </label>
 
+        <input class="radio-input" name="status" id="radio3" type="radio" value="At Rest">
+        <label class="radio-label" for="radio3">
+            <span class="radio-inner-circle"></span>
+            <i class="fas fa-bed"></i> At Rest
+        </label>
 
-<!-- 
-<?php if (isset($_SESSION['username'])): ?>
-    <p>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</p>
-<?php else: ?>
-    <p>Welcome, Guest!</p>
-<?php endif; ?> -->
+        <input class="radio-input" name="status" id="radio4" type="radio" value="Injured">
+        <label class="radio-label" for="radio4">
+            <span class="radio-inner-circle"></span>
+            <i class="fas fa-medkit"></i> Injured
+        </label>
+    </div>
 
+    <button class="btn" type="submit" style="margin-top: 15px;">
+        <i class="fas fa-save"></i> Save Status
+    </button>
+</form>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <h2>Current Status</h2>
-                <p><i class="fas fa-info-circle"></i> Update your current training status</p>
-                <div class="radio-group">
-                    <input class="radio-input" name="radio-group" id="radio1" type="radio" checked>
-                    <label class="radio-label" for="radio1">
-                    <span class="radio-inner-circle"></span>
-                    <i class="fas fa-running"></i> Practicing
-                    </label>
-                    
-                    <input class="radio-input" name="radio-group" id="radio2" type="radio">
-                    <label class="radio-label" for="radio2">
-                    <span class="radio-inner-circle"></span>
-                    <i class="fas fa-trophy"></i> In a Meet
-                    </label>
-                    
-                    <input class="radio-input" name="radio-group" id="radio3" type="radio">
-                    <label class="radio-label" for="radio3">
-                    <span class="radio-inner-circle"></span>
-                    <i class="fas fa-bed"></i> At Rest
-                    </label>
-
-                    <input class="radio-input" name="radio-group" id="radio4" type="radio">
-                    <label class="radio-label" for="radio4">
-                    <span class="radio-inner-circle"></span>
-                    <i class="fas fa-medkit"></i> Injured
-                    </label>
-                </div>
             </div>
 
             <!-- Sports Section -->
@@ -624,23 +591,23 @@
             </div>
 
             <!-- Medical Section -->
-            <div class="dashboard-section">
-                <h2>Current Medical Status</h2>
-                <?php if(isset($data['currentStatus']) && $data['currentStatus']): ?>
-                    <p><strong><i class="fas fa-calendar-check"></i> Last updated:</strong> <?php echo htmlspecialchars($data['currentStatus']->date); ?></p>
-                    <p><strong><i class="fas fa-heartbeat"></i> Medical Conditions:</strong> <?php echo htmlspecialchars($data['currentStatus']->medical_condition); ?></p>
-                    <p><strong><i class="fas fa-pills"></i> Medication:</strong> <?php echo htmlspecialchars($data['currentStatus']->medication); ?></p>
-                    <p><strong><i class="fas fa-clipboard"></i> Notes:</strong> <?php echo htmlspecialchars($data['currentStatus']->notes); ?></p>
-                <?php else: ?>
-                    <p><strong><i class="fas fa-calendar-check"></i> Last updated:</strong> N/A</p>
-                    <p><strong><i class="fas fa-heartbeat"></i> Medical Conditions:</strong> None</p>
-                    <p><strong><i class="fas fa-pills"></i> Medication:</strong> None</p>
-                    <p><strong><i class="fas fa-clipboard"></i> Notes:</strong> None</p>
-                <?php endif; ?>
-                <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/medicalStatus'">
+<div class="dashboard-section">
+    <h2>Current Medical Status</h2>
+    <?php if (isset($data['currentStatus']) && $data['currentStatus']): ?>
+        <p><strong>Condition:</strong> <?php echo htmlspecialchars($data['currentStatus']->medical_condition); ?></p>
+        <p><strong>Medication:</strong> <?php echo htmlspecialchars($data['currentStatus']->medication); ?></p>
+        <p><strong>Notes:</strong> <?php echo htmlspecialchars($data['currentStatus']->notes); ?></p>
+        <p><strong>Last Updated:</strong> <?php echo date('d/m/Y', strtotime($data['currentStatus']->date)); ?></p>
+        <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/medicalStatus'">
                     <i class="fas fa-first-aid"></i> Update Medical Status
                 </button>
-            </div>
+    <?php else: ?>
+        <p>No medical status available.</p>
+        <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/medicalStatus'">
+                    <i class="fas fa-first-aid"></i> Update Medical Status
+                </button>
+    <?php endif; ?>
+</div>
 
             <!-- Calendar Section -->
             <div class="dashboard-section">

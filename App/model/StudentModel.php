@@ -147,14 +147,6 @@ class StudentModel {
         return $this->db->single(); // Return a single record
     }
 
-    public function getPlayerStatus($userId) {
-        // Check if the current user is authorized to view this player's status
-        if ($_SESSION['user_id'] != $userId && $_SESSION['user_role'] != 'admin') {
-            return false; // Unauthorized access
-        }
-        
-        $this->db->query("SELECT * FROM user_player WHERE user_id = :userId");
-        $this->db->bind(':userId', $userId);
-        return $this->db->single(); // Return a single record
-    }
+    
+    
 }

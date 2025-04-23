@@ -6,25 +6,23 @@ class Student extends Controller {
         $this->studentModel = $this->model('StudentModel');
     }
 
-    public function dashboard() {
-        $userId = $_SESSION['user_id'];
-    
-        // Fetch achievements from the model
-        $achievements = $this->studentModel->getAchievementsByUser($userId);
-        $userDetails = $this->studentModel->getUserDetails($userId);
-    
-        // Check if data is returned correctly
-        if (empty($achievements)) {
-            $data['error']="No achivement";
-            $this->view('Student/dashboard',$data);
+    public function index() {
+        // Redirect to the student dashboard
+        header('Location: ' . URLROOT . '/Student/studentDashboard');
+        exit();
+    }
+    public function studentDashboard() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . URLROOT . '/users/login');
+            exit();
         }
     
-        // Pass the data to the view
-        $data = [
-            'userDetails' => $userDetails,
-            'achievements' => $achievements
-        ];
-        $this->view('Student/dashboard',$data);
+        $userId = $_SESSION['user_id'];
+    
+        $medicalModel = $this->model('MedicalModel');
+        $data = $medicalModel->index($userId);
+    
+        $this->view('Student/dashboard', $data);
     }
 
     public function editStudentProfile() {
@@ -133,37 +131,6 @@ class Student extends Controller {
         }
     }
 
-    //medical status
-    // public function saveMedicalStatus(){
-    //     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //         // Process form
-    //         $data = [
-    //             'user_id' => trim($_POST['user_id']),
-    //             'date' => trim($_POST['date']),
-    //             'conditions' => trim($_POST['condition']),
-    //             'medications' => trim($_POST['medication']),
-    //             'notes' => trim($_POST['notes'])
-    //         ];
-
-    //         if ($this->studentModel->addMedicalStatus($data)) {
-    //             header('Location: ' . URLROOT . '/Student/medicalStatus');
-    //         } else {
-    //             die('Something went wrong');
-    //         }
-    //     } 
-    // }
-
-
-
-
-
-
-
-
-
-
-
-
     public function studentAchievements() {
         $achievements = $this->studentModel->getAchievements();
         $data = ['achievements' => $achievements];
@@ -179,8 +146,6 @@ class Student extends Controller {
         $data = [];
         $this->view('Student/studentSchedule');
     }
-
-
 
     public function financialStatus(){
         $data = [];
@@ -211,41 +176,12 @@ class Student extends Controller {
         $data = [];
         $this->view('Student/Playerperformance');
     }
-
-    public function studentDashboard() {
-        // Assuming you're storing the user ID in session
-        $userId = $_SESSION['user_id'];
     
-        // Fetch achievements from the model
-        $achievements = $this->studentModel->getAchievementsByUser($userId);
-    
-        // Check if data is returned correctly
-        if (empty($achievements)) {
-            // Handle the case where no achievements are found
-            $achievements = [];  // This prevents an undefined index warning in the view
-        }
-    
-        // Pass the data to the view
-        $data = [
-            'achievements' => $achievements
-        ];
-    
-        // Load the view
-        $this->view('Student/dashboard', $data);
-    }
-
-
-    public function getStudentStatus(){
-        $userId = $_SESSION['user_id'];
-        $studentStatus = $this->studentModel->getPlayerStatus($userId);
-    
-        $data = ['status' => $studentStatus];
-        $this->view('Student/dashboard', $data);
-    }
-    
-    
-
 }
+
+    
+
+
 
     
 

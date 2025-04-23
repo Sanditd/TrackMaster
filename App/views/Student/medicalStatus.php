@@ -482,10 +482,10 @@
                     <p><strong><i class="fas fa-pills"></i> Medication:</strong> <?php echo htmlspecialchars($data['currentStatus']->medication); ?></p>
                     <p><strong><i class="fas fa-clipboard"></i> Notes:</strong> <?php echo htmlspecialchars($data['currentStatus']->notes); ?></p>
                 <?php else: ?>
-                    <p><strong><i class="fas fa-calendar-check"></i> Last updated:</strong> N/A</p>
-                    <p><strong><i class="fas fa-heartbeat"></i> Medical Conditions:</strong> None</p>
-                    <p><strong><i class="fas fa-pills"></i> Medication:</strong> None</p>
-                    <p><strong><i class="fas fa-clipboard"></i> Notes:</strong> None</p>
+                    <p><strong><i class="fas fa-calendar-check"></i> Last updated:</strong> Not Updated Yet</p>
+                    <p><strong><i class="fas fa-heartbeat"></i> Medical Conditions:</strong> Not Updated Yet</p>
+                    <p><strong><i class="fas fa-pills"></i> Medication:</strong> Not Updated Yet</p>
+                    <p><strong><i class="fas fa-clipboard"></i> Notes:</strong>Not Updated Yet</p>
                 <?php endif; ?>
                 
                 <button id="openModal" class="btn">
@@ -497,15 +497,15 @@
             <div class="medical-section">
                 <h2>Important Health Information</h2>
                 <?php if(isset($data['thingsToConsider']) && $data['thingsToConsider']): ?>
-                    <p><strong><i class="fas fa-tint"></i> Blood Type:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->blood_type); ?></p>
-                    <p><strong><i class="fas fa-exclamation-triangle"></i> Allergies:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->allergies); ?></p>
-                    <p><strong><i class="fas fa-info-circle"></i> Special Notes:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->special_notes); ?></p>
-                    <p><strong><i class="fas fa-phone"></i> Emergency Contact:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->emergency_contact); ?></p>
+                    <p><strong><i class="fas fa-tint"></i> Blood Type:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->blood_type ?? 'Not Updated Yet'); ?></p>
+                    <p><strong><i class="fas fa-exclamation-triangle"></i> Allergies:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->allergies ?? 'Not Updated Yet'); ?></p>
+                    <p><strong><i class="fas fa-info-circle"></i> Special Notes:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->special_notes ?? 'Not Updated Yet'); ?></p>
+                    <p><strong><i class="fas fa-phone"></i> Emergency Contact:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->emergency_contact ?? 'Not Updated Yet'); ?></p>
                 <?php else: ?>
-                    <p><strong><i class="fas fa-tint"></i> Blood Type:</strong> Unknown</p>
-                    <p><strong><i class="fas fa-exclamation-triangle"></i> Allergies:</strong> None</p>
-                    <p><strong><i class="fas fa-info-circle"></i> Special Notes:</strong> None</p>
-                    <p><strong><i class="fas fa-phone"></i> Emergency Contact:</strong> None</p>
+                    <p><strong><i class="fas fa-tint"></i> Blood Type:</strong> Not Updated Yet</p>
+                    <p><strong><i class="fas fa-exclamation-triangle"></i> Allergies:</strong> Not Updated Yet</p>
+                    <p><strong><i class="fas fa-info-circle"></i> Special Notes:</strong> Not Updated Yet</p>
+                    <p><strong><i class="fas fa-phone"></i> Emergency Contact:</strong> Not Updated Yet</p>
                 <?php endif; ?>
                 
                 <button id="openThingsModal" class="btn">
