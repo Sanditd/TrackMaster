@@ -106,23 +106,28 @@
         </button>
     </center>
 </div>
+<div class="section activity-log">
+    <h2><i class="fas fa-chart-bar"></i> Study performance</h2>
+    <ul>
+        <?php foreach ($performance as $student): ?>
+            <li>
+                <?= htmlspecialchars($student['name']) ?>
+                <span><i class="fas fa-percentage"></i> Average - <?= htmlspecialchars($student['average']) ?>%</span>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
 
-            <div class="section activity-log">
-                <h2><i class="fas fa-chart-bar"></i> Study performance</h2>
-                <ul>
-                    <li>Hashan<span><i class="fas fa-percentage"></i> Average - 25%</span></li>
-                    <li>Dimuth<span><i class="fas fa-percentage"></i> Average - 30%</span></li>
-                </ul>
-            </div>
+<div class="section upcoming-appointments">
+    <h2><i class="fas fa-calendar-check"></i> Upcoming Sessions</h2>
+    <div class="appointment">
+        <?php foreach ($sessions as $session): ?>
+            <span><i class="far fa-calendar"></i> <?= date('M d', strtotime($session['session_date'])) ?></span>
+            <?= htmlspecialchars($session['session_name']) ?><br>
+        <?php endforeach; ?>
+    </div>
+</div>
 
-            <div class="section upcoming-appointments">
-                <h2><i class="fas fa-calendar-check"></i> Upcoming Sessions</h2>
-                <div class="appointment">
-                    <span><i class="far fa-calendar"></i> Jan 31</span> Coaching Session 25<br>
-                    <span><i class="far fa-calendar"></i> Feb 07</span> Coaching Session 24<br>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="/TrackMaster/Public/js/School/cal.js"></script>

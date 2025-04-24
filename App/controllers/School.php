@@ -5,6 +5,18 @@ class School extends Controller{
     public function __construct() {
         $this->schoolModel = $this->model('SchoolModel');
         $this->userModel = $this->model('UserModel');
+        $this->studyModel = $this->model('StudyModel'); // Add this line
+    }
+    
+    public function school() {
+        // Get the currently logged in user ID (adjust based on your auth system)
+        $user_id = $_SESSION['user_id'] ?? null;
+        
+        if (!$user_id) {
+            // Handle case where user is not logged in
+            redirect('users/login');
+        }
+        
 
     }
 
@@ -401,7 +413,25 @@ public function scheduleEx() {
 }
 
 
+public function showDashboard() {
+    // Fetch data from the model or database
+    $studyPerformance = $this->model->getStudyPerformance(); // Make sure this returns data
+    $upcomingSessions = $this->model->getUpcomingSessions(); // Make sure this returns data
+
+    // Pass data to the view
+    $this->view('school.dashboard', [
+        'studyPerformance' => $studyPerformance,
+        'upcomingSessions' => $upcomingSessions
+    ]);
 }
+
+}
+
+
+
+
+
+
 
 
 

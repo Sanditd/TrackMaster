@@ -5,21 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Requests</title>
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/School/event.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 <?php require 'navbar.php'; ?>
 <?php require 'sidebar.php'; ?>
 <div class="dashboard-container">
     <div class="dashboard-header">
-        <center><h1>Facilities Requests</h1></center><br> 
+        <center><h1><i class="fas fa-tachometer-alt"></i> Facilities Requests</h1></center><br> 
     </div>
     <table class="event-list">
         <thead>
             <tr>
-                <th>Event Name</th>
-                <th>Coach Name</th>
-                <th>Date and Time</th>
-                <th>Action</th>
+                <th><i class="fas fa-calendar-check"></i> Event Name</th>
+                <th><i class="fas fa-user"></i> Coach Name</th>
+                <th><i class="fas fa-clock"></i> Date and Time</th>
+                <th><i class="fas fa-tasks"></i> Action</th>
             </tr>
         </thead>
         <tbody>
@@ -34,14 +35,14 @@
                         <form action="<?php echo ROOT; ?>/school/approveRequest" method="post" style="display:inline;">
                             <input type="hidden" name="request_type" value="facility">
                             <input type="hidden" name="request_id" value="<?php echo $request->request_id; ?>">
-                            <button type="submit" class="btn approve-btn">Approve</button>
+                            <button type="submit" class="btn approve-btn"><i class="fas fa-check"></i> Approve</button>
                         </form>
                         
                         <!-- Decline Form -->
                         <form action="<?php echo ROOT; ?>/school/declineRequest" method="post" style="display:inline;">
                             <input type="hidden" name="request_type" value="facility">
                             <input type="hidden" name="request_id" value="<?php echo $request->request_id; ?>">
-                            <button type="submit" class="btn decline-btn">Decline</button>
+                            <button type="submit" class="btn decline-btn"><i class="fas fa-times"></i> Decline</button>
                         </form>
                     </td>
                 </tr>
@@ -58,52 +59,7 @@
     <div class="flash-message">
         <?php echo $_SESSION['flash_message']; unset($_SESSION['flash_message']); ?>
     </div>
-<?php endif; ?>
-
-    
-    <div class="dashboard-header">
-        <center><h1>Extra Class Requests</h1></center><br> 
-    </div>
-    <table class="event-list">
-        <thead>
-            <tr>
-                <th>Student Name</th>
-                <th>Subject Name</th>
-                <th>Notes</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if(!empty($data['extraClassRequests'])): ?>
-                <?php foreach($data['extraClassRequests'] as $request): ?>
-                <tr>
-                    <td><?php echo $request->student_name; ?></td>
-                    <td><?php echo $request->subject_name; ?></td>
-                    <td><?php echo $request->notes; ?></td>
-                    <td>
-                        <!-- Approve Form -->
-                        <form action="<?php echo ROOT; ?>/school/approveRequest" method="post" style="display:inline;">
-                            <input type="hidden" name="request_type" value="extraclass">
-                            <input type="hidden" name="request_id" value="<?php echo $request->request_id; ?>">
-                            <button type="submit" class="btn approve-btn">Approve</button>
-                        </form>
-                        
-                        <!-- Decline Form -->
-                        <form action="<?php echo ROOT; ?>/school/declineRequest" method="post" style="display:inline;">
-                            <input type="hidden" name="request_type" value="extraclass">
-                            <input type="hidden" name="request_id" value="<?php echo $request->request_id; ?>">
-                            <button type="submit" class="btn decline-btn">Decline</button>
-                        </form>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="4" class="no-requests">No pending extra class requests</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+    <?php endif; ?>
 </div>
 
 <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
