@@ -83,9 +83,9 @@ class StudentModel {
         }
     }
 
-    // Medical Status Methods (if not handled by MedicalModel)
+    // Medical Status Methods 
     public function updateMedicalStatus($data) {
-        // Assuming a medical_status table exists; otherwise, this should be in MedicalModel
+
         $this->db->query('INSERT INTO medical_status (user_id, medical_condition, medication, notes, date) VALUES (:user_id, :medical_condition, :medication, :notes, :date)
                           ON DUPLICATE KEY UPDATE medical_condition = :medical_condition, medication = :medication, notes = :notes, date = :date');
         $this->db->bind(':user_id', $data['user_id']);
