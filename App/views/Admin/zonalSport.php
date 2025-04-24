@@ -69,30 +69,14 @@ foreach ($zonalSports as $zs) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Sport Assign</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Coach Assignment</title>
     <link rel="stylesheet" href="<?= ROOT ?>/Public/css/Admin/navbar.css">
-    <link rel="stylesheet" href="<?= ROOT ?>/Public/css/Admin/zoneManage.css">
+    <!-- <link rel="stylesheet" href="<?= ROOT ?>/Public/css/Admin/zoneManage.css"> -->
+    <link rel="stylesheet" href="<?= ROOT ?>/Public/css/Admin/zonalSport.css">
     <script src="<?= ROOT ?>/Public/js/Admin/sidebar.js"></script>
-    <style>
-        .rounded-btn {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 10px;
-        }
-        input, select, button {
-            margin: 5px 0;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            vertical-align: middle;
-            text-align: center;
-            padding: 10px;
-        }
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
 </head>
 
 <body>
@@ -106,263 +90,104 @@ foreach ($zonalSports as $zs) {
 
 <div class="adminNav"><?php require_once 'adminNav.php' ?></div>
 
-<div style="margin-top: 100px; margin-left:100px">
+<div class="main-content">
     <div class="container">
-        <div class="temp-container">
-            
+        <div class="page-header">
+            <h1 class="page-title"><i class="fas fa-user-friends"></i> Sports Coach Assignment</h1>
+        </div>
+        
+        <div class="steps-container">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <div class="step-text">Select Location</div>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <div class="step-text">Assign Coaches</div>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <div class="step-text">Confirm & Save</div>
+            </div>
+        </div>
 
-            <div id="signup-port">
-                <?php if ($Success_message): ?>
-                    <!-- <div class="alert alert-success"><?= htmlspecialchars($Success_message) ?></div> -->
-                <?php endif; ?>
-                <?php if ($Error_message): ?>
-                    <!-- <div class="alert alert-danger"><?= htmlspecialchars($Error_message) ?></div> -->
-                <?php endif; ?>
-
-                <div class="temp2-container">
-                    <div class="column">
-                        
-                        <label>Select Province:</label><br>
-                        <select id="provinceDropdown" class="rounded-btn" style="width:300px; height:40px;">
-                            <option value="">-- Select Province --</option>
-                        </select>
-                    </div>
-
-                    <div class="column">
-                        <label>Select District:</label><br>
-                        <select id="districtDropdown" class="rounded-btn" style="width:300px; height:40px;" disabled>
-                            <option value="">-- Select District --</option>
-                        </select>
-                    </div>
-
-                    <div class="column">
-                        <label>Select Zone:</label><br>
-                        <select id="zoneDropdown" class="rounded-btn" style="width:300px; height:40px;" disabled>
-                            <option value="">-- Select Zone --</option>
-                        </select>
-                    </div>
+        <div class="filter-container">
+            <div class="filters">
+                <div class="filter-column">
+                    <label class="filter-label" for="provinceDropdown">
+                        <i class="fas fa-map-marker-alt"></i> Province
+                    </label>
+                    <select id="provinceDropdown" class="form-select">
+                        <option value="">-- Select Province --</option>
+                    </select>
                 </div>
+                
+                <div class="filter-column">
+                    <label class="filter-label" for="districtDropdown">
+                        <i class="fas fa-map"></i> District
+                    </label>
+                    <select id="districtDropdown" class="form-select" disabled>
+                        <option value="">-- Select District --</option>
+                    </select>
+                </div>
+                
+                <div class="filter-column">
+                    <label class="filter-label" for="zoneDropdown">
+                        <i class="fas fa-location-arrow"></i> Zone
+                    </label>
+                    <select id="zoneDropdown" class="form-select" disabled>
+                        <option value="">-- Select Zone --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-                <br><br>
-
-                <form id="zonalForm" method="post" action="<?= ROOT ?>/admin/zonalSport">
-                    <table border="1">
-                        <thead>
-                            <tr>
-                                <th>Zone Name</th>
-                                <th>Sport</th>
-                                <th>Select Coach</th>
-                            </tr>
-                        </thead>
-                        <tbody id="zoneTableBody"></tbody>
-                    </table>
-                    <br>
-                    <button type="submit" class="rounded-btn" style="width:20%;height:40px;">Save Selection</button>
-                </form>
+        <form id="zonalForm" method="post" action="<?= ROOT ?>/admin/zonalSport">
+            <div id="assignmentContainer">
+                <div class="assignment-empty" id="emptyState">
+                    <i class="fas fa-search fa-3x" style="color: #ddd; margin-bottom: 15px;"></i>
+                    <p>Select a zone to view and assign coaches to sports</p>
+                </div>
+                
+                <table class="assignment-table" id="assignmentTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th width="25%">Zone</th>
+                            <th width="25%">Sport</th>
+                            <th width="50%">Coach</th>
+                        </tr>
+                    </thead>
+                    <tbody id="zoneTableBody"></tbody>
+                </table>
             </div>
             
-        <!-- </div>
-        user details <br>
-        <?php print_r($users) ?>
-        <br><br>
-        coaches details <br>
-        <?php print_r($FromCoaches) ?>
-        <br><br>
-        Sports details <br>
-        <?php print_r($sports) ?>
-        <br><br>
-        zonal Sports details<br>
-        <?php print_r($zonalSports) ?>
-        <br><br>
-        zones details<br>
-        <?php print_r($zones) ?>
-        <br><br> -->
+            <div id="summaryContainer" style="display: none;" class="summary-container">
+                <div class="summary-title"><i class="fas fa-clipboard-check"></i> Assignment Summary</div>
+                <div id="summaryContent"></div>
+            </div>
+
+            <div style="display: flex; justify-content: center;">
+                <button type="submit" class="submit-btn" id="submitBtn" style="display: none;">
+                    <i class="fas fa-save btn-icon"></i> Save Assignments
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
 <script>
+    
 const zones = <?= json_encode($zones) ?>;
 const sports = <?= json_encode($sports) ?>;
 const coachesData = <?= json_encode($FromCoaches) ?>;
 const users = <?= json_encode($users) ?>;
 const zonalSports = <?= json_encode($formattedZonalSports) ?>;
-
-const provinceDropdown = document.getElementById('provinceDropdown');
-const districtDropdown = document.getElementById('districtDropdown');
-const zoneDropdown = document.getElementById('zoneDropdown');
-const tbody = document.getElementById('zoneTableBody');
-
-// Populate Province Dropdown
-const provinces = [...new Set(zones.map(z => z.provinceName))];
-provinces.forEach(province => {
-    const opt = document.createElement('option');
-    opt.value = province;
-    opt.textContent = province;
-    provinceDropdown.appendChild(opt);
-});
-
-// Province Change
-provinceDropdown.addEventListener('change', () => {
-    districtDropdown.innerHTML = '<option value="">-- Select District --</option>';
-    zoneDropdown.innerHTML = '<option value="">-- Select Zone --</option>';
-    tbody.innerHTML = '';
-    districtDropdown.disabled = true;
-    zoneDropdown.disabled = true;
-
-    const selectedProvince = provinceDropdown.value;
-    if (!selectedProvince) return;
-
-    const districts = [...new Set(zones.filter(z => z.provinceName === selectedProvince).map(z => z.DisName))];
-    districts.forEach(district => {
-        const opt = document.createElement('option');
-        opt.value = district;
-        opt.textContent = district;
-        districtDropdown.appendChild(opt);
-    });
-    districtDropdown.disabled = false;
-});
-
-// District Change
-districtDropdown.addEventListener('change', () => {
-    zoneDropdown.innerHTML = '<option value="">-- Select Zone --</option>';
-    tbody.innerHTML = '';
-    zoneDropdown.disabled = true;
-
-    const selectedProvince = provinceDropdown.value;
-    const selectedDistrict = districtDropdown.value;
-    if (!selectedDistrict) return;
-
-    const filteredZones = zones.filter(z => z.provinceName === selectedProvince && z.DisName === selectedDistrict);
-    filteredZones.forEach(zone => {
-        const opt = document.createElement('option');
-        opt.value = zone.zoneId;
-        opt.textContent = `${zone.zoneName}`;
-        zoneDropdown.appendChild(opt);
-    });
-    zoneDropdown.disabled = false;
-});
-
-// Zone Change
-zoneDropdown.addEventListener('change', function () {
-    const selectedZoneId = this.value;
-    renderZoneById(selectedZoneId);
-});
-
-// Render Table Rows for a Zone
-function renderZoneById(zoneId) {
-    tbody.innerHTML = '';
-    const zone = zones.find(z => z.zoneId == zoneId);
-    if (!zone) return;
-
-    const assignedCoaches = zonalSports[zoneId] || {};
-
-    sports.forEach(sport => {
-        const sportId = sport.sport_id;
-        const assignedCoachId = assignedCoaches[sportId] || "";
-
-        const coachObj = coachesData.find(c => parseInt(c.coach_id) === parseInt(assignedCoachId));
-        const userId = coachObj ? coachObj.user_id : null;
-        const userObj = users.find(u => u.user_id == userId);
-
-        const assignedCoachName = userObj
-            ? `${userObj.firstname} ${userObj.lname}`
-            : (assignedCoachId ? `Unknown Coach (ID: ${assignedCoachId})` : "No Coach Assigned");
-
-        const zoneCoaches = coachesData.filter(c => parseInt(c.zone) === parseInt(zone.zoneId));
-
-        let options = `<option value="">-- Select Coach --</option>`;
-        zoneCoaches.forEach(c => {
-            const user = users.find(u => u.user_id == c.user_id);
-            const fullName = user ? `${user.firstname} ${user.lname}` : `Unknown Coach (ID: ${c.coach_id})`;
-            const selected = (c.coach_id == assignedCoachId) ? "selected" : "";
-            options += `<option value="${c.coach_id}" ${selected}>${fullName}</option>`;
-        });
-
-        // Still show unknown coach if not in the list
-        if (assignedCoachId && !zoneCoaches.some(c => c.coach_id == assignedCoachId)) {
-            options += `<option value="${assignedCoachId}" selected>Unknown Coach (ID: ${assignedCoachId})</option>`;
-        }
-
-        let rowHTML = `<tr>
-            <td style="font-weight: bold;">${zone.zoneName}</td>
-            <td>${sport.sport_name}</td>`;
-
-        if (assignedCoachId) {
-            rowHTML += `
-                <td>${assignedCoachName}</td>
-                <td>
-                    <select name="coach_selection[${zone.zoneId}][${sportId}]" style="width: 200px;">
-                        ${options}
-                    </select>
-                </td>`;
-        } else {
-            rowHTML += `
-                <td colspan="2">
-                    <select name="coach_selection[${zone.zoneId}][${sportId}]" style="width: 200px;">
-                        ${options}
-                    </select>
-                </td>`;
-        }
-
-        rowHTML += `</tr>`;
-        tbody.insertAdjacentHTML('beforeend', rowHTML);
-    });
-}
-
-
-
-
-
-// Form Validation
-const form = document.getElementById('zonalForm');
-form.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const selects = Array.from(form.querySelectorAll('select[name^="coach_selection"]'));
-    let isValid = true;
-    let errorMessages = [];
-    let summary = [];
-
-    selects.forEach(select => {
-        const value = select.value.trim();
-        const name = select.getAttribute("name");
-        const matches = name.match(/coach_selection\[(\d+)]\[(\d+)]/);
-
-        if (!matches) return;
-
-        const zoneId = matches[1];
-        const sportId = matches[2];
-
-        const row = select.closest('tr');
-        const zoneName = row.children[0]?.textContent?.trim() ?? "Unknown Zone";
-        const sportName = row.children[1]?.textContent?.trim() ?? "Unknown Sport";
-
-        if (!value) {
-            isValid = false;
-            errorMessages.push(`Please select a coach for ${sportName} in ${zoneName}`);
-        } else {
-            const selectedOption = select.options[select.selectedIndex];
-            const coachName = selectedOption ? selectedOption.text.trim() : "Unknown Coach";
-            summary.push(`${sportName} ➝ ${coachName} (${zoneName})`);
-        }
-    });
-
-    if (!isValid) {
-        alert("Please fix the following before submitting:\n\n" + errorMessages.join('\n'));
-        return;
-    }
-
-    const confirmMessage = "You selected:\n\n" + summary.join('\n') + "\n\nSubmit these assignments?";
-    if (confirm(confirmMessage)) {
-        form.submit();
-    }
-});
 </script>
-
 
 <script id="error-message" type="application/json"><?= json_encode(trim($Error_message)) ?></script>
 <script id="success-message" type="application/json"><?= json_encode(trim($Success_message)) ?></script>
 <script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
+<script src="<?php echo ROOT?>/Public/js/Admin/zonalSport.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const errorMessage = JSON.parse(document.getElementById('error-message').textContent);

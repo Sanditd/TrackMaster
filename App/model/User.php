@@ -290,6 +290,62 @@ class User {
             return $result ? $result : false; // Return user_id or false if not found
         }
 
+        public function getUsers(){
+            $query = "SELECT * FROM users ";
+            $this->db->query($query);
+            $result = $this->db->resultset();
+            return $result;
+        }
+
+        public function getPlayers(){
+            $query = "SELECT * FROM user_player ";
+            $this->db->query($query);
+            $result = $this->db->resultset();
+            return $result;
+        }
+
+        public function getCoaches(){
+            $query = "SELECT * FROM user_coach ";
+            $this->db->query($query);
+            $result = $this->db->resultset();
+            return $result;
+        }
+
+        public function getSchoolsData(){
+            $query = "SELECT * FROM user_school ";
+            $this->db->query($query);
+            $result = $this->db->resultset();
+            return $result;
+        }
+
+        public function countAllUsers(){
+            $query = "SELECT COUNT(*) as total FROM users ";
+            $this->db->query($query);
+            $result = $this->db->single();
+            return $result->total;
+        }
+
+        public function countPlayers(){
+            $query = "SELECT COUNT(*) as total FROM user_player";
+            $this->db->query($query);
+            $result = $this->db->single();
+            return $result->total;
+        }
+        
+        public function countCoaches(){
+            $query = "SELECT COUNT(*) as total FROM user_coach";
+            $this->db->query($query);
+            $result = $this->db->single();
+            return $result->total;
+        }
+        
+        public function countSchools(){
+            $query = "SELECT COUNT(*) as total FROM user_school";
+            $this->db->query($query);
+            $result = $this->db->single();
+            return $result->total;
+        }
+        
         
 
     }

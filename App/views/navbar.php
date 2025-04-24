@@ -1,3 +1,11 @@
+<?php 
+require_once __DIR__ . '/../../model/Notification.php';
+
+$NotificationModel = new Notification();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

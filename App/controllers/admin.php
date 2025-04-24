@@ -42,12 +42,37 @@
         }
 
         //to load userManage.php
-        public function userManage($name){
-            $data=[
-                'username'=>$name
+        public function userManage(){
+            $users = $this->userModel->getUsers();
+            $players = $this->userModel->getPlayers();
+            $coaches = $this->userModel->getCoaches();
+            $schools = $this->userModel->getSchoolsData();
+            $zones = $this->zoneModel->getZonals();
+        
+            $countUsers = $this->userModel->countAllUsers();
+            $countPlayers = $this->userModel->countPlayers();
+            $countCoaches = $this->userModel->countCoaches();
+            $countSchools = $this->userModel->countSchools();
+            $countZones = $this->zoneModel->countZonals();
+
+
+        
+            $data = [
+                'users' => $users,
+                'players' => $players,
+                'coaches' => $coaches,
+                'schools' => $schools,
+                'zones' => $zones,
+                'countUsers' => $countUsers,
+                'countPlayers' => $countPlayers,
+                'countCoaches' => $countCoaches,
+                'countSchools' => $countSchools,
+                'countZones' => $countZones
             ];
-            $this->view('/Admin/userManage');
+        
+            $this->view('/Admin/userManage', $data);
         }
+        
 
         public function notification(){
             $user_id = $_SESSION['user_id']; // Assuming you have the user ID in the session

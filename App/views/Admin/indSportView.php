@@ -51,16 +51,15 @@ $game_types = $game_types ?? [];
 $rules = $rules ?? [];
 
 $sport_id = $sport->sport_id ?? null;
-
-
+$sport_name = $sport->sport_name ?? 'Individual Sport Details';
 ?>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Sport View</title>
+    <title><?= htmlspecialchars($sport_name) ?> Details</title>
     <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
-    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/zoneManage.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/sportView.css">
     <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
 </head>
 
@@ -71,58 +70,56 @@ $sport_id = $sport->sport_id ?? null;
 
     <div id="frame" style="margin-top: 100px; margin-left:100px">
         <div class="container">
+            <!-- New Header Section -->
+            <div class="sport-header">
+                <h1><?= htmlspecialchars($sport_name) ?></h1>
+            </div>
+            
             <div class="temp-container">
                 <div id="signup-port">
-                    <?php if (!empty($Success_message)): ?>
+                    <!-- <?php if (!empty($Success_message)): ?>
                     <div class="alert alert-success"><?= htmlspecialchars($Success_message) ?></div>
                     <?php endif; ?>
 
                     <?php if (!empty($Error_message)): ?>
                     <div class="alert alert-danger"><?= htmlspecialchars($Error_message) ?></div>
-                    <?php endif; ?>
+                    <?php endif; ?> -->
 
                     <form method="post">
                         <div class="temp2-container">
                             <div class="column">
                                 <h3>Sport Details</h3><br>
 
-
-
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <label>Sport Name :</label>
-                                        <?= htmlspecialchars($sport->sport_name ?? 'N/A') ?>
+                                        <label>Sport Name:</label>
+                                        <span><?= htmlspecialchars($sport->sport_name ?? 'N/A') ?></span>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <label>Base :</label>
-                                        <?= htmlspecialchars($sport->base ?? 'N/A') ?>
+                                        <label>Base:</label>
+                                        <span><?= htmlspecialchars($sport->base ?? 'N/A') ?></span>
                                     </div>
                                 </div>
 
-
-
-
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <label>Scoring Method :</label>
-                                        <?= htmlspecialchars($sport->scoring_method ?? 'N/A') ?>
+                                        <label>Scoring Method:</label>
+                                        <span><?= htmlspecialchars($sport->scoring_method ?? 'N/A') ?></span>
                                     </div>
                                 </div>
-                                <br><br>
 
                                 <div class="form-group">
-                                    <label>Game Types and Durations</label>
-                                    <br>
-                                    <div class="input-group">
-                                        <table style="width:200%;border-collapse:collapse;border:1px solid black;">
+                                    <label>Classification Categories</label>
+                                    <div class="input-group" style="margin-top: 10px;">
+                                        <table style="width:100%;">
                                             <thead>
                                                 <tr>
                                                     <th>Class Name</th>
-                                                    <th>maximum limit</th>
-                                                    <th>Minimum limit</th>
+                                                    <th>Maximum Limit</th>
+                                                    <th>Minimum Limit</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -141,7 +138,7 @@ $sport_id = $sport->sport_id ?? null;
                                                         } else {
                                                             echo htmlspecialchars($game->max ?? 'N/A');
                                                         }
-                                                    ?>
+                                                        ?>
                                                     </td>
                                                     <td>
                                                         <?php
@@ -154,14 +151,13 @@ $sport_id = $sport->sport_id ?? null;
                                                         } else {
                                                             echo htmlspecialchars($game->min ?? 'N/A');
                                                         }
-                                                    ?>
+                                                        ?>
                                                     </td>
                                                 </tr>
-
                                                 <?php endforeach; ?>
                                                 <?php else: ?>
                                                 <tr>
-                                                    <td colspan="3">No game types available.</td>
+                                                    <td colspan="3">No classifications available.</td>
                                                 </tr>
                                                 <?php endif; ?>
                                             </tbody>
@@ -173,29 +169,32 @@ $sport_id = $sport->sport_id ?? null;
                             <div class="column">
                                 <h3>Rules</h3><br>
                                 <div class="form-group">
-                                    <div class="input-group">
+                                    <div class="input-group" style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
                                         <?php if (!empty($rules)): ?>
                                         <?php foreach ($rules as $index => $rule): ?>
-                                        <strong><?= $index + 1 ?>.</strong>
-                                        <?= nl2br(htmlspecialchars($rule->rule ?? 'No description available.')) ?><br><br>
+                                        <div style="margin-bottom: 15px;">
+                                            <strong><?= $index + 1 ?>.</strong>
+                                            <?= nl2br(htmlspecialchars($rule->rule ?? 'No description available.')) ?>
+                                        </div>
                                         <?php endforeach; ?>
                                         <?php else: ?>
-                                        No rules available.
+                                        <div>No rules available for this sport.</div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
 
+                                <div style="margin-top: 30px; display: flex; justify-content: space-between;">
+                                    <button type="button" style="background-color:#007BFF; width:30%" 
+                                        onclick="updateTeamSport(<?= $sport_id ?>)">
+                                        Edit Sport
+                                    </button>
 
-
-                                <button type="button" style="background-color:#007BFF;width:20%" name="action"
-                                    value="edit" onclick="updateTeamSport(<?= $sport_id ?>)">
-                                    Edit
-                                </button>
-
-                                <button type="submit" style="background-color:#d10909;width:20%" name="action"
-                                    value="delete">Delete</button>
-                                <button type="button" style="background-color:#007BFF;width:20%" name="action"
-                                    value="back" onclick="goBackToManage()">Back</button>
+                                    <button type="submit" style="background-color:#d10909; width:30%" name="action"
+                                        value="delete">Delete Sport</button>
+                                        
+                                    <button type="button" style="background-color:#6c757d; width:30%" name="action"
+                                        value="back" onclick="goBackToManage()">Back to List</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -213,37 +212,6 @@ $sport_id = $sport->sport_id ?? null;
         </div>
     </div>
 
-    <script>
-function reloadMainPage() {
-    window.location.href = "<?= ROOT ?>/admin/SportManage/asd"; // Redirect to SportManage page
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    const successMessage = <?= json_encode($Success_message) ?>;
-    const errorMessage = <?= json_encode($Error_message) ?>;
-    const okBtn = document.getElementById("customAlertOkBtn");
-
-    if (successMessage) {
-        showCustomAlert(successMessage);
-        
-        okBtn.onclick = function() {
-            hideCustomAlert();  // Hide the alert
-            setTimeout(reloadMainPage, 300);  // Wait 300ms to ensure the alert is hidden before redirecting
-        };
-    } else if (errorMessage) {
-        showCustomAlert(errorMessage);
-        
-        okBtn.onclick = function() {
-            reloadMainPage();  // Just hide the error alert
-        };
-    }
-});
-
-
-    </script>
-
-
-
     <script id="error-message" type="application/json">
     <?= json_encode(trim($Error_message)) ?>
     </script>
@@ -253,21 +221,42 @@ document.addEventListener("DOMContentLoaded", function () {
     </script>
 
     <script>
+    function reloadMainPage() {
+        window.location.href = "<?= ROOT ?>/admin/SportManage/adasd"; // Redirect to SportManage page
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const successMessage = <?= json_encode($Success_message) ?>;
+        const errorMessage = <?= json_encode($Error_message) ?>;
+        const okBtn = document.getElementById("customAlertOkBtn");
+
+        if (successMessage) {
+            showCustomAlert(successMessage);
+            
+            okBtn.onclick = function() {
+                hideCustomAlert();  // Hide the alert
+                setTimeout(reloadMainPage, 300);  // Wait 300ms to ensure the alert is hidden before redirecting
+            };
+        } else if (errorMessage) {
+            showCustomAlert(errorMessage);
+            
+            okBtn.onclick = function() {
+                hideCustomAlert();  // Just hide the error alert
+            };
+        }
+    });
+
     function updateTeamSport(sportId) {
-        // Redirect to the updateTeamSport page with sport_id as a parameter
+        // Redirect to the updateIndSport page with sport_id as a parameter
         window.location.href = "<?= ROOT ?>/admin/updateIndSport/" + sportId;
     }
-    </script>
-
-    <script>
+    
     function goBackToManage() {
         window.location.href = "<?= ROOT ?>/admin/SportManage/adasd";
     }
     </script>
 
     <script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
-
-
 </body>
 
 </html>
