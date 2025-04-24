@@ -255,7 +255,6 @@
     </style>
 </head>
 <body>
-    <?php require 'CoachNav.php'; ?>
 
     <div class="profile-container">
         <div class="profile-header">
@@ -395,6 +394,5 @@
         </div>
     </div>
 
-    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </body>
 </html>

@@ -23,17 +23,19 @@ class Student extends Controller {
         // Get medical status from MedicalModel
         $medicalModel = $this->model('MedicalModel');
         $medicalStatus = $medicalModel->index($userId);
-    
+
         // Get training status
         $trainingStatus = $this->studentModel->getTrainingStatus($userId);
-    
-        // Get registered sports (assuming a method exists in StudentModel)
+
+        // Get registered sports for the user
         $sports = $this->studentModel->getRegisteredSports($userId);
-    
+
         $data = [
             'currentStatus' => $medicalStatus,
             'trainingStatus' => $trainingStatus,
-            'sports' => $sports
+            'sports' => $sports,
+            'message' => isset($_SESSION['message']) ? $_SESSION['message'] : null,
+            'message_type' => isset($_SESSION['message_type']) ? $_SESSION['message_type'] : null
         ];
     
         $this->view('Student/dashboard', $data);
@@ -48,14 +50,16 @@ class Student extends Controller {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'user_id' => $_SESSION['user_id'],
-                'status' => trim($_POST['status']),
+                'status' => trim($_POST['status'] ?? ''),
                 'errors' => []
             ];
 
             // Validate status
             $validStatuses = ['Practicing', 'In a Meet', 'At Rest', 'Injured'];
-            if (!in_array($data['status'], $validStatuses)) {
-                $data['errors'][] = 'Invalid status selected.';
+            if (empty($data['status'])) {
+                $data['errors'][] = 'Please select a training status.';
+            } elseif (!in_array($data['status'], $validStatuses)) {
+                $data['errors'][] = 'Invalid training status selected.';
             }
 
             if (empty($data['errors'])) {
@@ -63,7 +67,7 @@ class Student extends Controller {
                     $_SESSION['message'] = 'Training status updated successfully.';
                     $_SESSION['message_type'] = 'success';
                 } else {
-                    $_SESSION['message'] = 'Failed to update training status.';
+                    $_SESSION['message'] = 'Failed to update training status. Please try again.';
                     $_SESSION['message_type'] = 'error';
                 }
             } else {
@@ -74,6 +78,8 @@ class Student extends Controller {
             header('Location: ' . URLROOT . '/Student/studentDashboard');
             exit();
         } else {
+            $_SESSION['message'] = 'Invalid request method.';
+            $_SESSION['message_type'] = 'error';
             header('Location: ' . URLROOT . '/Student/studentDashboard');
             exit();
         }
@@ -262,7 +268,7 @@ class Student extends Controller {
             $data = [
                 'user_id' => $_SESSION['user_id'],
                 'student_name' => trim($_POST['studentName']),
-                'guardian_name' => trim($_POST['guardianName']),
+                ' guardian_name' => trim($_POST['guardianName']),
                 'annual_income' => trim($_POST['annualIncome']),
                 'application_date' => trim($_POST['date']),
                 'reason' => trim($_POST['reason']),
