@@ -417,6 +417,22 @@
             gap: 10px;
         }
 
+        /* Custom Alert Modal Styles */
+        #alertModal .modal-content {
+            max-width: 400px;
+            text-align: center;
+        }
+
+        #alertModal p {
+            color: var(--gray-color);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        #alertModal .modal-actions {
+            justify-content: center;
+        }
+
         @media (max-width: 768px) {
             .dashboard-header {
                 padding: 20px 15px;
@@ -466,40 +482,40 @@
         </div>
 
         <div class="main-content">
-    <div class="dashboard-section">
-    <h2>Current Training Status</h2>
-    <form action="<?php echo URLROOT ?>/Student/updateStatus" method="POST">
-        <p><i class="fas fa-info-circle"></i> Update your current training status</p>
-        <div class="radio-group">
-            <input class="radio-input" name="status" id="radio1" type="radio" value="Practicing" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'Practicing') ? 'checked' : ''; ?>>
-            <label class="radio-label" for="radio1">
-                <span class="radio-inner-circle"></span>
-                <i class="fas fa-running"></i> Practicing
-            </label>
+            <div class="dashboard-section">
+                <h2>Current Training Status</h2>
+                <form action="<?php echo URLROOT ?>/Student/updateStatus" method="POST">
+                    <p><i class="fas fa-info-circle"></i> Update your current training status</p>
+                    <div class="radio-group">
+                        <input class="radio-input" name="status" id="radio1" type="radio" value="Practicing" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'Practicing') ? 'checked' : ''; ?>>
+                        <label class="radio-label" for="radio1">
+                            <span class="radio-inner-circle"></span>
+                            <i class="fas fa-running"></i> Practicing
+                        </label>
 
-            <input class="radio-input" name="status" id="radio2" type="radio" value="In a Meet" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'In a Meet') ? 'checked' : ''; ?>>
-            <label class="radio-label" for="radio2">
-                <span class="radio-inner-circle"></span>
-                <i class="fas fa-trophy"></i> In a Meet
-            </label>
+                        <input class="radio-input" name="status" id="radio2" type="radio" value="In a Meet" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'In a Meet') ? 'checked' : ''; ?>>
+                        <label class="radio-label" for="radio2">
+                            <span class="radio-inner-circle"></span>
+                            <i class="fas fa-trophy"></i> In a Meet
+                        </label>
 
-            <input class="radio-input" name="status" id="radio3" type="radio" value="At Rest" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'At Rest') ? 'checked' : ''; ?>>
-            <label class="radio-label" for="radio3">
-                <span class="radio-inner-circle"></span>
-                <i class="fas fa-bed"></i> At Rest
-            </label>
+                        <input class="radio-input" name="status" id="radio3" type="radio" value="At Rest" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'At Rest') ? 'checked' : ''; ?>>
+                        <label class="radio-label" for="radio3">
+                            <span class="radio-inner-circle"></span>
+                            <i class="fas fa-bed"></i> At Rest
+                        </label>
 
-            <input class="radio-input" name="status" id="radio4" type="radio" value="Injured" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'Injured') ? 'checked' : ''; ?>>
-            <label class="radio-label" for="radio4">
-                <span class="radio-inner-circle"></span>
-                <i class="fas fa-medkit"></i> Injured
-            </label>
-        </div>
-        <button class="btn" type="submit" style="margin-top: 15px;">
-            <i class="fas fa-save"></i> Save Status
-        </button>
-    </form>
-</div>
+                        <input class="radio-input" name="status" id="radio4" type="radio" value="Injured" <?php echo (isset($data['trainingStatus']) && $data['trainingStatus'] == 'Injured') ? 'checked' : ''; ?>>
+                        <label class="radio-label" for="radio4">
+                            <span class="radio-inner-circle"></span>
+                            <i class="fas fa-medkit"></i> Injured
+                        </label>
+                    </div>
+                    <button class="btn" type="submit" style="margin-top: 15px;">
+                        <i class="fas fa-save"></i> Save Status
+                    </button>
+                </form>
+            </div>
 
             <div class="dashboard-section">
                 <h2>Registered Sports</h2>
@@ -526,7 +542,7 @@
                 <br><br>
                 <div class="container">
                     <svg class="svg-icon" height="100" preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100" width="100" x="0" xmlns="http://www.w3.org/2000/svg" y="0">
-                        <path d="M62.11,53.93c22.582-3.125,22.304-23.471,18.152-29.929-4.166-6.444-10.36-2.153-10.36-2.153v-4.166H30.099v4.166s-6.194-4.291-10.36,2.153c-4.152,6.458-4.43,26.804,18.152,29.929l5.236,7.777v8.249s-.944,4.597-4.833,4.986c-3.903,.389-7.791,4.028-7.791,7.374h38.997c0-3.347-3.889-6.986-7.791-7.374-3.889-.389-4.833-4.986-4.833-4.986v-8.249l5.236-7.777Zm7.388-24.818s2.833-3.097,5.111-1.347c2.292,1.75,2.292,15.86-8.999,18.138l3.889-16.791Zm-44.108-1.347c2.278-1.75,5.111,1.347,5.111,1.347l3.889,16.791c-11.291-2.278-11.291-16.388-8.999-18.138Z">
+                        <path d="M62.11,53.93c22.582-3.125,22.304-23.471,18.152-29.929-4.166-6.444-10.36-2.153-10.36-2.153v-4.166H30.099v4.166s-6.194-4.291-10.36,2.153c-4.152,6.458-4.43,26.804,18.152,29.929l5.236,7.777v8.249s-.944,4.597-4.833,4.986c-3.903,.389-7.791,4.028-7.791,7.374h38.997c0-3.347-3.889-6.986-7.791-7.374-3.889-.389-4.833-4.986-4.833-4.986v-8.249l5.236-7.777Zm7.388-24.818s2.833-3.097,5.111-1.347c2.292,1.75,2.292,15.86-8.999,18.138l3.889-16.791Zm-44.108-1.347c2.278-1.750,5.111,1.347,5.111,1.347l3.889,16.791c-11.291-2.278-11.291-16.388-8.999-18.138Z">
                         </path>
                     </svg>  
                     <div class="container__star">
@@ -596,6 +612,18 @@
                             </div>
                         </div>
                     </div>
+
+                    <div id="alertModal" class="modal hidden">
+                        <div class="modal-content">
+                            <h3 id="alertTitle"><i class="fas fa-bell"></i> Notification</h3>
+                            <p id="alertMessage"></p>
+                            <div class="modal-actions">
+                                <button class="btn" id="alertOk">
+                                    <i class="fas fa-check"></i> OK
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <p><i class="fas fa-info-circle"></i> Click on any date to add or view notes</p>
             </div>
@@ -627,11 +655,27 @@
         const noteInput = document.getElementById('noteInput');
         const saveNote = document.getElementById('saveNote');
         const closeModal = document.getElementById('closeModal');
+        const alertModal = document.getElementById('alertModal');
+        const alertTitle = document.getElementById('alertTitle');
+        const alertMessage = document.getElementById('alertMessage');
+        const alertOk = document.getElementById('alertOk');
 
         let currentDate = new Date();
         let currentMonth = currentDate.getMonth();
         let currentYear = currentDate.getFullYear();
         let selectedDate = null;
+
+        // Function to show custom alert
+        function showAlert(message, title = 'Notification') {
+            alertTitle.innerHTML = `<i class="fas fa-bell"></i> ${title}`;
+            alertMessage.textContent = message;
+            alertModal.classList.remove('hidden');
+        }
+
+        // Close alert modal
+        alertOk.addEventListener('click', () => {
+            alertModal.classList.add('hidden');
+        });
 
         function renderCalendar() {
             const firstDay = new Date(currentYear, currentMonth, 1).getDay();
@@ -700,29 +744,29 @@
         });
 
         saveNote.addEventListener('click', () => {
-    const noteText = noteInput.value.trim();
-    if (noteText && selectedDate) {
-        fetch('<?php echo URLROOT ?>/Student/saveCalendarNote', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ note_date: selectedDate, note_text: noteText })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            if (data.success) {
-                noteModal.classList.add('hidden');
-                renderCalendar();
+            const noteText = noteInput.value.trim();
+            if (noteText && selectedDate) {
+                fetch('<?php echo URLROOT ?>/Student/saveCalendarNote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ note_date: selectedDate, note_text: noteText })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    showAlert(data.message, data.success ? 'Success' : 'Error');
+                    if (data.success) {
+                        noteModal.classList.add('hidden');
+                        renderCalendar();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving note:', error);
+                    showAlert('Failed to save note. Please try again.', 'Error');
+                });
+            } else {
+                showAlert('Please enter a note and select a date.', 'Warning');
             }
-        })
-        .catch(error => {
-            console.error('Error saving note:', error);
-            alert('Failed to save note. Check console for details.');
         });
-    } else {
-        alert('Please enter a note and select a date.');
-    }
-});
 
         closeModal.addEventListener('click', () => {
             noteModal.classList.add('hidden');
