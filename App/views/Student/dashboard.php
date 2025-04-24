@@ -16,6 +16,8 @@
             --border-radius: 8px;
             --box-shadow: 0 4px 12px rgba(0, 38, 77, 0.1);
             --transition: all 0.3s ease;
+            --success-color: #28a745;
+            --error-color: #dc3545;
         }
 
         * {
@@ -34,6 +36,58 @@
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
+        }
+
+        /* Notification Styles */
+        .notification {
+            max-width: 600px;
+            margin: 15px auto;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            opacity: 1;
+        }
+
+        .notification.success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .notification.error {
+            background: var(--error-color);
+            color: white;
+        }
+
+        .notification p {
+            margin: 0;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .notification .close-btn:hover {
+            opacity: 1;
+        }
+
+        /* Fade out animation */
+        .notification.fade-out {
+            opacity: 0;
+            transform: translateY(-10px);
         }
 
         .dashboard-header {
@@ -110,9 +164,9 @@
 
         .radio-group {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 15px;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px;
         }
 
         .radio-input {
@@ -195,6 +249,7 @@
             font-weight: 600;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: var(--transition);
             margin-right: 10px;
@@ -476,6 +531,24 @@
     <?php require 'sidebar.php'?> 
     
     <div class="dashboard-container">
+        <!-- Notification Section -->
+        <?php if (isset($_SESSION['message']) && !empty($_SESSION['message'])): ?>
+            <div class="notification <?php echo htmlspecialchars($_SESSION['message_type']); ?>">
+                <p>
+                    <i class="fas <?php echo $_SESSION['message_type'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
+                    <?php echo htmlspecialchars($_SESSION['message']); ?>
+                </p>
+                <button class="close-btn" onclick="closeNotification(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <?php
+                // Clear the message after displaying it
+                unset($_SESSION['message']);
+                unset($_SESSION['message_type']);
+            ?>
+        <?php endif; ?>
+
         <div class="dashboard-header">
             <h1><i class="fas fa-user-graduate"></i> Student Dashboard</h1>
             <p>Welcome to TrackMaster, Where You Can Track Your Progress, Achievements, and Performance</p>
@@ -510,29 +583,46 @@
                             <span class="radio-inner-circle"></span>
                             <i class="fas fa-medkit"></i> Injured
                         </label>
-                    </div>
                     <button class="btn" type="submit" style="margin-top: 15px;">
                         <i class="fas fa-save"></i> Save Status
                     </button>
+                    </div>
                 </form>
             </div>
 
             <div class="dashboard-section">
                 <h2>Registered Sports</h2>
                 <div class="section-content">
-                    <?php foreach ($data['sports'] as $sport): ?>
-                        <div class="sports">
-                            <h3><i class="fas <?php echo ($sport->sport_name == 'Cricket') ? 'fa-cricket' : 'fa-running'; ?>"></i> <?php echo htmlspecialchars($sport->sport_name); ?></h3>
-                            <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/coachProfile'">
-                                <i class="fas fa-user-tie"></i> View My Coach
-                            </button>
-                            <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/Playerperformance'">
-                                <i class="fas fa-chart-line"></i> Track My Performance
-                            </button>
+                    <?php if (isset($data['sports']) && !empty($data['sports'])): ?>
+                        <?php foreach ($data['sports'] as $sport): ?>
+                            <div class="sport-card">
+                                <div class="sport-header">
+                                    <i class="fas <?php 
+                                        echo match(strtolower($sport->sport_name)) {
+                                            'cricket' => 'fa-cricket',
+                                            'football' => 'fa-futbol',
+                                            'basketball' => 'fa-basketball-ball',
+                                            'swimming' => 'fa-swimmer',
+                                            'tennis' => 'fa-table-tennis',
+                                            default => 'fa-running'
+                                        }; 
+                                    ?>"></i>
+                                    <h3><?php echo htmlspecialchars($sport->sport_name); ?></h3>
+                                </div>
+                                <div class="sport-actions">
+                                    <button class="btn btn-coach" onclick="window.location.href='<?php echo URLROOT ?>/Student/coachProfile?sport=<?php echo urlencode($sport->sport_name); ?>'">
+                                        <i class="fas fa-user-tie"></i> View Coach
+                                    </button>
+                                    <button class="btn btn-performance" onclick="window.location.href='<?php echo URLROOT ?>/Student/Playerperformance?sport=<?php echo urlencode($sport->sport_name); ?>'">
+                                        <i class="fas fa-chart-line"></i> Performance
+                                    </button>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="no-sports">
+                            <p><i class="fas fa-info-circle"></i> No sports registered yet.</p>
                         </div>
-                    <?php endforeach; ?>
-                    <?php if (empty($data['sports'])): ?>
-                        <p>No sports registered.</p>
                     <?php endif; ?>
                 </div>
             </div>
@@ -644,6 +734,28 @@
 
     <script src="/TrackMaster/Public/js/Student/carousel.js"></script>
     <script>
+        // Notification close function
+        function closeNotification(button) {
+            const notification = button.parentElement;
+            notification.classList.add('fade-out');
+            setTimeout(() => {
+                notification.remove();
+            }, 300); // Match the transition duration
+        }
+
+        // Auto-dismiss notifications after 5 seconds
+        document.addEventListener('DOMContentLoaded', () => {
+            const notifications = document.querySelectorAll('.notification');
+            notifications.forEach(notification => {
+                setTimeout(() => {
+                    notification.classList.add('fade-out');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                }, 5000); // 5 seconds
+            });
+        });
+
         // Calendar JavaScript
         const calendar = document.getElementById('calendar');
         const monthYear = document.getElementById('monthYear');

@@ -104,21 +104,22 @@ class StudentModel {
 
     // Registered Sports Method
     public function getRegisteredSports($userId) {
-        // Assuming a table `player_sports` links players to sports
-        $this->db->query('SELECT s.sport_name FROM sports s
-                          JOIN player_sports ps ON s.sport_id = ps.sport_id
-                          JOIN user_player up ON ps.player_id = up.player_id
+        $this->db->query('SELECT s.sport_name 
+                          FROM sports s
+                          JOIN user_player up ON s.sport_id = up.sport_id
                           WHERE up.user_id = :user_id');
         $this->db->bind(':user_id', $userId);
+        
         try {
-            return $this->db->resultSet();
+            $result = $this->db->resultSet();
+            return $result ? $result : []; // Return empty array if no results
         } catch (Exception $e) {
             error_log('Error fetching registered sports: ' . $e->getMessage());
-            return [];
+            return []; // Return empty array on error
         }
     }
 
-    // Existing Methods (unchanged)
+    // Achievements Methods
     public function addAchievement($data) {
         if ($data['user_id'] != $_SESSION['user_id']) {
             return false; // Unauthorized access
