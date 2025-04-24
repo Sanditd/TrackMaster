@@ -5,11 +5,14 @@ error_reporting(E_ALL);
 
 
 class Coach extends Controller {
+    private $activityModel;
+    private $notificationModel;
     private $coachModel;
 
     public function __construct() {
         $this->coachModel = $this->model('CoachModel');
-    }
+        $this->activityModel =$this->model('activityModel');
+        $this->notificationModel =$this->model('Notification');    }
 
     // Default method if none is specified
     public function index() {
@@ -625,6 +628,22 @@ public function createEventRequest() {
             empty($data['time_from_err']) && empty($data['time_to_err'])) {
             
             if ($this->coachModel->createEventRequest($data)) {
+
+                $notification = [
+                    'title' => "New Facility Request",
+                    'description' => "New Facilty request from a Coach",
+                    'type' => "Facility Request",
+                    'toWhom' => $data['school_id']
+                ];
+
+                $this->notificationModel->createUserNotification($notification);
+
+                $activity = [
+                    'act_desc' => "request Facility From ".$data['school_id'],
+                    'user_id' => $_SESSION['user_id']
+                ];
+                $this->activityModel->insertUserActivity($activity);
+
                 flash('event_message', 'Event request submitted successfully');
                 redirect('coach/eventManagement');
             } else {
