@@ -76,7 +76,7 @@ if ($userActive[0]->active != 1) {
 
 
                 <img src="<?php echo ROOT ?>/public/img/icon/admin_profile.png" alt="admin profile"
-                    class="admin-profile" style="width: 55px; height: 55px; margin-left:-10px">
+                    class="admin-profile" style="width: 55px; height: 55px;">
                 <!-- Admin Profile Picture on the left -->
 
 
@@ -96,7 +96,6 @@ if ($userActive[0]->active != 1) {
                 <div class="account-section">
 
                     <div class="notification-num">
-                        <i class="fa fa-bell"></i>
                         <span class="notification-count"><?php echo $unreadCount['count']?></span>
                         <div class="notification-panel">
                             <div class="notification-header">

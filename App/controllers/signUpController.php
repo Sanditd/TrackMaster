@@ -617,7 +617,7 @@
                     ];
                     
                     // Call only once
-                    $this->sendAdminNotification($notification);
+                    $this->notificationModel->sendAdminNotification($notification);
     
         
                     // Redirect to login with success message
