@@ -89,6 +89,26 @@ class Notification {
             return ['success' => false, 'error' => $e->getMessage()];
         }
     }
+
+    public function getUserNotifications($userId, $limit = 10) {
+        try {
+            $this->db->query("SELECT * FROM notification 
+                              WHERE toWhom = :userId 
+                              ORDER BY date DESC 
+                              LIMIT :limit");   
+    
+            $this->db->bind(':userId', $userId, PDO::PARAM_INT);
+            $this->db->bind(':limit', $limit, PDO::PARAM_INT);
+    
+            $notifications = $this->db->resultSet();
+    
+            return ['success' => true, 'notifications' => $notifications];
+        } catch (PDOException $e) {
+            error_log("SQL Error in getUserNotifications: " . $e->getMessage());
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
+    }
+    
     
     
     // Get unread notification count
@@ -107,20 +127,21 @@ class Notification {
         }
     }
 
-    public function getUserUnreadCount($userId) {
-        try {
-            $this->db->query("SELECT COUNT(*) as count FROM notification
-                              WHERE toWhom = :userId AND active = 1");
-    
-            $this->db->bind(':userId', $userId);
-            $row = $this->db->single();
-    
-            return ['success' => true, 'count' => $row['count']];
-        } catch (PDOException $e) {
-            error_log("SQL Error in getUnreadCount: " . $e->getMessage());
-            return ['success' => false, 'error' => $e->getMessage()];
+        public function getUserUnreadCount($userId) {
+            try {
+                $this->db->query("SELECT COUNT(*) as count FROM notification
+                                WHERE toWhom = :userId AND active = 1");
+        
+                $this->db->bind(':userId', $userId);
+                $row = $this->db->single();
+        
+                return ['success' => true, 'count' => $row->count];
+
+            } catch (PDOException $e) {
+                error_log("SQL Error in getUnreadCount: " . $e->getMessage());
+                return ['success' => false, 'error' => $e->getMessage()];
+            }
         }
-    }
     
     
     // Mark notification as read (set active = 0)
