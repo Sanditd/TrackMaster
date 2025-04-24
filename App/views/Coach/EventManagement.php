@@ -389,11 +389,7 @@
                                             </form>
                                         <?php endif; ?>
                                         
-                                        <?php if($request->status == 'pending'): ?>
-                                            <button class="edit-btn" onclick="editRequest(<?php echo $request->request_id; ?>)">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </button>
-                                        <?php endif; ?>
+                                
                                         
                                         <form action="<?php echo URLROOT; ?>/coach/deleteEventRequest/<?php echo $request->request_id; ?>" method="post" style="display: inline;">
                                             <button type="submit" class="delete-btn" onclick="return confirm('Are you sure?')">
@@ -433,9 +429,6 @@
                                     <td><?php echo date('g:i A', strtotime($event->time_from)) . ' - ' . date('g:i A', strtotime($event->time_to)); ?></td>
                                     <td><?php echo $event->school_name; ?></td>
                                     <td>
-                                        <button class="edit-btn" onclick="editEvent(<?php echo $event->event_id; ?>)">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </button>
                                         <form action="<?php echo URLROOT; ?>/coach/deleteScheduledEvent/<?php echo $event->event_id; ?>" method="post" style="display: inline;">
                                             <button type="submit" class="delete-btn" onclick="return confirm('Are you sure?')">
                                                 <i class="fas fa-trash"></i> Delete
@@ -451,31 +444,7 @@
         </div>
     </div>
 
-    <?php require APPROOT . '/views/footer.php'; ?>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
     
-    <script>
-        function editRequest(requestId) {
-            // Here you would implement the edit functionality
-            // For now, just show an alert
-            alert('Edit functionality for request ID: ' + requestId + ' will be implemented');
-        }
-
-        function editEvent(eventId) {
-            // Here you would implement the edit functionality
-            // For now, just show an alert
-            alert('Edit functionality for event ID: ' + eventId + ' will be implemented');
-        }
-
-        // Form submission with validation
-        document.querySelector('.form-section form').addEventListener('submit', function(e) {
-            const timeFrom = document.getElementById('time_from').value;
-            const timeTo = document.getElementById('time_to').value;
-            
-            if (timeFrom && timeTo && timeTo <= timeFrom) {
-                e.preventDefault();
-                alert('End time must be after start time');
-            }
-        });
-    </script>
 </body>
 </html>
