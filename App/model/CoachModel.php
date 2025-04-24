@@ -15,11 +15,10 @@ class CoachModel {
 
     public function getPlayersByTeamId($team_id) {
         $this->db->query('
-            SELECT up.player_id, u.firstname AS name, u.photo, u.phonenumber, u.email, cs.role AS role
+            SELECT up.player_id, u.firstname AS name, u.photo, u.phonenumber, u.email, up.role AS role
             FROM cricket_team ct 
             JOIN user_player up ON ct.player_id = up.player_id 
             JOIN users u ON up.user_id = u.user_id 
-            JOIN cricket_stats cs ON ct.player_id = cs.player_id
             WHERE ct.team_id = :id
         ');
         $this->db->bind(':id', $team_id);
