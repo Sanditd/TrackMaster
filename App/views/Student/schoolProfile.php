@@ -244,22 +244,22 @@
                     </div>
                 </div>
                 <div class="profile-info">
-                    <h2 class="school-name">Maliyadewa College, Kurunagala</h2>
-                    <p class="school-type">National School</p>
+                    <h2 class="school-name"><?php echo htmlspecialchars($school->school_name ?? 'School Name'); ?></h2>
+                    <p class="school-type"><?php echo htmlspecialchars($school->zoneName ?? 'Zone Name'); ?></p>
                     
                     <div class="info-group">
                         <span class="info-icon"><i class="fas fa-envelope"></i></span>
-                        <span class="info-text">maliyadewaclg@gmail.com</span>
+                        <span class="info-text"><?php echo htmlspecialchars($school->email ?? 'Not specified'); ?></span>
                     </div>
                     
                     <div class="info-group">
                         <span class="info-icon"><i class="fas fa-phone"></i></span>
-                        <span class="info-text">033-2721456</span>
+                        <span class="info-text"><?php echo htmlspecialchars($school->phonenumber ?? 'Not specified'); ?></span>
                     </div>
                     
                     <div class="info-group">
                         <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
-                        <span class="info-text">55/4A, Pirivena Road, Ratmalana</span>
+                        <span class="info-text"><?php echo htmlspecialchars($school->address ?? 'Not specified'); ?></span>
                     </div>
                 </div>
             </div>
@@ -274,18 +274,18 @@
                     </div>
                     <div class="detail-content">
                         <div class="info-group">
-                            <span class="info-icon"><i class="fas fa-code"></i></span>
-                            <span class="info-text"><strong>School Code:</strong> R002</span>
-                        </div>
-                        
-                        <div class="info-group">
                             <span class="info-icon"><i class="fas fa-map"></i></span>
-                            <span class="info-text"><strong>Zone:</strong> Kurunagala</span>
+                            <span class="info-text"><strong>Zone:</strong> <?php echo htmlspecialchars($school->zoneName ?? 'Not specified'); ?></span>
                         </div>
                         
                         <div class="info-group">
                             <span class="info-icon"><i class="fas fa-globe-asia"></i></span>
-                            <span class="info-text"><strong>Province:</strong> North Western</span>
+                            <span class="info-text"><strong>Province:</strong> <?php echo htmlspecialchars($school->province ?? 'Not specified'); ?></span>
+                        </div>
+                        
+                        <div class="info-group">
+                            <span class="info-icon"><i class="fas fa-city"></i></span>
+                            <span class="info-text"><strong>District:</strong> <?php echo htmlspecialchars($school->district ?? 'Not specified'); ?></span>
                         </div>
                     </div>
                 </div>
@@ -299,49 +299,16 @@
                     <div class="detail-content">
                         <p>The school has the following sports facilities available:</p>
                         <div class="facilities-list">
-                            <div class="facility-item">
-                                <i class="fas fa-running"></i> Track
-                            </div>
-                            <div class="facility-item">
-                                <i class="fas fa-baseball-ball"></i> Ground
-                            </div>
-                            <div class="facility-item">
-                                <i class="fas fa-swimming-pool"></i> Swimming Pool
-                            </div>
-                            <div class="facility-item">
-                                <i class="fas fa-basketball-ball"></i> Indoor Stadium
-                            </div>
-                            <div class="facility-item">
-                                <i class="fas fa-table-tennis"></i> Table Tennis
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sports Offered -->
-                <div class="detail-card">
-                    <div class="detail-header">
-                        <i class="fas fa-trophy"></i>
-                        <h2>Sports Offered</h2>
-                    </div>
-                    <div class="detail-content">
-                        <p>The school participates in the following sports:</p>
-                        <div class="facilities-list">
-                            <div class="facility-item">
-                                <i class="fas fa-running"></i> Athletics
-                            </div>
-                            <div class="facility-item">
-                                <i class="fas fa-cricket"></i> Cricket
-                            </div>
-                            <div class="facility-item">
-                                <i class="fas fa-futbol"></i> Football
-                            </div>
-                            <div class="facility-item">
-                                <i class="fas fa-swimmer"></i> Swimming
-                            </div>
-                            <div class="facility-item">
-                                <i class="fas fa-table-tennis"></i> Table Tennis
-                            </div>
+                            <?php if (!empty($school->facilities)): ?>
+                                <?php foreach ($school->facilities as $facility): ?>
+                                    <div class="facility-item">
+                                        <i class="fas fa-check"></i>
+                                        <?php echo htmlspecialchars($facility); ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>No facilities information available.</p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
