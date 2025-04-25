@@ -1,7 +1,7 @@
 <?php
 class Student extends Controller {
     private $studentModel;
-    
+
     public function __construct() {
         $this->studentModel = $this->model('StudentModel');
     }
