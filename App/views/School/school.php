@@ -1,36 +1,3 @@
-<?php 
-
-//Check if session user ID exists
-if (!isset($_SESSION['user_id'])) {
-    $_SESSION['error_message']='Invalid Login! Please login again.';
-    header('Location: ' . ROOT . '/loginController/login');
-    exit;
-}
-
-$userId = (int) $_SESSION['user_id'];
-
-//Load required model file if not already loaded
- require_once __DIR__ . '/../../model/loginPage.php';
- // Adjust path as needed
-
-// Create login model instance
-$loginModel = new loginPage();
-
-$userConfirm = $loginModel->getUserById($userId);
-
-
-
-
-//If user does not exist in DB, destroy session and redirect
-if (!$userConfirm) {
-    session_unset();
-    session_destroy();
-    $_SESSION['error_message']='Login Failed! Try Again.';
-    header('Location: ' . ROOT . '/loginController/Login');
-    exit;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +15,6 @@ if (!$userConfirm) {
         <div class="dashboard-header">
             <h1><i class="fas fa-tachometer-alt"></i> School Dashboard</h1>
             <p><i class="fas fa-user"></i> Welcome, Anthony!</p>
-            <?php print_r($user) ?>
         </div>
 
         <div class="stats-cards">
