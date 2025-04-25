@@ -149,7 +149,7 @@
         
                   // Handle file upload
                   if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-                    error_log("File uploaded successfully.");Fcoach
+                    error_log("File uploaded successfully.");
                     $fileTmpPath = $_FILES['photo']['tmp_name'];
                     $fileName = $_FILES['photo']['name'];
                     $fileType = $_FILES['photo']['type'];
