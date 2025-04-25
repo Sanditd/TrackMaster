@@ -1,3 +1,63 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>School Dashboard</title>
+        <link rel="stylesheet" href="/TrackMaster/Public/css/School/records.css">
+
+    </head>
+    <body>
+
+    <?php require 'navbar.php'; ?>  
+    <?php require 'sidebar.php'; ?>
+
+    <div class="section recent-clients">
+        <?php print_r($data)?> <br><br>
+        <table> 
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Grade</th>
+                    <th>Term</th>
+                    <th>Average</th>
+                    <th>Rank</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentTableBody">
+    <?php if (!empty($data['records'])): ?>
+        <?php foreach ($data['records'] as $record): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($record->firstname); ?></td>
+                <td class="editable"><?php echo htmlspecialchars($record->grade); ?></td>
+                <td class="editable"><?php echo htmlspecialchars($record->term); ?></td>
+                <td class="editable"><?php echo htmlspecialchars($record->average); ?></td>
+                <td class="editable"><?php echo htmlspecialchars($record->rank); ?></td>
+                <td class="editable"><?php echo htmlspecialchars($record->notes); ?></td>
+                <td>
+                <button 
+                    class="action-btn edit-btn" 
+                    type="button" 
+                    onclick="window.location.href='<?php echo URLROOT ?>/School/editRecord/<?php echo $record->player_id; ?>'">
+                    Edit
+                </button>
+                <button class="action-btn delete-btn" type="button" onclick="confirmDelete('<?php echo $record->player_id; ?>')">Delete</button>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="7">No records found.</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
+        </table>
+    </div>
+=======
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -161,6 +221,7 @@
         .formcontent {
             padding: 25px;
         }
+
 
         .formcontent ul {
             list-style: none;

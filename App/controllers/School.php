@@ -1,6 +1,10 @@
     <?php
 
-    class School extends Controller{
+
+class School extends Controller{
+    private $schoolModel;
+    private $userModel;
+
 
         public function __construct() {
             $this->schoolModel = $this->model('SchoolModel');
@@ -8,7 +12,57 @@
             $this->studyModel = $this->model('StudyModel');
 
 
+
+        $this->schoolModel = $this->model('SchoolModel');
+        $this->userModel = $this->model('User');
+
+    }
+
+    public function fetchPlayers() {
+        if ($_SESSION['role'] === 'school') {
+            $school_id = $this->schoolModel->getSchoolId($_SESSION['user_id'])->school_id;
+            return $this->schoolModel->getPlayersForSchool($school_id);
         }
+    }
+
+    public function Dashboard() {
+        $userId = (int) $_SESSION['user_id'];
+    
+        $school_id_obj = $this->schoolModel->getSchoolId($userId);
+        $school_id = $school_id_obj->school_id;
+    
+        $players = $this->userModel->getPlayersName($school_id);
+        $facilityReq= $this->schoolModel->getFacilityRequests($school_id);
+    
+        $data = [
+            'players' => $players,
+            'facilityReq' => $facilityReq
+        ];
+    
+        $this->view('School/school', $data);
+    }
+    
+
+    public function EditProfile(){
+        $data = [];
+
+        $this->view('School/editSchool');
+    }
+
+    public function Profile(){
+        $data = [];
+
+        $this->view('School/schoolProfile');
+    }
+    public function StudentsData(){
+        $data = [];
+        $this->view('School/schoolStudentData');
+}
+    public function viewrecords(){
+        $players = [];
+        if ($_SESSION['role'] === 'school') {
+            $players = $this->fetchPlayers();
+
         
         public function school() {
             $user_id = $_SESSION['user_id'] ?? null;
@@ -60,10 +114,17 @@
             $this->view('School/event');
         }
 
-        public function viewStudent(){
-            $data = [];
-            $this->view('School/viewStudent');
-        }
+
+public function records() {
+
+    $userId = (int) $_SESSION['user_id'];
+    
+        $school_id_obj = $this->schoolModel->getSchoolId($userId);
+        $school_id = $school_id_obj->school_id;
+    
+        $players = $this->userModel->getPlayersName($school_id);
+        $records = $this->schoolModel->getAcademicRecordsByPlayerId($school_id);
+
 
         public function submitRecord(){
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {

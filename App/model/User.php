@@ -346,6 +346,31 @@ class User {
             return $result->total;
         }
         
+        public function getPlayersName($school_id) {
+            $query = "SELECT user_id FROM user_player WHERE school_id = :school_id";
+            $this->db->query($query);
+            $this->db->bind(':school_id', $school_id); // ✅ Fixed here
+            $userIds = $this->db->resultset();
+        
+            $players = [];
+        
+            foreach ($userIds as $userObj) {
+                $userDetails = $this->getUserById($userObj->user_id); // call the function
+                if ($userDetails) {
+                    $players[] = $userDetails;
+                }
+            }
+        
+            return $players;
+        }
+        
+        public function getUserById($user_id) {
+            $query = "SELECT firstname, lname FROM users WHERE user_id = :user_id";
+            $this->db->query($query);
+            $this->db->bind(':user_id', $user_id);
+            return $this->db->single();
+        }
+        
         
 
     }

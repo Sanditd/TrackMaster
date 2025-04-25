@@ -32,7 +32,12 @@ class loginController extends Controller {
                         // Start session and store user information
                         
                         $_SESSION['user_id'] = $user->user_id; // Corrected to object access
-                        $_SESSION['role'] = $user->role; // Storing the user's role in session
+
+                        $_SESSION['active'] = $user->active; // Storing the user's account activation status
+                        $_SESSION['username']= $user->username;
+
+                       
+
         
                         // Redirect to the appropriate dashboard based on the role
                         switch ($user->role) {
@@ -49,8 +54,11 @@ class loginController extends Controller {
                                     exit;
                                 break;
                             case 'school':
-                                $this->view('school/school');
-                                break;
+                            session_write_close();
+                            header('Location: ' . URLROOT . '/school/Dashboard');
+                            exit;
+                        
+
                             case 'parent':
                                 $this->view('parent/dashboard');
                                 break;
@@ -61,7 +69,7 @@ class loginController extends Controller {
                         exit;
                     } else {
                         // Redirect to the sign-up page if login fails
-                        header('Location: ' . ROOT . '/loginController/login');
+                        header('Location: ' . ROOT . '/loginController/ogin');
                         exit;
 
                     }

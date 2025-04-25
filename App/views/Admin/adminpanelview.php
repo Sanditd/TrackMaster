@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 //Check if session user ID exists
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error_message']='Invalid Login! Please login again.';
@@ -17,7 +16,6 @@ $userId = (int) $_SESSION['user_id'];
 $loginModel = new loginPage();
 
 $user = $loginModel->getAdminById($userId);
-
 
 $userActive = $loginModel->getAdminActivation($userId);
 
@@ -39,209 +37,479 @@ if ($userActive[0]->active != 1) {
     exit;
 }
 
-?>
 
+$Success_message = "";
+$Error_message = "";
+
+// Store success message separately
+if (isset($_SESSION['success_message'])) {
+    $Success_message = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
+}
+
+// Store error message separately
+if (isset($_SESSION['error_message'])) {
+    $Error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/form.css">
-    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/dashboard.css">
-    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
-    <!-- <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/userManage.css"> -->
-    <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
-
-    <!-- FullCalendar CSS and JS -->
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+    <title>Sports Performance Dashboard</title>
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/admindashboard.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-
 <body>
+   
     <div class="adminNav">
         <?php require_once 'adminNav.php'?>
     </div>
 
-    <div id="frame">
-        <div class="container">
-
-  
-            <div class="chart">
-                <div id="topic">
-                    Matrix
-                    <?php print_r($notifications)?>
-                    <br>
-                    <?php print_r($userActive)?>
-
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="stat-card">
+                <i class="fas fa-users icon"></i>
+                <span class="label">Total Players</span>
+                <span class="value"><?php echo $data['countPlayers']; ?></span>
+                <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-user-tie icon"></i>
+                <span class="label">Total Coaches</span>
+                <span class="value"><?php echo $data['countCoaches']; ?></span>
+                <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-school icon"></i>
+                <span class="label">Schools</span>
+                <span class="value"><?php echo $data['countSchools']; ?></span>
+                <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-map-marked-alt icon"></i>
+                <span class="label">Zones</span>
+                <span class="value"><?php //echo $data['countZones']; ?></span>
+                <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-user icon"></i>
+                <span class="label">Total Users</span>
+                <span class="value"><?php echo $data['countUsers']; ?></span>
+                <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
+            </div>
+        </div>
+        
+        <!-- Charts -->
+        <div class="charts-container">
+            <div class="chart-card">
+                <h3>Zone Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
                 </div>
             </div>
-
-            <div class="user">
-                <div id="topic">
-                    User Engagement
-                </div>
-
-                <div>
-                    <table class="ue">
-                        <tr>
-                            <th rowspan="2">Period</th>
-                            <th colspan="4">New Users</th>
-                            <th rowspan="2">Account Deletions</th>
-                        </tr>
-
-                        <tr>
-                            <td>Coaches</td>
-                            <td>Players</td>
-                            <td>School</td>
-                            <td>Parents</td>
-                        </tr>
-
-                        <tr>
-                            <td><?= htmlspecialchars($data['signups']['month']) ?></td>
-                            <td><?= htmlspecialchars($data['signups']['coaches']) ?></td>
-                            <td><?= htmlspecialchars($data['signups']['players']) ?></td>
-                            <td><?= htmlspecialchars($data['signups']['schools']) ?></td>
-                            <td><?= htmlspecialchars($data['signups']['parents']) ?></td>
-                            <td><?= htmlspecialchars($data['signups']['deletions']) ?></td>
-                        </tr>
-
-                    </table>
+            <div class="chart-card">
+                <h3>Schools per Zone</h3>
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
                 </div>
             </div>
-
-            <div class="alert">
-                <div id="topic">
-                    System Alert
-                </div>
-
-                <table class="tg">
-                    <thead>
-                        <tr>
-                            <td class="tg-0lax">
-                                2024.06.30 | 08.30
-                            </td>
-                            <td class="tg-req">
-                                <div id="tg-con">Account delete req</div>
-                            </td>
-                            <td>
-                                <div id="tg-button"><button>View</button></div>
-                            </td>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-
-
-            <div class="req">
-                <div id="topic">
-                    Account Deletion Request
-                </div>
-
-                <table class="tg">
-                    <thead>
-                        <tr>
-                            <td class="tg-0lax">
-                                2024.06.30 | 08.30
-                            </td>
-                            <td class="tg-req">
-                                <div id="tg-con">Player : Charitha Sudewa</div>
-                            </td>
-                            <td>
-                                <div id="tg-button"><button>View</button></div>
-                            </td>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-
-
-            <div class="reminders">
-                <div id="topic">Reminders</div>
-            </div>
-
-            <div class="calender">
-                <div id="topic">Calendar</div>
-                <div id="calendar"></div> <!-- Calendar will be rendered here -->
-            </div>
-
-            <div class="sports">
-                <div id="topic">
-                    Sport Engagement
-                </div>
-            </div>
-
-            <div class="notification">
-                <div id="topic">
-                    Notifications
+            <div class="chart-card">
+                <h3>User Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="lineChart"></canvas>
                 </div>
             </div>
         </div>
-    </div>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('calendar');
         
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth', // Show month view
-            events: [
-                // Example events
-                {
-                    title: 'Meeting with Coach',
-                    start: '2024-12-25T10:00:00',
-                    end: '2024-12-25T12:00:00'
-                },
-                {
-                    title: 'Training Session',
-                    start: '2024-12-27T15:00:00',
-                    end: '2024-12-27T16:30:00'
-                }
-            ],
-            eventRender: function(info) {
-                // Only show the date without event details inside the cell
-                info.el.innerHTML = info.event.start.getDate(); // Display only the date in each cell
-            },
-            eventColor: '#FF5733', // Event color (for events with specific color)
-            eventClassNames: ['event'],
-            dayCellDidMount: function(info) {
-                // Check if there's an event for this date
-                var date = info.dateStr;
-                var eventsOnThisDay = calendar.getEvents().filter(function(event) {
-                    return event.startStr.split('T')[0] === date; // Compare the date part
-                });
+        <!-- User Tables -->
+        <div class="performance-table">
+            <h3>
+                Recent Players
+                <span class="view-all">View All</span>
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Sport</th>
+                        <th>School</th>
+                        <th>Zone</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($data['players'] as $player): ?>
+                    <tr>
+                        <td><?php echo $player->user_id; ?> - Find name in users array</td>
+                        <td>Sport ID: <?php echo $player->sport_id; ?></td>
+                        <td>School ID: <?php echo $player->school_id; ?></td>
+                        <td>Zone ID: <?php echo $player->zone; ?></td>
+                        <td><?php echo $player->role; ?></td>
+                        <td><span class="badge badge-<?php echo ($player->statusus == 'Practicing') ? 'success' : 'warning'; ?>"><?php echo $player->statusus; ?></span></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
 
-                if (eventsOnThisDay.length > 0) {
-                    // Color the day if there's an event
-                    info.el.style.backgroundColor = '#FFEB3B'; // Highlight color
-                } else {
-                    info.el.style.backgroundColor = ''; // No event, default background
-                }
-            },
-            dateClick: function(info) {
-                // Show event details when clicking on a date
-                var clickedDate = info.dateStr;
-                var eventsOnThisDay = calendar.getEvents().filter(function(event) {
-                    return event.startStr.split('T')[0] === clickedDate;
-                });
+        <div class="performance-table">
+            <h3>
+                Recent Coaches
+                <span class="view-all">View All</span>
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Sport</th>
+                        <th>Zone</th>
+                        <th>Type</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($data['coaches'] as $coach): 
+                        // Find coach details from users array
+                        $coachDetails = null;
+                        foreach($data['users'] as $user) {
+                            if($user->user_id == $coach->user_id) {
+                                $coachDetails = $user;
+                                break;
+                            }
+                        }
+                    ?>
+                    <tr>
+                        <td>
+                            <?php 
+                                if($coachDetails) {
+                                    echo $coachDetails->firstname . ' ' . $coachDetails->lname;
+                                } else {
+                                    echo "User ID: " . $coach->user_id;
+                                }
+                            ?>
+                        </td>
+                        <td>Sport ID: <?php echo $coach->sport_id; ?></td>
+                        <td>
+                            <?php 
+                                $zoneName = "Unknown";
+                                foreach($data['zones'] as $zone) {
+                                    if($zone->zoneId == $coach->zone) {
+                                        $zoneName = $zone->zoneName;
+                                        break;
+                                    }
+                                }
+                                echo $zoneName;
+                            ?>
+                        </td>
+                        <td><?php echo $coach->coach_type; ?></td>
+                        <td><?php echo $coachDetails ? $coachDetails->phonenumber : "N/A"; ?></td>
+                        <td>
+                            <?php if($coachDetails): ?>
+                                <span class="badge badge-<?php echo ($coachDetails->active == 1) ? 'success' : 'danger'; ?>">
+                                    <?php echo ($coachDetails->active == 1) ? 'Active' : 'Inactive'; ?>
+                                </span>
+                            <?php else: ?>
+                                <span class="badge badge-warning">Unknown</span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
 
-                if (eventsOnThisDay.length > 0) {
-                    var eventDetails = eventsOnThisDay.map(function(event) {
-                        return '<p>' + event.title + ' (' + event.start.toLocaleString() + ')</p>';
-                    }).join('');
-                    alert('Events on this date:\n\n' + eventDetails);
-                } else {
-                    alert('No events on this date.');
+        <div class="performance-table">
+            <h3>
+                Schools
+                <span class="view-all">View All</span>
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>School Name</th>
+                        <th>Zone</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($data['schools'] as $school): 
+                        // Find zone details
+                        $zoneDetails = null;
+                        foreach($data['zones'] as $zone) {
+                            if($zone->zoneId == $school->zone) {
+                                $zoneDetails = $zone;
+                                break;
+                            }
+                        }
+                    ?>
+                    <tr>
+                        <td><?php echo $school->school_name; ?></td>
+                        <td>
+                            <?php 
+                                echo $zoneDetails ? $zoneDetails->zoneName : "Zone ID: " . $school->zone;
+                            ?>
+                        </td>
+                        <td><?php echo $zoneDetails ? $zoneDetails->provinceName : ($school->province ?: "N/A"); ?></td>
+                        <td><?php echo $zoneDetails ? $zoneDetails->DisName : ($school->district ?: "N/A"); ?></td>
+                        <td>
+                            <?php
+                                // Find school status from users array
+                                $status = "Unknown";
+                                foreach($data['users'] as $user) {
+                                    if($user->user_id == $school->user_id) {
+                                        $status = ($user->active == 1) ? "Active" : "Inactive";
+                                        $statusClass = ($user->active == 1) ? "success" : "danger";
+                                        break;
+                                    }
+                                }
+                            ?>
+                            <span class="badge badge-<?php echo $statusClass ?? 'warning'; ?>">
+                                <?php echo $status; ?>
+                            </span>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Geographic View -->
+        <div class="map-container">
+            <h3>Geographic Distribution - Zones</h3>
+            <div class="map-display">
+                <?php foreach($data['zones'] as $zone): ?>
+                <div class="zone-marker" 
+                     style="top: <?php echo rand(20, 70); ?>%; left: <?php echo rand(20, 80); ?>%;" 
+                     title="<?php echo $zone->zoneName; ?>: <?php echo $zone->provinceName; ?>, <?php echo $zone->DisName; ?>">
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        
+        <!-- Admin Shortcuts -->
+        <div class="shortcuts-container">
+            <div class="shortcut-card">
+                <div class="icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div class="label">Add Player</div>
+            </div>
+            <div class="shortcut-card">
+                <div class="icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="label">Add Coach</div>
+            </div>
+            <div class="shortcut-card">
+                <div class="icon">
+                    <i class="fas fa-school"></i>
+                </div>
+                <div class="label">Add School</div>
+            </div>
+            <div class="shortcut-card">
+                <div class="icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="label">Manage Zones</div>
+            </div>
+            <div class="shortcut-card">
+                <div class="icon">
+                    <i class="fas fa-futbol"></i>
+                </div>
+                <div class="label">Add Sport</div>
+            </div>
+            <div class="shortcut-card">
+                <div class="icon">
+                    <i class="fas fa-file-export"></i>
+                </div>
+                <div class="label">Export Data</div>
+            </div>
+        </div>
+        
+        <!-- Latest Activity -->
+        <div class="logs-container">
+            <h3>
+                Recent Registrations
+                <span class="view-all">View All</span>
+            </h3>
+            <?php 
+            // Sort users by registration date in descending order
+            $users = $data['users'];
+            usort($users, function($a, $b) {
+                return strtotime($b->regDate) - strtotime($a->regDate);
+            });
+            
+            // Display the 5 most recent registrations
+            $count = 0;
+            foreach($users as $user): 
+                if($count >= 5) break;
+                $count++;
+                
+                // Determine icon based on role
+                $icon = 'fas fa-user';
+                switch($user->role) {
+                    case 'player': $icon = 'fas fa-running'; break;
+                    case 'coach': $icon = 'fas fa-user-tie'; break;
+                    case 'school': $icon = 'fas fa-school'; break;
+                }
+            ?>
+            <div class="log-item">
+                <div class="log-icon">
+                    <i class="<?php echo $icon; ?>"></i>
+                </div>
+                <div class="log-content">
+                    <div class="log-title">
+                        New <?php echo $user->role; ?> registered: 
+                        <?php echo $user->firstname . ' ' . $user->lname; ?>
+                        <?php echo ($user->active == 1) ? 
+                            '<span class="badge badge-success">Active</span>' : 
+                            '<span class="badge badge-danger">Inactive</span>'; ?>
+                    </div>
+                    <div class="log-time"><?php echo $user->regDate; ?></div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    
+    <script>
+        // Prepare data for charts
+        const zoneNames = [<?php 
+            $zoneNamesArray = [];
+            foreach($data['zones'] as $zone) {
+                $zoneNamesArray[] = "'" . $zone->zoneName . "'";
+            }
+            echo implode(',', $zoneNamesArray); 
+        ?>];
+        
+        // Count schools per zone
+        const schoolsPerZone = {};
+        <?php foreach($data['zones'] as $zone): ?>
+            schoolsPerZone['<?php echo $zone->zoneId; ?>'] = 0;
+        <?php endforeach; ?>
+        
+        <?php foreach($data['schools'] as $school): ?>
+            if(schoolsPerZone['<?php echo $school->zone; ?>'] !== undefined) {
+                schoolsPerZone['<?php echo $school->zone; ?>']++;
+            }
+        <?php endforeach; ?>
+        
+        const schoolsPerZoneData = Object.values(schoolsPerZone);
+        
+        // Pie Chart - Zone Distribution
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: zoneNames,
+                datasets: [{
+                    data: schoolsPerZoneData,
+                    backgroundColor: [
+                        '#3498db',
+                        '#2ecc71',
+                        '#e74c3c',
+                        '#f39c12',
+                        '#9b59b6'
+                    ],
+                    borderColor: [
+                        '#fff',
+                        '#fff',
+                        '#fff',
+                        '#fff',
+                        '#fff'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
                 }
             }
         });
-
-        calendar.render();
-    });
-</script>
-
-
+        
+        // Bar Chart - Schools per Zone
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        const barChart = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: zoneNames,
+                datasets: [{
+                    label: 'Number of Schools',
+                    data: schoolsPerZoneData,
+                    backgroundColor: '#3498db',
+                    borderColor: '#2980b9',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Line Chart - User Distribution
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        const lineChart = new Chart(lineCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Players', 'Coaches', 'Schools', 'Other Users'],
+                datasets: [{
+                    data: [
+                        <?php echo $data['countPlayers']; ?>, 
+                        <?php echo $data['countCoaches']; ?>, 
+                        <?php echo $data['countSchools']; ?>, 
+                        <?php echo $data['countUsers'] - $data['countPlayers'] - $data['countCoaches'] - $data['countSchools']; ?>
+                    ],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.7)',
+                        'rgba(46, 204, 113, 0.7)',
+                        'rgba(155, 89, 182, 0.7)',
+                        'rgba(243, 156, 18, 0.7)'
+                    ],
+                    borderColor: [
+                        '#3498db',
+                        '#2ecc71',
+                        '#9b59b6',
+                        '#f39c12'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
