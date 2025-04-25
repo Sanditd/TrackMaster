@@ -45,50 +45,9 @@ class StudentModel {
             return 'Not specified';
         }
     }
-
-    public function getCoachByPlayerId($playerId) {
-        // First get the player's sport and zone
-        $this->db->query("SELECT sport_id, zone FROM user_player WHERE user_id = :playerId");
-        $this->db->bind(':playerId', $playerId);
-        $playerInfo = $this->db->single();
-        
-        if (!$playerInfo) {
-            return false;
-        }
-
-        // Now get the coach for that sport and zone
-        $this->db->query("SELECT uc.*, u.firstname, u.lname, u.email, u.phonenumber, u.address, 
-                                u.gender, u.dob, u.photo, s.sport_name, z.zoneName 
-                        FROM user_coach uc 
-                        JOIN users u ON uc.user_id = u.user_id 
-                        LEFT JOIN sports s ON uc.sport_id = s.sport_id 
-                        LEFT JOIN zone z ON uc.zone = z.zoneId 
-                        WHERE uc.sport_id = :sport_id 
-                        AND uc.zone = :zone");
-        $this->db->bind(':sport_id', $playerInfo->sport_id);
-        $this->db->bind(':zone', $playerInfo->zone);
-        
-        try {
-            $coach = $this->db->single();
-            if ($coach) {
-                // Convert string fields to arrays if they are comma-separated
-                $coach->educational_qualifications = !empty($coach->educational_qualifications) ? 
-                    array_map('trim', explode(',', $coach->educational_qualifications)) : [];
-                $coach->professional_playing_experience = !empty($coach->professional_playing_experience) ? 
-                    array_map('trim', explode(',', $coach->professional_playing_experience)) : [];
-                $coach->coaching_experience = !empty($coach->coaching_experience) ? 
-                    array_map('trim', explode(',', $coach->coaching_experience)) : [];
-                $coach->key_achievements = !empty($coach->key_achievements) ? 
-                    array_map('trim', explode(',', $coach->key_achievements)) : [];
-            }
-            return $coach;
-        } catch (Exception $e) {
-            error_log('Error fetching coach details: ' . $e->getMessage());
-            return false;
-        }
-    }
     
     public function updateUserProfile($data, $profilePicturePath = null) {
+        // Log the data being updated
         error_log('updateUserProfile called with data: ' . print_r($data, true));
         if ($profilePicturePath) {
             error_log('Profile picture path: ' . $profilePicturePath);
@@ -107,12 +66,12 @@ class StudentModel {
         $this->db->query($query);
     
         $this->db->bind(':firstname', $data['firstname']);
-        $this->db->bind(':lname', $data['lname'] ?: null);
+        $this->db->bind(':lname', $data['lname'] ?: null); // Allow NULL for lname
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':phonenumber', $data['phonenumber']);
         $this->db->bind(':gender', $data['gender']);
-        $this->db->bind(':dob', $data['dob']);
-        $this->db->bind(':bio', $data['bio'] ?: null);
+        $this->db->bind(':dob', $data['dob']); // Already set to NULL if empty
+        $this->db->bind(':bio', $data['bio'] ?: null); // Allow NULL for bio
         $this->db->bind(':user_id', $data['user_id']);
         if ($profilePicturePath) {
             $this->db->bind(':photo', basename($profilePicturePath));
