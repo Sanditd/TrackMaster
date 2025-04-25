@@ -16,6 +16,8 @@
             --border-radius: 8px;
             --box-shadow: 0 4px 12px rgba(0, 38, 77, 0.1);
             --transition: all 0.3s ease;
+            --success-color: #28a745;
+            --error-color: #dc3545;
         }
 
         * {
@@ -28,6 +30,47 @@
         body {
             background-color: #f4f4f9;
             color: var(--dark-color);
+        }
+
+        /* Message Styles */
+        .message-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+        }
+
+        .message {
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            box-shadow: var(--box-shadow);
+            animation: slideIn 0.3s ease;
+        }
+
+        .message.success {
+            background-color: var(--success-color);
+        }
+
+        .message.error {
+            background-color: var(--error-color);
+        }
+
+        .message .close-message {
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 15px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         /* Profile Container */
@@ -465,6 +508,7 @@
     <?php require 'sidebar.php'; ?>
 
     <div id="main">
+        <div class="message-container" id="message-container"></div>
         <div class="profile-container">
             <div class="profile-header">
                 <h1><i class="fas fa-user-circle"></i> My Profile</h1>
@@ -478,36 +522,31 @@
                 <div class="profile-sidebar">
                     <div class="profile-picture-container">
                         <div class="profile-picture">
-                            <img src="/TrackMaster/Public/img/profile.jpeg" alt="Student Profile Picture" id="profile-image">
+                            <img src="<?php echo !empty($data['user']->photo) ? URLROOT . '/Uploads/' . $data['user']->photo : URLROOT . '/img/profile.jpeg'; ?>" alt="Student Profile Picture" id="profile-image">
                         </div>
                     </div>
                     <div class="profile-info">
-                        <h2 class="student-name" id="display-name">Eraji Thenuwara</h2>
+                        <h2 class="student-name" id="display-name"><?php echo htmlspecialchars($data['user']->firstname . ' ' . $data['user']->lname); ?></h2>
                         <p class="student-title">Student Athlete</p>
                         
                         <div class="info-group">
                             <span class="info-icon"><i class="fas fa-envelope"></i></span>
-                            <span class="info-text" id="display-email">thenuwara@gmail.com</span>
+                            <span class="info-text" id="display-email"><?php echo htmlspecialchars($data['user']->email); ?></span>
                         </div>
                         
                         <div class="info-group">
                             <span class="info-icon"><i class="fab fa-whatsapp"></i></span>
-                            <span class="info-text" id="display-phone">0712345678</span>
-                        </div>
-                        
-                        <div class="info-group">
-                            <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
-                            <span class="info-text" id="display-address">55/4A, Pirivena Road, Ratmalana</span>
+                            <span class="info-text" id="display-phone"><?php echo htmlspecialchars($data['user']->phonenumber); ?></span>
                         </div>
                         
                         <div class="info-group">
                             <span class="info-icon"><i class="fas fa-venus-mars"></i></span>
-                            <span class="info-text" id="display-gender">Female</span>
+                            <span class="info-text" id="display-gender"><?php echo htmlspecialchars($data['user']->gender); ?></span>
                         </div>
                         
                         <div class="info-group">
                             <span class="info-icon"><i class="fas fa-birthday-cake"></i></span>
-                            <span class="info-text" id="display-birthday">January 16, 2008</span>
+                            <span class="info-text" id="display-birthday"><?php echo !empty($data['user']->dob) ? date('F j, Y', strtotime($data['user']->dob)) : 'Not specified'; ?></span>
                         </div>
                     </div>
                 </div>
@@ -521,7 +560,34 @@
                             <h2>About Me</h2>
                         </div>
                         <div class="detail-content">
-                            <p id="display-bio">🏃‍♂️When I'm not on the track, you'll probably find me relaxing with a smoothie or jamming to my favorite playlist. My motto is "Hard work beats talent when talent doesn't work hard," and it's what keeps me striving for greatness every day! 🚀</p>
+                            <p id="display-bio"><?php echo !empty($data['user']->bio) ? htmlspecialchars($data['user']->bio) : 'No bio provided'; ?></p>
+                        </div>
+                    </div>
+
+                    <!-- Sports Information -->
+                    <div class="detail-card">
+                        <div class="detail-header">
+                            <i class="fas fa-running"></i>
+                            <h2>Sports Information</h2>
+                        </div>
+                        <div class="detail-content">
+                            <?php if (!empty($data['sports'])): ?>
+                                <div class="info-group">
+                                    <span class="info-icon"><i class="fas fa-baseball-ball"></i></span>
+                                    <span class="info-text"><strong>Sport:</strong> <?php echo htmlspecialchars($data['sports'][0]->sport_name); ?></span>
+                                </div>
+                                
+                                <div class="info-group">
+                                    <span class="info-icon"><i class="fas fa-user-tag"></i></span>
+                                    <span class="info-text"><strong>Role:</strong> <?php echo htmlspecialchars($data['role']); ?></span>
+                                </div>
+                            <?php else: ?>
+                                <p>No sports information available</p>
+                            <?php endif; ?>
+                            
+                            <button class="view-profile-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/Playerperformance'">
+                                <i class="fas fa-chart-line"></i> View Performance
+                            </button>
                         </div>
                     </div>
 
@@ -532,36 +598,21 @@
                             <h2>School Information</h2>
                         </div>
                         <div class="detail-content">
-                            <div class="info-group">
-                                <span class="info-icon"><i class="fas fa-building"></i></span>
-                                <span class="info-text"><strong>School:</strong> <span id="display-school">Maliyadeva Balika Vidyalaya</span></span>
-                            </div>
-                            
-                            <div class="info-group">
-                                <span class="info-icon"><i class="fas fa-graduation-cap"></i></span>
-                                <span class="info-text"><strong>Grade:</strong> <span id="display-grade">11 - A</span></span>
-                            </div>
+                            <?php if (!empty($data['school'])): ?>
+                                <div class="info-group">
+                                    <span class="info-icon"><i class="fas fa-building"></i></span>
+                                    <span class="info-text"><strong>School:</strong> <?php echo htmlspecialchars($data['school']->school_name); ?></span>
+                                </div>
+                                <div class="info-group">
+                                    <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
+                                    <span class="info-text"><strong>Zone:</strong> <?php echo !empty($data['school']->zoneName) ? htmlspecialchars($data['school']->zoneName) : 'Not specified'; ?></span>
+                                </div>
+                            <?php else: ?>
+                                <p>No school information available</p>
+                            <?php endif; ?>
                             
                             <button class="view-profile-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/schoolProfile'">
                                 <i class="fas fa-eye"></i> View School Profile
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Guardian Information -->
-                    <div class="detail-card">
-                        <div class="detail-header">
-                            <i class="fas fa-user-shield"></i>
-                            <h2>Guardian Information</h2>
-                        </div>
-                        <div class="detail-content">
-                            <div class="info-group">
-                                <span class="info-icon"><i class="fas fa-user"></i></span>
-                                <span class="info-text"><strong>Guardian Name:</strong> <span id="display-guardian">T.H.C.Silva</span></span>
-                            </div>
-                            
-                            <button class="view-profile-btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/parentProfile'">
-                                <i class="fas fa-eye"></i> View Guardian Profile
                             </button>
                         </div>
                     </div>
@@ -575,83 +626,63 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2><i class="fas fa-user-edit"></i> Edit Profile</h2>
-                <button class="close-modal" onclick="closeEditModal()">&times;</button>
+                <button class="close-modal" onclick="closeEditModal()">×</button>
             </div>
             <div class="modal-body">
-                <form id="editProfileForm">
+                <form id="editProfileForm" enctype="multipart/form-data">
+                    <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
                     <div class="edit-form">
                         <div class="full-width" style="text-align: center;">
                             <div class="photo-upload">
                                 <label class="photo-upload-label">
                                     <div class="photo-preview">
-                                        <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture" id="photo-preview-img">
+                                        <img src="<?php echo !empty($data['user']->photo) ? URLROOT . '/Uploads/' . $data['user']->photo : URLROOT . '/img/profile.jpeg'; ?>" alt="Profile Picture" id="photo-preview-img">
                                         <div class="photo-preview-overlay">
                                             <i class="fas fa-camera fa-2x"></i>
                                         </div>
                                     </div>
                                     <span style="color: var(--primary-color); font-weight: 600;">Change Photo</span>
-                                    <input type="file" id="profile-photo" accept="image/*">
+                                    <input type="file" id="profile-photo" name="profile_photo" accept="image/*">
                                 </label>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="first-name">First Name</label>
-                            <input type="text" id="first-name" value="Eraji" required>
+                            <input type="text" id="first-name" name="firstname" value="<?php echo htmlspecialchars($data['user']->firstname); ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label for="last-name">Last Name</label>
-                            <input type="text" id="last-name" value="Thenuwara" required>
+                            <input type="text" id="last-name" name="lname" value="<?php echo htmlspecialchars($data['user']->lname); ?>">
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" id="email" value="thenuwara@gmail.com" required>
+                            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($data['user']->email); ?>" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="phone">WhatsApp Number</label>
-                            <input type="text" id="phone" value="0712345678" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="address">Address</label>
-                            <input type="text" id="address" value="55/4A, Pirivena Road, Ratmalana" required>
+                            <label for="phone">Phone Number</label>
+                            <input type="text" id="phone" name="phonenumber" value="<?php echo htmlspecialchars($data['user']->phonenumber); ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label for="gender">Gender</label>
-                            <select id="gender" required>
-                                <option value="Female" selected>Female</option>
-                                <option value="Male">Male</option>
-                                <option value="Other">Other</option>
+                            <select id="gender" name="gender">
+                                <option value="Male" <?php echo $data['user']->gender == 'Male' ? 'selected' : ''; ?>>Male</option>
+                                <option value="Female" <?php echo $data['user']->gender == 'Female' ? 'selected' : ''; ?>>Female</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="birthday">Birthday</label>
-                            <input type="date" id="birthday" value="2008-01-16" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="school">School</label>
-                            <input type="text" id="school" value="Maliyadeva Balika Vidyalaya" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="grade">Grade</label>
-                            <input type="text" id="grade" value="11 - A" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="guardian">Guardian</label>
-                            <input type="text" id="guardian" value="T.H.C.Silva" required>
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" id="dob" name="dob" value="<?php echo !empty($data['user']->dob) ? htmlspecialchars($data['user']->dob) : ''; ?>">
                         </div>
 
                         <div class="form-group full-width">
                             <label for="bio">Bio</label>
-                            <textarea id="bio" rows="6" required>🏃‍♂️When I'm not on the track, you'll probably find me relaxing with a smoothie or jamming to my favorite playlist. My motto is "Hard work beats talent when talent doesn't work hard," and it's what keeps me striving for greatness every day! 🚀</textarea>
+                            <textarea id="bio" name="bio" rows="6"><?php echo !empty($data['user']->bio) ? htmlspecialchars($data['user']->bio) : ''; ?></textarea>
                         </div>
                     </div>
                 </form>
@@ -692,58 +723,81 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('photo-preview-img').src = e.target.result;
-                }
+                };
                 reader.readAsDataURL(file);
             }
         });
 
+        // Show message
+        function showMessage(message, type) {
+            const messageContainer = document.getElementById('message-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = `${message} <span class="close-message" onclick="this.parentElement.remove()">×</span>`;
+            messageContainer.appendChild(messageDiv);
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
         // Save profile changes
         function saveProfile() {
-            // Get form values
-            const firstName = document.getElementById('first-name').value;
-            const lastName = document.getElementById('last-name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-            const gender = document.getElementById('gender').value;
-            const birthday = document.getElementById('birthday').value;
-            const school = document.getElementById('school').value;
-            const grade = document.getElementById('grade').value;
-            const guardian = document.getElementById('guardian').value;
-            const bio = document.getElementById('bio').value;
-            
-            // Update display values (this would normally be done after a successful AJAX call)
-            document.getElementById('display-name').textContent = firstName + ' ' + lastName;
-            document.getElementById('display-email').textContent = email;
-            document.getElementById('display-phone').textContent = phone;
-            document.getElementById('display-address').textContent = address;
-            document.getElementById('display-gender').textContent = gender;
-            
-            // Format date for display
-            const birthdayDate = new Date(birthday);
-            const formattedDate = birthdayDate.toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric', 
-                year: 'numeric'
+            const form = document.getElementById('editProfileForm');
+            const formData = new FormData(form);
+
+            fetch('<?php echo URLROOT; ?>/Student/updateProfile', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update display values
+                    const lastName = formData.get('lname') ? ' ' + formData.get('lname') : '';
+                    document.getElementById('display-name').textContent = formData.get('firstname') + lastName;
+                    document.getElementById('display-email').textContent = formData.get('email');
+                    document.getElementById('display-phone').textContent = formData.get('phonenumber');
+                    document.getElementById('display-gender').textContent = formData.get('gender');
+                    
+                    // Format date for display
+                    if (formData.get('dob')) {
+                        const dobDate = new Date(formData.get('dob'));
+                        const formattedDate = dobDate.toLocaleDateString('en-US', {
+                            month: 'long',
+                            day: 'numeric', 
+                            year: 'numeric'
+                        });
+                        document.getElementById('display-birthday').textContent = formattedDate;
+                    } else {
+                        document.getElementById('display-birthday').textContent = 'Not specified';
+                    }
+                    
+                    document.getElementById('display-bio').textContent = formData.get('bio') || 'No bio provided';
+                    
+                    // Update profile image if changed
+                    if (data.photo) {
+                        const newImageUrl = '<?php echo URLROOT; ?>/Uploads/' + data.photo;
+                        document.getElementById('profile-image').src = newImageUrl;
+                        document.getElementById('photo-preview-img').src = newImageUrl;
+                    }
+                    
+                    showMessage(data.message, 'success');
+                    closeEditModal();
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                showMessage('An error occurred while updating the profile.', 'error');
+                console.error('Error:', error);
             });
-            document.getElementById('display-birthday').textContent = formattedDate;
-            
-            document.getElementById('display-school').textContent = school;
-            document.getElementById('display-grade').textContent = grade;
-            document.getElementById('display-guardian').textContent = guardian;
-            document.getElementById('display-bio').textContent = bio;
-            
-            // Update profile image if changed
-            const photoPreviewSrc = document.getElementById('photo-preview-img').src;
-            document.getElementById('profile-image').src = photoPreviewSrc;
-            
-            // In a real application, you would send this data to the server via AJAX
-            // For demonstration purposes, we'll just show an alert
-            alert('Profile updated successfully!');
-            
-            // Close the modal
-            closeEditModal();
         }
+
+        // Display session messages if any
+        <?php if (!empty($data['message'])): ?>
+            showMessage('<?php echo addslashes($data['message']); ?>', '<?php echo $data['message_type']; ?>');
+            <?php unset($_SESSION['message'], $_SESSION['message_type']); ?>
+        <?php endif; ?>
     </script>
 </body>
 </html>

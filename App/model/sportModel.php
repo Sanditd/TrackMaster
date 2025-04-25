@@ -745,6 +745,25 @@ require_once __DIR__ . '/../libraries/Database.php';
             }
         }
 
+        public function getCoachName($coach_id) {
+            $user = $this->getCoachUserId($coach_id);
+        
+            if (!$user || !isset($user['user_id'])) {
+                return false; // or return []; or handle as needed
+            }
+        
+            $this->db->query("SELECT firstname, lname FROM users WHERE user_id = :user_id");
+            $this->db->bind(':user_id', $user['user_id']);
+            return $this->db->resultSet(); // note: "resultSet" not "resultset"
+        }
+        
+
+        public function getCoachUserId($coach_id){
+            $this->db->query("SELECT user_id FROM user_coach WHERE coach_id = :coach_id");
+            $this->db->bind(':coach_id', $coach_id);
+            return $this->db->singleArray();
+        }
+
         public function getFromCoaches(){
             try {
                 $this->db->query("SELECT coach_id,user_id,zone FROM user_coach");

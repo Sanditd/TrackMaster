@@ -400,31 +400,35 @@
                         header('Location: ' . ROOT . '/signupcontroller/coachsignupview');
                         exit;
                 }
-        
-                // Insert user data
+
+                $sportName = $this->userModel->getSportNameById($data['sportName']);
+
+                
+                //Insert user data
                 if ($this->userModel->createUser($data)) {
                     error_log("User created successfully.");
         
                     // Get the new user ID
                     $data['user_id'] = $this->userModel->lastInsertId();
-        
-                    // Insert coach data
-                    $this->userModel->insertCoach($data);
 
-                    $sportId=$this->userModel->getSportIdByName($data['sportName']);
+                // Insert coach data
+                $this->userModel->insertCoach($data);
+                
+                // Get the sport name instead of just the ID for a more readable notification
+                $sportName = $this->userModel->getSportNameById($data['sportName']);
 
-                            // Create notification data
-                            $notification[] = [
-                                'title' => "New Coach Registration",
-                                'description' => "A new coach ({$data['firstname']} {$data['lastname']}) has registered for $sportId",
-                                'type' => "registration",
-                            ];
-                            // This is a custom type for your notification system
-            
+                $notification = [
+                    'title' => "New Coach Registration",
+                    'description' => "A new coach ({$data['firstname']} {$data['lastname']}) has registered for {$sportName}",
+                    'type' => "coach registration",
+                ];
+                
+                // Call only once
+                $this->sendAdminNotification($notification);
 
-                    // Send notification to admin(s)
-                    $this->sendAdminNotification($notification);
-        
+                
+                  
+
                     // Redirect to login with success message
                     session_start(); // Ensure session is started
                     $_SESSION['success_message'] = "Registration successful! Please log in.";
@@ -444,40 +448,61 @@
             $requiredKeys = ['title', 'description', 'type'];
             foreach ($requiredKeys as $key) {
                 if (!isset($notification[$key])) {
-                    error_log("Missing '$key' in notification array.");
-                    return;
+                    $msg = "Missing '$key' in notification array.";
+                    error_log($msg);
+                    return ['success' => false, 'error' => $msg];
                 }
             }
         
             $adminIds = $this->userModel->getAdminUserIds();
         
             if (empty($adminIds)) {
-                error_log("No admin users found to notify about new coach signup.");
-                return;
+                $msg = "No admin users found to notify about new coach signup.";
+                error_log($msg);
+                return ['success' => false, 'error' => $msg];
             }
         
             $title = $notification['title'];
             $description = $notification['description'];
             $type = $notification['type'];
         
-            foreach ($adminIds as $admin) {
+            $results = [];
+            foreach ($adminIds as $adminId) {
+                $toAdmin = is_object($adminId) ? $adminId->admin_id : $adminId; // handle object or int
                 $data = [
                     'title' => $title,
                     'description' => $description,
                     'type' => $type,
-                    'toWhom' => $admin['admin_id']
+                    'toAdmin' => $toAdmin
                 ];
-            
-                $result = $this->notificationModel->createNotification($data);
-            
+        
+                $result = $this->notificationModel->createAdminNotification($data);
+        
                 if ($result['success']) {
-                    error_log("Notification sent to admin ID: " . $admin['admin_id']);
+                    error_log("Notification sent to admin ID: $toAdmin");
+                    $results[] = ['admin_id' => $toAdmin, 'success' => true];
                 } else {
-                    error_log("Failed to send notification to admin ID: " . $admin['admin_id'] . ". Reason: " . $result['error']);
+                    $errorMsg = "Failed to send notification to admin ID: $toAdmin. Reason: " . $result['error'];
+                    error_log($errorMsg);
+                    $results[] = ['admin_id' => $toAdmin, 'success' => false, 'error' => $result['error']];
                 }
             }
-            
+        
+            // Check if any failed
+            $hasError = false;
+            foreach ($results as $res) {
+                if (!$res['success']) {
+                    $hasError = true;
+                    break;
+                }
+            }
+        
+            return [
+                'success' => !$hasError,
+                'details' => $results
+            ];
         }
+        
         
         
         
@@ -568,7 +593,12 @@
 
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         
-        
+                //check School already exisits on db
+                if ($this->userModel->checkUserExists($data['email'], $data['username'])) {
+                    $_SESSION['error_message'] = "Email or username is already taken.";
+                    header('Location: ' . ROOT . '/logincontroller/login');
+                    exit;
+                }
             
                 // Insert user data
                 if ($this->userModel->createSchoolUser($data)) {
@@ -579,6 +609,16 @@
         
                     // Insert coach data
                     $this->userModel->insertSchool($data);
+
+                    $notification = [
+                        'title' => "New School Registration",
+                        'description' => "A new School ({$data['firstname']} ) has registered ",
+                        'type' => "school registration",
+                    ];
+                    
+                    // Call only once
+                    $this->notificationModel->sendAdminNotification($notification);
+    
         
                     // Redirect to login with success message
                     session_start(); // Ensure session is started
@@ -602,6 +642,7 @@
                 error_log(print_r($_FILES, true));
         
                 $filters = [
+                    'email' => FILTER_SANITIZE_EMAIL,
                     'username' => FILTER_SANITIZE_STRING,
                     'password' => FILTER_SANITIZE_STRING,
                     'confirm-password' => FILTER_SANITIZE_STRING
@@ -632,15 +673,14 @@
                     $this->view('SignUp/Admin');
                     exit;
                 }
-                
-                        // Check if email or username already exists
-                if ($this->userModel->checkUserExists($data['email'], $data['username'])) {
-                    $_SESSION['error'] = "Email or username is already taken.";
-                    $this->view('SignUp/Admin');
+
+                if ($this->userModel->checkAdminExists($data['email'], $data['username'])) {
+                    $_SESSION['error_message'] = "Email or username is already taken.";
+                    header('Location: ' . ROOT . '/logincontroller/AdminLogin');
                     exit;
                 }
-
                 
+                 
         
                 // Validate password match
                 if ($data['password'] !== $data['confirmPassword']) {
@@ -648,7 +688,7 @@
                     error_log("Confirm Password: " . $data['confirmPassword']);
 
                     session_start(); // Ensure session is started
-                    $_SESSION['error'] = "Passwords do not match. Try again.";
+                    $_SESSION['error_message'] = "Passwords do not match. Try again.";
                     $this->view('SignUp/Admin');
                     exit;
                 }
@@ -661,16 +701,24 @@
                 if ($this->userModel->createAdmin($data)) {
                     error_log("User created successfully.");
 
+                    $notification = [
+                        'title' => "New Admin Registration",
+                        'description' => "A new admin ({$data['userName']})  has registered for System Admin",
+                        'type' => "Admin registration",
+                    ];
+
+                    $this->sendAdminNotification($notification);
+
         
                     // Redirect to login with success message
                     //session_start(); // Ensure session is started
                     $_SESSION['success_message'] = "Registration successful! Please log in.";
-                    header('Location: ' . ROOT . '/logincontroller/login');
+                    header('Location: ' . ROOT . '/logincontroller/adminLogin');
                     exit;
                 } else {
                     error_log("Failed to create user.");
                     session_start(); // Ensure session is started
-                    $_SESSION['error'] = "An error occure.";
+                    $_SESSION['error_message'] = "An error occure.";
                     $this->view('SignUp/Admin');
                     exit;
                 }
@@ -680,5 +728,19 @@
                 $this->view('SignUp/Admin',$data);
             }
         }
+
+
+        public function error() {
+            $data = [];
+        
+            // Check if there's an error message in the session
+            if (isset($_SESSION['error_nessage'])) {
+                $data['error'] = $_SESSION['error_nessage'];
+                unset($_SESSION['error_nessage']); // clear after showing
+            }
+        
+            $this->view('signup/error', $data);
+        }
+        
     }
     ?>

@@ -5,11 +5,14 @@ error_reporting(E_ALL);
 
 
 class Coach extends Controller {
+    private $activityModel;
+    private $notificationModel;
     private $coachModel;
 
     public function __construct() {
         $this->coachModel = $this->model('CoachModel');
-    }
+        $this->activityModel =$this->model('activityModel');
+        $this->notificationModel =$this->model('Notification');    }
 
     // Default method if none is specified
     public function index() {
@@ -21,10 +24,24 @@ class Coach extends Controller {
         $this->view('Coach/Dashboard');
     }
 
-    public function Attendance() {
-        $data = [];
-        $this->view('Coach/Attendance');
+    public function attendance() 
+{
+    // Get coach's sport and zone
+    $coach = $this->coachModel->getCoachDetailsByUserId($_SESSION['user_id']);
+    
+    if (!$coach) {
+        // Handle error - coach not found
     }
+
+    // Get teams for this coach's sport and zone
+    $teams = $this->coachModel->getTeamsBySportAndZone($coach->sport_id, $coach->zone);
+
+    $data = [
+        'teams' => $teams
+    ];
+
+    $this->view('coach/attendance', $data);
+}
 
     public function profilemanagement() {
         $data = [];
@@ -54,8 +71,20 @@ class Coach extends Controller {
 
 
     public function performanceTracking() {
-        $data = [];
-        $this->view('Coach/PerformanceTracking');
+        // Get coach's sport ID
+        $sportId = $this->coachModel->getCoachSportId($_SESSION['user_id']);
+        
+        if ($sportId === 36) { // Cricket
+            $this->view('Coach/PerformanceTracking');
+        } else { // Athletics or other sports
+            $this->view('Coach/A_PerformanceTracking');
+        }
+    }
+    
+
+    public function athleticsPerformanceTracking() { 
+               $data = [];
+        $this->view('Coach/A_PerformanceTracking');
     }
 
     public function editProfile() {
@@ -471,6 +500,7 @@ public function playerPerformance($playerId = null) {
     }
 }
 
+
 public function getTeamsForCoach() {
     // Check if user is logged in and is a coach
     if (!isset($_SESSION['user_id'])) {
@@ -611,6 +641,22 @@ public function createEventRequest() {
             empty($data['time_from_err']) && empty($data['time_to_err'])) {
             
             if ($this->coachModel->createEventRequest($data)) {
+
+                $notification = [
+                    'title' => "New Facility Request",
+                    'description' => "New Facilty request from a Coach",
+                    'type' => "Facility Request",
+                    'toWhom' => $data['school_id']
+                ];
+
+                $this->notificationModel->createUserNotification($notification);
+
+                $activity = [
+                    'act_desc' => "request Facility From ".$data['school_id'],
+                    'user_id' => $_SESSION['user_id']
+                ];
+                $this->activityModel->insertUserActivity($activity);
+
                 flash('event_message', 'Event request submitted successfully');
                 redirect('coach/eventManagement');
             } else {
@@ -683,6 +729,133 @@ public function deleteScheduledEvent($eventId) {
     }
 }
 
+// Add these methods to your Coach controller
+
+public function loadPlayers() {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
+        return;
+    }
+
+    try {
+        $teamId = isset($_POST['team_id']) ? $_POST['team_id'] : null;
+        $players = $this->coachModel->getPlayersForAttendance($_SESSION['user_id'], $teamId);
+        
+        echo json_encode([
+            'status' => 'success',
+            'players' => $players
+        ]);
+    } catch (Exception $e) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+public function saveAttendance() {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
+        return;
+    }
+
+    try {
+        $coach = $this->coachModel->getCoachByUserId($_SESSION['user_id']);
+    
+        if (!$coach || !isset($coach->coach_id)) {
+            throw new Exception('Coach ID not found for this user.');
+        }
+    
+        $coach_id = $coach->coach_id;
+        // First save the session
+        $sessionData = [
+           'coach_id' => $coach_id,
+          'team_id' => !empty($_POST['team_id']) ? $_POST['team_id'] : null,
+           'session_type' => $_POST['session_type'],
+           'session_date' => $_POST['session_date'],
+           'start_time' => $_POST['start_time'],
+           'end_time' => $_POST['end_time'],
+           'location' => $_POST['location']
+       ];
+
+       $sessionId = $this->coachModel->createAttendanceSession($sessionData);
+       
+       if (!$sessionId) {
+           throw new Exception('Failed to create attendance session');
+       }
+
+       // Save each player's attendance
+       $attendanceData = json_decode($_POST['attendance_data'], true);
+       $successCount = 0;
+       
+       foreach ($attendanceData as $player) {
+           $status = $player['status'];
+           $notes = isset($player['notes']) ? $player['notes'] : null;
+           $arrivalTime = ($status === 'late') ? date('H:i:s') : null;
+           
+           $result = $this->coachModel->recordPlayerAttendance(
+               $sessionId,
+               $player['player_id'],
+               $status,
+               $arrivalTime,
+               $notes
+           );
+           
+           if ($result) {
+               $successCount++;
+           }
+       }
+
+       // Set proper JSON header
+       header('Content-Type: application/json');
+       echo json_encode([
+           'status' => 'success',
+           'message' => "Attendance recorded for $successCount players",
+           'session_id' => $sessionId
+       ]);
+   } catch (Exception $e) {
+       header('Content-Type: application/json');
+       echo json_encode([
+           'status' => 'error',
+           'message' => $e->getMessage()
+       ]);
+   }
+}
+
+public function searchPlayerAttendance() {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
+        return;
+    }
+
+    try {
+        $searchTerm = trim($_POST['search_term']);
+        
+        if (empty($searchTerm)) {
+            throw new Exception('Please enter a search term');
+        }
+
+        $result = $this->coachModel->searchPlayerAttendance($searchTerm, $_SESSION['user_id']);
+        
+        if (!$result) {
+            echo json_encode([
+                'status' => 'not_found',
+                'message' => 'No player found matching your search'
+            ]);
+            return;
+        }
+
+        echo json_encode([
+            'status' => 'success',
+            'data' => $result
+        ]);
+    } catch (Exception $e) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+    }
+}
 
 
 }

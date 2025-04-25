@@ -4,10 +4,14 @@
         private $userModel;
         private $calmodel;
         private $zoneModel;
+        private $activityModel;
+        private $notificationModel;
         public function __construct(){
           $this->sportModel=$this->model('sportModel');
           $this->userModel =$this->model('User');
           $this->zoneModel =$this->model('zoneModel');
+          $this->activityModel =$this->model('activityModel');
+            $this->notificationModel =$this->model('Notification');
           //$this->calmodel =$this->model('calenderModel');
         }
 
@@ -38,11 +42,42 @@
         }
 
         //to load userManage.php
-        public function userManage($name){
-            $data=[
-                'username'=>$name
+        public function userManage(){
+            $users = $this->userModel->getUsers();
+            $players = $this->userModel->getPlayers();
+            $coaches = $this->userModel->getCoaches();
+            $schools = $this->userModel->getSchoolsData();
+            $zones = $this->zoneModel->getZonals();
+        
+            $countUsers = $this->userModel->countAllUsers();
+            $countPlayers = $this->userModel->countPlayers();
+            $countCoaches = $this->userModel->countCoaches();
+            $countSchools = $this->userModel->countSchools();
+            $countZones = $this->zoneModel->countZonals();
+
+
+        
+            $data = [
+                'users' => $users,
+                'players' => $players,
+                'coaches' => $coaches,
+                'schools' => $schools,
+                'zones' => $zones,
+                'countUsers' => $countUsers,
+                'countPlayers' => $countPlayers,
+                'countCoaches' => $countCoaches,
+                'countSchools' => $countSchools,
+                'countZones' => $countZones
             ];
-            $this->view('/Admin/userManage');
+        
+            $this->view('/Admin/userManage', $data);
+        }
+        
+
+        public function notification(){
+            $user_id = $_SESSION['user_id']; // Assuming you have the user ID in the session
+            $data=$this->notificationModel->getAdminNotifications($user_id);
+            $this->view('/Admin/notification',$data);
         }
 
         //to load sportManege.php
@@ -84,8 +119,15 @@
                 ];
         
                 $result = $this->sportModel->addTeamSport($data);
-        
+
+                
                 if ($result['success']) {
+                    $activity = [
+                        'act_desc' => 'Added a new team sport: ' . $data['sportName'],
+                        'user_id' => $_SESSION['user_id'], // Assuming you have the user ID in the session
+                    ];
+                    $this->activityModel->insertAdminActivity($activity);
+            
                     session_start();
                     $_SESSION['success_message'] = "Sport added successfully.";
                     header('Location: ' . ROOT . '/admin/teamSportForm/success');
@@ -152,6 +194,12 @@
                 $result = $this->sportModel->addIndSport($data);
         
                 if ($result['success']) {
+                    $activity = [
+                        'act_desc' => 'Added a new individual sport: ' . $data['sportName'],
+                        'user_id' => $_SESSION['user_id'], // Assuming you have the user ID in the session
+                    ];
+                    $this->activityModel->insertAdminActivity($activity);
+            
                     session_start();
                     $_SESSION['success_message'] = "Sport added successfully.";
                     header('Location: ' . ROOT . '/admin/indSportForm/success');
@@ -327,6 +375,11 @@
                 $result = $this->sportModel->updateIndSport($data);
         
                 if ($result['success']) {
+                    $activity = [
+                        'act_desc' => 'Updated a team sport: ' . $data['sportName'],
+                        'user_id' => $_SESSION['user_id'], // Assuming you have the user ID in the session
+                    ];
+                    $this->activityModel->insertAdminActivity($activity);
                     session_start();
                     $_SESSION['success_message'] = "Sport update successfully.";
                     
@@ -374,90 +427,6 @@
             }
         }
 
-        public function indsportEdit($sportId) {
-            // Check if the request method is POST
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $filters = [
-                    'duration' => FILTER_SANITIZE_NUMBER_INT,
-                    'isIndoor' => FILTER_SANITIZE_STRING,
-                    'equipment' => FILTER_SANITIZE_STRING,
-                    'categories' => FILTER_SANITIZE_STRING,
-                    'scoringSystem' => FILTER_SANITIZE_STRING,
-                    'rulesLink' => FILTER_SANITIZE_URL,
-                ];
-        
-                // Filter and sanitize POST data
-                $_POST = filter_input_array(INPUT_POST, $filters);
-        
-                // Create the data array with sanitized data
-                $data = [
-                    'sportId' => $sportId,  // Use $sportId passed to the method
-                    'duration' => trim($_POST['duration']),
-                    'isIndoor' => trim($_POST['isIndoor']),
-                    'equipment' => trim($_POST['equipment']),
-                    'categories' => trim($_POST['categories']),
-                    'categoriesJson' => json_encode(explode(',', 'categories')),
-                    'scoringSystem' => trim($_POST['scoringSystem']),
-                    'rulesLink' => trim($_POST['rulesLink']),
-                    'error' => ''
-                ];
-
-                
-        
-                // Validate the input data
-                if (empty($data['sportId'])) {
-                    $data['error'] = 'Sport Id not available';
-                } elseif (empty($data['duration'])) {
-                    $data['error'] = 'Please enter duration';
-                } elseif (empty($data['isIndoor'])) {
-                    $data['error'] = 'Please enter location type';
-                } elseif (empty($data['equipment'])) {
-                    $data['error'] = 'Please enter equipment';
-                } elseif (empty($data['categories'])) {
-                    $data['error'] = 'Please enter categories';
-                } elseif (empty($data['scoringSystem'])) {
-                    $data['error'] = 'Please enter scoringSystem';
-                } elseif (empty($data['rulesLink'])) {
-                    $data['error'] = 'Please enter URL of rules';
-                }
-        
-                // If there are errors, reload the form with error messages
-                if (!empty($data['error'])) {
-                    $this->view('/Admin/indsportEdit', $data);
-                    return;
-                }
-        
-                // Update the sport in the database using the model
-                if ($this->sportModel->indsportEdit($data)) {
-                    header('Location: ' . ROOT . '/admin/sportManage/asd');
-                    exit;
-                } else {
-                    $data['error'] = 'Something went wrong while updating the sport.';
-                    $this->view('/Admin/indsportEdit', $data);
-                }
-        
-            } else {
-                // Retrieve the sport data from the model
-                $sport = $this->sportModel->getIndSportDetails($sportId);
-                $sportName = $this->sportModel->getSportById($sportId);
-        
-                if (!$sport) {
-                    $data = [
-                        'error' => 'Sport not found.'
-                    ];
-                    $this->view('/Admin/indsportEdit', $data);
-                    return;
-                }
-        
-                // Pass the sport data to the view for editing
-                $data = [
-                    'sport' => $sport,
-                    'sportName' => $sportName,
-                    'error' => ''
-                ];
-                $this->view('/Admin/indsportEdit', $data);
-            }
-        }
         
         public function updateTeamSport($sportId) {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -497,6 +466,11 @@
                 $result = $this->sportModel->updateTeamSport($data);
         
                 if ($result['success']) {
+                    $activity = [
+                        'act_desc' => 'Updated a new team sport: ' . $data['sportName'],
+                        'user_id' => $_SESSION['user_id'], // Assuming you have the user ID in the session
+                    ];
+                    $this->activityModel->insertAdminActivity($activity);
                     session_start();
                     $_SESSION['success_message'] = "Sport update successfully.";
                     
@@ -555,6 +529,13 @@
         
                 // Delete the sport from the database
                 $this->sportModel->deleteSportById($sportId);
+                $data=$this->sportModel->getSportById($sportId);
+
+                $activity = [
+                    'act_desc' => 'Added a new team sport: ' . $data['sportName'],
+                    'user_id' => $_SESSION['user_id'], // Assuming you have the user ID in the session
+                ];
+                $this->activityModel->insertAdminActivity($activity);
         
                 // Return a success response
                 http_response_code(200);
@@ -676,6 +657,11 @@
                 
         
                 if ($this->zoneModel->addZone($data)) {
+                    $activity = [
+                        'act_desc' => 'Added a new Zone: ' . $data['zone'],
+                        'user_id' => $_SESSION['user_id'], // Assuming you have the user ID in the session
+                    ];
+                    $this->activityModel->insertAdminActivity($activity);
                     $errorMsg = urlencode('New Zone added to Database');
                     header('Location: ' . ROOT . '/admin/zoneManage/dffsds?error=' . $errorMsg);
                     exit;
@@ -698,6 +684,11 @@
         
                 // Redirect to the zone management page with a success message
                 if ($result) {
+                    $activity = [
+                        'act_desc' => 'Added a new team sport: ' . $zoneName,
+                        'user_id' => $_SESSION['user_id'], // Assuming you have the user ID in the session
+                    ];
+                    $this->activityModel->insertAdminActivity($activity);
                     // Success redirect (you can modify this to include a success message)
                     $errorMsg = urlencode('Zone update sucessfully');
                     header('Location: ' . ROOT . '/admin/zoneManage/sdasd?error=' . $errorMsg);
@@ -718,6 +709,11 @@
         
                 // Call the model function to delete the zone
                 if ($this->zoneModel->deleteZoneByName($zoneName)) {
+                    $activity = [
+                        'act_desc' => 'Added a new team sport: ' . $zoneName,
+                        'user_id' => $_SESSION['user_id'], // Assuming you have the user ID in the session
+                    ];
+                    $this->activityModel->insertAdminActivity($activity);
                     // Redirect with a success message
                     $successMsg = urlencode("Zone '$zoneName' has been deleted successfully.");
                     header("Location: " . ROOT . "/admin/zoneManage/dssdf?success=$successMsg");
@@ -790,6 +786,26 @@
                     $_SESSION['error_message'] = "Error assigning coach: Zone $zoneId, Sport $sportId — " . $result['message'];
                     break 2;
                 }
+
+                $coachName = $this->sportModel->getCoachName($coachId);
+                $Sportdata = $this->sportModel->getSportById($sportId);
+                
+                // Fallback if no coach name found
+                $coachFirstName = 'Unknown';
+                $coachLastName = '';
+                
+                if ($coachName) {
+                    $coachFirstName = $coachName['firstName'];
+                    $coachLastName = $coachName['lname'];
+                }
+                
+                $activity = [
+                    'act_desc' => 'Assign coach ' . $coachFirstName . ' ' . $coachLastName . ': ' . $Sportdata['sportName'],
+                    'user_id' => $_SESSION['user_id'],
+                ];
+                
+                $this->activityModel->insertAdminActivity($activity);
+                
             }
         }
 
@@ -809,6 +825,7 @@
         $zonalSports = $this->sportModel->getZonalSports();
         $users = $this->sportModel->getCoaches();
         $FromCoaches = $this->sportModel->getFromCoaches();
+        
 
         if (!$zones || isset($zones['error'])) {
             $_SESSION['error_message'] = "Error fetching zones.";

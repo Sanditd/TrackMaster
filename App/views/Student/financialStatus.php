@@ -12,8 +12,8 @@
 </head>
 <body>
 
-<?php require 'navbar.php'?>
-<?php require 'sidebar.php'?>
+<?php require 'navbar.php'; ?>
+<?php require 'sidebar.php'; ?>
 
 <div class="dashboard-container">
     <div class="dashboard-header">
@@ -23,12 +23,21 @@
         </div>
     </div>
 
+    <?php if(isset($_SESSION['message'])): ?>
+    <div class="status-message status-<?php echo htmlspecialchars($_SESSION['message_type'] ?? 'error'); ?>">
+        <?php echo htmlspecialchars($_SESSION['message']); ?>
+    </div>
+    <?php 
+        unset($_SESSION['message']); 
+        unset($_SESSION['message_type']); 
+    endif; ?>
+
     <div class="stats-cards">
         <div class="card card-primary">
             <i class="fas fa-hand-holding-usd"></i>
             <div class="card-content">
                 <span>Financial Aid Status</span>
-                <strong>Pending</strong>
+                <strong><?php echo htmlspecialchars($data['status'] ?? 'Not Applied'); ?></strong>
             </div>
         </div>
         <div class="card card-secondary">
@@ -63,43 +72,91 @@
             </div>
         </div>
 
-        <!-- Middle Row -->
+        <!-- Previous Applications Section -->
+        <?php if(!empty($data['applications'] ?? [])): ?>
+        <div class="middle-row">
+            <div class="section previous-applications">
+                <div class="section-header">
+                    <h2><i class="fas fa-history"></i> Your Previous Applications</h2>
+                </div>
+                <div class="applications-list">
+                    <table class="applications-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($data['applications'] as $application): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars(date('M d, Y', strtotime($application->application_date))); ?></td>
+                                <td>
+                                    <span class="status-badge status-<?php echo strtolower(htmlspecialchars($application->application_status)); ?>">
+                                        <?php echo htmlspecialchars($application->application_status); ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="<?php echo URLROOT; ?>/Student/viewApplication/<?php echo htmlspecialchars($application->id); ?>" class="action-button view-button">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <!-- Application Form -->
         <div class="middle-row">
             <div class="section application-form">
                 <div class="section-header">
                     <h2><i class="fas fa-file-invoice-dollar"></i> Apply For Financial Funds</h2>
-                    <div class="status-indicator">Application Status: <span class="status-pending">Pending</span></div>
                 </div>
-                <form id="fundApplication" method="post" action="submit_application.php" enctype="multipart/form-data">
+                <form id="fundApplication" method="post" action="<?php echo URLROOT; ?>/Student/submitApplication" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($data['csrf_token'] ?? ''); ?>">
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="studentName"><i class="fas fa-user-graduate"></i> Student Name</label>
-                            <input type="text" id="studentName" name="studentName" placeholder="Enter your full name" required>
+                            <input type="text" id="studentName" name="studentName" placeholder="Enter your full name" required
+                                   value="<?php echo isset($_POST['studentName']) ? htmlspecialchars($_POST['studentName']) : ''; ?>">
                         </div>
                         
                         <div class="form-group">
                             <label for="guardianName"><i class="fas fa-user"></i> Guardian Name</label>
-                            <input type="text" id="guardianName" name="guardianName" placeholder="Enter guardian's full name" required>
+                            <input type="text" id="guardianName" name="guardianName" placeholder="Enter guardian's full name" required
+                                   value="<?php echo isset($_POST['guardianName']) ? htmlspecialchars($_POST['guardianName']) : ''; ?>">
                         </div>
                         
                         <div class="form-group">
                             <label for="annualIncome"><i class="fas fa-rupee-sign"></i> Annual Income (Rs.)</label>
-                            <input type="number" id="annualIncome" name="annualIncome" placeholder="Enter annual household income" required>
+                            <input type="number" id="annualIncome" name="annualIncome" placeholder="Enter annual household income" required
+                                   min="0" step="0.01"
+                                   value="<?php echo isset($_POST['annualIncome']) ? htmlspecialchars($_POST['annualIncome']) : ''; ?>">
                         </div>
 
                         <div class="form-group">
                             <label for="date"><i class="fas fa-calendar-alt"></i> Date</label>
-                            <input type="date" id="date" name="date" required>
+                            <input type="date" id="date" name="date" required
+                                   value="<?php echo isset($_POST['date']) ? htmlspecialchars($_POST['date']) : date('Y-m-d'); ?>">
                         </div>
                         
                         <div class="form-group full-width">
                             <label for="reason"><i class="fas fa-align-left"></i> Reason for Applying</label>
-                            <textarea id="reason" name="reason" placeholder="Describe your reason for requesting financial support" required></textarea>
+                            <textarea id="reason" name="reason" placeholder="Describe your reason for requesting financial support" required><?php 
+                                echo isset($_POST['reason']) ? htmlspecialchars($_POST['reason']) : ''; 
+                            ?></textarea>
                         </div>
                                                         
                         <div class="form-group full-width">
                             <label for="notes"><i class="fas fa-sticky-note"></i> Additional Notes</label>
-                            <textarea id="notes" name="notes" placeholder="Any additional information you would like to provide"></textarea>
+                            <textarea id="notes" name="notes" placeholder="Any additional information you would like to provide"><?php 
+                                echo isset($_POST['notes']) ? htmlspecialchars($_POST['notes']) : ''; 
+                            ?></textarea>
                         </div>
 
                         <div class="form-group full-width file-input-container">
@@ -123,10 +180,6 @@
             </div>
         </div>
     </div>
-</div>
-
-<div id="applicationStatus" class="status-message">
-    <!-- Status messages will appear here after form submission -->
 </div>
 
 <?php require 'footer.php'; ?>
@@ -176,23 +229,23 @@
         });
         
         function showMessage(message, type) {
-            const statusDiv = document.getElementById('applicationStatus');
-            statusDiv.textContent = message;
+            const statusDiv = document.createElement('div');
             statusDiv.className = 'status-message status-' + type;
-            statusDiv.style.display = 'block';
+            statusDiv.textContent = message;
+            
+            // Insert after dashboard header
+            const dashboardHeader = document.querySelector('.dashboard-header');
+            dashboardHeader.parentNode.insertBefore(statusDiv, dashboardHeader.nextSibling);
             
             // Auto-hide after 5 seconds
             setTimeout(() => {
                 statusDiv.style.opacity = '0';
                 setTimeout(() => {
-                    statusDiv.style.display = 'none';
-                    statusDiv.style.opacity = '1';
-                    statusDiv.className = 'status-message';
+                    statusDiv.remove();
                 }, 500);
             }, 5000);
         }
     });
-        
 </script>
 </body>
 </html>

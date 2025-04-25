@@ -6,6 +6,8 @@
             $this->schoolModel = $this->model('SchoolModel');
             $this->userModel = $this->model('UserModel');
             $this->studyModel = $this->model('StudyModel');
+
+
         }
         
         public function school() {

@@ -9,17 +9,31 @@ class CoachModel {
     }
 
     public function getTeams() {
-        $this->db->query('SELECT team_id, team_name AS team FROM team');
+        $this->db->query('SELECT coach_id FROM user_coach WHERE user_id = :user_id');
+        $this->db->bind(':user_id',     $_SESSION['user_id']    );
+        $coachData = $this->db->single();
+        
+        if (!$coachData || !isset($coachData->coach_id)) {
+            return []; // Return empty array if coach not found
+        }
+    
+        $this->db->query('
+            SELECT team.team_id, team.team_name AS team 
+            FROM team 
+            INNER JOIN user_coach ON team.zone = user_coach.zone AND team.sport_id = user_coach.sport_id 
+            WHERE user_coach.coach_id = :coach_id
+        ');
+        $this->db->bind(':coach_id', $coachData->coach_id);
+        
         return $this->db->resultSet();
     }
 
     public function getPlayersByTeamId($team_id) {
         $this->db->query('
-            SELECT up.player_id, u.firstname AS name, u.photo, u.phonenumber, u.email, cs.role AS role
+            SELECT up.player_id, u.firstname AS name, u.photo, u.phonenumber, u.email, up.role AS role
             FROM cricket_team ct 
             JOIN user_player up ON ct.player_id = up.player_id 
             JOIN users u ON up.user_id = u.user_id 
-            JOIN cricket_stats cs ON ct.player_id = cs.player_id
             WHERE ct.team_id = :id
         ');
         $this->db->bind(':id', $team_id);
@@ -932,10 +946,219 @@ public function deleteScheduledEvent($eventId) {
     return $this->db->execute();
 }
 
+public function getCoachDetailsByUserId($userId) {
+    $this->db->query('SELECT * FROM user_coach WHERE user_id = :user_id');
+    $this->db->bind(':user_id', $userId);
+    return $this->db->single();
+}
+
 public function getCoachByUserId($userId) {
     $this->db->query('SELECT coach_id FROM user_coach WHERE user_id = :user_id');
     $this->db->bind(':user_id', $userId);
     return $this->db->single();
+}
+
+// Add these methods to your CoachModel class
+
+public function getPlayersForAttendance($coachId, $teamId = null) {
+    // First get coach's sport and zone
+    $this->db->query('SELECT sport_id, zone FROM user_coach WHERE user_id = :coach_id');
+    $this->db->bind(':coach_id', $coachId);
+    $coach = $this->db->single();
+    
+    if (!$coach) {
+        throw new Exception('Coach not found');
+    }
+    
+    if ($teamId) {
+        // Get players from specific team
+        $this->db->query('
+            SELECT 
+                up.player_id, 
+                u.firstname, 
+                u.lname, 
+                u.photo,
+                up.role,
+                cs.role as player_role
+            FROM user_player up
+            JOIN users u ON up.user_id = u.user_id
+            JOIN cricket_team ct ON up.player_id = ct.player_id
+            LEFT JOIN cricket_stats cs ON up.player_id = cs.player_id
+            WHERE ct.team_id = :team_id
+            ORDER BY u.firstname
+        ');
+        $this->db->bind(':team_id', $teamId);
+    } else {
+        // Get all players in coach's zone and sport
+        $this->db->query('
+            SELECT 
+                up.player_id, 
+                u.firstname, 
+                u.lname, 
+                u.photo,
+                up.role,
+                cs.role as player_role
+            FROM user_player up
+            JOIN users u ON up.user_id = u.user_id
+            LEFT JOIN cricket_stats cs ON up.player_id = cs.player_id
+            WHERE up.sport_id = :sport_id AND up.zone = :zone
+            ORDER BY u.firstname
+        ');
+        $this->db->bind(':sport_id', $coach->sport_id);
+        $this->db->bind(':zone', $coach->zone);
+    }
+    
+    return $this->db->resultSet();
+}
+public function createAttendanceSession($data) {
+    $this->db->query('
+    INSERT INTO attendance_sessions 
+    (coach_id, team_id, session_type, session_date, start_time, end_time, location)
+    VALUES 
+    (:coach_id, :team_id, :session_type, :session_date, :start_time, :end_time, :location)
+');
+
+$this->db->bind(':coach_id', $data['coach_id']);
+$this->db->bind(':team_id', $data['team_id']);
+$this->db->bind(':session_type', $data['session_type']);
+$this->db->bind(':session_date', $data['session_date']);
+$this->db->bind(':start_time', $data['start_time']);
+$this->db->bind(':end_time', $data['end_time']);
+$this->db->bind(':location', $data['location']);
+
+if ($this->db->execute()) {
+    return $this->db->lastInsertId();
+} else {
+    return false;
+}
+}
+
+public function recordPlayerAttendance($sessionId, $playerId, $status, $arrivalTime = null, $notes = null) {
+    $this->db->query('
+        INSERT INTO player_attendance 
+        (session_id, player_id, status, arrival_time)
+        VALUES 
+        (:session_id, :player_id, :status, :arrival_time)
+    ');
+    
+    $this->db->bind(':session_id', $sessionId);
+    $this->db->bind(':player_id', $playerId);
+    $this->db->bind(':status', $status);
+    $this->db->bind(':arrival_time', $arrivalTime);
+    
+    return $this->db->execute();
+}
+
+public function searchPlayerAttendance($searchTerm, $coachId) {
+    // First get coach's sport and zone to ensure we only search their players
+    $this->db->query('SELECT sport_id, zone FROM user_coach WHERE user_id = :coach_id');
+    $this->db->bind(':coach_id', $coachId);
+    $coach = $this->db->single();
+    
+    if (!$coach) {
+        throw new Exception('Coach not found');
+    }
+    
+    // Search players by name or ID
+    $this->db->query('
+        SELECT 
+            up.player_id,
+            u.user_id,
+            u.firstname,
+            u.lname,
+            u.photo,
+            up.role,
+            up.school_id,
+            us.school_name
+        FROM user_player up
+        JOIN users u ON up.user_id = u.user_id
+        LEFT JOIN user_school us ON up.school_id = us.school_id
+        WHERE (u.firstname LIKE :search OR u.lname LIKE :search OR up.player_id = :player_id)
+        AND up.sport_id = :sport_id AND up.zone = :zone
+        LIMIT 1
+    ');
+    
+    $this->db->bind(':search', '%' . $searchTerm . '%');
+    $this->db->bind(':player_id', is_numeric($searchTerm) ? $searchTerm : -1);
+    $this->db->bind(':sport_id', $coach->sport_id);
+    $this->db->bind(':zone', $coach->zone);
+    
+    $player = $this->db->single();
+    
+    if (!$player) {
+        return null;
+    }
+    
+    // Get attendance history
+    $this->db->query('
+        SELECT 
+            pa.*,
+            ases.session_type,
+            ases.session_date,
+            ases.location,
+            ases.start_time,
+            ases.end_time,
+            t.team_name
+        FROM player_attendance pa
+        JOIN attendance_sessions ases ON pa.session_id = ases.session_id
+        LEFT JOIN team t ON ases.team_id = t.team_id
+        WHERE pa.player_id = :player_id
+        ORDER BY ases.session_date DESC
+        LIMIT 20
+    ');
+    $this->db->bind(':player_id', $player->player_id);
+    $attendanceHistory = $this->db->resultSet();
+    
+    // Calculate stats
+    $this->db->query('
+        SELECT 
+            COUNT(*) as total_sessions,
+            SUM(CASE WHEN status = "present" THEN 1 ELSE 0 END) as present_count,
+            SUM(CASE WHEN status = "absent" THEN 1 ELSE 0 END) as absent_count,
+            SUM(CASE WHEN status = "late" THEN 1 ELSE 0 END) as late_count
+        FROM player_attendance pa
+        JOIN attendance_sessions ases ON pa.session_id = ases.session_id
+        WHERE pa.player_id = :player_id
+    ');
+    $this->db->bind(':player_id', $player->player_id);
+    $stats = $this->db->single();
+    
+    return [
+        'player' => $player,
+        'history' => $attendanceHistory,
+        'stats' => $stats
+    ];
+}
+
+public function getTeamsBySportAndZone($sportId, $zoneId)
+{
+    $this->db->query('
+        SELECT team_id, team_name 
+        FROM team 
+        WHERE sport_id = :sport_id AND zone = :zone
+        ORDER BY team_name
+    ');
+    
+    $this->db->bind(':sport_id', $sportId);
+    $this->db->bind(':zone', $zoneId);
+    
+    return $this->db->resultSet();
+}
+
+public function getCoachSportId($user_id) {
+    $this->db->query('
+        SELECT sport_id 
+        FROM user_coach 
+        WHERE user_id = :user_id
+    ');
+    
+    $this->db->bind(':user_id', $user_id);
+    
+    // Execute the query and fetch the single result
+    $result = $this->db->single();
+    
+    // Return the sport_id if found, or null if not
+    return $result ? $result->sport_id : null;
 }
 
 

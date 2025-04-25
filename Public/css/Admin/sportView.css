@@ -1,183 +1,281 @@
-/* General Reset */
-body {
+/* Updated sportView.css - Professional Design */
+
+/* Global styles */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #3498db;
+    --danger-color: #e74c3c;
+    --success-color: #2ecc71;
+    --light-gray: #f8f9fa;
+    --gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --text-color: #333;
+    --border-radius: 6px;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    background-color: #f5f7fa;
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-}
-
-/* Container */
-.container {
-    max-width: 800px;
-    margin: 20px auto;
+    padding: 0;
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: -90px;
     padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Header */
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #007bff;
-}
-
-/* Search Bar */
-.search-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-#searchSport {
-    padding: 8px;
-    font-size: 16px;
-    width: 80%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button {
-    padding: 8px 12px;
-    background-color: #007bff;
+  }
+  
+  /* Sport Header */
+  .sport-header {
+    background-color: var(--primary-color);
+    padding: 20px 30px;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    margin-bottom: 0;
+    border-bottom: 4px solid var(--accent-color);
+  }
+  
+  .sport-header h1 {
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-/* Sport Details */
-.sport-details {
-    margin-top: 20px;
-}
-
-.detail-row {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  
+  /* Main content container */
+  .temp-container {
+    background-color: white;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 40px;
+  }
+  
+  #signup-port {
+    padding: 20px;
+  }
+  
+  /* Columns layout */
+  .temp2-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  
+  .column {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .column h3 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  
+  /* Form groups and inputs */
+  .form-group {
+    margin-bottom: 25px;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: baseline;
+    padding: 6px 0;
+  }
+  
+  .input-group label {
+    font-weight: 600;
+    color: var(--secondary-color);
+    min-width: 160px;
+    margin-right: 15px;
+  }
+  
+  .input-group span {
+    font-size: 1rem;
+    color: var(--text-color);
+  }
+  
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+  }
+  
+  thead {
+    background-color: var(--secondary-color);
+    color: white;
+  }
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--gray);
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: var(--light-gray);
+  }
+  
+  tbody tr:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+  }
+  
+  /* Rules section */
+  .column .form-group .input-group {
+    background-color: var(--light-gray);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    border-left: 4px solid var(--accent-color);
+  }
+  
+  .column .form-group .input-group div {
     margin-bottom: 15px;
-}
-
-strong {
-    color: #555;
-}
-
-button {
-    padding: 5px 10px;
-    background-color: #28a745;
-    color: white;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .column .form-group .input-group div:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  
+  .column .form-group .input-group strong {
+    color: var(--primary-color);
+    margin-right: 10px;
+  }
+  
+  /* Buttons */
+  button {
+    padding: 12px 18px;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    font-size: 14px;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
-/* Edit Popup */
-.edit-popup {
-    display: none;
+    font-weight: 600;
+    color: white;
+    transition: var(--transition);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+  }
+  
+  button[value="delete"], button[style*="background-color:#d10909"] {
+    background-color: var(--danger-color) !important;
+  }
+  
+  button[onclick*="updateTeamSport"], button[style*="background-color:#007BFF"] {
+    background-color: var(--accent-color) !important;
+  }
+  
+  button[value="back"], button[style*="background-color:#6c757d"] {
+    background-color: var(--dark-gray) !important;
+  }
+  
+  button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Alert messages */
+  .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: var(--border-radius);
+    border-left: 4px solid;
+  }
+  
+  .alert-success {
+    background-color: rgba(46, 204, 113, 0.1);
+    border-color: var(--success-color);
+    color: #1e8449;
+  }
+  
+  .alert-danger {
+    background-color: rgba(231, 76, 60, 0.1);
+    border-color: var(--danger-color);
+    color: #a93226;
+  }
+  
+  /* Custom Alert Box */
+  #customAlertOverlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    display: none;
     justify-content: center;
     align-items: center;
-}
-
-.edit-popup-content {
+    z-index: 1000;
+  }
+  
+  #customAlertBox {
     background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 400px;
-    width: 100%;
-}
-
-.edit-popup input {
-    padding: 10px;
-    width: 80%;
-    margin-bottom: 15px;
-    font-size: 16px;
-}
-
-.edit-popup button {
-    padding: 10px 15px;
-    background-color: #28a745;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  #customAlertBox h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+  }
+  
+  #customAlertBox p {
+    margin: 20px 0;
+    line-height: 1.6;
+  }
+  
+  #customAlertOkBtn {
+    background-color: var(--accent-color);
     color: white;
+    padding: 10px 20px;
     border: none;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: var(--border-radius);
+    float: right;
     cursor: pointer;
-}
-
-.edit-popup button:hover {
-    background-color: #218838;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
-        padding: 15px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .temp2-container {
+      flex-direction: column;
     }
-
-    .detail-row {
-        flex-direction: column;
-        align-items: flex-start;
+    
+    .column {
+      width: 100%;
     }
-
-    #searchSport {
-        width: 70%;
+    
+    .input-group {
+      flex-direction: column;
+      align-items: flex-start;
     }
-}
-
-
-/* General Modal Styles */
-.modal {
-    display: none; /* Ensure the modal is hidden by default */
-    position: fixed;
-    z-index: 1000; /* Ensure it overlays other content */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
-}
-
-/* Modal Content Box */
-.modal-content {
-    background-color: #fff;
-    margin: 15% auto; /* Center the modal */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%; /* Adjust the width as needed */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Close Button Styling */
-.modal-content .btn {
-    margin-top: 10px;
-}
-
-
-   
-    .modal.hidden {
-        display: none;
+    
+    .input-group label {
+      margin-bottom: 5px;
     }
-    .edit-btn {
-        margin-left: 10px;
-        cursor: pointer;
+    
+    button {
+      width: 100% !important;
+      margin-bottom: 10px;
     }
-
+  }

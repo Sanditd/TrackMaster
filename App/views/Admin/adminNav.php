@@ -12,15 +12,22 @@ $username = (string) $_SESSION['username'];
 
 //Load required model file if not already loaded
  require_once __DIR__ . '/../../model/loginPage.php';
+ require_once __DIR__ . '/../../model/Notification.php';
+ require_once __DIR__ . '/../../libraries/Database.php';
+ require_once __DIR__ . '/../../controllers/NotificationController.php';
  // Adjust path as needed
 
 // Create login model instance
 $loginModel = new loginPage();
+$NotificationModel = new Notification();
+$database = new Database();
+$notificationController = new NotificationController();
+
 
 $user = $loginModel->getAdminById($userId);
-
-
-
+$notifications = $NotificationModel->getAdminNotifications($userId, 10);
+$unreadCount = $NotificationModel->getAdminUnreadCount($userId);
+$userActive = $loginModel->getAdminActivation($userId);
 
 //If user does not exist in DB, destroy session and redirect
 if (!$user) {
@@ -30,6 +37,18 @@ if (!$user) {
     header('Location: ' . ROOT . '/loginController/adminLogin');
     exit;
 }
+
+//check user account active status
+if ($userActive[0]->active != 1) {
+    $_SESSION['error_message'] = 'Login Failed! Try Again.';
+    session_unset();
+    session_destroy();
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
+}
+
+
+
 ?>
 
 
@@ -54,10 +73,10 @@ if (!$user) {
         <header>
             <nav class="navbar">
 
-                
+
 
                 <img src="<?php echo ROOT ?>/public/img/icon/admin_profile.png" alt="admin profile"
-                    class="admin-profile" style="width: 55px; height: 55px; margin-left:-10px">
+                    class="admin-profile" style="width: 55px; height: 55px;">
                 <!-- Admin Profile Picture on the left -->
 
 
@@ -72,26 +91,49 @@ if (!$user) {
                     <!-- Track Master Logo in the middle -->
                 </div>
 
-                
+
 
                 <div class="account-section">
 
-                <div class="notification-num">
-                    <i class="fa fa-bell"></i>
-                    <span class="notification-count">0</span>
-                    <div class="notification-panel">
-                        <div class="notification-header">
-                            <h3>Notifications</h3>
-                            <button class="mark-all-read">Mark all as read</button>
-                        </div>
-                        <div class="notification-list">
-                            <!-- Notifications will be loaded here -->
-                        </div>
-                        <div class="notification-footer">
-                            <a href="notifications.php">View all notifications</a>
+                    <div class="notification-num">
+                        <span class="notification-count"><?php echo $unreadCount['count']?></span>
+                        <div class="notification-panel">
+                            <div class="notification-header">
+                                <h3>Notifications</h3>
+                                <button class="mark-all-read">Mark all as read</button>
+                            </div>
+                            <div class="notification-list">
+                                <?php if (is_array($notifications)): ?>
+                                <?php foreach ($notifications['notifications'] as $notification): ?>
+                                <div class="notification-item <?php echo $notification->active == 1 ? 'active-notification' : ''; ?>">
+                                    <div class="title"><?php echo htmlspecialchars($notification->title); ?></div>
+                                    <div class="description"><?php echo htmlspecialchars($notification->description); ?>
+                                    </div>
+                                    <div class="time">
+                                        <?php echo date('M j, Y g:i A', strtotime($notification->date)); ?></div>
+
+                                    <?php if ($notification->active == 1): ?>
+                                    <form action="<?php echo ROOT ?>/NotificationController/markAsRead" method="POST">
+                                        <input type="hidden" name="notification_id"
+                                            value="<?php echo htmlspecialchars($notification->n_id); ?>">
+                                            <input type="hidden" name="redirect_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+                                        <button class="mark-read-btn" type="submit">Mark as read</button>
+                                    </form>
+
+                                    <!-- <button class="mark-read-btn" data-id="<?php echo htmlspecialchars($notification->n_id); ?>">Mark as read</button> -->
+
+                                    <?php endif; ?>
+                                </div>
+                                <?php endforeach; ?>
+
+                                <?php endif; ?>
+
+                            </div>
+                            <div class="notification-footer">
+                                <a href="<?php echo ROOT ?>/admin/notification">View all notifications</a>
+                            </div>
                         </div>
                     </div>
-                </div>
 
                     <div class="account-settings">
                         <a href="#">
@@ -194,6 +236,14 @@ function isActive($pathPart) {
                         <img src="<?php echo ROOT ?>/public/img/icon/<?= isActive('/admin/zonalSport') ? 'assign-hover' : 'assign' ?>.png"
                             class="icon" data-icon-name="assign">
                         <span class="menu-text">Sport Assigning</span>
+                    </a>
+                </li>
+                <li class="<?= isActive('/admin/notification') ? 'active' : '' ?>" onmouseover="hoverLi(this, true)"
+                    onmouseout="hoverLi(this, false)">
+                    <a href="<?php echo ROOT ?>/admin/notification" class="menu-link">
+                        <img src="<?php echo ROOT ?>/public/img/icon/<?= isActive('/admin/notification') ? 'notification-hover' : 'notification' ?>.png"
+                            class="icon" data-icon-name="notification">
+                        <span class="menu-text">Notification</span>
                     </a>
                 </li>
                 <li class="<?= isActive('/announcement') ? 'active' : '' ?>" onmouseover="hoverLi(this, true)"

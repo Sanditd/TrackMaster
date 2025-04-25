@@ -19,7 +19,7 @@ $loginModel = new loginPage();
 $user = $loginModel->getAdminById($userId);
 
 
-
+$userActive = $loginModel->getAdminActivation($userId);
 
 //If user does not exist in DB, destroy session and redirect
 if (!$user) {
@@ -29,6 +29,16 @@ if (!$user) {
     header('Location: ' . ROOT . '/loginController/adminLogin');
     exit;
 }
+
+//check user account active status
+if ($userActive[0]->active != 1) {
+    $_SESSION['error_message'] = 'Login Failed! Try Again.';
+    session_unset();
+    session_destroy();
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
+}
+
 ?>
 
 
@@ -62,6 +72,10 @@ if (!$user) {
             <div class="chart">
                 <div id="topic">
                     Matrix
+                    <?php print_r($notifications)?>
+                    <br>
+                    <?php print_r($userActive)?>
+
                 </div>
             </div>
 
