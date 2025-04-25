@@ -75,9 +75,11 @@ class SignUpController extends Controller {
         $this->view('SignUp/SelectRole');
     }
 
+
     //adminsignupview
     public function adminsignupview() {
         $data = [];
+
 
         $this->view('SignUp/Admin', $data);
     }
@@ -741,6 +743,8 @@ class SignUpController extends Controller {
     
         $this->view('signup/error', $data);
     }
+
     
 }
 ?>
+
