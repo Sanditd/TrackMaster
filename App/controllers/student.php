@@ -484,8 +484,27 @@ class Student extends Controller {
     }
 
     public function coachProfile() {
-        $data = [];
-        $this->view('Student/coachProfile');
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . URLROOT . '/users/login');
+            exit();
+        }
+
+        $userId = $_SESSION['user_id'];
+        $coach = $this->studentModel->getCoachByPlayerId($userId);
+
+        if (!$coach) {
+            $_SESSION['message'] = 'No coach assigned or unable to fetch coach details.';
+            $_SESSION['message_type'] = 'error';
+            header('Location: ' . URLROOT . '/Student/studentDashboard');
+            exit();
+        }
+
+        $data = [
+            'coach' => $coach,
+            'message' => isset($_SESSION['message']) ? $_SESSION['message'] : null,
+            'message_type' => isset($_SESSION['message_type']) ? $_SESSION['message_type'] : null
+        ];
+        $this->view('Student/coachProfile', $data);
     }
 
     public function parentProfile() {
