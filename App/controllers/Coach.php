@@ -82,10 +82,6 @@ class Coach extends Controller {
     }
     
 
-    public function athleticsPerformanceTracking() { 
-               $data = [];
-        $this->view('Coach/A_PerformanceTracking');
-    }
 
     public function editProfile() {
         // Check if user is logged in
@@ -856,6 +852,7 @@ public function searchPlayerAttendance() {
         ]);
     }
 }
+
 
 
 }
