@@ -58,8 +58,11 @@ class loginController extends Controller {
                                 $this->view('student/Dashboard');
                                 break;
                             case 'school':
-                                $this->view('school/school');
-                                break;
+                            session_write_close();
+                            header('Location: ' . URLROOT . '/school/Dashboard');
+                            exit;
+                        
+
                             case 'parent':
                                 $this->view('parent/dashboard');
                                 break;
@@ -70,7 +73,7 @@ class loginController extends Controller {
                         exit;
                     } else {
                         // Redirect to the sign-up page if login fails
-                        header('Location: ' . ROOT . '/loginController/login');
+                        header('Location: ' . ROOT . '/loginController/ogin');
                         exit;
 
                     }

@@ -59,13 +59,7 @@ class SchoolModel {
     }
 
     public function getAcademicRecordsByPlayerId($school_id) {
-        $this->db->query("
-        SELECT u.firstname, ar.grade, ar.term, ar.average, ar.rank, ar.notes, ar.player_id
-        FROM academic_records ar
-        JOIN user_player up ON ar.player_id = up.player_id
-        JOIN users u ON up.user_id = u.user_id
-        WHERE up.school_id = :school_id
-        ");
+        $this->db->query(" SELECT * from academic_records WHERE school_id = :school_id ");
         $this->db->bind(':school_id', $school_id);
         return $this->db->resultSet();   
     }
@@ -125,13 +119,9 @@ public function addFacility($data) {
     return $this->db->execute();
 }
 
-public function getFacilityRequests() {
-    $this->db->query("
-        SELECT fr.request_id, fr.event_name, fr.coach_name, 
-               fr.date, fr.start_time, fr.end_time, fr.status
-        FROM facility_requests fr
-        WHERE fr.status = 'pending'
-    ");
+public function getFacilityRequests($school_id) {
+    $this->db->query(" SELECT event_name, event_date, time_from, time_to, facilities_required FROM event_requests WHERE school_id= :school_id   ");
+    $this->db->bind(':school_id',$school_id);
     return $this->db->resultSet();
 }
 
@@ -200,5 +190,6 @@ public function getPlayersBySchoolId($schoolId) {
     // Fetch and return the result
     return $this->db->resultSet();  // Returns an array of player names
 }
+
 
 }

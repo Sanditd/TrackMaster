@@ -2,12 +2,13 @@
 
 class School extends Controller{
     private $schoolModel;
+    private $userModel;
 
     public function __construct() {
 
 
         $this->schoolModel = $this->model('SchoolModel');
-        $this->userModel = $this->model('UserModel');
+        $this->userModel = $this->model('User');
 
     }
 
@@ -18,11 +19,23 @@ class School extends Controller{
         }
     }
 
-    public function Dashboard(){
-        $data = [];
-
-        $this->view('School/school');
+    public function Dashboard() {
+        $userId = (int) $_SESSION['user_id'];
+    
+        $school_id_obj = $this->schoolModel->getSchoolId($userId);
+        $school_id = $school_id_obj->school_id;
+    
+        $players = $this->userModel->getPlayersName($school_id);
+        $facilityReq= $this->schoolModel->getFacilityRequests($school_id);
+    
+        $data = [
+            'players' => $players,
+            'facilityReq' => $facilityReq
+        ];
+    
+        $this->view('School/school', $data);
     }
+    
 
     public function EditProfile(){
         $data = [];
@@ -116,17 +129,14 @@ public function submitRecord(){
 
 
 public function records() {
-    $players = [];
-    $records = [];
 
-    if ($_SESSION['role'] === 'school') {
-        $user_id = $_SESSION['user_id'];
-        $school_id = $this->schoolModel->getSchoolId($user_id)->school_id;
-
-        // Fetch players and records
-        $players = $this->fetchPlayers(); 
+    $userId = (int) $_SESSION['user_id'];
+    
+        $school_id_obj = $this->schoolModel->getSchoolId($userId);
+        $school_id = $school_id_obj->school_id;
+    
+        $players = $this->userModel->getPlayersName($school_id);
         $records = $this->schoolModel->getAcademicRecordsByPlayerId($school_id);
-    }
 
     // Load the view with fetched data
     $data = [

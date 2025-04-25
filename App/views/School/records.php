@@ -13,6 +13,7 @@
     <?php require 'sidebar.php'; ?>
 
     <div class="section recent-clients">
+        <?php print_r($data)?> <br><br>
         <table> 
             <thead>
                 <tr>
