@@ -551,7 +551,7 @@
 
         <div class="dashboard-header">
             <h1><i class="fas fa-user-graduate"></i> Student Dashboard</h1>
-            <p>Welcome to TrackMaster, Where You Can Track Your Progress, Achievements, and Performance</p>
+          
         </div>
 
         <div class="main-content">
@@ -591,41 +591,48 @@
             </div>
 
             <div class="dashboard-section">
-                <h2>Registered Sports</h2>
-                <div class="section-content">
-                    <?php if (isset($data['sports']) && !empty($data['sports'])): ?>
-                        <?php foreach ($data['sports'] as $sport): ?>
-                            <div class="sport-card">
-                                <div class="sport-header">
-                                    <i class="fas <?php 
-                                        echo match(strtolower($sport->sport_name)) {
-                                            'cricket' => 'fa-cricket',
-                                            'football' => 'fa-futbol',
-                                            'basketball' => 'fa-basketball-ball',
-                                            'swimming' => 'fa-swimmer',
-                                            'tennis' => 'fa-table-tennis',
-                                            default => 'fa-running'
-                                        }; 
-                                    ?>"></i>
-                                    <h3><?php echo htmlspecialchars($sport->sport_name); ?></h3>
-                                </div>
-                                <div class="sport-actions">
-                                    <button class="btn btn-coach" onclick="window.location.href='<?php echo URLROOT ?>/Student/coachProfile?sport=<?php echo urlencode($sport->sport_name); ?>'">
-                                        <i class="fas fa-user-tie"></i> View Coach
-                                    </button>
-                                    <button class="btn btn-performance" onclick="window.location.href='<?php echo URLROOT ?>/Student/Playerperformance?sport=<?php echo urlencode($sport->sport_name); ?>'">
-                                        <i class="fas fa-chart-line"></i> Performance
-                                    </button>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="no-sports">
-                            <p><i class="fas fa-info-circle"></i> No sports registered yet.</p>
-                        </div>
-                    <?php endif; ?>
+    <h2>Registered Sports</h2>
+    <div class="section-content">
+        <?php if (isset($data['sports']) && !empty($data['sports'])): ?>
+            <?php foreach ($data['sports'] as $sport): ?>
+                <?php
+                    $icon = 'fa-running'; // default icon
+                    $sportNameLower = strtolower($sport->sport_name);
+                    if ($sportNameLower === 'cricket') {
+                        $icon = 'fa-cricket';
+                    } elseif ($sportNameLower === 'football') {
+                        $icon = 'fa-futbol';
+                    } elseif ($sportNameLower === 'basketball') {
+                        $icon = 'fa-basketball-ball';
+                    } elseif ($sportNameLower === 'swimming') {
+                        $icon = 'fa-swimmer';
+                    } elseif ($sportNameLower === 'tennis') {
+                        $icon = 'fa-table-tennis';
+                    }
+                ?>
+                <div class="sport-card">
+                    <div class="sport-header">
+                        <i class="fas <?php echo $icon; ?>"></i>
+                        <h3><?php echo htmlspecialchars($sport->sport_name); ?></h3>
+                    </div>
+                    <div class="sport-actions">
+                        <button class="btn btn-coach" onclick="window.location.href='<?php echo URLROOT ?>/Student/coachProfile?sport=<?php echo urlencode($sport->sport_name); ?>'">
+                            <i class="fas fa-user-tie"></i> View Coach
+                        </button>
+                        <button class="btn btn-performance" onclick="window.location.href='<?php echo URLROOT ?>/Student/Playerperformance?sport=<?php echo urlencode($sport->sport_name); ?>'">
+                            <i class="fas fa-chart-line"></i> Performance
+                        </button>
+                    </div>
                 </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="no-sports">
+                <p><i class="fas fa-info-circle"></i> No sports registered yet.</p>
             </div>
+        <?php endif; ?>
+    </div>
+</div>
+
 
             <div class="dashboard-section">
                 <h2>My Achievements</h2>
