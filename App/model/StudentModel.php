@@ -18,21 +18,6 @@ class StudentModel {
             return false;
         }
     }
-    
-    public function getSchoolByPlayerId($playerId) {
-        $this->db->query("SELECT us.*, z.zoneName 
-                          FROM user_school us 
-                          JOIN user_player up ON us.school_id = up.school_id 
-                          LEFT JOIN zone z ON us.zone = z.zoneId 
-                          WHERE up.user_id = :playerId");
-        $this->db->bind(':playerId', $playerId);
-        try {
-            return $this->db->single();
-        } catch (Exception $e) {
-            error_log('Error fetching school details: ' . $e->getMessage());
-            return false;
-        }
-    }
 
     public function getPlayerRole($userId) {
         $this->db->query("SELECT role FROM user_player WHERE user_id = :userId");
@@ -409,5 +394,81 @@ class StudentModel {
         }
 
         return $application;
+    }
+
+    public function getCoachByPlayerId($playerId) {
+        // First get the player's sport and zone
+        $this->db->query("SELECT sport_id, zone FROM user_player WHERE user_id = :playerId");
+        $this->db->bind(':playerId', $playerId);
+        $playerInfo = $this->db->single();
+        
+        if (!$playerInfo || !$playerInfo->sport_id || !$playerInfo->zone) {
+            return false;
+        }
+
+        // Then get the coach assigned to that sport and zone
+        $this->db->query("SELECT 
+                            uc.*, 
+                            u.firstname, u.lname, u.email, u.phonenumber, 
+                            u.address, u.gender, u.dob, u.photo,
+                            s.sport_name,
+                            z.zoneName
+                          FROM user_coach uc
+                          JOIN users u ON uc.user_id = u.user_id
+                          JOIN sports s ON uc.sport_id = s.sport_id
+                          JOIN zone z ON uc.zone = z.zoneId
+                          WHERE uc.sport_id = :sport_id 
+                          AND uc.zone = :zone");
+        $this->db->bind(':sport_id', $playerInfo->sport_id);
+        $this->db->bind(':zone', $playerInfo->zone);
+        
+        try {
+            $coach = $this->db->single();
+            if ($coach) {
+                // Convert comma-separated strings to arrays
+                $coach->educational_qualifications = !empty($coach->educational_qualifications) ? 
+                    array_map('trim', explode(',', $coach->educational_qualifications)) : [];
+                $coach->professional_playing_experience = !empty($coach->professional_playing_experience) ? 
+                    array_map('trim', explode(',', $coach->professional_playing_experience)) : [];
+                $coach->coaching_experience = !empty($coach->coaching_experience) ? 
+                    array_map('trim', explode(',', $coach->coaching_experience)) : [];
+                $coach->key_achievements = !empty($coach->key_achievements) ? 
+                    array_map('trim', explode(',', $coach->key_achievements)) : [];
+            }
+            return $coach;
+        } catch (Exception $e) {
+            error_log('Error fetching coach details: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getSchoolByPlayerId($playerId) {
+        $this->db->query("SELECT us.*, 
+                            z.zoneName,
+                            u.email, u.phonenumber, u.address
+                          FROM user_school us
+                          JOIN user_player up ON us.school_id = up.school_id
+                          LEFT JOIN zone z ON us.zone = z.zoneId
+                          LEFT JOIN users u ON us.user_id = u.user_id
+                          WHERE up.user_id = :playerId
+                          AND us.zone = up.zone");
+        $this->db->bind(':playerId', $playerId);
+        
+        try {
+            $school = $this->db->single();
+            if ($school) {
+                // Decode facilities if it exists and is a valid JSON string
+                if (!empty($school->facilities)) {
+                    $facilities = json_decode($school->facilities, true);
+                    $school->facilities = (json_last_error() === JSON_ERROR_NONE && is_array($facilities)) ? $facilities : [];
+                } else {
+                    $school->facilities = [];
+                }
+            }
+            return $school;
+        } catch (Exception $e) {
+            error_log('Error fetching school details: ' . $e->getMessage());
+            return false;
+        }
     }
 }
