@@ -41,9 +41,13 @@ class loginController extends Controller {
                         
                         $_SESSION['user_id'] = $user->user_id; // Corrected to object access
                         $_SESSION['role'] = $user->role; // Storing the user's role in session
+
+                        $_SESSION['username'] = $user->user_id; // Storing the user's role in session
+
                         $_SESSION['active'] = $user->active; // Storing the user's account activation status
 
                        
+
         
                         // Redirect to the appropriate dashboard based on the role
                         switch ($user->role) {
@@ -57,7 +61,7 @@ class loginController extends Controller {
                                 $this->view('student/Dashboard');
                                 break;
                             case 'school':
-                                $this->view('school/school');
+                                $this->view('school/school',$user);
                                 break;
                             case 'parent':
                                 $this->view('parent/dashboard');

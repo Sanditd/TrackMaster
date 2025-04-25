@@ -1,8 +1,21 @@
-* {
+:root {
+    --primary-color: #00264d;
+    --secondary-color: #ffa500;
+    --light-color: #f8f9fa;
+    --dark-color: #333;
+    --gray-color: #666;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 12px rgba(0, 38, 77, 0.1);
+}
+    * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
@@ -11,18 +24,30 @@ body {
 }
 
 .dashboard-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1400px;
+    margin: 20px auto;
     padding: 20px;
 }
 
+/* Header Section */
 .dashboard-header {
-    text-align: left;
-    margin-bottom: 20px;
-    background-color: #00264d; 
-    color: #fff; 
-    padding: 10px;
-    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 25px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    position: relative;
+}
+
+.dashboard-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 }
 
 .section {
@@ -34,27 +59,6 @@ body {
     margin: 30px;
 }
 
-.recent-clients ul {
-    list-style: none;
-    padding-left: 15px;
-}
-
-.recent-clients li {
-    margin-bottom: 8px;
-    font-size: 14px;
-    position: relative;
-    padding-left: 10px;
-    color: #555;
-}
-
-.recent-clients li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: #ffa500;
-    font-size: 18px;
-    text-align: left;
-}
 
 h2 {
     text-align: center;
@@ -116,12 +120,12 @@ table {
 th, td {
     padding: 10px;
     text-align: left;
-    border: 1px solid #ddd;
+    border: 1px solid gray;
 }
 
 th {
-    background-color: #ffa500;
-    color: white;
+    background-color: #d3d3d3;
+    color: #00264d;
 }
 
 td.editable {
@@ -135,12 +139,12 @@ td.editable {
 }
 
 .edit-btn, .save-btn {
-    background-color: #70c549;
+    background-color: #28a745;
     color: white;
 }
 
 .delete-btn, .confirm-btn {
-    background-color: #ff4800;
+    background-color: #dc3545;
     color: white;
 }
 
@@ -175,7 +179,37 @@ td.editable {
     content: "•";
     position: absolute;
     left: 0;
-    color: #ffa500; 
+    color: #00264d; 
+    font-size: 18px;
+    text-align: left;
+}
+.section {
+    background-color: #ffffff;
+    color: #333; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 30px;
+}
+
+.recent-clients ul {
+    list-style: none;
+    padding-left: 15px;
+}
+
+.recent-clients li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    position: relative;
+    padding-left: 25px;
+    color: #00264d;
+}
+
+.recent-clients li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #00264d;
     font-size: 18px;
     text-align: left;
 }
