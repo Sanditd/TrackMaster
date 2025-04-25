@@ -1,3 +1,36 @@
+<?php 
+
+//Check if session user ID exists
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['error_message']='Invalid Login! Please login again.';
+    header('Location: ' . ROOT . '/loginController/login');
+    exit;
+}
+
+$userId = (int) $_SESSION['user_id'];
+
+//Load required model file if not already loaded
+ require_once __DIR__ . '/../../model/loginPage.php';
+ // Adjust path as needed
+
+// Create login model instance
+$loginModel = new loginPage();
+
+$userConfirm = $loginModel->getUserById($userId);
+
+
+
+
+//If user does not exist in DB, destroy session and redirect
+if (!$userConfirm) {
+    session_unset();
+    session_destroy();
+    $_SESSION['error_message']='Login Failed! Try Again.';
+    header('Location: ' . ROOT . '/loginController/Login');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +48,7 @@
         <div class="dashboard-header">
             <h1><i class="fas fa-tachometer-alt"></i> School Dashboard</h1>
             <p><i class="fas fa-user"></i> Welcome, Anthony!</p>
+            <?php print_r($user) ?>
         </div>
 
         <div class="stats-cards">
@@ -108,23 +142,25 @@
 </div>
 <div class="section activity-log">
     <h2><i class="fas fa-chart-bar"></i> Study performance</h2>
-    <ul>
-        <?php foreach ($performance as $student): ?>
-            <li>
-                <?= htmlspecialchars($student['name']) ?>
-                <span><i class="fas fa-percentage"></i> Average - <?= htmlspecialchars($student['average']) ?>%</span>
+    
+       
+            <ul>
+                 
+                 <li>Hashan<span>Average -  25%</span></li>
+                 <li>Dimuth  <span>Average - 30%</span></li>
+       
             </li>
-        <?php endforeach; ?>
-    </ul>
+
+   
 </div>
 
 <div class="section upcoming-appointments">
     <h2><i class="fas fa-calendar-check"></i> Upcoming Sessions</h2>
     <div class="appointment">
-        <?php foreach ($sessions as $session): ?>
-            <span><i class="far fa-calendar"></i> <?= date('M d', strtotime($session['session_date'])) ?></span>
-            <?= htmlspecialchars($session['session_name']) ?><br>
-        <?php endforeach; ?>
+    <span>Jan 31</span> Coaching Session 25<br>
+                    <span>Feb 07</span> Coaching Session 24<br>
+                </div>
+
     </div>
 </div>
 

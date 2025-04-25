@@ -324,8 +324,8 @@
         // Close modal
         closeEditModal();
     }
-</script>
-n, you would send this data to the server via AJAX
+
+
             // For demonstration purposes, we'll just show an alert
             alert('Profile updated successfully!');
             

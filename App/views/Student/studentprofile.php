@@ -666,155 +666,84 @@
     <?php require 'footer.php'; ?>
 
     <script>
-    // Wait for DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
         // Modal control functions
-        const openEditModal = () => {
-            // Pre-fill the form with current values
-            document.getElementById('name').value = document.getElementById('display-name').textContent.trim();
-            document.getElementById('email').value = document.getElementById('display-email').textContent.trim();
-            document.getElementById('phone').value = document.getElementById('display-phone').textContent.trim();
-            document.getElementById('code').value = document.getElementById('display-code').textContent.trim();
-            document.getElementById('address').value = document.getElementById('display-address').textContent.trim();
-            document.getElementById('zone').value = document.getElementById('display-zone').textContent.trim();
-            document.getElementById('province').value = document.getElementById('display-province').textContent.trim().toLowerCase().replace(' ', '-');
-            
-            // Show the modal
+        function openEditModal() {
             document.getElementById('editProfileModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
-        };
+        }
 
-        const closeEditModal = () => {
+        function closeEditModal() {
             document.getElementById('editProfileModal').style.display = 'none';
             document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside the modal content
+        window.onclick = function(event) {
+            const modal = document.getElementById('editProfileModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
         };
 
-        // Close modal when clicking outside or on close button
-        document.addEventListener('click', (event) => {
-            const modal = document.getElementById('editProfileModal');
-            if (event.target === modal || event.target.classList.contains('close-modal')) {
-                closeEditModal();
+        // Image preview
+        document.getElementById('profile-photo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('photo-preview-img').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
             }
         });
 
-        // Image preview and update handler
-        const profilePhotoInput = document.getElementById('profile-photo');
-        if (profilePhotoInput) {
-            profilePhotoInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        // Update both preview and main profile image
-                        const previewImg = document.getElementById('photo-preview-img');
-                        const profileImg = document.getElementById('profile-image');
-                        
-                        previewImg.src = e.target.result;
-                        profileImg.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-
         // Save profile changes
-        window.saveProfile = function(event) {
-            event.preventDefault();
+        function saveProfile() {
+            // Get form values
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const gender = document.getElementById('gender').value;
+            const birthday = document.getElementById('birthday').value;
+            const school = document.getElementById('school').value;
+            const grade = document.getElementById('grade').value;
+            const guardian = document.getElementById('guardian').value;
+            const bio = document.getElementById('bio').value;
             
-            // Get all form values
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                code: document.getElementById('code').value,
-                address: document.getElementById('address').value,
-                zone: document.getElementById('zone').value,
-                province: document.getElementById('province').value,
-                facilities: {
-                    track: document.querySelector('input[name="facilities"][value="track"]').checked,
-                    indoor: document.querySelector('input[name="facilities"][value="indoor"]').checked,
-                    ground: document.querySelector('input[name="facilities"][value="ground"]').checked,
-                    swimmingPool: document.querySelector('input[name="facilities"][value="swimming-pool"]').checked,
-                    other: document.querySelector('input[name="facilities"][value="other"]').checked
-                }
-            };
-
-            // Update display values
-            document.getElementById('display-name').textContent = formData.name;
-            document.getElementById('display-email').textContent = formData.email;
-            document.getElementById('display-phone').textContent = formData.phone;
-            document.getElementById('display-code').textContent = formData.code;
-            document.getElementById('display-address').textContent = formData.address;
-            document.getElementById('display-zone').textContent = formData.zone;
-            document.getElementById('display-province').textContent = formatProvinceName(formData.province);
-
-            // Update facilities checkboxes display
-            updateFacilitiesDisplay(formData.facilities);
-
-            // Here you would typically send the data to the server via AJAX
-            // Example (commented out):
-            /*
-            fetch('/api/school/update-profile', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('Profile updated successfully!');
-                closeEditModal();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error updating profile');
+            // Update display values (this would normally be done after a successful AJAX call)
+            document.getElementById('display-name').textContent = firstName + ' ' + lastName;
+            document.getElementById('display-email').textContent = email;
+            document.getElementById('display-phone').textContent = phone;
+            document.getElementById('display-address').textContent = address;
+            document.getElementById('display-gender').textContent = gender;
+            
+            // Format date for display
+            const birthdayDate = new Date(birthday);
+            const formattedDate = birthdayDate.toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric', 
+                year: 'numeric'
             });
-            */
-
-            // For demo purposes, just show success message
-            alert('School profile updated successfully!');
+            document.getElementById('display-birthday').textContent = formattedDate;
+            
+            document.getElementById('display-school').textContent = school;
+            document.getElementById('display-grade').textContent = grade;
+            document.getElementById('display-guardian').textContent = guardian;
+            document.getElementById('display-bio').textContent = bio;
+            
+            // Update profile image if changed
+            const photoPreviewSrc = document.getElementById('photo-preview-img').src;
+            document.getElementById('profile-image').src = photoPreviewSrc;
+            
+            // In a real application, you would send this data to the server via AJAX
+            // For demonstration purposes, we'll just show an alert
+            alert('Profile updated successfully!');
+            
+            // Close the modal
             closeEditModal();
-        };
-
-        // Helper function to format province name for display
-        function formatProvinceName(province) {
-            return province.split('-')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(' ');
         }
-
-        // Helper function to update facilities display
-        function updateFacilitiesDisplay(facilities) {
-            const facilityElements = {
-                track: document.querySelector('#facilities-display input[value="track"]'),
-                indoor: document.querySelector('#facilities-display input[value="indoor"]'),
-                ground: document.querySelector('#facilities-display input[value="ground"]'),
-                swimmingPool: document.querySelector('#facilities-display input[value="swimming-pool"]'),
-                other: document.querySelector('#facilities-display input[value="other"]')
-            };
-
-            for (const [facility, element] of Object.entries(facilityElements)) {
-                if (element) {
-                    element.checked = facilities[facility];
-                }
-            }
-        }
-
-        // Attach event listeners
-        document.querySelector('.edit-profile-btn').addEventListener('click', openEditModal);
-        document.querySelector('.modal-footer .cancel-btn').addEventListener('click', closeEditModal);
-        document.querySelector('.modal-footer .save-btn').addEventListener('click', saveProfile);
-
-        // Prevent form submission
-        const editForm = document.getElementById('editProfileForm');
-        if (editForm) {
-            editForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                saveProfile(e);
-            });
-        }
-    });
-</script>
+    </script>
 </body>
 </html>
