@@ -5,24 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Footer</title>
     <style>
+        :root {
+            --primary-color:rgb(0, 0, 0);
+            --secondary-color: #ffa500;
+            --light-color: #f8f9fa;
+            --dark-color: #333;
+            --gray-color: #666;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 38, 77, 0.1);
+            --transition: all 0.3s ease;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-        }
-        
+
         .footer {
-            background-color: #000000;
+            background-color: var(--primary-color);
             color: #ffffff;
             padding: 3rem 0;
-            border-top: 3px solid #ffffff;
+            border-top: 3px solid var(--secondary-color);
         }
-        
+
         .footer-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -31,7 +38,7 @@
             justify-content: space-between;
             padding: 0 2rem;
         }
-        
+
         .footer-logo {
             display: flex;
             flex-direction: column;
@@ -39,21 +46,21 @@
             margin-bottom: 2rem;
             flex: 1 1 100%;
         }
-        
+
         .footer-logo img {
             max-width: 200px;
             margin-bottom: 1rem;
-            filter: grayscale(100%) brightness(200%);
+            filter: brightness(150%);
         }
-        
+
         .footer-tagline {
             text-align: center;
             max-width: 500px;
             margin-bottom: 1.5rem;
             font-size: 1.1rem;
-            color: #cccccc;
+            color: var(--light-color);
         }
-        
+
         .footer-divider {
             width: 60%;
             border: none;
@@ -61,14 +68,13 @@
             background-color: rgba(255, 255, 255, 0.3);
             margin: 1rem auto;
         }
-        
+
         .footer-copyright {
             text-align: center;
             font-size: 0.9rem;
             margin-top: 1rem;
-            color: #888888;
+            color: var(--gray-color);
         }
-      
 
         @media (max-width: 768px) {
             .footer-container {
@@ -88,7 +94,6 @@
                 <hr class="footer-divider">
                 <p class="footer-copyright">© 2024 TrackMaster. All rights reserved.</p>
             </div>
-              
         </div>
     </footer>
 </body>

@@ -295,19 +295,7 @@ class StudentModel {
         }
     }
 
-    public function getPlayerIdByUserId($user_id) {
-        $this->db->query('SELECT player_id FROM user_player WHERE user_id = :user_id');
-        $this->db->bind(':user_id', $user_id);
-        try {
-            $this->db->execute();
-            $result = $this->db->single();
-            return $result ? $result->player_id : null;
-        } catch (Exception $e) {
-            error_log('Error fetching player ID: ' . $e->getMessage());
-            return null;
-        }
-    }
-    
+
     public function getAchievementsByUser($userId) {
         if ($_SESSION['user_id'] != $userId && $_SESSION['user_role'] != 'admin') {
             return [];
@@ -471,4 +459,79 @@ class StudentModel {
             return false;
         }
     }
+
+    public function getCricketStats($userId) {
+        // First get the player_id from user_player table
+        $playerId = $this->getPlayerIdByUserId($userId);
+        if (!$playerId) {
+            return false;
+        }
+    
+        $this->db->query('SELECT * FROM cricket_stats WHERE player_id = :player_id');
+        $this->db->bind(':player_id', $playerId);
+        
+        try {
+            return $this->db->single();
+        } catch (Exception $e) {
+            error_log('Error fetching cricket stats: ' . $e->getMessage());
+            return false;
+        }
+    }
+    
+    public function getRecentPerformances($userId, $limit = 5) {
+        // First get the player_id from user_player table
+        $playerId = $this->getPlayerIdByUserId($userId);
+        if (!$playerId) {
+            return [];
+        }
+    
+        // Fetch performances directly from player_match_performance and join with matches
+        $this->db->query('
+            SELECT 
+                p.performance_id,
+                p.match_id,
+                p.player_id,
+                p.runs_scored,
+                p.balls_faced,
+                p.fours,
+                p.sixes,
+                p.wickets_taken,
+                p.overs_bowled,
+                p.runs_conceded,
+                p.catches,
+                p.created_at AS match_date, -- Use created_at as a fallback date
+                m.opponent_team,
+                m.venue,
+                m.result
+            FROM player_match_performance p
+            LEFT JOIN matches m ON p.match_id = m.match_id
+            WHERE p.player_id = :player_id
+            ORDER BY p.created_at DESC
+            LIMIT :limit
+        ');
+    
+        $this->db->bind(':player_id', $playerId);
+        $this->db->bind(':limit', $limit);
+    
+        try {
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log('Error fetching recent performances: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function getPlayerIdByUserId($user_id) {
+        $this->db->query('SELECT player_id FROM user_player WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        try {
+            $this->db->execute();
+            $result = $this->db->single();
+            return $result ? $result->player_id : null;
+        } catch (Exception $e) {
+            error_log('Error fetching player ID: ' . $e->getMessage());
+            return null;
+        }
+    }
+
 }
