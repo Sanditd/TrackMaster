@@ -200,6 +200,7 @@ public function getAdminById($userId){
 public function getUserById($userId){
 
     $this->db->query("SELECT * FROM users WHERE user_id = :userId");
+}
 
 public function getAdminActivation($userId){
     $this->db->query("SELECT active FROM admin WHERE admin_id = :userId");
