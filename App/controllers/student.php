@@ -452,7 +452,7 @@ class Student extends Controller {
 
     public function medicalStatus() {
         $userId = $_SESSION['user_id'];
-
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Handle medical form submission
             $data = [
@@ -463,15 +463,15 @@ class Student extends Controller {
                 'notes' => trim($_POST['notes']),
                 'errors' => []
             ];
-
+    
             if (empty($data['date'])) {
                 $data['errors']['date'] = 'Date is required';
             }
-
+    
             if (empty($data['condition'])) {
                 $data['errors']['condition'] = 'Medical condition is required';
             }
-
+    
             if (empty($data['errors'])) {
                 if ($this->medicalModel->addMedicalRecord($data)) {
                     flash('medical_message', 'Medical record added successfully', 'alert alert-success');
@@ -482,14 +482,22 @@ class Student extends Controller {
                 $_SESSION['medical_errors'] = $data['errors'];
                 $_SESSION['medical_form_data'] = $data;
             }
-
+    
             header('Location: ' . URLROOT . '/Student/medicalStatus');
             exit();
         }
-
+    
         // GET request: fetch and display data
-        $data = $this->medicalModel->index($userId);
-        $data['user_id'] = $userId;
+        $currentData = $this->medicalModel->index($userId); // medical status and history
+        $thingsToConsider = $this->medicalModel->getThingsToConsider($userId); // 🆕 added line
+    
+        $data = [
+            'currentStatus' => $currentData['currentStatus'],
+            'medicalHistory' => $currentData['medicalHistory'],
+            'thingsToConsider' => $thingsToConsider,
+            'user_id' => $userId
+        ];
+    
         $this->view('Student/medicalStatus', $data);
     }
 
@@ -591,22 +599,25 @@ class Student extends Controller {
 
     public function saveThingsToConsider() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userId = $_SESSION['user_id'];
+    
             $data = [
+                'user_id' => $userId,
                 'blood_type' => trim($_POST['bloodType']),
                 'allergies' => trim($_POST['allergies']),
                 'special_notes' => trim($_POST['specialNotes']),
                 'emergency_contact' => trim($_POST['emergencyContact']),
                 'errors' => []
             ];
-
+    
             if (empty($data['blood_type'])) {
                 $data['errors']['blood_type'] = 'Blood type is required';
             }
-
+    
             if (empty($data['emergency_contact'])) {
                 $data['errors']['emergency_contact'] = 'Emergency contact is required';
             }
-
+    
             if (empty($data['errors'])) {
                 if ($this->medicalModel->updateThingsToConsider($data)) {
                     flash('medical_message', 'Health information updated successfully', 'alert alert-success');
@@ -617,11 +628,29 @@ class Student extends Controller {
                 $_SESSION['things_errors'] = $data['errors'];
                 $_SESSION['things_form_data'] = $data;
             }
-
+    
             header('Location: ' . URLROOT . '/Student/medicalStatus');
             exit();
         }
     }
+
+
+    public function thingsToConsider() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . URLROOT . '/users/login');
+            exit();
+        }
+    
+        $userId = $_SESSION['user_id'];
+    
+    
+        $data = [
+            'thingsToConsider' => $medicalModel->getThingsToConsider($userId),
+        ];
+    
+        $this->view('Student/medicalStatus', $data);
+    }
+
 
 public function Playerperformance() {
     if (!isset($_SESSION['user_id'])) {
@@ -661,4 +690,5 @@ public function Playerperformance() {
     
     $this->view('Student/Playerperformance', $data);
 }
+
 }
