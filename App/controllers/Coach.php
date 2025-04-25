@@ -71,8 +71,20 @@ class Coach extends Controller {
 
 
     public function performanceTracking() {
-        $data = [];
-        $this->view('Coach/PerformanceTracking');
+        // Get coach's sport ID
+        $sportId = $this->coachModel->getCoachSportId($_SESSION['user_id']);
+        
+        if ($sportId === 36) { // Cricket
+            $this->view('Coach/PerformanceTracking');
+        } else { // Athletics or other sports
+            $this->view('Coach/A_PerformanceTracking');
+        }
+    }
+    
+
+    public function athleticsPerformanceTracking() { 
+               $data = [];
+        $this->view('Coach/A_PerformanceTracking');
     }
 
     public function editProfile() {
@@ -487,6 +499,7 @@ public function playerPerformance($playerId = null) {
         redirect('coach/performanceTracking');
     }
 }
+
 
 public function getTeamsForCoach() {
     // Check if user is logged in and is a coach
