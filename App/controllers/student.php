@@ -532,11 +532,6 @@ class Student extends Controller {
         $this->view('Student/schoolProfile');
     }
 
-    public function Playerperformance() {
-        $data = [];
-        $this->view('Student/Playerperformance');
-    }
-
     public function saveCalendarNote() {
         if (!isset($_SESSION['user_id'])) {
             echo json_encode(['success' => false, 'message' => 'User not logged in.']);
@@ -628,4 +623,42 @@ class Student extends Controller {
         }
     }
 
+public function Playerperformance() {
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: ' . URLROOT . '/users/login');
+        exit();
+    }
+
+    $userId = $_SESSION['user_id'];
+    
+    // Get player details
+    $player = $this->studentModel->getUserDetails($userId);
+    if (!$player) {
+        $_SESSION['message'] = 'Unable to fetch player details.';
+        $_SESSION['message_type'] = 'error';
+        header('Location: ' . URLROOT . '/Student/studentDashboard');
+        exit();
+    }
+
+    // Get player_id for debugging
+    $playerId = $this->studentModel->getPlayerIdByUserId($userId);
+    error_log("Playerperformance: user_id=$userId, player_id=$playerId");
+
+    // Get player stats from cricket_stats table
+    $stats = $this->studentModel->getCricketStats($userId);
+    
+    // Get recent match performances
+    $performances = $this->studentModel->getRecentPerformances($userId);
+    error_log("Recent Performances: " . print_r($performances, true));
+    
+    $data = [
+        'player' => $player,
+        'stats' => $stats ? $stats : (object)[],
+        'performances' => $performances,
+        'message' => isset($_SESSION['message']) ? $_SESSION['message'] : null,
+        'message_type' => isset($_SESSION['message_type']) ? $_SESSION['message_type'] : null
+    ];
+    
+    $this->view('Student/Playerperformance', $data);
+}
 }
