@@ -128,6 +128,13 @@ require_once __DIR__ . '/../libraries/Database.php';
             echo "An error occurred during signup. Please try again.";
         }
     }
+
+    public function getUsernameById($userId){
+        $this->db->query("SELECT username FROM users WHERE user_id = :userId");
+    $this->db->bind(':userId', $userId);
+    $result = $this->db->resultSet();
+    return $result;
+    }
     
 
     
@@ -196,8 +203,15 @@ public function getUserById($userId){
     return $result;
 }
     
+
+public function getUserById($userId){
+
+    $this->db->query("SELECT * FROM users WHERE user_id = :userId");
+}
+
 public function getAdminActivation($userId){
     $this->db->query("SELECT active FROM admin WHERE admin_id = :userId");
+
     $this->db->bind(':userId', $userId);
     $result = $this->db->resultSet();
     return $result;

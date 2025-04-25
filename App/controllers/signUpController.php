@@ -7,6 +7,7 @@ class SignUpController extends Controller {
     private $notificationModel;
     
 
+
     public function __construct() {
         $this->userModel = $this->model('User');
         $this->zoneModel =$this->model('zoneModel');
@@ -69,15 +70,27 @@ class SignUpController extends Controller {
 
     public function selectrole() {
 
+
         $data = [];
         
 
+
         $this->view('SignUp/SelectRole');
+
     }
+
+    public function selectrole() {
+
 
     //adminsignupview
     public function adminsignupview() {
         $data = [];
+
+
+        $this->view('SignUp/Admin', $data);
+    }
+    
+
 
         $this->view('SignUp/Admin', $data);
     }
@@ -140,6 +153,7 @@ class SignUpController extends Controller {
                 'photo' => null, // Default photo value
                 'created_at' => date('Y-m-d H:i:s')
             ];
+
 
             if ($this->userModel->checkUserExists($data['email'], $data['username'])) {
                 $_SESSION['error'] = "Email or username is already taken.";
@@ -695,6 +709,7 @@ class SignUpController extends Controller {
 
             
 
+
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
     
             // Insert user data
@@ -709,7 +724,7 @@ class SignUpController extends Controller {
 
                 $this->sendAdminNotification($notification);
 
-    
+
                 // Redirect to login with success message
                 //session_start(); // Ensure session is started
                 $_SESSION['success_message'] = "Registration successful! Please log in.";
@@ -741,6 +756,10 @@ class SignUpController extends Controller {
     
         $this->view('signup/error', $data);
     }
+
+
     
 }
 ?>
+
+

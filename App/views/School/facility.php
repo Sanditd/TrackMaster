@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>School Facilities Update Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
             background-color: #f3f3f3;
@@ -81,7 +82,7 @@
 <?php require 'sidebar.php'; ?>
 
 <div class="header">
-    <h1>Update School Facilities</h1>
+    <h1><i class="fas fa-school"></i> Update School Facilities</h1>
 </div>
 
 <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
@@ -93,7 +94,7 @@
 <div class="form-container">
     <form method="post" action="<?php echo URLROOT; ?>/school/facilityForm">
         <div class="form-group">
-            <label>Facility Type</label>
+            <label><i class="fas fa-dumbbell"></i> Facility Type</label>
             <div class="checkbox-group">
                 <label><input type="checkbox" name="facilityType[]" value="Track"> Track</label>
                 <label><input type="checkbox" name="facilityType[]" value="Indoor"> Indoor</label>
@@ -105,27 +106,27 @@
         </div>
 
         <div class="form-group">
-            <label>Facility Name</label>
+            <label><i class="fas fa-tag"></i> Facility Name</label>
             <input type="text" name="facilityName">
         </div>
 
         <div class="form-group">
-            <label>Location</label>
+            <label><i class="fas fa-map-marker-alt"></i> Location</label>
             <input type="text" name="location">
         </div>
 
         <div class="form-group">
-            <label>Date Established</label>
+            <label><i class="fas fa-calendar-alt"></i> Date Established</label>
             <input type="date" name="dateEstablished">
         </div>
 
         <div class="form-group">
-            <label>Size / Area</label>
+            <label><i class="fas fa-expand"></i> Size / Area</label>
             <input type="text" name="size" placeholder="e.g. 100m track, 50x30m court">
         </div>
 
         <div class="form-group">
-            <label>Current Condition</label>
+            <label><i class="fas fa-tools"></i> Current Condition</label>
             <select name="condition">
                 <option value="">Select</option>
                 <option>Excellent</option>
@@ -136,22 +137,22 @@
         </div>
 
         <div class="form-group">
-            <label>Capacity / Max Users</label>
+            <label><i class="fas fa-users"></i> Capacity / Max Users</label>
             <input type="number" name="capacity">
         </div>
 
         <div class="form-group">
-            <label>Schedule Notes / Time Restrictions</label>
+            <label><i class="fas fa-clock"></i> Schedule Notes / Time Restrictions</label>
             <textarea name="scheduleNotes" rows="3"></textarea>
         </div>
 
         <div class="form-group">
-            <label>Remarks / Notes</label>
+            <label><i class="fas fa-sticky-note"></i> Remarks / Notes</label>
             <textarea name="remarks" rows="3"></textarea>
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn-submit">Submit</button>
+            <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Submit</button>
         </div>
     </form>
 </div>

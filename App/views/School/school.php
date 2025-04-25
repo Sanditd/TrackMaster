@@ -1,3 +1,4 @@
+
 <?php
 //Check if session user ID exists
 if (!isset($_SESSION['user_id'])) {
@@ -60,10 +61,15 @@ if (isset($_SESSION['error_message'])) {
 <!DOCTYPE html>
 <html lang="en">
 
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Dashboard | TrackMaster</title>
+
     <link rel="stylesheet" href="../Public/css/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -427,6 +433,11 @@ if (isset($_SESSION['error_message'])) {
     </style>
 </head>
 
+
+    <link rel="stylesheet" href="/TrackMaster/Public/css/navbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/TrackMaster/Public/css/school/school.css">
+
 <body>
     <?php require 'navbar.php'; ?>
     <?php require 'sidebar.php'; ?>
@@ -501,7 +512,12 @@ if (isset($_SESSION['error_message'])) {
                 </div>
             </div>
 
+
             <!-- onclick="window.location.href='/TrackMaster/App/views/Event/event.php'" -->
+
+          
+
+
 
             <div class="section quick-session">
                 <h2  style="cursor: pointer;">
@@ -534,11 +550,42 @@ if (isset($_SESSION['error_message'])) {
 
 
             <div class="section upcoming-appointments">
-                <h2><i class="fas fa-clock"></i> Extra Class Requests</h2>
-                <div class="appointment">
-                    <span><i class="fas fa-graduation-cap"></i> Grade 10</span> Kamal Perera<br>
-                    <span><i class="fas fa-graduation-cap"></i> Grade 11</span> Hashan Jayamal
+    <h2><i class="fas fa-clock"></i> Extra Class Requests</h2>
+    <div class="appointment">
+        <div class="request-item">
+            <span><i class="fas fa-graduation-cap"></i> Grade 10</span> Kamal Perera
+        </div>
+        <div class="request-item">
+            <span><i class="fas fa-graduation-cap"></i> Grade 11</span> Hashan Jayamal
+        </div>
+    </div>
+    <center>
+        <button class="profile-button" onclick="window.location.href='<?php echo URLROOT ?>/school/scheduleEx'">
+            <i class="fas fa-plus-circle"></i> Schedule Extra Class
+        </button>
+    </center>
+</div>
+<div class="section activity-log">
+    <h2><i class="fas fa-chart-bar"></i> Study performance</h2>
+    
+       
+            <ul>
+                 
+                 <li>Hashan<span>Average -  25%</span></li>
+                 <li>Dimuth  <span>Average - 30%</span></li>
+       
+            </li>
+
+   
+</div>
+
+<div class="section upcoming-appointments">
+    <h2><i class="fas fa-calendar-check"></i> Upcoming Sessions</h2>
+    <div class="appointment">
+    <span>Jan 31</span> Coaching Session 25<br>
+                    <span>Feb 07</span> Coaching Session 24<br>
                 </div>
+
                 <center>
                     <button class="profile-button"
                         onclick="window.location.href='<?php echo URLROOT ?>/school/scheduleEx'">
@@ -547,22 +594,10 @@ if (isset($_SESSION['error_message'])) {
                 </center>
             </div>
 
-            <div class="section activity-log">
-                <h2><i class="fas fa-chart-bar"></i> Study performance</h2>
-                <ul>
-                    <li>Hashan<span><i class="fas fa-percentage"></i> Average - 25%</span></li>
-                    <li>Dimuth<span><i class="fas fa-percentage"></i> Average - 30%</span></li>
-                </ul>
-            </div>
 
-            <div class="section upcoming-appointments">
-                <h2><i class="fas fa-calendar-check"></i> Upcoming Sessions</h2>
-                <div class="appointment">
-                    <span><i class="far fa-calendar"></i> Jan 31</span> Coaching Session 25<br>
-                    <span><i class="far fa-calendar"></i> Feb 07</span> Coaching Session 24<br>
-                </div>
-            </div>
-        </div>
+    </div>
+</div>
+
     </div>
 
     <script src="/TrackMaster/Public/js/School/cal.js"></script>

@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../Public/css/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Base Styles */
         :root {
             --primary-color: #00264d;
             --secondary-color: #ffa500;
@@ -31,14 +30,12 @@
             color: var(--dark-color);
         }
 
-        /* Profile Container */
         .profile-container {
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
         }
 
-        /* Profile Header */
         .profile-header {
             text-align: center;
             margin-bottom: 30px;
@@ -78,14 +75,12 @@
             transform: translateY(-2px);
         }
 
-        /* Profile Content */
         .profile-content {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 25px;
         }
 
-        /* Profile Sidebar */
         .profile-sidebar {
             background: white;
             border-radius: var(--border-radius);
@@ -152,7 +147,6 @@
             color: var(--gray-color);
         }
 
-        /* Profile Details */
         .profile-details {
             display: grid;
             grid-template-columns: 1fr;
@@ -219,7 +213,6 @@
             font-size: 1.2rem;
         }
 
-        /* Responsive Styles */
         @media (max-width: 992px) {
             .profile-content {
                 grid-template-columns: 1fr;
@@ -255,6 +248,8 @@
     </style>
 </head>
 <body>
+    <?php require 'navbar.php'?>
+    <?php require 'sidebar.php'?> 
 
     <div class="profile-container">
         <div class="profile-header">
@@ -270,32 +265,37 @@
                     </div>
                 </div>
                 <div class="profile-info">
-                    <h2 class="coach-name"><?php echo $coach->firstname . ' ' . (!empty($coach->lname) ? $coach->lname : ''); ?></h2>
-                    <p class="coach-title"><?php echo !empty($coach->coach_type) ? ucfirst($coach->coach_type) : '' ?> <?php echo !empty($coach->sport_name) ? $coach->sport_name : '' ?> Coach</p>
+                    <h2 class="coach-name"><?php echo htmlspecialchars($coach->firstname . ' ' . ($coach->lname ?? '')); ?></h2>
+                    <p class="coach-title"><?php echo htmlspecialchars(($coach->coach_type ?? '') . ' ' . ($coach->sport_name ?? '') . ' Coach'); ?></p>
                     
                     <div class="info-group">
                         <span class="info-icon"><i class="fas fa-envelope"></i></span>
-                        <span class="info-text"><?php echo $coach->email; ?></span>
+                        <span class="info-text"><?php echo htmlspecialchars($coach->email ?? 'Not specified'); ?></span>
                     </div>
                     
                     <div class="info-group">
                         <span class="info-icon"><i class="fas fa-phone"></i></span>
-                        <span class="info-text"><?php echo $coach->phonenumber; ?></span>
+                        <span class="info-text"><?php echo htmlspecialchars($coach->phonenumber ?? 'Not specified'); ?></span>
                     </div>
                     
                     <div class="info-group">
                         <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
-                        <span class="info-text"><?php echo $coach->address; ?></span>
+                        <span class="info-text"><?php echo htmlspecialchars($coach->address ?? 'Not specified'); ?></span>
+                    </div>
+                    
+                    <div class="info-group">
+                        <span class="info-icon"><i class="fas fa-map"></i></span>
+                        <span class="info-text"><?php echo htmlspecialchars($coach->zoneName ?? 'Not specified'); ?></span>
                     </div>
                     
                     <div class="info-group">
                         <span class="info-icon"><i class="fas fa-venus-mars"></i></span>
-                        <span class="info-text"><?php echo !empty($coach->gender) ? ucfirst($coach->gender) : 'Not specified'; ?></span>
+                        <span class="info-text"><?php echo !empty($coach->gender) ? htmlspecialchars(ucfirst($coach->gender)) : 'Not specified'; ?></span>
                     </div>
                     
                     <div class="info-group">
                         <span class="info-icon"><i class="fas fa-birthday-cake"></i></span>
-                        <span class="info-text"><?php echo !empty($coach->dob) ? date('F j, Y', strtotime($coach->dob)) : 'Not specified'; ?></span>
+                        <span class="info-text"><?php echo !empty($coach->dob) ? htmlspecialchars(date('F j, Y', strtotime($coach->dob))) : 'Not specified'; ?></span>
                     </div>
                 </div>
             </div>
@@ -309,7 +309,7 @@
                         <h2>About Me</h2>
                     </div>
                     <div class="detail-content">
-                        <p><?php echo !empty($coach->bio) ? $coach->bio : 'No bio information available.'; ?></p>
+                        <p><?php echo !empty($coach->bio) ? htmlspecialchars($coach->bio) : 'No bio information available.'; ?></p>
                     </div>
                 </div>
 
@@ -323,7 +323,7 @@
                         <ul class="detail-list">
                             <?php if (!empty($coach->educational_qualifications)): ?>
                                 <?php foreach ($coach->educational_qualifications as $qualification): ?>
-                                    <li><?php echo trim($qualification); ?></li>
+                                    <li><?php echo htmlspecialchars($qualification); ?></li>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <li>No educational qualifications listed.</li>
@@ -335,14 +335,14 @@
                 <!-- Playing Experience -->
                 <div class="detail-card">
                     <div class="detail-header">
-                        <i class="fas fa-cricket"></i>
+                        <i class="fas fa-running"></i>
                         <h2>Professional Playing Experience</h2>
                     </div>
                     <div class="detail-content">
                         <ul class="detail-list">
                             <?php if (!empty($coach->professional_playing_experience)): ?>
                                 <?php foreach ($coach->professional_playing_experience as $experience): ?>
-                                    <li><?php echo trim($experience); ?></li>
+                                    <li><?php echo htmlspecialchars($experience); ?></li>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <li>No professional playing experience listed.</li>
@@ -361,7 +361,7 @@
                         <ul class="detail-list">
                             <?php if (!empty($coach->coaching_experience)): ?>
                                 <?php foreach ($coach->coaching_experience as $experience): ?>
-                                    <li><?php echo trim($experience); ?></li>
+                                    <li><?php echo htmlspecialchars($experience); ?></li>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <li>No coaching experience listed.</li>
@@ -369,8 +369,6 @@
                         </ul>
                     </div>
                 </div>
-
-                <!-- Technical Specializations -->
 
                 <!-- Achievements -->
                 <div class="detail-card">
@@ -382,7 +380,7 @@
                         <ul class="detail-list">
                             <?php if (!empty($coach->key_achievements)): ?>
                                 <?php foreach ($coach->key_achievements as $achievement): ?>
-                                    <li><?php echo trim($achievement); ?></li>
+                                    <li><?php echo htmlspecialchars($achievement); ?></li>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <li>No key achievements listed.</li>
@@ -393,6 +391,6 @@
             </div>
         </div>
     </div>
-
+    <?php require 'footer.php'?>
 </body>
 </html>

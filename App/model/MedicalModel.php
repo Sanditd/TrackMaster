@@ -15,11 +15,11 @@ class MedicalModel {
     }
 
     public function index($user_id) {
-        // Fetch the latest data from the database for the given user
         return [
             'currentStatus' => $this->getCurrentMedicalStatus($user_id),
             'medicalHistory' => $this->getMedicalHistory($user_id),
-            'thingsToConsider' => $this->getThingsToConsider($user_id)
+            'thingsToConsider' => $this->getThingsToConsider($user_id),
+            'user_id' => $user_id
         ];
     }
     
@@ -66,35 +66,50 @@ class MedicalModel {
     public function addMedicalRecord($data) {
         $player_id = $this->getPlayerIdByUserId($_SESSION['user_id']);
         if (!$player_id) return false;
-
+    
         $this->db->query('
-            INSERT INTO medical_history (player_id, date, medical_condition, medication, notes, created_at) 
-            VALUES (:player_id, :date, :condition, :medication, :notes, NOW())
+            INSERT INTO medical_history 
+            (player_id, date, medical_condition, medication, notes, created_at) 
+            VALUES 
+            (:player_id, :date, :condition, :medication, :notes, NOW())
         ');
+        
+        // Bind values
         $this->db->bind(':player_id', $player_id);
         $this->db->bind(':date', $data['date']);
         $this->db->bind(':condition', $data['condition']);
         $this->db->bind(':medication', $data['medication']);
         $this->db->bind(':notes', $data['notes']);
+    
+        // Execute
         return $this->db->execute();
     }
 
     public function updateThingsToConsider($data) {
         $player_id = $this->getPlayerIdByUserId($_SESSION['user_id']);
         if (!$player_id) return false;
-
+    
         $this->db->query('
-            INSERT INTO medical_info (player_id, blood_type, allergies, special_notes, emergency_contact) 
-            VALUES (:player_id, :blood_type, :allergies, :special_notes, :emergency_contact)
-            ON DUPLICATE KEY UPDATE 
-            blood_type = :blood_type, allergies = :allergies, 
-            special_notes = :special_notes, emergency_contact = :emergency_contact
+            INSERT INTO medical_info 
+            (player_id, blood_type, allergies, special_notes, emergency_contact, last_updated) 
+            VALUES 
+            (:player_id, :blood_type, :allergies, :special_notes, :emergency_contact, NOW())
+            ON DUPLICATE KEY UPDATE
+            blood_type = VALUES(blood_type),
+            allergies = VALUES(allergies),
+            special_notes = VALUES(special_notes),
+            emergency_contact = VALUES(emergency_contact),
+            last_updated = NOW()
         ');
+        
+        // Bind values
         $this->db->bind(':player_id', $player_id);
         $this->db->bind(':blood_type', $data['blood_type']);
         $this->db->bind(':allergies', $data['allergies']);
         $this->db->bind(':special_notes', $data['special_notes']);
         $this->db->bind(':emergency_contact', $data['emergency_contact']);
+    
+        // Execute
         return $this->db->execute();
     }
 }

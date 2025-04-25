@@ -9,7 +9,22 @@ class CoachModel {
     }
 
     public function getTeams() {
-        $this->db->query('SELECT team_id, team_name AS team FROM team');
+        $this->db->query('SELECT coach_id FROM user_coach WHERE user_id = :user_id');
+        $this->db->bind(':user_id',     $_SESSION['user_id']    );
+        $coachData = $this->db->single();
+        
+        if (!$coachData || !isset($coachData->coach_id)) {
+            return []; // Return empty array if coach not found
+        }
+    
+        $this->db->query('
+            SELECT team.team_id, team.team_name AS team 
+            FROM team 
+            INNER JOIN user_coach ON team.zone = user_coach.zone AND team.sport_id = user_coach.sport_id 
+            WHERE user_coach.coach_id = :coach_id
+        ');
+        $this->db->bind(':coach_id', $coachData->coach_id);
+        
         return $this->db->resultSet();
     }
 
@@ -1129,6 +1144,23 @@ public function getTeamsBySportAndZone($sportId, $zoneId)
     
     return $this->db->resultSet();
 }
+
+public function getCoachSportId($user_id) {
+    $this->db->query('
+        SELECT sport_id 
+        FROM user_coach 
+        WHERE user_id = :user_id
+    ');
+    
+    $this->db->bind(':user_id', $user_id);
+    
+    // Execute the query and fetch the single result
+    $result = $this->db->single();
+    
+    // Return the sport_id if found, or null if not
+    return $result ? $result->sport_id : null;
+}
+
 
 }
 

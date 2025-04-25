@@ -899,7 +899,10 @@
     </style>
 </head>
 <body>
-    <?php require 'CoachNav.php'; ?>
+<?php $this->view('Coach/CoachNav', [
+        'sport_id' => $data['sport_id'] ?? 0,
+        'coach_name' => $data['coach_name'] ?? 'Coach'
+    ]); ?>
 
     <div class="dashboard-container">
         <div class="dashboard-header">

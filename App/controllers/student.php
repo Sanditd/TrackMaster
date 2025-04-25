@@ -1,9 +1,18 @@
 <?php
 class Student extends Controller {
     private $studentModel;
+    private $medicalModel;
+
 
     public function __construct() {
+
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . URLROOT . '/users/login');
+            exit();
+        }
+
         $this->studentModel = $this->model('StudentModel');
+        $this->medicalModel = $this->model('MedicalModel');
     }
 
     public function index() {
@@ -442,50 +451,70 @@ class Student extends Controller {
     }
 
     public function medicalStatus() {
+        $userId = $_SESSION['user_id'];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Handle medical form submission
+            $data = [
+                'user_id' => $userId,
+                'date' => trim($_POST['date']),
+                'condition' => trim($_POST['condition']),
+                'medication' => trim($_POST['medication']),
+                'notes' => trim($_POST['notes']),
+                'errors' => []
+            ];
+
+            if (empty($data['date'])) {
+                $data['errors']['date'] = 'Date is required';
+            }
+
+            if (empty($data['condition'])) {
+                $data['errors']['condition'] = 'Medical condition is required';
+            }
+
+            if (empty($data['errors'])) {
+                if ($this->medicalModel->addMedicalRecord($data)) {
+                    flash('medical_message', 'Medical record added successfully', 'alert alert-success');
+                } else {
+                    flash('medical_message', 'Failed to add medical record', 'alert alert-danger');
+                }
+            } else {
+                $_SESSION['medical_errors'] = $data['errors'];
+                $_SESSION['medical_form_data'] = $data;
+            }
+
+            header('Location: ' . URLROOT . '/Student/medicalStatus');
+            exit();
+        }
+
+        // GET request: fetch and display data
+        $data = $this->medicalModel->index($userId);
+        $data['user_id'] = $userId;
+        $this->view('Student/medicalStatus', $data);
+    }
+
+    public function coachProfile() {
         if (!isset($_SESSION['user_id'])) {
             header('Location: ' . URLROOT . '/users/login');
             exit();
         }
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $data = [
-                'user_id' => $_SESSION['user_id'],
-                'medical_condition' => trim($_POST['medical_condition']),
-                'medication' => trim($_POST['medication']),
-                'notes' => trim($_POST['notes']),
-                'date' => date('Y-m-d'),
-                'errors' => []
-            ];
-
-            if (empty($data['medical_condition'])) {
-                $data['errors'][] = 'Medical condition is required.';
-            }
-
-            if (!empty($data['errors'])) {
-                $_SESSION['message'] = implode(' ', $data['errors']);
-                $_SESSION['message_type'] = 'error';
-                $this->view('Student/medicalStatus', $data);
-            } else {
-                if ($this->studentModel->updateMedicalStatus($data)) {
-                    $_SESSION['message'] = 'Medical status updated successfully.';
-                    $_SESSION['message_type'] = 'success';
-                    header('Location: ' . URLROOT . '/Student/studentDashboard');
-                    exit();
-                } else {
-                    $_SESSION['message'] = 'Failed to update medical status.';
-                    $_SESSION['message_type'] = 'error';
-                    $this->view('Student/medicalStatus', $data);
-                }
-            }
-        } else {
-            $data = [];
-            $this->view('Student/medicalStatus');
+    
+        $userId = $_SESSION['user_id'];
+        $coach = $this->studentModel->getCoachByPlayerId($userId);
+    
+        if (!$coach) {
+            $_SESSION['message'] = 'No coach assigned or unable to fetch coach details.';
+            $_SESSION['message_type'] = 'error';
+            header('Location: ' . URLROOT . '/Student/studentDashboard');
+            exit();
         }
-    }
-
-    public function coachProfile() {
-        $data = [];
-        $this->view('Student/coachProfile');
+    
+        $data = [
+            'coach' => $coach,
+            'message' => isset($_SESSION['message']) ? $_SESSION['message'] : null,
+            'message_type' => isset($_SESSION['message_type']) ? $_SESSION['message_type'] : null
+        ];
+        $this->view('Student/coachProfile', $data);
     }
 
     public function parentProfile() {
@@ -564,4 +593,39 @@ class Student extends Controller {
         }
         return $_SESSION['csrf_token'];
     }
+
+    public function saveThingsToConsider() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+                'blood_type' => trim($_POST['bloodType']),
+                'allergies' => trim($_POST['allergies']),
+                'special_notes' => trim($_POST['specialNotes']),
+                'emergency_contact' => trim($_POST['emergencyContact']),
+                'errors' => []
+            ];
+
+            if (empty($data['blood_type'])) {
+                $data['errors']['blood_type'] = 'Blood type is required';
+            }
+
+            if (empty($data['emergency_contact'])) {
+                $data['errors']['emergency_contact'] = 'Emergency contact is required';
+            }
+
+            if (empty($data['errors'])) {
+                if ($this->medicalModel->updateThingsToConsider($data)) {
+                    flash('medical_message', 'Health information updated successfully', 'alert alert-success');
+                } else {
+                    flash('medical_message', 'Failed to update health information', 'alert alert-danger');
+                }
+            } else {
+                $_SESSION['things_errors'] = $data['errors'];
+                $_SESSION['things_form_data'] = $data;
+            }
+
+            header('Location: ' . URLROOT . '/Student/medicalStatus');
+            exit();
+        }
+    }
+
 }
