@@ -42,6 +42,7 @@ class loginController extends Controller {
                         $_SESSION['user_id'] = $user->user_id; // Corrected to object access
                         $_SESSION['role'] = $user->role; // Storing the user's role in session
                         $_SESSION['active'] = $user->active; // Storing the user's account activation status
+                        $_SESSION['username']= $user->username;
 
                        
         

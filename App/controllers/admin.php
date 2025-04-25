@@ -35,9 +35,32 @@
 
         //to load dashbaord.php
         public function dashboard(){
-            $data=$this->showMonthlySignups();
-            //$caldata=$this->getCalendarData();
-            //$data=array_merge($userdata,$caldata);
+            $users = $this->userModel->getUsers();
+            $players = $this->userModel->getPlayers();
+            $coaches = $this->userModel->getCoaches();
+            $schools = $this->userModel->getSchoolsData();
+            $zones = $this->zoneModel->getZonals();
+        
+            $countUsers = $this->userModel->countAllUsers();
+            $countPlayers = $this->userModel->countPlayers();
+            $countCoaches = $this->userModel->countCoaches();
+            $countSchools = $this->userModel->countSchools();
+            $countZones = $this->zoneModel->countZonals();
+
+
+        
+            $data = [
+                'users' => $users,
+                'players' => $players,
+                'coaches' => $coaches,
+                'schools' => $schools,
+                'zones' => $zones,
+                'countUsers' => $countUsers,
+                'countPlayers' => $countPlayers,
+                'countCoaches' => $countCoaches,
+                'countSchools' => $countSchools,
+                'countZones' => $countZones
+            ];
             $this->view('Admin/adminpanelview',$data);
         }
 
