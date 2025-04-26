@@ -45,7 +45,9 @@ class loginController extends Controller {
                                 $this->view('admin/dashboard');
                                 break;
                             case 'coach':
-                                $this->view('coach/dashboard');
+                                session_write_close();
+                                    header('Location: ' . URLROOT . '/coach/dashboard');
+                                    exit;
                                 break;
                             case 'player':
                                 case 'player':

@@ -549,10 +549,11 @@
                         
                         <div class="form-group">
                             <label for="reschedule_reason" class="required-field">Reason for the Request:</label>
-                            <textarea id="reschedule_reason" name="reschedule_reason" placeholder="Please explain why you need to reschedule..." required>
+                            <textarea id="reschedule_reason" placeholder="Please explain why you need to reschedule..." required>
                                 <?php echo isset($_POST['reschedule_reason']) ? $_POST['reschedule_reason'] : ''; ?></textarea>
+
                         </div>
-                                        
+                            
                         <div class="form-buttons">
                             <button type="submit" class="btn">
                                 <i class="fas fa-paper-plane"></i> Submit Request

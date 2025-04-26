@@ -1161,6 +1161,233 @@ public function getCoachSportId($user_id) {
     return $result ? $result->sport_id : null;
 }
 
+public function getTeamStatusCounts($coachId) {
+    // First get coach's sport and zone
+    $this->db->query('SELECT sport_id, zone FROM user_coach WHERE coach_id = :coach_id');
+    $this->db->bind(':coach_id', $coachId);
+    $coach = $this->db->single();
+    
+    if (!$coach) {
+        return [];
+    }
+    
+    // Get player status counts
+    $this->db->query('
+        SELECT 
+            COUNT(*) as total_players,
+            SUM(CASE WHEN up.statusus = "Practicing" THEN 1 ELSE 0 END) as practicing,
+            SUM(CASE WHEN up.statusus = "In a meet" THEN 1 ELSE 0 END) as in_meet,
+            SUM(CASE WHEN up.statusus = "At rest" THEN 1 ELSE 0 END) as at_rest,
+            SUM(CASE WHEN up.statusus = "Injured" THEN 1 ELSE 0 END) as injured
+        FROM user_player up
+        WHERE up.sport_id = :sport_id AND up.zone = :zone
+    ');
+    $this->db->bind(':sport_id', $coach->sport_id);
+    $this->db->bind(':zone', $coach->zone);
+    
+    return $this->db->single();
+}
+
+public function getUpcomingEvents($coachId, $days = 30) {
+    $this->db->query('
+        SELECT 
+            se.event_id,
+            se.event_name,
+            se.event_date,
+            se.time_from,
+            se.time_to,
+            "" as location, -- added dummy location
+            us.school_name,
+            "scheduled" as event_type
+        FROM scheduled_events se
+        JOIN user_school us ON se.school_id = us.school_id
+        WHERE se.coach_id = :coach_id
+        AND se.event_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL :days DAY)
+
+        UNION
+
+        SELECT 
+            er.request_id as event_id,
+            er.event_name,
+            er.event_date,
+            er.time_from,
+            er.time_to,
+            er.facilities_required as location,
+            us.school_name,
+            "request" as event_type
+        FROM event_requests er
+        JOIN user_school us ON er.school_id = us.school_id
+        WHERE er.coach_id = :coach_id
+        AND er.status = "approved"
+        AND er.event_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL :days DAY)
+
+        ORDER BY event_date, time_from
+    ');
+    
+    $this->db->bind(':coach_id', $coachId);
+    $this->db->bind(':days', $days);
+    
+    return $this->db->resultSet();
+}
+
+
+public function getSessionStats($coachId) {
+    // Training sessions count
+    $this->db->query('
+        SELECT COUNT(*) as training_sessions
+        FROM attendance_sessions
+        WHERE coach_id = :coach_id
+        AND session_type = "training"
+    ');
+    $this->db->bind(':coach_id', $coachId);
+    $training = $this->db->single();
+    
+    // Match sessions count
+    $this->db->query('
+        SELECT COUNT(*) as matches_played
+        FROM matches m
+        JOIN team t ON m.team_id = t.team_id
+        JOIN user_coach uc ON t.zone = uc.zone AND t.sport_id = uc.sport_id
+        WHERE uc.coach_id = :coach_id
+    ');
+    $this->db->bind(':coach_id', $coachId);
+    $matches = $this->db->single();
+    
+    return [
+        'training_sessions' => $training->training_sessions,
+        'matches_played' => $matches->matches_played
+    ];
+}
+
+public function getRecentMedicalAlerts($coachId) {
+    // First get coach's sport and zone
+    $this->db->query('SELECT sport_id, zone FROM user_coach WHERE coach_id = :coach_id');
+    $this->db->bind(':coach_id', $coachId);
+    $coach = $this->db->single();
+    
+    if (!$coach) {
+        return [];
+    }
+    
+    // Get recent medical alerts (last 30 days)
+    $this->db->query('
+        SELECT 
+            mh.id,
+            mh.medical_condition,
+            mh.date,
+            CONCAT(u.firstname, " ", COALESCE(u.lname, "")) as player_name
+        FROM medical_history mh
+        JOIN user_player up ON mh.player_id = up.player_id
+        JOIN users u ON up.user_id = u.user_id
+        WHERE up.sport_id = :sport_id AND up.zone = :zone
+        AND mh.date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+        ORDER BY mh.date DESC
+        LIMIT 5
+    ');
+    $this->db->bind(':sport_id', $coach->sport_id);
+    $this->db->bind(':zone', $coach->zone);
+    
+    return $this->db->resultSet();
+}
+
+
+public function getPendingScheduleRequests($coachId) {
+    $this->db->query('
+        SELECT 
+            scr.id,
+            scr.reason,
+            scr.request_date,
+            CONCAT(u.firstname, " ", COALESCE(u.lname, "")) as player_name,
+            se.event_name,
+            se.event_date
+        FROM schedule_change_requests scr
+        JOIN user_player up ON scr.player_id = up.player_id
+        JOIN users u ON up.user_id = u.user_id
+        JOIN scheduled_events se ON scr.event_id = se.event_id
+        WHERE scr.coach_id = :coach_id
+        ORDER BY scr.request_date DESC
+        LIMIT 5
+    ');
+    $this->db->bind(':coach_id', $coachId);
+    
+    return $this->db->resultSet();
+}   
+
+public function getPlayerAchievements($playerId) {
+    $this->db->query('
+        SELECT 
+            achievement_id,
+            place,
+            level,
+            description,
+            date
+        FROM achievements
+        WHERE player_id = :player_id
+        ORDER BY date DESC
+    ');
+    $this->db->bind(':player_id', $playerId);
+    
+    return $this->db->resultSet();
+}
+
+public function getAchievementById($achievementId) {
+    $this->db->query('
+        SELECT 
+            achievement_id,
+            player_id,
+            place,
+            level,
+            description,
+            date
+        FROM achievements
+        WHERE achievement_id = :achievement_id
+    ');
+    $this->db->bind(':achievement_id', $achievementId);
+    
+    return $this->db->single();
+}
+
+public function addAchievement($data) {
+    $this->db->query('
+        INSERT INTO achievements 
+        (player_id, place, level, description, date)
+        VALUES 
+        (:player_id, :place, :level, :description, :date)
+    ');
+    
+    $this->db->bind(':player_id', $data['player_id']);
+    $this->db->bind(':place', $data['place']);
+    $this->db->bind(':level', $data['level']);
+    $this->db->bind(':description', $data['description']);
+    $this->db->bind(':date', $data['date']);
+    
+    return $this->db->execute();
+}
+
+public function updateAchievement($data) {
+    $this->db->query('
+        UPDATE achievements SET
+            place = :place,
+            level = :level,
+            description = :description,
+            date = :date
+        WHERE achievement_id = :achievement_id
+    ');
+    
+    $this->db->bind(':achievement_id', $data['achievement_id']);
+    $this->db->bind(':place', $data['place']);
+    $this->db->bind(':level', $data['level']);
+    $this->db->bind(':description', $data['description']);
+    $this->db->bind(':date', $data['date']);
+    
+    return $this->db->execute();
+}
+
+public function deleteAchievement($achievementId) {
+    $this->db->query('DELETE FROM achievements WHERE achievement_id = :achievement_id');
+    $this->db->bind(':achievement_id', $achievementId);
+    return $this->db->execute();
+}
 
 }
 
