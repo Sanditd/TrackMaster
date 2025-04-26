@@ -20,8 +20,40 @@ class Coach extends Controller {
     }
 
     public function Dashboard() {
-        $data = [];
-        $this->view('Coach/Dashboard');
+        // Get coach ID
+        $coach = $this->coachModel->getCoachDetailsByUserId($_SESSION['user_id']);
+        
+        if (!$coach) {
+            flash('dashboard_error', 'Coach record not found');
+            $this->view('Coach/Dashboard');
+            return;
+        }
+    
+        // Get team status counts
+        $teamStatus = $this->coachModel->getTeamStatusCounts($coach->coach_id);
+        
+        // Get upcoming events (next 30 days)
+        $upcomingEvents = $this->coachModel->getUpcomingEvents($coach->coach_id);
+        
+        // Get session stats
+        $sessionStats = $this->coachModel->getSessionStats($coach->coach_id);
+        
+        // Get recent medical alerts
+        $medicalAlerts = $this->coachModel->getRecentMedicalAlerts($coach->coach_id);
+        
+        // Get pending schedule change requests
+        $scheduleRequests = $this->coachModel->getPendingScheduleRequests($coach->coach_id);
+        
+        $data = [
+            'teamStatus' => $teamStatus,
+            'upcomingEvents' => $upcomingEvents,
+            'sessionStats' => $sessionStats,
+            'medicalAlerts' => $medicalAlerts,
+            'scheduleRequests' => $scheduleRequests,
+            'currentMonth' => date('F Y')
+        ];
+        
+        $this->view('Coach/Dashboard', $data);
     }
 
     public function attendance() 
@@ -482,11 +514,14 @@ public function playerPerformance($playerId = null) {
         
         // Get recent performances
         $performances = $this->coachModel->getPlayerRecentPerformances($playerId);
+
+        $achievements = $this->coachModel->getPlayerAchievements($playerId);
         
         $data = [
             'player' => $player,
             'stats' => $stats,
-            'performances' => $performances
+            'performances' => $performances,
+            'achievements' => $achievements
         ];
         
         $this->view('Coach/PlayerPerformance', $data);
@@ -850,6 +885,110 @@ public function searchPlayerAttendance() {
             'status' => 'error',
             'message' => $e->getMessage()
         ]);
+    }
+}
+
+public function getAchievement($achievementId) {
+    try {
+        $achievement = $this->coachModel->getAchievementById($achievementId);
+        
+        if (!$achievement) {
+            throw new Exception('Achievement not found');
+        }
+        
+        echo json_encode([
+            'success' => true,
+            'achievement' => $achievement
+        ]);
+    } catch (Exception $e) {
+        echo json_encode([
+            'success' => false,
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+public function saveAchievement() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Sanitize input
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        
+        $data = [
+            'achievement_id' => trim($_POST['achievement_id']),
+            'player_id' => trim($_POST['player_id']),
+            'place' => trim($_POST['place']),
+            'level' => trim($_POST['level']),
+            'date' => trim($_POST['date']),
+            'description' => trim($_POST['description']),
+            'place_err' => '',
+            'level_err' => '',
+            'date_err' => ''
+        ];
+        
+        // Validate
+        if (empty($data['place'])) {
+            $data['place_err'] = 'Please enter the achievement';
+        }
+        if (empty($data['level'])) {
+            $data['level_err'] = 'Please select the level';
+        }
+        if (empty($data['date'])) {
+            $data['date_err'] = 'Please select the date';
+        }
+        
+        // Make sure errors are empty
+        if (empty($data['place_err']) && empty($data['level_err']) && empty($data['date_err'])) {
+            if (empty($data['achievement_id'])) {
+                // Add new achievement
+                if ($this->coachModel->addAchievement($data)) {
+                    flash('achievement_message', 'Achievement added successfully');
+                    redirect('coach/playerPerformance/' . $data['player_id']);
+                } else {
+                    die('Something went wrong');
+                }
+            } else {
+                // Update existing achievement
+                if ($this->coachModel->updateAchievement($data)) {
+                    flash('achievement_message', 'Achievement updated successfully');
+                    redirect('coach/playerPerformance/' . $data['player_id']);
+                } else {
+                    die('Something went wrong');
+                }
+            }
+        } else {
+            // Load view with errors
+            $this->view('Coach/PlayerPerformance', $data);
+        }
+    } else {
+        redirect('coach/performanceTracking');
+    }
+}
+
+public function deleteAchievement($achievementId) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        try {
+            $achievement = $this->coachModel->getAchievementById($achievementId);
+            
+            if (!$achievement) {
+                throw new Exception('Achievement not found');
+            }
+            
+            if ($this->coachModel->deleteAchievement($achievementId)) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Achievement deleted successfully'
+                ]);
+            } else {
+                throw new Exception('Failed to delete achievement');
+            }
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    } else {
+        redirect('coach/performanceTracking');
     }
 }
 

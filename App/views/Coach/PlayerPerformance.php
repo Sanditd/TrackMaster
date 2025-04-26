@@ -462,6 +462,55 @@
                 flex-direction: column;
                 gap: 0;
             }
+
+            /* Achievements Section Specific Styles */
+.achievement-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+.achievement-school {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+}
+
+.achievement-zonal {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.achievement-district {
+    background-color: #fff8e1;
+    color: #ff8f00;
+}
+
+.achievement-provincial {
+    background-color: #f3e5f5;
+    color: #6a1b9a;
+}
+
+.achievement-national {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.achievement-international {
+    background-color: #e0f7fa;
+    color: #00838f;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
         }
     </style>
 </head>
@@ -684,15 +733,72 @@
         <?php endif; ?>
         
         <!-- Action Buttons -->
-        <div class="action-buttons">
+        
+
+        <?php if (!empty($data['achievements'])): ?>
+<div class="performance-chart">
+    <div class="chart-header">
+        <h2><i class="fas fa-trophy"></i> Player Achievements</h2>
+       
+    </div>
+    <div class="stats-card-body">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #00264d; color: white;">
+                    <th style="padding: 10px; text-align: left;">Date</th>
+                    <th style="padding: 10px; text-align: left;">Achievement</th>
+                    <th style="padding: 10px; text-align: left;">Level</th>
+                    <th style="padding: 10px; text-align: left;">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($data['achievements'] as $achievement): ?>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 10px;"><?= date('M d, Y', strtotime($achievement->date)) ?></td>
+                    <td style="padding: 10px;"><?= htmlspecialchars($achievement->place) ?></td>
+                    <td style="padding: 10px;"><?= htmlspecialchars(ucfirst($achievement->level)) ?></td>
+                    <td style="padding: 10px;"><?= htmlspecialchars($achievement->description) ?></td>
+                    <td style="padding: 10px; text-align: center;">
+                        
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<?php else: ?>
+<div class="performance-chart">
+    <div class="chart-header">
+        <h2><i class="fas fa-trophy"></i> Player Achievements</h2>
+        <button class="action-btn primary-btn" onclick="openAchievementModal()">
+            <i class="fas fa-plus"></i> Add Achievement
+        </button>
+    </div>
+    <div class="chart-container">
+        <div class="chart-placeholder">
+            <p>No achievements recorded yet. Click "Add Achievement" to get started.</p>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+<div class="action-buttons">
             <button class="action-btn secondary-btn" onclick="window.history.back()">
                 <i class="fas fa-arrow-left"></i> Back
             </button>
         </div>
     </div>
+
+    
+
+    <!-- Achievement Modal -->
+
     
     <div class="modal-overlay" id="modalOverlay"></div>
     
     <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 </body>
 </html>
+
+    
