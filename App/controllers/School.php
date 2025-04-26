@@ -32,10 +32,12 @@ class School extends Controller{
     
         $players = $this->userModel->getPlayersName($school_id);
         $facilityReq= $this->schoolModel->getFacilityRequests($school_id);
+        $extraClassReq= $this->schoolModel->getExtraClassRequests($school_id);
     
         $data = [
             'players' => $players,
-            'facilityReq' => $facilityReq
+            'facilityReq' => $facilityReq,
+            'extraClassReq' => $extraClassReq
         ];
     
         $this->view('School/school', $data);
@@ -341,10 +343,6 @@ class School extends Controller{
         }
     }
 
-
-        }
-    }
-
     private function updateRequestStatus($type, $id, $status) {
         if ($type === 'facility') {
             return $this->schoolModel->updateFacilityRequestStatus($id, $status);
@@ -412,57 +410,54 @@ class School extends Controller{
     }
 
     public function scheduleEx() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize non-array fields
-            $subject = filter_input(INPUT_POST, 'subject', FILTER_SANITIZE_STRING);
-            $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
-            $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
-            $venue = filter_input(INPUT_POST, 'venue', FILTER_SANITIZE_STRING);
+        $userId = (int) $_SESSION['user_id'];
     
-            // Handle array input (players[])
-            $players = isset($_POST['players']) && is_array($_POST['players'])
-                ? array_map('htmlspecialchars', $_POST['players'])
-                : [];
+        $school_id_obj = $this->schoolModel->getSchoolId($userId);
+        $school_id = $school_id_obj->school_id;
     
-            // Prepare data for database
-            $data = [
-                'players' => implode(", ", $players),
-                'subject' => trim($subject ?? ''),
-                'description' => trim($description ?? ''),
-                'date' => trim($date ?? ''),
-                'venue' => trim($venue ?? '')
-            ];
+        $players = $this->userModel->getPlayersName($school_id);
+        $facilityReq= $this->schoolModel->getFacilityRequests($school_id);
+        $extraClassReq= $this->schoolModel->getExtraClassRequests($school_id);
     
-            // Save to DB
-            $result = $this->schoolModel->addExtraClass($data);
-    
-            if ($result) {
-                $_SESSION['success_message'] = "Extra class scheduled successfully!";
-                header('Location: ' . ROOT . '/school/scheduleEx');
-                exit;
-            } else {
-                $_SESSION['error_message'] = "Failed to schedule extra class. Please try again.";
-                header('Location: ' . ROOT . '/school/scheduleEx/error');
-                exit;
-            }
-        } else {
-            try {
-                // Load players from userModel
-                $players = $this->userModel->getAllPlayers(); // Make sure userModel is loaded
-    
-                if (!$players) {
-                    $_SESSION['error_message'] = "No players found.";
-                    return $this->view('School/scheduleEx');
-                }
-    
-                return $this->view('School/scheduleEx', [
-                    'players' => $players
-                ]);
-            } catch (Exception $e) {
-                $_SESSION['error_message'] = "Error: " . $e->getMessage();
-                return $this->view('School/scheduleEx');
-            }
-        }
+        $data = [
+            'players' => $players,
+            'facilityReq' => $facilityReq,
+            'extraClassReq' => $extraClassReq
+        ];
+        return $this->view('School/scheduleEx',$data);
+        
     }
+
+    public function handleRequest()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $requestId = $_POST['request_id'] ?? '';
+        $action = $_POST['action'] ?? '';
+
+        if (empty($requestId) || empty($action)) {
+            // Invalid data
+            redirect('school/requests'); // Or wherever you want to send them back
+            return;
+        }
+
+        
+            if ($action === 'approve') {
+                // Approve the extra class request
+                $this->schoolModel->updateRequestStatus($requestId, 'approved');
+                flash('request_message', 'Request approved successfully.');
+            } elseif ($action === 'decline') {
+                // Decline the extra class request
+                $this->schoolModel->updateRequestStatus($requestId, 'declined');
+                flash('request_message', 'Request declined.');
+            }
+        
+
+        // After handling, redirect back
+        header('Location: ' . ROOT . '/school/scheduleEx'); // Adjust the redirect as per your page structure
+    } else {
+        header('Location: ' . ROOT . '/school/scheduleEx');
+    }
+}
+
 }
 ?>

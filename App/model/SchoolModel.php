@@ -212,44 +212,27 @@ class SchoolModel {
     /**
      * Get pending extra class requests
      */
-    public function getExtraClassRequests() {
+    public function getExtraClassRequests($school_id) {
         $this->db->query("
-            SELECT ecr.request_id, u.firstname as student_name, 
-                   ecr.subject_name, ecr.notes, ecr.status
-            FROM extra_class_requests ecr
-            JOIN users u ON ecr.student_id = u.user_id
-            WHERE ecr.status = 'pending'
+            SELECT * FROM `extra_class_requests`
         ");
         return $this->db->resultSet();
     }
+    
 
-    /**
-     * Update a facility request status
-     */
-    public function updateFacilityRequestStatus($requestId, $status) {
-        $this->db->query("
-            UPDATE facility_requests 
-            SET status = :status 
-            WHERE request_id = :request_id
-        ");
-        $this->db->bind(':status', $status);
-        $this->db->bind(':request_id', $requestId);
-        return $this->db->execute();
-    }
+    public function updateRequestStatus($requestId, $status)
+{
+    $this->db->query("
+        UPDATE extra_class_requests 
+        SET status = :status, response_date = NOW() 
+        WHERE id = :id
+    ");
+    $this->db->bind(':status', $status);
+    $this->db->bind(':id', $requestId);
 
-    /**
-     * Update an extra class request status
-     */
-    public function updateExtraClassRequestStatus($requestId, $status) {
-        $this->db->query("
-            UPDATE extra_class_requests 
-            SET status = :status 
-            WHERE request_id = :request_id
-        ");
-        $this->db->bind(':status', $status);
-        $this->db->bind(':request_id', $requestId);
-        return $this->db->execute() && $this->db->rowCount() > 0;
-    }
+    return $this->db->execute();
+}
+
 
     /**
      * Get players by school ID
