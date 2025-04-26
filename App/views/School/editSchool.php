@@ -1,10 +1,42 @@
+<?php
+//Check if session user ID exists
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['error_message']='Invalid Login! Please login again.';
+    header('Location: ' . ROOT . '/loginController/login');
+    exit;
+}
+
+$userId = (int) $_SESSION['user_id'];
+$username = (string) $_SESSION['username'];
+
+
+//Load required model file if not already loaded
+ require_once __DIR__ . '/../../model/loginPage.php';
+ // Adjust path as needed
+
+// Create login model instance
+$loginModel = new loginPage();
+
+$user = $loginModel->getUserById($userId);
+
+
+//If user does not exist in DB, destroy session and redirect
+if (!$user) {
+    session_unset();
+    session_destroy();
+    $_SESSION['error_message']='Login Failed! Try Again.';
+    header('Location: ' . ROOT . '/loginController/login');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit School Profile</title>
-    <link rel="stylesheet" href="/TrackMaster/Public/css/School/editSchool.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/School/editSchool.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 

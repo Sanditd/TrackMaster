@@ -325,6 +325,48 @@ class User {
             return $result->total;
         }
 
+        public function getPlayerIdByName($name) {
+            $query = "SELECT user_id FROM users WHERE firstname = :name";
+            $this->db->query($query);
+            $this->db->bind(':name', $name);
+            $user = $this->db->single();  // Now $user is an stdClass object
+        
+            // Check if user exists
+            if ($user) {
+                $user_id = $user->user_id;  // Access the user_id property
+            } else {
+                return null;  // Or handle the case where the user is not found
+            }
+        
+            $query = "SELECT player_id FROM user_player WHERE user_id = :user_id";
+            $this->db->query($query);
+            $this->db->bind(':user_id', $user_id);
+            $player = $this->db->single();  // Now $player is an stdClass object
+        
+            // Check if player exists
+            if ($player) {
+                return $player->player_id;  // Access the player_id property
+            } else {
+                return null;  // Or handle the case where the player is not found
+            }
+        }
+        
+        public function getUserInfo($user_id){
+            $query = "SELECT * FROM users WHERE user_id = :user_id";
+           
+            $this->db->query($query);
+            $this->db->bind(':user_id', $user_id);
+            return  $this->db->resultset();
+        }
+
+        public function getSchoolInfo($school_id){
+            $query = "SELECT * FROM user_school WHERE school_id = :school_id";
+            
+            $this->db->query($query);
+            $this->db->bind(':school_id', $school_id);
+            return $this->db->resultset();
+        }
+
         public function countPlayers(){
             $query = "SELECT COUNT(*) as total FROM user_player";
             $this->db->query($query);
@@ -347,22 +389,26 @@ class User {
         }
         
         public function getPlayersName($school_id) {
-            $query = "SELECT user_id FROM user_player WHERE school_id = :school_id";
+            $query = "SELECT user_id, player_id, sport_id FROM user_player WHERE school_id = :school_id";
             $this->db->query($query);
-            $this->db->bind(':school_id', $school_id); // ✅ Fixed here
-            $userIds = $this->db->resultset();
+            $this->db->bind(':school_id', $school_id);
+            $userPlayers = $this->db->resultset();
         
             $players = [];
         
-            foreach ($userIds as $userObj) {
-                $userDetails = $this->getUserById($userObj->user_id); // call the function
+            foreach ($userPlayers as $row) {
+                $userDetails = $this->getUserById($row->user_id); // still using existing function
                 if ($userDetails) {
+                    // Add player_id and sport_id to the returned user details
+                    $userDetails->player_id = $row->player_id;
+                    $userDetails->sport_id = $row->sport_id;
                     $players[] = $userDetails;
                 }
             }
         
             return $players;
         }
+        
         
         public function getUserById($user_id) {
             $query = "SELECT firstname, lname FROM users WHERE user_id = :user_id";
@@ -372,6 +418,22 @@ class User {
         }
         
         
-
+        public function getCoachesName() {
+            try {
+                $this->db->query("
+                    SELECT uc.coach_id, u.firstname, u.lname
+                    FROM user_coach uc
+                    JOIN users u ON uc.user_id = u.user_id
+                ");
+                return $this->db->resultset();
+        
+            } catch (PDOException $e) {
+                return [
+                    'error' => true,
+                    'message' => 'Database error: ' . $e->getMessage()
+                ];
+            }
+        }
+        
     }
 ?>

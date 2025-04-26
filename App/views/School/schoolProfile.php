@@ -1,3 +1,35 @@
+<?php
+//Check if session user ID exists
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['error_message']='Invalid Login! Please login again.';
+    header('Location: ' . ROOT . '/loginController/login');
+    exit;
+}
+
+$userId = (int) $_SESSION['user_id'];
+$username = (string) $_SESSION['username'];
+
+
+//Load required model file if not already loaded
+ require_once __DIR__ . '/../../model/loginPage.php';
+ // Adjust path as needed
+
+// Create login model instance
+$loginModel = new loginPage();
+
+$user = $loginModel->getUserById($userId);
+
+
+//If user does not exist in DB, destroy session and redirect
+if (!$user) {
+    session_unset();
+    session_destroy();
+    $_SESSION['error_message']='Login Failed! Try Again.';
+    header('Location: ' . ROOT . '/loginController/login');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,9 +47,11 @@
         <div class="profile-container">
             <div class="profile-header">
                 <h1><i class="fas fa-user-circle"></i> School Profile</h1>
+                <a href="<?php echo ROOT?>/School/EditProfile">
                 <button class="edit-profile-btn" onclick="openEditModal()">
                     <i class="fas fa-edit"></i> Edit Profile
                 </button>
+                </a>
             </div>
 
             <div class="profile-content">
@@ -41,46 +75,46 @@
             <h2>School Information</h2>
         </div>
         <div class="detail-content">
-            <div class="info-group">
-                <span class="info-icon"><i class="fas fa-envelope"></i></span>
-                <span class="info-text"><strong>Email:</strong> <span id="display-email">maliyadewaclg@gmail.com</span></span>
-            </div>
-            
-            <div class="info-group">
-                <span class="info-icon"><i class="fab fa-whatsapp"></i></span>
-                <span class="info-text"><strong>Phone:</strong> <span id="display-phone">033-2721456</span></span>
-            </div>
-            
-            <div class="info-group">
-                <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
-                <span class="info-text"><strong>Address:</strong> <span id="display-address">55/4A, Pirivena Road, Ratmalana</span></span>
-            </div>
+    <?php 
+        // Print the user information array
+        $userInfo = $data['userInfo'][0];
+        $schoolInfo = $data['schoolInfo'][0];
+    ?>
 
-            <div class="info-group">
-                <span class="info-icon"><i class="fas fa-code"></i></span>
-                <span class="info-text"><strong>School Code:</strong> <span id="display-code">R002</span></span>
-            </div>
-            
-            <div class="info-group">
-                <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
-                <span class="info-text"><strong>Zone:</strong> <span id="display-zone">Kurunagala</span></span>
-            </div>
+    <div class="info-group">
+        <span class="info-icon"><i class="fas fa-envelope"></i></span>
+        <span class="info-text"><strong>Email:</strong> <span id="display-email"><?= $userInfo->email ?></span></span>
+    </div>
+    
+    <div class="info-group">
+        <span class="info-icon"><i class="fab fa-whatsapp"></i></span>
+        <span class="info-text"><strong>Phone:</strong> <span id="display-phone"><?= $userInfo->phonenumber ?></span></span>
+    </div>
+    
+    <div class="info-group">
+        <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
+        <span class="info-text"><strong>Address:</strong> <span id="display-address"><?= $userInfo->address ?></span></span>
+    </div>
 
-            <div class="info-group">
-                <span class="info-icon"><i class="fas fa-globe-asia"></i></span>
-                <span class="info-text"><strong>Province:</strong> <span id="display-province">North Western</span></span>
-            </div>
+    <div class="info-group">
+    <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
+    <span class="info-text">
+        <strong>Zone:</strong>
+        <span id="display-zone"><?= $zoneInfo[0]->zoneName ?? 'Not specified' ?></span>
+    </span>
+</div>
 
-            <div class="info-group">
-                <span class="info-icon"><i class="fas fa-dumbbell"></i></span>
-                <span class="info-text"><strong>Facilities Available: </strong></span>
-                <label><input type="checkbox" checked disabled> Track</label>
-            <label><input type="checkbox" disabled> Indoor</label>
-            <label><input type="checkbox" checked disabled> Ground</label>
-            <label><input type="checkbox" disabled> Swimming Pool</label>
-            <label><input type="checkbox" disabled> Other</label>
-            </div>
-            </div>
+<div class="info-group">
+    <span class="info-icon"><i class="fas fa-globe-asia"></i></span>
+    <span class="info-text">
+        <strong>Province:</strong>
+        <span id="display-province"><?= $zoneInfo[0]->provinceName ?? 'Not specified' ?></span>
+    </span>
+</div>
+
+
+</div>
+
        
   
 

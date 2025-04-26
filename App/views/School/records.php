@@ -1,63 +1,35 @@
+<?php
+//Check if session user ID exists
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['error_message']='Invalid Login! Please login again.';
+    header('Location: ' . ROOT . '/loginController/login');
+    exit;
+}
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>School Dashboard</title>
-        <link rel="stylesheet" href="/TrackMaster/Public/css/School/records.css">
+$userId = (int) $_SESSION['user_id'];
+$username = (string) $_SESSION['username'];
 
-    </head>
-    <body>
 
-    <?php require 'navbar.php'; ?>  
-    <?php require 'sidebar.php'; ?>
+//Load required model file if not already loaded
+ require_once __DIR__ . '/../../model/loginPage.php';
+ // Adjust path as needed
 
-    <div class="section recent-clients">
-        <?php print_r($data)?> <br><br>
-        <table> 
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Grade</th>
-                    <th>Term</th>
-                    <th>Average</th>
-                    <th>Rank</th>
-                    <th>Notes</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="studentTableBody">
-    <?php if (!empty($data['records'])): ?>
-        <?php foreach ($data['records'] as $record): ?>
-            <tr>
-                <td><?php echo htmlspecialchars($record->firstname); ?></td>
-                <td class="editable"><?php echo htmlspecialchars($record->grade); ?></td>
-                <td class="editable"><?php echo htmlspecialchars($record->term); ?></td>
-                <td class="editable"><?php echo htmlspecialchars($record->average); ?></td>
-                <td class="editable"><?php echo htmlspecialchars($record->rank); ?></td>
-                <td class="editable"><?php echo htmlspecialchars($record->notes); ?></td>
-                <td>
-                <button 
-                    class="action-btn edit-btn" 
-                    type="button" 
-                    onclick="window.location.href='<?php echo URLROOT ?>/School/editRecord/<?php echo $record->player_id; ?>'">
-                    Edit
-                </button>
-                <button class="action-btn delete-btn" type="button" onclick="confirmDelete('<?php echo $record->player_id; ?>')">Delete</button>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="7">No records found.</td>
-        </tr>
-    <?php endif; ?>
-</tbody>
+// Create login model instance
+$loginModel = new loginPage();
 
-        </table>
-    </div>
-=======
+$user = $loginModel->getUserById($userId);
+
+
+//If user does not exist in DB, destroy session and redirect
+if (!$user) {
+    session_unset();
+    session_destroy();
+    $_SESSION['error_message']='Login Failed! Try Again.';
+    header('Location: ' . ROOT . '/loginController/login');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -401,28 +373,38 @@
                     </tr>
                 </thead>
                 <tbody id="studentTableBody">
-                    <?php if (!empty($data['records'])): ?>
-                        <?php foreach ($data['records'] as $record): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($record->firstname); ?></td>
-                                <td class="editable"><?php echo htmlspecialchars($record->grade); ?></td>
-                                <td class="editable"><?php echo htmlspecialchars($record->term); ?></td>
-                                <td class="editable"><?php echo htmlspecialchars($record->average); ?></td>
-                                <td class="editable"><?php echo htmlspecialchars($record->rank); ?></td>
-                                <td class="editable"><?php echo htmlspecialchars($record->notes); ?></td>
-                                <td>
-                                    <button class="action-btn edit-btn" type="button" onclick="window.location.href='<?php echo URLROOT ?>/School/editRecord/<?php echo $record->player_id; ?>'">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </button>
-                                    <button class="action-btn delete-btn" type="button" onclick="confirmDelete('<?php echo $record->player_id; ?>')">
-                                        <i class="fas fa-trash-alt"></i> Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr><td colspan="7">No records found.</td></tr>
-                    <?php endif; ?>
+                <?php if (!empty($data['records'])): ?>
+                    <?php foreach ($data['records'] as $record): ?>
+                        <tr>
+                            <!-- Find and display the player's full name -->
+                            <?php 
+                                $player_fullname = "Unknown";
+                                foreach ($data['playerNames'] as $player) {
+                                    if ($player->player_id == $record->player_id) {
+                                        $player_fullname = htmlspecialchars($player->firstname . ' ' . $player->lname);
+                                        break;
+                                    }
+                                }
+                            ?>
+                            <td class="editable"><?php echo $player_fullname; ?></td>
+                            <td class="editable"><?php echo htmlspecialchars($record->grade); ?></td>
+                            <td class="editable"><?php echo htmlspecialchars($record->term); ?></td>
+                            <td class="editable"><?php echo htmlspecialchars($record->average); ?></td>
+                            <td class="editable"><?php echo htmlspecialchars($record->rank); ?></td>
+                            <td class="editable"><?php echo htmlspecialchars($record->additional_notes); ?></td>
+                            <td>
+                                <button class="action-btn edit-btn" type="button" onclick="window.location.href='<?php echo URLROOT ?>/School/editRecord/<?php echo $record->player_id; ?>'">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="action-btn delete-btn" type="button" onclick="confirmDelete('<?php echo $record->player_id; ?>')">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><td colspan="7">No records found.</td></tr>
+                <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -436,10 +418,10 @@
                 <ul>
                     <li>
                         <label for="studentName"><i class="fas fa-user"></i> Student Name:</label>
-                        <select id="studentName" name="firstname">
+                        <select id="studentName" name="player_id">
                             <option value="" disabled selected>Please select a student</option>
-                            <?php foreach ($data['players'] as $player): ?>
-                                <option><?php echo htmlspecialchars($player->firstname); ?></option>
+                            <?php foreach ($data['playerNames'] as $player): ?>
+                                <option value="<?php echo $player->player_id; ?>"><?php echo htmlspecialchars($player->firstname . ' ' . $player->lname); ?></option>
                             <?php endforeach; ?>
                         </select>
                     </li>
@@ -461,7 +443,8 @@
                     </li>
                     <li>
                         <label for="notes"><i class="fas fa-sticky-note"></i> Additional Notes:</label>
-                        <textarea id="notes" name="notes" placeholder="Enter any additional information about the student's performance"></textarea>
+                        <textarea id="notes" name="additional_notes" placeholder="Enter any additional information about the student's performance"></textarea>
+                        <input type="hidden" id="school_id" name="school_id" value="<?php echo isset($data['records'][0]->school_id) ? $data['records'][0]->school_id : 1; ?>">
                     </li>
                 </ul>
                 <center>

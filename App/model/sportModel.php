@@ -675,14 +675,14 @@ require_once __DIR__ . '/../libraries/Database.php';
         
         public function getSports() {
             try {
-                $this->db->query("SELECT sport_id,sport_name,sport_type FROM sports");
-                $sports = $this->db->resultset();
+                $this->db->query("SELECT * FROM sports");
+                return  $this->db->resultset();
         
                 if (empty($sports)) {
                     throw new Exception("No sports found in the database.");
                 }
         
-                return $sports;
+                
         
             } catch (PDOException $e) {
                 return [
@@ -847,6 +847,22 @@ require_once __DIR__ . '/../libraries/Database.php';
     }
 }
 
+        public function getSportsNameId(){
+            $this->db->query("SELECT sport_name, Sport_id FROM sports");
+            return $this->db->resultset();
+        }   
+
+        public function updateRequestStatus($eventId, $status) {
+            try {
+                $this->db->query("UPDATE event_requests SET status = :status WHERE request_id = :event_id");
+                $this->db->bind(':status', $status);
+                $this->db->bind(':event_id', $eventId);
+                return $this->db->execute(); // ✅ Correct for UPDATE/INSERT/DELETE // Returns true if update succeeds
+            } catch (PDOException $e) {
+                // Optional: Log error or return false
+                return false;
+            }
+        }
         
 
     }
