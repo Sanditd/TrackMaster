@@ -535,200 +535,130 @@ class StudentModel {
     }
 
 
-    public function getUpcomingSessions($userId) {
-        // First get the player_id
-        $playerId = $this->getPlayerIdByUserId($userId);
-        if (!$playerId) {
-            return [];
+
+    public function getScheduledEvents($userId) {
+        // First get the coach ID for this user
+            $this->db->query('SELECT coach_id FROM user_coach 
+            JOIN user_player on user_coach.sport_id = user_player.sport_id 
+            AND user_coach.zone = user_player.zone
+            WHERE user_player.user_id = :user_id');
+            $this->db->bind(':user_id', $userId);
+            $coachData = $this->db->single();
+        
+        if (!$coachData || !isset($coachData->coach_id)) {
+            return []; // Return empty array if coach not found
         }
-    
+        
+        // Now get the scheduled events using the coach_id
         $this->db->query('
-            SELECT 
-                se.event_id,
-                se.event_name,
-                se.event_date,
-                se.time_from,
-                se.time_to,
-                se.school_id,
-                us.school_name,
-                us.address as school_address
+            SELECT se.*, us.school_name 
             FROM scheduled_events se
             JOIN user_school us ON se.school_id = us.school_id
-            JOIN user_player up ON up.school_id = us.school_id AND up.sport_id = :sport_id
-            WHERE up.user_id = :user_id
-            AND se.event_date >= CURDATE()
-            ORDER BY se.event_date ASC, se.time_from ASC
-            LIMIT 5
+            WHERE se.coach_id = :coach_id
+            ORDER BY se.event_date DESC, se.time_from DESC
         ');
-    
-        $this->db->bind(':user_id', $userId);
-        $this->db->bind(':sport_id', $this->getPlayerSportId($userId));
-    
-        try {
-            return $this->db->resultSet();
-        } catch (Exception $e) {
-            error_log('Error fetching upcoming sessions: ' . $e->getMessage());
-            return [];
-        }
-    }
-    
-    public function getPlayerSportId($userId) {
-        $this->db->query('SELECT sport_id FROM user_player WHERE user_id = :user_id');
-        $this->db->bind(':user_id', $userId);
-        try {
-            $result = $this->db->single();
-            return $result ? $result->sport_id : null;
-        } catch (Exception $e) {
-            error_log('Error fetching player sport ID: ' . $e->getMessage());
-            return null;
-        }
-    }
-    
-    public function getScheduleChangeRequests($userId) {
-        $this->db->query('
-            SELECT 
-                scr.id,
-                scr.event_name,
-                scr.event_date,
-                scr.event_time,
-                scr.event_location,
-                scr.reason,
-                scr.request_date,
-                scr.status,
-                scr.response_text,
-                scr.response_date
-            FROM schedule_change_requests scr
-            WHERE scr.player_id = (SELECT player_id FROM user_player WHERE user_id = :user_id)
-            ORDER BY scr.request_date DESC
-        ');
-        $this->db->bind(':user_id', $userId);
-    
-        try {
-            return $this->db->resultSet();
-        } catch (Exception $e) {
-            error_log('Error fetching schedule change requests: ' . $e->getMessage());
-            return [];
-        }
-    }
-    
-    public function getExtraClassRequests($userId) {
-        $this->db->query('
-            SELECT 
-                ecr.id,
-                ecr.subject_name,
-                ecr.reason,
-                ecr.request_date,
-                ecr.status,
-                ecr.response_text,
-                ecr.response_date
-            FROM extra_class_requests ecr
-            WHERE ecr.player_id = (SELECT player_id FROM user_player WHERE user_id = :user_id)
-            ORDER BY ecr.request_date DESC
-        ');
-        $this->db->bind(':user_id', $userId);
-    
-        try {
-            return $this->db->resultSet();
-        } catch (Exception $e) {
-            error_log('Error fetching extra class requests: ' . $e->getMessage());
-            return [];
-        }
-    }
-    
-    public function submitScheduleChangeRequest($data) {
-        $this->db->query('
-            INSERT INTO schedule_change_requests (
-                player_id,
-                coach_id,
-                event_name,
-                event_date,
-                event_time,
-                event_location,
-                reason
-            ) VALUES (
-                :player_id,
-                :coach_id,
-                :event_name,
-                :event_date,
-                :event_time,
-                :event_location,
-                :reason
-            )
-        ');
-    
-        $this->db->bind(':player_id', $data['player_id']);
-        $this->db->bind(':coach_id', $data['coach_id']);
-        $this->db->bind(':event_name', $data['event_name']);
-        $this->db->bind(':event_date', $data['event_date']);
-        $this->db->bind(':event_time', $data['event_time']);
-        $this->db->bind(':event_location', $data['event_location']);
-        $this->db->bind(':reason', $data['reason']);
-    
-        try {
-            return $this->db->execute();
-        } catch (Exception $e) {
-            error_log('Error submitting schedule change request: ' . $e->getMessage());
-            return false;
-        }
-    }
-    
-    public function submitExtraClassRequest($data) {
-        $this->db->query('
-            INSERT INTO extra_class_requests (
-                player_id,
-                school_id,
-                subject_name,
-                reason
-            ) VALUES (
-                :player_id,
-                :school_id,
-                :subject_name,
-                :reason
-            )
-        ');
-    
-        $this->db->bind(':player_id', $data['player_id']);
-        $this->db->bind(':school_id', $data['school_id']);
-        $this->db->bind(':subject_name', $data['subject_name']);
-        $this->db->bind(':reason', $data['reason']);
-    
-        try {
-            return $this->db->execute();
-        } catch (Exception $e) {
-            error_log('Error submitting extra class request: ' . $e->getMessage());
-            return false;
-        }
-    }
-    
-    public function getCoachIdByPlayerId($playerId) {
-        $this->db->query('
-            SELECT uc.coach_id 
-            FROM user_coach uc
-            JOIN user_player up ON uc.sport_id = up.sport_id AND uc.zone = up.zone
-            WHERE up.player_id = :player_id
-        ');
-        $this->db->bind(':player_id', $playerId);
-        
-        try {
-            $result = $this->db->single();
-            return $result ? $result->coach_id : null;
-        } catch (Exception $e) {
-            error_log('Error fetching coach ID: ' . $e->getMessage());
-            return null;
-        }
-    }
-    
-    public function getSchoolIdByPlayerId($playerId) {
-        $this->db->query('SELECT school_id FROM user_player WHERE player_id = :player_id');
-        $this->db->bind(':player_id', $playerId);
-        
-        try {
-            $result = $this->db->single();
-            return $result ? $result->school_id : null;
-        } catch (Exception $e) {
-            error_log('Error fetching school ID: ' . $e->getMessage());
-            return null;
-        }
+        $this->db->bind(':coach_id', $coachData->coach_id);
+        return $this->db->resultSet();
     }
 
-}
+    public function getPlayerByUserId($userId) {
+        $this->db->query('SELECT player_id FROM user_player WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $userId);
+        return $this->db->single();
+    }
+
+    public function getEventsForDropdown($userId) {
+        // First get the coach's zone from user_coach table
+        $this->db->query('SELECT coach_id FROM user_coach 
+        JOIN user_player on user_coach.sport_id = user_player.sport_id 
+        AND user_coach.zone = user_player.zone
+        WHERE user_player.user_id = :user_id');
+        $this->db->bind(':user_id', $userId);
+        $coachData = $this->db->single();
+    
+    if (!$coachData || !isset($coachData->coach_id)) {
+        return []; // Return empty array if coach not found
+    }
+        
+        
+        // Get schools in the same zone
+        $this->db->query('
+            SELECT event_id, event_name 
+            FROM scheduled_events 
+            WHERE coach_id = :coach_id
+            ORDER BY event_name
+        ');
+        $this->db->bind(':coach_id',  $coachData->coach_id);
+        return $this->db->resultSet();
+    }
+
+    public function requestSheduleChange($data){
+            $this->db->query('
+                INSERT INTO schedule_change_requests 
+                (player_id, coach_id, event_id, reason)
+                VALUES 
+                (:player_id, :coach_id, :event_id, :reschedule_reason)
+            ');
+            
+            $this->db->bind(':player_id', $data['player_id']);
+            $this->db->bind(':coach_id', $data['coach_id']);
+            $this->db->bind(':event_id', $data['event_id']);
+            $this->db->bind(':reschedule_reason', $data['reschedule_reason']);
+            
+            return $this->db->execute();
+        }
+
+        public function getCoach($userId) {
+            // First get the coach ID for this user
+                $this->db->query('SELECT coach_id FROM user_coach 
+                JOIN user_player on user_coach.sport_id = user_player.sport_id 
+                AND user_coach.zone = user_player.zone
+                WHERE user_player.user_id = :user_id');
+                $this->db->bind(':user_id', $userId);
+            
+                $this->db->bind(':user_id', $userId);
+                return $this->db->single();
+        }
+
+        public function requestExtraClass($data) {
+            $this->db->query('
+                INSERT INTO extra_class_requests 
+                (player_id, school_id, subject_name, reason) 
+                VALUES 
+                (:player_id, :school_id, :subject_name, :reason)
+            ');
+            
+            $this->db->bind(':player_id', $data['player_id']);
+            $this->db->bind(':school_id', $data['school_id']);
+            $this->db->bind(':subject_name', $data['subject_name']);
+            $this->db->bind(':reason', $data['reason']);
+            
+            return $this->db->execute();
+        }
+        
+        public function getExtraClassRequests($userId) {
+            $playerId = $this->getPlayerIdByUserId($userId);
+            if (!$playerId) {
+                return [];
+            }
+        
+            $this->db->query('
+                SELECT e.*, u.firstname, u.lname 
+                FROM extra_class_requests e
+                JOIN user_player up ON e.player_id = up.player_id
+                JOIN users u ON up.user_id = u.user_id
+                WHERE e.player_id = :player_id
+                ORDER BY e.request_date DESC
+            ');
+            $this->db->bind(':player_id', $playerId);
+            
+            try {
+                return $this->db->resultSet();
+            } catch (Exception $e) {
+                error_log('Error fetching extra class requests: ' . $e->getMessage());
+                return [];
+            }
+        }
+        
+    
+    }

@@ -381,7 +381,7 @@ class Student extends Controller {
                     exit();
                 }
 
-                $upload_dir = __DIR__ . '/../public/uploads/financial_reports/';
+                $upload_dir = __DIR__. '/../public/uploads/financial_reports/';
                 if (!is_dir($upload_dir)) {
                     mkdir($upload_dir, 0755, true);
                 }
@@ -531,8 +531,22 @@ class Student extends Controller {
     }
 
     public function studentSchedule() {
-        $data = [];
-        $this->view('Student/studentSchedule');
+        if (!isset($_SESSION['user_id'])) {
+            redirect('users/login');
+        }
+    
+        // var_dump($_SESSION['user_id']);
+        $scheduledEvents = $this->studentModel->getScheduledEvents($_SESSION['user_id']);
+        $events = $this->studentModel->getEventsForDropdown($_SESSION['user_id']);
+       
+    
+        $data = [
+            'scheduledEvents' => $scheduledEvents,
+            'events' => $events
+            
+        ];
+    
+        $this->view('Student/studentSchedule', $data);
     }
 
     public function schoolProfile() {
@@ -690,5 +704,100 @@ public function Playerperformance() {
     
     $this->view('Student/Playerperformance', $data);
 }
+
+public function requestSheuleChange() {
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Get the coach_id for this user
+        $coachData = $this->studentModel->getCoach($_SESSION['user_id']);
+
+        if (!$coachData || !isset($coachData->coach_id)) {
+            flash('event_error', 'Invalid coach account');
+            redirect('student/studentSchedule');
+        }
+
+        $studentData = $this->studentModel->getPlayerByUserId($_SESSION['user_id']);
+
+        if (!$studentData || !isset($studentData->player_id)) {
+            flash('event_error', 'Invalid student account');
+            redirect('student/studentSchedule');
+        }
+
+        // Sanitize POST data
+        $_POST = filter_input_array(INPUT_POST, [
+            'event_id' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'reschedule_reason' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        ]);
+
+        $data = [
+            'player_id' => $studentData->player_id, // corrected
+            'coach_id' => $coachData->coach_id,
+            'event_id' => trim($_POST['event_id']),
+            'reschedule_reason' => trim($_POST['reschedule_reason']), // corrected
+        ];
+
+        if ($this->studentModel->requestSheduleChange($data)) {
+            flash('event_message', 'equest submitted successfully');
+            redirect('student/studentShedule');
+        } else {
+            die('Something went wrong');
+        }
+        
+    } else {
+        redirect('student/studentShedule');
+    }
+}
+
+public function requestExtraClass() {
+    if (!isset($_SESSION['user_id'])) {
+        redirect('users/login');
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Get player and school data
+        $playerData = $this->studentModel->getPlayerByUserId($_SESSION['user_id']);
+        $schoolId = $this->studentModel->getSchoolByPlayerId($_SESSION['user_id']);
+
+        if (!$playerData || !isset($playerData->player_id) || !$schoolId) {
+            flash('extra_class_error', 'Invalid player or school account');
+            redirect('student/studentSchedule');
+        }
+
+        // Sanitize POST data
+        $_POST = filter_input_array(INPUT_POST, [
+            'subject_name' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'reason' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        ]);
+
+        $data = [
+            'player_id' => $playerData->player_id,
+            'school_id' => $schoolId,
+            'subject_name' => trim($_POST['subject_name']),
+            'reason' => trim($_POST['reason']),
+        ];
+
+        // Validate
+        if (empty($data['subject_name'])) {
+            flash('extra_class_error', 'Subject name is required');
+            redirect('student/studentSchedule');
+        }
+
+        if (empty($data['reason'])) {
+            flash('extra_class_error', 'Reason is required');
+            redirect('student/studentSchedule');
+        }
+
+        if ($this->studentModel->requestExtraClass($data)) {
+            flash('extra_class_message', 'Extra class request submitted successfully');
+        } else {
+            flash('extra_class_error', 'Failed to submit extra class request');
+        }
+        
+        redirect('student/studentSchedule');
+    } else {
+        redirect('student/studentSchedule');
+    }
+}
+
 
 }
