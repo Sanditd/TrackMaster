@@ -381,7 +381,7 @@ class Student extends Controller {
                     exit();
                 }
 
-                $upload_dir = __DIR__. '/../public/uploads/financial_reports/';
+                $upload_dir = __DIR__ . '/../public/uploads/financial_reports/';
                 if (!is_dir($upload_dir)) {
                     mkdir($upload_dir, 0755, true);
                 }
@@ -750,16 +750,22 @@ public function requestSheuleChange() {
 
 public function requestExtraClass() {
     if (!isset($_SESSION['user_id'])) {
-        redirect('users/login');
+        header('Location: ' . URLROOT . '/users/login');
+        exit();
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Get player and school data
+        // Get the player_id for the current user
         $playerData = $this->studentModel->getPlayerByUserId($_SESSION['user_id']);
-        $schoolId = $this->studentModel->getSchoolByPlayerId($_SESSION['user_id']);
+        if (!$playerData || !isset($playerData->player_id)) {
+            flash('request_error', 'Invalid player account');
+            redirect('student/studentSchedule');
+        }
 
-        if (!$playerData || !isset($playerData->player_id) || !$schoolId) {
-            flash('extra_class_error', 'Invalid player or school account');
+        // Get the school_id for the current player
+        $schoolData = $this->studentModel->getSchoolByPlayerId($_SESSION['user_id']);
+        if (!$schoolData || !isset($schoolData->school_id)) {
+            flash('request_error', 'School information not found');
             redirect('student/studentSchedule');
         }
 
@@ -771,33 +777,38 @@ public function requestExtraClass() {
 
         $data = [
             'player_id' => $playerData->player_id,
-            'school_id' => $schoolId,
+            'school_id' => $schoolData->school_id,
             'subject_name' => trim($_POST['subject_name']),
             'reason' => trim($_POST['reason']),
+            'errors' => []
         ];
 
-        // Validate
+        // Validate inputs
         if (empty($data['subject_name'])) {
-            flash('extra_class_error', 'Subject name is required');
-            redirect('student/studentSchedule');
+            $data['errors']['subject_name'] = 'Subject name is required';
         }
-
         if (empty($data['reason'])) {
-            flash('extra_class_error', 'Reason is required');
+            $data['errors']['reason'] = 'Reason is required';
+        }
+
+        if (!empty($data['errors'])) {
+            // Store errors in session to display them
+            $_SESSION['extra_class_errors'] = $data['errors'];
+            $_SESSION['extra_class_form_data'] = $data;
             redirect('student/studentSchedule');
         }
 
-        if ($this->studentModel->requestExtraClass($data)) {
-            flash('extra_class_message', 'Extra class request submitted successfully');
+        // Attempt to save the request
+        if ($this->studentModel->requestExtraClasss($data)) {
+            flash('request_message', 'Extra class request submitted successfully', 'alert alert-success');
         } else {
-            flash('extra_class_error', 'Failed to submit extra class request');
+            flash('request_error', 'Failed to submit extra class request', 'alert alert-danger');
         }
-        
+
         redirect('student/studentSchedule');
     } else {
         redirect('student/studentSchedule');
     }
 }
-
 
 }

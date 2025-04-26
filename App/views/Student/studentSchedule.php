@@ -571,109 +571,56 @@
 
             <!-- Request Extra Classes Section -->
             <div class="dashboard-section">
-                <h2>Request Extra Classes</h2>
-                <p><i class="fas fa-info-circle"></i> Need additional academic support? Request extra classes here</p>
-                <div class="form-container">
-                    <form id="scheduleExtraClassForm" class="schedule-form" action="<?php echo URLROOT; ?>/student/requestExtraClass" method="post">
-                        <div class="form-group">
-                            <label for="subject_name" class="required-field">Subject Name:</label>
-                            <input type="text" id="subject_name" name="subject_name" placeholder="e.g. Sprint Training, Mathematics" required>
-                        </div>
+    <h2>Request Extra Classes</h2>
+    <p><i class="fas fa-info-circle"></i> Need additional academic support? Request extra classes here</p>
 
-                        <div class="form-group">
-                            <label for="reason" class="required-field">Reason:</label>
-                            <textarea id="reason" name="reason" placeholder="Provide details about what you need help with..." required></textarea>
-                        </div>
-                            
-                        <div class="form-buttons">
-                            <button type="submit" class="btn">
-                                <i class="fas fa-paper-plane"></i> Submit Request
-                            </button>
-                            <button type="button" class="btn btn-secondary">
-                                <i class="fas fa-times"></i> Cancel
-                            </button>
-                        </div>
-                    </form>
-                    <div class="form-footer">
-                        <p><i class="fas fa-clock"></i> The School will review your request and respond within 48 hours</p>
-                    </div>
-                </div>
+    
+    <div class="form-container">
+        <form id="scheduleExtraClassForm" class="schedule-form" action="<?php echo URLROOT; ?>/student/requestExtraClass" method="post">
+            <div class="form-group">
+                <label for="subject_name" class="required-field">Subject Name:</label>
+                <input type="text" id="subject_name" name="subject_name" 
+                       value="<?php echo isset($_SESSION['extra_class_form_data']['subject_name']) ? htmlspecialchars($_SESSION['extra_class_form_data']['subject_name']) : ''; ?>" 
+                       placeholder="e.g. Mathematics, Science" required>
+                <?php if (isset($_SESSION['extra_class_errors']['subject_name'])) : ?>
+                    <span class="text-danger"><?php echo $_SESSION['extra_class_errors']['subject_name']; ?></span>
+                    <?php unset($_SESSION['extra_class_errors']['subject_name']); ?>
+                <?php endif; ?>
             </div>
+
+            <div class="form-group">
+                <label for="reason" class="required-field">Reason:</label>
+                <textarea id="reason" name="reason" placeholder="Provide details about what you need help with..." required><?php echo isset($_SESSION['extra_class_form_data']['reason']) ? htmlspecialchars($_SESSION['extra_class_form_data']['reason']) : ''; ?></textarea>
+                <?php if (isset($_SESSION['extra_class_errors']['reason'])) : ?>
+                    <span class="text-danger"><?php echo $_SESSION['extra_class_errors']['reason']; ?></span>
+                    <?php unset($_SESSION['extra_class_errors']['reason']); ?>
+                <?php endif; ?>
+            </div>
+                
+            <div class="form-buttons">
+                <button type="submit" class="btn">
+                    <i class="fas fa-paper-plane"></i> Submit Request
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Clear Form
+                </button>
+            </div>
+        </form>
+        <div class="form-footer">
+            <p><i class="fas fa-clock"></i> The School will review your request and respond within 48 hours</p>
+        </div>
+    </div>
+</div></div></div>
+
+<?php 
+// Clear the session variables after displaying them
+unset($_SESSION['extra_class_form_data']);
+unset($_SESSION['extra_class_errors']);
+?>
 
             <!-- Request Status Table - Full Width -->
-            <div class="dashboard-section full-width">
-                <h2>Request Status</h2>
-                <p><i class="fas fa-info-circle"></i> Track the status of your schedule change and extra class requests</p>
-                <div class="table-responsive">
-                <table class="status-table">
-    <thead>
-        <tr>
-            <th>Request ID</th>
-            <th>Type</th>
-            <th>Date Submitted</th>
-            <th>Event/Subject</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php 
-        // Get both types of requests
-        $scheduleRequests = $this->studentModel->getScheduleChangeRequests($_SESSION['user_id']);
-        $extraClassRequests = $this->studentModel->getExtraClassRequests($_SESSION['user_id']);
-        
-        // Combine and sort by date
-        $allRequests = array_merge($scheduleRequests, $extraClassRequests);
-        usort($allRequests, function($a, $b) {
-            return strtotime($b->request_date) - strtotime($a->request_date);
-        });
-        
-        foreach ($allRequests as $request): 
-            $isExtraClass = isset($request->subject_name);
-        ?>
-            <tr>
-                <td>#REQ-<?php echo $request->id; ?></td>
-                <td><?php echo $isExtraClass ? 'Extra Class' : 'Schedule Change'; ?></td>
-                <td><?php echo date('M j, Y', strtotime($request->request_date)); ?></td>
-                <td><?php echo $isExtraClass ? $request->subject_name : $request->event_name; ?></td>
-                <td>
-                    <span class="status-badge status-<?php echo strtolower($request->status); ?>">
-                        <?php echo ucfirst($request->status); ?>
-                    </span>
-                </td>
-                <td class="table-actions">
-                    <button class="action-btn" title="View Details" onclick="viewRequestDetails(<?php echo $request->id; ?>, '<?php echo $isExtraClass ? 'extra_class' : 'schedule'; ?>')">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <?php if ($request->status == 'pending'): ?>
-                        <button class="action-btn" title="Cancel Request" onclick="cancelRequest(<?php echo $request->id; ?>, '<?php echo $isExtraClass ? 'extra_class' : 'schedule'; ?>')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    <?php endif; ?>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="noteModal" class="modal hidden">
-        <div class="modal-content">
-            <h3 id="noteTitle"><i class="fas fa-sticky-note"></i> Add Note</h3>
-            <textarea id="noteInput" placeholder="Write your note here..."></textarea>
-            <div class="modal-actions">
-                <button class="btn" id="saveNote">
-                    <i class="fas fa-save"></i> Save Note
-                </button>
-                <button class="btn btn-secondary" id="closeModal">
-                    <i class="fas fa-times"></i> Close
-                </button>
-            </div>
-        </div>
-    </div>
+                                
+    
 
     <?php require 'footer.php'; ?>
 
