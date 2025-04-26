@@ -381,7 +381,7 @@ class Student extends Controller {
                     exit();
                 }
 
-                $upload_dir = __DIR__ . '/../public/uploads/financial_reports/';
+                $upload_dir = __DIR__. '/../public/uploads/financial_reports/';
                 if (!is_dir($upload_dir)) {
                     mkdir($upload_dir, 0755, true);
                 }
@@ -452,7 +452,7 @@ class Student extends Controller {
 
     public function medicalStatus() {
         $userId = $_SESSION['user_id'];
-
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Handle medical form submission
             $data = [
@@ -463,15 +463,15 @@ class Student extends Controller {
                 'notes' => trim($_POST['notes']),
                 'errors' => []
             ];
-
+    
             if (empty($data['date'])) {
                 $data['errors']['date'] = 'Date is required';
             }
-
+    
             if (empty($data['condition'])) {
                 $data['errors']['condition'] = 'Medical condition is required';
             }
-
+    
             if (empty($data['errors'])) {
                 if ($this->medicalModel->addMedicalRecord($data)) {
                     flash('medical_message', 'Medical record added successfully', 'alert alert-success');
@@ -482,14 +482,22 @@ class Student extends Controller {
                 $_SESSION['medical_errors'] = $data['errors'];
                 $_SESSION['medical_form_data'] = $data;
             }
-
+    
             header('Location: ' . URLROOT . '/Student/medicalStatus');
             exit();
         }
-
+    
         // GET request: fetch and display data
-        $data = $this->medicalModel->index($userId);
-        $data['user_id'] = $userId;
+        $currentData = $this->medicalModel->index($userId); // medical status and history
+        $thingsToConsider = $this->medicalModel->getThingsToConsider($userId); // 🆕 added line
+    
+        $data = [
+            'currentStatus' => $currentData['currentStatus'],
+            'medicalHistory' => $currentData['medicalHistory'],
+            'thingsToConsider' => $thingsToConsider,
+            'user_id' => $userId
+        ];
+    
         $this->view('Student/medicalStatus', $data);
     }
 
@@ -523,18 +531,27 @@ class Student extends Controller {
     }
 
     public function studentSchedule() {
-        $data = [];
-        $this->view('Student/studentSchedule');
+        if (!isset($_SESSION['user_id'])) {
+            redirect('users/login');
+        }
+    
+        // var_dump($_SESSION['user_id']);
+        $scheduledEvents = $this->studentModel->getScheduledEvents($_SESSION['user_id']);
+        $events = $this->studentModel->getEventsForDropdown($_SESSION['user_id']);
+       
+    
+        $data = [
+            'scheduledEvents' => $scheduledEvents,
+            'events' => $events
+            
+        ];
+    
+        $this->view('Student/studentSchedule', $data);
     }
 
     public function schoolProfile() {
         $data = [];
         $this->view('Student/schoolProfile');
-    }
-
-    public function Playerperformance() {
-        $data = [];
-        $this->view('Student/Playerperformance');
     }
 
     public function saveCalendarNote() {
@@ -596,22 +613,25 @@ class Student extends Controller {
 
     public function saveThingsToConsider() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userId = $_SESSION['user_id'];
+    
             $data = [
+                'user_id' => $userId,
                 'blood_type' => trim($_POST['bloodType']),
                 'allergies' => trim($_POST['allergies']),
                 'special_notes' => trim($_POST['specialNotes']),
                 'emergency_contact' => trim($_POST['emergencyContact']),
                 'errors' => []
             ];
-
+    
             if (empty($data['blood_type'])) {
                 $data['errors']['blood_type'] = 'Blood type is required';
             }
-
+    
             if (empty($data['emergency_contact'])) {
                 $data['errors']['emergency_contact'] = 'Emergency contact is required';
             }
-
+    
             if (empty($data['errors'])) {
                 if ($this->medicalModel->updateThingsToConsider($data)) {
                     flash('medical_message', 'Health information updated successfully', 'alert alert-success');
@@ -622,10 +642,162 @@ class Student extends Controller {
                 $_SESSION['things_errors'] = $data['errors'];
                 $_SESSION['things_form_data'] = $data;
             }
-
+    
             header('Location: ' . URLROOT . '/Student/medicalStatus');
             exit();
         }
     }
+
+
+    public function thingsToConsider() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . URLROOT . '/users/login');
+            exit();
+        }
+    
+        $userId = $_SESSION['user_id'];
+    
+    
+        $data = [
+            'thingsToConsider' => $medicalModel->getThingsToConsider($userId),
+        ];
+    
+        $this->view('Student/medicalStatus', $data);
+    }
+
+
+public function Playerperformance() {
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: ' . URLROOT . '/users/login');
+        exit();
+    }
+
+    $userId = $_SESSION['user_id'];
+    
+    // Get player details
+    $player = $this->studentModel->getUserDetails($userId);
+    if (!$player) {
+        $_SESSION['message'] = 'Unable to fetch player details.';
+        $_SESSION['message_type'] = 'error';
+        header('Location: ' . URLROOT . '/Student/studentDashboard');
+        exit();
+    }
+
+    // Get player_id for debugging
+    $playerId = $this->studentModel->getPlayerIdByUserId($userId);
+    error_log("Playerperformance: user_id=$userId, player_id=$playerId");
+
+    // Get player stats from cricket_stats table
+    $stats = $this->studentModel->getCricketStats($userId);
+    
+    // Get recent match performances
+    $performances = $this->studentModel->getRecentPerformances($userId);
+    error_log("Recent Performances: " . print_r($performances, true));
+    
+    $data = [
+        'player' => $player,
+        'stats' => $stats ? $stats : (object)[],
+        'performances' => $performances,
+        'message' => isset($_SESSION['message']) ? $_SESSION['message'] : null,
+        'message_type' => isset($_SESSION['message_type']) ? $_SESSION['message_type'] : null
+    ];
+    
+    $this->view('Student/Playerperformance', $data);
+}
+
+public function requestSheuleChange() {
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Get the coach_id for this user
+        $coachData = $this->studentModel->getCoach($_SESSION['user_id']);
+
+        if (!$coachData || !isset($coachData->coach_id)) {
+            flash('event_error', 'Invalid coach account');
+            redirect('student/studentSchedule');
+        }
+
+        $studentData = $this->studentModel->getPlayerByUserId($_SESSION['user_id']);
+
+        if (!$studentData || !isset($studentData->player_id)) {
+            flash('event_error', 'Invalid student account');
+            redirect('student/studentSchedule');
+        }
+
+        // Sanitize POST data
+        $_POST = filter_input_array(INPUT_POST, [
+            'event_id' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'reschedule_reason' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        ]);
+
+        $data = [
+            'player_id' => $studentData->player_id, // corrected
+            'coach_id' => $coachData->coach_id,
+            'event_id' => trim($_POST['event_id']),
+            'reschedule_reason' => trim($_POST['reschedule_reason']), // corrected
+        ];
+
+        if ($this->studentModel->requestSheduleChange($data)) {
+            flash('event_message', 'equest submitted successfully');
+            redirect('student/studentShedule');
+        } else {
+            die('Something went wrong');
+        }
+        
+    } else {
+        redirect('student/studentShedule');
+    }
+}
+
+public function requestExtraClass() {
+    if (!isset($_SESSION['user_id'])) {
+        redirect('users/login');
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Get player and school data
+        $playerData = $this->studentModel->getPlayerByUserId($_SESSION['user_id']);
+        $schoolId = $this->studentModel->getSchoolByPlayerId($_SESSION['user_id']);
+
+        if (!$playerData || !isset($playerData->player_id) || !$schoolId) {
+            flash('extra_class_error', 'Invalid player or school account');
+            redirect('student/studentSchedule');
+        }
+
+        // Sanitize POST data
+        $_POST = filter_input_array(INPUT_POST, [
+            'subject_name' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'reason' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        ]);
+
+        $data = [
+            'player_id' => $playerData->player_id,
+            'school_id' => $schoolId,
+            'subject_name' => trim($_POST['subject_name']),
+            'reason' => trim($_POST['reason']),
+        ];
+
+        // Validate
+        if (empty($data['subject_name'])) {
+            flash('extra_class_error', 'Subject name is required');
+            redirect('student/studentSchedule');
+        }
+
+        if (empty($data['reason'])) {
+            flash('extra_class_error', 'Reason is required');
+            redirect('student/studentSchedule');
+        }
+
+        if ($this->studentModel->requestExtraClass($data)) {
+            flash('extra_class_message', 'Extra class request submitted successfully');
+        } else {
+            flash('extra_class_error', 'Failed to submit extra class request');
+        }
+        
+        redirect('student/studentSchedule');
+    } else {
+        redirect('student/studentSchedule');
+    }
+}
+
 
 }

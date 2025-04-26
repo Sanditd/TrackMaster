@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../libraries/database.php';
+
 
 class SchoolModel {
     private $db;
@@ -173,7 +173,7 @@ class SchoolModel {
      * Add a facility
      */
     public function addFacility($data) {
-        $sql = "INSERT INTO facilities (facility_type, other_facility, facility_name, location, date_established, size, `condition`, capacity, schedule_notes, remarks) 
+        $sql = "INSERT INTO facilities (facility_type, other_facility, facility_name, location, date_established, size, condition, capacity, schedule_notes, remarks) 
                 VALUES (:facilityType, :otherFacility, :facilityName, :location, :dateEstablished, :size, :condition, :capacity, :scheduleNotes, :remarks)";
         $this->db->query($sql);
         $this->db->bind(':facilityType', $data['facilityType']);
@@ -194,7 +194,9 @@ class SchoolModel {
      */
     public function getFacilityRequests($school_id = null) {
         if ($school_id) {
+
             $this->db->query("SELECT * FROM event_requests WHERE school_id = :school_id");
+
             $this->db->bind(':school_id', $school_id);
         } else {
             $this->db->query("

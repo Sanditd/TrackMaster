@@ -9,8 +9,10 @@ class School extends Controller{
     public function __construct() {
         $this->schoolModel = $this->model('SchoolModel');
         $this->userModel = $this->model('User');
+
         $this->zoneModel = $this->model('zoneModel');
         $this->sportModel = $this->model('sportModel');
+
     }
 
     public function fetchPlayers() {
@@ -40,6 +42,7 @@ class School extends Controller{
     }
     
     public function EditProfile(){
+
         $user_id=$_SESSION['user_id'];
         $school_id_obj = $this->schoolModel->getSchoolId($user_id);
         $school_id = $school_id_obj->school_id;
@@ -211,6 +214,7 @@ class School extends Controller{
         $this->view('School/editRecord', $data);
     }
 
+
     public function saveEditedRecord() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -328,27 +332,16 @@ class School extends Controller{
             } else {
                 $_SESSION['flash_message'] = 'Failed to update request status.';
                 header('Location: ' . ROOT . '/school/requests');
+ 
                 exit;
             }
+        } else {
+            // Display the form for GET requests
+            $this->view('School/facilityForm');
         }
     }
-    
-    
-    
 
-    public function declineRequest() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $requestType = htmlspecialchars(trim($_POST['request_type']));
-            $requestId = filter_var($_POST['request_id'], FILTER_VALIDATE_INT);
-    
-            if ($this->updateRequestStatus($requestType, $requestId, 'declined')) {
-                $_SESSION['flash_message'] = 'Request declined successfully!';
-            } else {
-                $_SESSION['flash_message'] = 'Failed to decline request.';
-            }
-    
-            header('Location: ' . ROOT . '/school/getrequests');
-            exit;
+
         }
     }
 
@@ -412,6 +405,8 @@ class School extends Controller{
         }
     }
 
+
+   
     public function scheduleExtra(){
         $this->view('School/scheduleEx');
     }

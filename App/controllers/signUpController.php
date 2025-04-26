@@ -77,8 +77,6 @@ class SignUpController extends Controller {
     //adminsignupview
     public function adminsignupview() {
         $data = [];
-
-
         $this->view('SignUp/Admin', $data);
     }
     

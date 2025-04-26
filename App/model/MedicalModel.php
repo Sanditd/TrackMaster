@@ -51,17 +51,7 @@ class MedicalModel {
         return $this->db->resultSet();
     }
     
-    public function getThingsToConsider($user_id) {
-        $player_id = $this->getPlayerIdByUserId($user_id);
-        if (!$player_id) return false;
-    
-        $this->db->query('
-            SELECT * FROM medical_info 
-            WHERE player_id = :player_id
-        ');
-        $this->db->bind(':player_id', $player_id);
-        return $this->db->single();
-    }
+   
 
     public function addMedicalRecord($data) {
         $player_id = $this->getPlayerIdByUserId($_SESSION['user_id']);
@@ -86,30 +76,38 @@ class MedicalModel {
     }
 
     public function updateThingsToConsider($data) {
-        $player_id = $this->getPlayerIdByUserId($_SESSION['user_id']);
-        if (!$player_id) return false;
-    
-        $this->db->query('
-            INSERT INTO medical_info 
-            (player_id, blood_type, allergies, special_notes, emergency_contact, last_updated) 
-            VALUES 
-            (:player_id, :blood_type, :allergies, :special_notes, :emergency_contact, NOW())
-            ON DUPLICATE KEY UPDATE
-            blood_type = VALUES(blood_type),
-            allergies = VALUES(allergies),
-            special_notes = VALUES(special_notes),
-            emergency_contact = VALUES(emergency_contact),
-            last_updated = NOW()
-        ');
+        // First check if a record already exists
+        $this->db->query("SELECT id FROM things_to_consider WHERE user_id = :user_id");
+        $this->db->bind(':user_id', $data['user_id']);
+        $row = $this->db->single(); // fetch record
         
-        // Bind values
-        $this->db->bind(':player_id', $player_id);
+        if ($row) {
+            // Record exists, perform UPDATE
+            $this->db->query("UPDATE things_to_consider 
+                              SET blood_type = :blood_type, allergies = :allergies, 
+                                  special_notes = :special_notes, emergency_contact = :emergency_contact 
+                              WHERE user_id = :user_id");
+        } else {
+            // No record exists, perform INSERT
+            $this->db->query("INSERT INTO things_to_consider (user_id, blood_type, allergies, special_notes, emergency_contact) 
+                              VALUES (:user_id, :blood_type, :allergies, :special_notes, :emergency_contact)");
+        }
+    
+        // Bind parameters
+        $this->db->bind(':user_id', $data['user_id']);
         $this->db->bind(':blood_type', $data['blood_type']);
         $this->db->bind(':allergies', $data['allergies']);
         $this->db->bind(':special_notes', $data['special_notes']);
         $this->db->bind(':emergency_contact', $data['emergency_contact']);
     
-        // Execute
         return $this->db->execute();
     }
+
+    public function getThingsToConsider($userId) {
+        $this->db->query('SELECT * FROM things_to_consider WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $userId);
+        return $this->db->single();
+    }
+    
+
 }

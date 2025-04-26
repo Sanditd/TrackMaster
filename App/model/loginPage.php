@@ -204,6 +204,7 @@ public function getUserById($userId){
 }
     
 
+
 // public function getUserById($userId){
 
 //     $this->db->query("SELECT * FROM users WHERE user_id = :userId");

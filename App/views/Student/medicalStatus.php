@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical History | TrackMaster</title>
-    <link rel="stylesheet" href="/TrackMaster/Public/css/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -494,14 +493,14 @@
             </div>
 
             <!-- Things to Consider Section -->
-            <div class="medical-section">
-                <h2>Important Health Information</h2>
-                <?php if(isset($data['thingsToConsider']) && $data['thingsToConsider']): ?>
-                    <p><strong><i class="fas fa-tint"></i> Blood Type:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->blood_type ?? 'Not Updated Yet'); ?></p>
-                    <p><strong><i class="fas fa-exclamation-triangle"></i> Allergies:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->allergies ?? 'Not Updated Yet'); ?></p>
-                    <p><strong><i class="fas fa-info-circle"></i> Special Notes:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->special_notes ?? 'Not Updated Yet'); ?></p>
-                    <p><strong><i class="fas fa-phone"></i> Emergency Contact:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->emergency_contact ?? 'Not Updated Yet'); ?></p>
-                <?php else: ?>
+                <div class="medical-section">
+                    <h2>Important Health Information</h2>
+                    <?php if(isset($data['thingsToConsider']) && $data['thingsToConsider']): ?>
+                        <p><strong><i class="fas fa-tint"></i> Blood Type:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->blood_type ?? 'Not Updated Yet'); ?></p>
+                        <p><strong><i class="fas fa-exclamation-triangle"></i> Allergies:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->allergies ?? 'Not Updated Yet'); ?></p>
+                        <p><strong><i class="fas fa-info-circle"></i> Special Notes:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->special_notes ?? 'Not Updated Yet'); ?></p>
+                        <p><strong><i class="fas fa-phone"></i> Emergency Contact:</strong> <?php echo htmlspecialchars($data['thingsToConsider']->emergency_contact ?? 'Not Updated Yet'); ?></p>
+                    <?php else: ?>
                     <p><strong><i class="fas fa-tint"></i> Blood Type:</strong> Not Updated Yet</p>
                     <p><strong><i class="fas fa-exclamation-triangle"></i> Allergies:</strong> Not Updated Yet</p>
                     <p><strong><i class="fas fa-info-circle"></i> Special Notes:</strong> Not Updated Yet</p>
@@ -585,6 +584,9 @@
                 </div>
 
                 <center>
+                    <p>
+                    **You cannot Delete or Edit these Records Once Submitted.
+                    </p>
                     <button type="submit" class="btn">
                         <i class="fas fa-save"></i> Save Record
                     </button>
@@ -598,7 +600,7 @@
         <div class="modal-content">
             <span class="close" id="closeThings">&times;</span>
             <h2>Edit Health Information</h2>
-            <form action="<?php echo URLROOT; ?>/medicalStatus/saveThingsToConsider" method="POST">
+            <form action="<?php echo URLROOT; ?>/Student/saveThingsToConsider" method="POST">
                 <div class="form-group">
                     <label for="bloodType"><i class="fas fa-tint"></i> Blood Type:</label>
                     <input type="text" id="bloodType" name="bloodType" class="form-control <?php echo isset($data['errors']['blood_type']) ? 'is-invalid' : ''; ?>" value="<?php echo isset($data['thingsToConsider']) && $data['thingsToConsider']->blood_type ? htmlspecialchars($data['thingsToConsider']->blood_type) : ''; ?>" required>
