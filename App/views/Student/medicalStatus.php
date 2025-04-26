@@ -584,6 +584,9 @@
                 </div>
 
                 <center>
+                    <p>
+                    **You cannot Delete or Edit these Records Once Submitted.
+                    </p>
                     <button type="submit" class="btn">
                         <i class="fas fa-save"></i> Save Record
                     </button>
