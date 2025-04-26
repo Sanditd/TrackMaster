@@ -531,8 +531,22 @@ class Student extends Controller {
     }
 
     public function studentSchedule() {
-        $data = [];
-        $this->view('Student/studentSchedule');
+        if (!isset($_SESSION['user_id'])) {
+            redirect('users/login');
+        }
+    
+        // var_dump($_SESSION['user_id']);
+        $scheduledEvents = $this->studentModel->getScheduledEvents($_SESSION['user_id']);
+        $events = $this->studentModel->getEventsForDropdown($_SESSION['user_id']);
+       
+    
+        $data = [
+            'scheduledEvents' => $scheduledEvents,
+            'events' => $events
+            
+        ];
+    
+        $this->view('Student/studentSchedule', $data);
     }
 
     public function schoolProfile() {
@@ -691,4 +705,46 @@ public function Playerperformance() {
     $this->view('Student/Playerperformance', $data);
 }
 
+public function requestSheuleChange() {
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Get the coach_id for this user
+        $coachData = $this->studentModel->getCoach($_SESSION['user_id']);
+
+        if (!$coachData || !isset($coachData->coach_id)) {
+            flash('event_error', 'Invalid coach account');
+            redirect('student/studentSchedule');
+        }
+
+        $studentData = $this->studentModel->getPlayerByUserId($_SESSION['user_id']);
+
+        if (!$studentData || !isset($studentData->player_id)) {
+            flash('event_error', 'Invalid student account');
+            redirect('student/studentSchedule');
+        }
+
+        // Sanitize POST data
+        $_POST = filter_input_array(INPUT_POST, [
+            'event_id' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'reschedule_reason' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        ]);
+
+        $data = [
+            'player_id' => $studentData->player_id, // corrected
+            'coach_id' => $coachData->coach_id,
+            'event_id' => trim($_POST['event_id']),
+            'reschedule_reason' => trim($_POST['reschedule_reason']), // corrected
+        ];
+
+        if ($this->studentModel->requestSheduleChange($data)) {
+            flash('event_message', 'equest submitted successfully');
+            redirect('student/studentShedule');
+        } else {
+            die('Something went wrong');
+        }
+        
+    } else {
+        redirect('student/studentShedule');
+    }
+}
 }
