@@ -381,7 +381,7 @@ class Student extends Controller {
                     exit();
                 }
 
-                $upload_dir = __DIR__ . '/../public/uploads/financial_reports/';
+                $upload_dir = __DIR__. '/../public/uploads/financial_reports/';
                 if (!is_dir($upload_dir)) {
                     mkdir($upload_dir, 0755, true);
                 }
@@ -747,4 +747,57 @@ public function requestSheuleChange() {
         redirect('student/studentShedule');
     }
 }
+
+public function requestExtraClass() {
+    if (!isset($_SESSION['user_id'])) {
+        redirect('users/login');
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Get player and school data
+        $playerData = $this->studentModel->getPlayerByUserId($_SESSION['user_id']);
+        $schoolId = $this->studentModel->getSchoolByPlayerId($_SESSION['user_id']);
+
+        if (!$playerData || !isset($playerData->player_id) || !$schoolId) {
+            flash('extra_class_error', 'Invalid player or school account');
+            redirect('student/studentSchedule');
+        }
+
+        // Sanitize POST data
+        $_POST = filter_input_array(INPUT_POST, [
+            'subject_name' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'reason' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        ]);
+
+        $data = [
+            'player_id' => $playerData->player_id,
+            'school_id' => $schoolId,
+            'subject_name' => trim($_POST['subject_name']),
+            'reason' => trim($_POST['reason']),
+        ];
+
+        // Validate
+        if (empty($data['subject_name'])) {
+            flash('extra_class_error', 'Subject name is required');
+            redirect('student/studentSchedule');
+        }
+
+        if (empty($data['reason'])) {
+            flash('extra_class_error', 'Reason is required');
+            redirect('student/studentSchedule');
+        }
+
+        if ($this->studentModel->requestExtraClass($data)) {
+            flash('extra_class_message', 'Extra class request submitted successfully');
+        } else {
+            flash('extra_class_error', 'Failed to submit extra class request');
+        }
+        
+        redirect('student/studentSchedule');
+    } else {
+        redirect('student/studentSchedule');
+    }
+}
+
+
 }

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -500,34 +499,8 @@
             <p>Manage your training schedule, request changes, and view upcoming sessions</p>
         </div>
 
-        <div class="main-content">
-            <!-- Calendar Section -->
-            <div class="dashboard-section">
-                <h2>My Calendar</h2>
-                <div class="calendar-container">
-                    <div id="calendar">
-                        <div id="header">
-                            <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
-                            <span id="monthYear"></span>
-                            <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                        <div id="days">
-                            <div>Sun</div>
-                            <div>Mon</div>
-                            <div>Tue</div>
-                            <div>Wed</div>
-                            <div>Thu</div>
-                            <div>Fri</div>
-                            <div>Sat</div>
-                        </div>
-                        <div id="dates"></div>
-                    </div>
-                </div>
-                <p><i class="fas fa-info-circle"></i> You can add notes to your Calendar by clicking on any date</p>
-            </div>
-
-            <!-- Upcoming Sessions Section -->
-                <div class="dashboard-section">
+                    <!-- Upcoming Sessions Section -->
+                    <div class="dashboard-section">
                 <h2>Upcoming Sessions</h2>
                 <div class="appointments-list">
                 <?php if(empty($data['scheduledEvents'])): ?>
@@ -551,6 +524,10 @@
                     <i class="fas fa-clipboard-check"></i> View My Attendance
                 </button>
             </div>
+
+        <div class="main-content">
+
+
 
                         <!-- Request Schedule Change Section -->
                         <div class="dashboard-section">
@@ -596,20 +573,15 @@
                 <h2>Request Extra Classes</h2>
                 <p><i class="fas fa-info-circle"></i> Need additional academic support? Request extra classes here</p>
                 <div class="form-container">
-                    <form id="scheduleExtraClassForm" class="schedule-form">
-                        <div class="form-group">
-                            <label for="extra_stu_name" class="required-field">Student Name:</label>
-                            <input type="text" id="extra_stu_name" placeholder="Enter your full name" required>
-                        </div>
-
+                    <form id="scheduleExtraClassForm" class="schedule-form" action="<?php echo URLROOT; ?>/student/requestExtraClass" method="post">
                         <div class="form-group">
                             <label for="subject_name" class="required-field">Subject Name:</label>
-                            <input type="text" id="subject_name" placeholder="e.g. Sprint Training, Mathematics" required>
+                            <input type="text" id="subject_name" name="subject_name" placeholder="e.g. Sprint Training, Mathematics" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="notes" class="required-field">Reason:</label>
-                            <textarea id="reason" placeholder="Provide details about what you need help with..." required></textarea>
+                            <label for="reason" class="required-field">Reason:</label>
+                            <textarea id="reason" name="reason" placeholder="Provide details about what you need help with..." required></textarea>
                         </div>
                             
                         <div class="form-buttons">
@@ -632,75 +604,56 @@
                 <h2>Request Status</h2>
                 <p><i class="fas fa-info-circle"></i> Track the status of your schedule change and extra class requests</p>
                 <div class="table-responsive">
-                    <table class="status-table">
-                        <thead>
-                            <tr>
-                                <th>Request ID</th>
-                                <th>Type</th>
-                                <th>Date Submitted</th>
-                                <th>Event/Subject</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#REQ-2325</td>
-                                <td>Schedule Change</td>
-                                <td>Nov 15, 2024</td>
-                                <td>Sprint Practice</td>
-                                <td><span class="status-badge status-approved">Approved</span></td>
-                                <td class="table-actions">
-                                    <button class="action-btn" title="View Details"><i class="fas fa-eye"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#REQ-2315</td>
-                                <td>Extra Class</td>
-                                <td>Nov 10, 2024</td>
-                                <td>Mathematics</td>
-                                <td><span class="status-badge status-completed">Completed</span></td>
-                                <td class="table-actions">
-                                    <button class="action-btn" title="View Details"><i class="fas fa-eye"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#REQ-2390</td>
-                                <td>Schedule Change</td>
-                                <td>Nov 22, 2024</td>
-                                <td>Track Competition</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                                <td class="table-actions">
-                                    <button class="action-btn" title="View Details"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn" title="Edit Request"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Cancel Request"><i class="fas fa-times"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#REQ-2289</td>
-                                <td>Extra Class</td>
-                                <td>Nov 5, 2024</td>
-                                <td>Sprint Training</td>
-                                <td><span class="status-badge status-rejected">Rejected</span></td>
-                                <td class="table-actions">
-                                    <button class="action-btn" title="View Details"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn" title="Submit Again"><i class="fas fa-redo"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#REQ-2405</td>
-                                <td>Schedule Change</td>
-                                <td>Nov 25, 2024</td>
-                                <td>Cricket Practice</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                                <td class="table-actions">
-                                    <button class="action-btn" title="View Details"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn" title="Edit Request"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Cancel Request"><i class="fas fa-times"></i></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <table class="status-table">
+    <thead>
+        <tr>
+            <th>Request ID</th>
+            <th>Type</th>
+            <th>Date Submitted</th>
+            <th>Event/Subject</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+        // Get both types of requests
+        $scheduleRequests = $this->studentModel->getScheduleChangeRequests($_SESSION['user_id']);
+        $extraClassRequests = $this->studentModel->getExtraClassRequests($_SESSION['user_id']);
+        
+        // Combine and sort by date
+        $allRequests = array_merge($scheduleRequests, $extraClassRequests);
+        usort($allRequests, function($a, $b) {
+            return strtotime($b->request_date) - strtotime($a->request_date);
+        });
+        
+        foreach ($allRequests as $request): 
+            $isExtraClass = isset($request->subject_name);
+        ?>
+            <tr>
+                <td>#REQ-<?php echo $request->id; ?></td>
+                <td><?php echo $isExtraClass ? 'Extra Class' : 'Schedule Change'; ?></td>
+                <td><?php echo date('M j, Y', strtotime($request->request_date)); ?></td>
+                <td><?php echo $isExtraClass ? $request->subject_name : $request->event_name; ?></td>
+                <td>
+                    <span class="status-badge status-<?php echo strtolower($request->status); ?>">
+                        <?php echo ucfirst($request->status); ?>
+                    </span>
+                </td>
+                <td class="table-actions">
+                    <button class="action-btn" title="View Details" onclick="viewRequestDetails(<?php echo $request->id; ?>, '<?php echo $isExtraClass ? 'extra_class' : 'schedule'; ?>')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <?php if ($request->status == 'pending'): ?>
+                        <button class="action-btn" title="Cancel Request" onclick="cancelRequest(<?php echo $request->id; ?>, '<?php echo $isExtraClass ? 'extra_class' : 'schedule'; ?>')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
                 </div>
             </div>
         </div>

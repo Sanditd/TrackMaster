@@ -619,5 +619,46 @@ class StudentModel {
                 $this->db->bind(':user_id', $userId);
                 return $this->db->single();
         }
+
+        public function requestExtraClass($data) {
+            $this->db->query('
+                INSERT INTO extra_class_requests 
+                (player_id, school_id, subject_name, reason) 
+                VALUES 
+                (:player_id, :school_id, :subject_name, :reason)
+            ');
+            
+            $this->db->bind(':player_id', $data['player_id']);
+            $this->db->bind(':school_id', $data['school_id']);
+            $this->db->bind(':subject_name', $data['subject_name']);
+            $this->db->bind(':reason', $data['reason']);
+            
+            return $this->db->execute();
+        }
+        
+        public function getExtraClassRequests($userId) {
+            $playerId = $this->getPlayerIdByUserId($userId);
+            if (!$playerId) {
+                return [];
+            }
+        
+            $this->db->query('
+                SELECT e.*, u.firstname, u.lname 
+                FROM extra_class_requests e
+                JOIN user_player up ON e.player_id = up.player_id
+                JOIN users u ON up.user_id = u.user_id
+                WHERE e.player_id = :player_id
+                ORDER BY e.request_date DESC
+            ');
+            $this->db->bind(':player_id', $playerId);
+            
+            try {
+                return $this->db->resultSet();
+            } catch (Exception $e) {
+                error_log('Error fetching extra class requests: ' . $e->getMessage());
+                return [];
+            }
+        }
+        
     
     }
