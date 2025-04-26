@@ -20,6 +20,9 @@ class Coach extends Controller {
     }
 
     public function Dashboard() {
+        if (!isset($_SESSION['user_id'])) {
+            redirect('users/login');
+        }
         // Get coach ID
         $coach = $this->coachModel->getCoachDetailsByUserId($_SESSION['user_id']);
         

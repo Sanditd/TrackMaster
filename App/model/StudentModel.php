@@ -660,5 +660,25 @@ class StudentModel {
             }
         }
         
-    
+        public function requestExtraClasss($data) {
+            try {
+                $this->db->query('
+                    INSERT INTO extra_class_requests 
+                    (player_id, school_id, subject_name, reason) 
+                    VALUES 
+                    (:player_id, :school_id, :subject_name, :reason)
+                ');
+                
+                $this->db->bind(':player_id', $data['player_id']);
+                $this->db->bind(':school_id', $data['school_id']);
+                $this->db->bind(':subject_name', $data['subject_name']);
+                $this->db->bind(':reason', $data['reason']);
+                
+                return $this->db->execute();
+            } catch (Exception $e) {
+                error_log('Error in requestExtraClass: ' . $e->getMessage());
+                return false;
+            }
+        }
+
     }
