@@ -3,10 +3,16 @@
 class School extends Controller{
     private $schoolModel;
     private $userModel;
+    private $zoneModel;
+    private $sportModel;
 
     public function __construct() {
         $this->schoolModel = $this->model('SchoolModel');
         $this->userModel = $this->model('User');
+
+        $this->zoneModel = $this->model('zoneModel');
+        $this->sportModel = $this->model('sportModel');
+
     }
 
     public function fetchPlayers() {
@@ -15,7 +21,9 @@ class School extends Controller{
             return $this->schoolModel->getPlayersForSchool($school_id);
         }
     }
-
+    public function index() {
+        $this->view('School/school'); // or whatever default view you want
+    }
     public function Dashboard() {
         $userId = (int) $_SESSION['user_id'];
     
@@ -34,18 +42,66 @@ class School extends Controller{
     }
     
     public function EditProfile(){
-        $data = [];
-        $this->view('School/editSchool');
+
+        $user_id=$_SESSION['user_id'];
+        $school_id_obj = $this->schoolModel->getSchoolId($user_id);
+        $school_id = $school_id_obj->school_id;
+
+        
+        $userInfo=$this->userModel->getUserInfo($user_id);
+        $schoolInfo=$this->userModel->getSchoolInfo($school_id);
+
+        $zone_id=$schoolInfo[0]->zone;
+
+        $zoneInfo = $this->zoneModel->getZoneInfo($zone_id);
+
+        $data=[
+            'userInfo' => $userInfo,
+            'schoolInfo' => $schoolInfo,
+            'zoneInfo' => $zoneInfo,
+        ];
+        $this->view('School/editSchool',$data);
     }
 
     public function Profile(){
-        $data = [];
-        $this->view('School/schoolProfile');
+        $user_id=$_SESSION['user_id'];
+        $school_id_obj = $this->schoolModel->getSchoolId($user_id);
+        $school_id = $school_id_obj->school_id;
+
+        
+        $userInfo=$this->userModel->getUserInfo($user_id);
+        $schoolInfo=$this->userModel->getSchoolInfo($school_id);
+
+        $zone_id=$schoolInfo[0]->zone;
+
+        $zoneInfo = $this->zoneModel->getZoneInfo($zone_id);
+
+        $data=[
+            'userInfo' => $userInfo,
+            'schoolInfo' => $schoolInfo,
+            'zoneInfo' => $zoneInfo,
+        ];
+        $this->view('School/schoolProfile',$data);
     }
 
     public function StudentsData(){
-        $data = [];
-        $this->view('School/schoolStudentData');
+        $userId = (int) $_SESSION['user_id'];
+    
+        $school_id_obj = $this->schoolModel->getSchoolId($userId);
+        $school_id = $school_id_obj->school_id;
+    
+        $players = $this->userModel->getPlayersName($school_id);
+        
+        $records = $this->schoolModel->getAcademicRecordsByPlayerId($school_id);
+        $sports = $this->sportModel->getSportsNameId();
+
+        $data=[
+            'players' => $players,
+            'records' => $records,
+            'sports' => $sports,
+        ];
+        
+        $this->view('School/schoolStudentData',$data);
     }
 
     public function viewrecords(){
@@ -59,8 +115,19 @@ class School extends Controller{
     }
 
     public function requests(){
-        $data = [];
-        $this->view('School/event');
+        $userId = (int) $_SESSION['user_id'];
+    
+        $school_id_obj = $this->schoolModel->getSchoolId($userId);
+        $school_id = $school_id_obj->school_id;
+    
+        $facilityReq= $this->schoolModel->getFacilityRequests($school_id);
+        $coaches=$this->userModel->getCoachesName();
+    
+        $data = [
+            'facilityReq' => $facilityReq,
+            'coaches' => $coaches,
+        ];
+        $this->view('School/event',$data);
     }
 
     public function viewStudent(){
@@ -71,53 +138,46 @@ class School extends Controller{
     public function submitRecord(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-            echo '<pre>';
-            print_r($_POST);
-            echo '</pre>';
-
-            $firstname = trim($_POST['firstname']);
-            $user = $this->schoolModel->getUserIdByFirstname($firstname);
-
-            if (!$user) {
-                echo "User not found for firstname: " . $firstname;
-                exit;
-            }
-            $user_id = $user->user_id; // Get the user_id from the result
-
-            $player = $this->schoolModel->getPlayerId($user_id);
-            if (!$player) {
-                echo "Player ID not found for user_id: " . $user_id;
-                exit;
-            }
-            $player_id = $player->player_id;
-
+    
+            // Get player_id directly from form
             $data = [
-                'player_id' => $player_id,
+                'school_id' => trim($_POST['school_id']),
+                'player_id' => trim($_POST['player_id']),
                 'grade' => trim($_POST['grade']),
                 'term' => trim($_POST['term']),
                 'average' => trim($_POST['average']),
                 'rank' => trim($_POST['rank']),
-                'notes' => trim($_POST['notes']),
+                'additional_notes' => trim($_POST['additional_notes']),
                 'players' => $this->fetchPlayers()
             ];
             
+            // Validate required fields
             if (empty($data['player_id']) || empty($data['grade']) || empty($data['term']) || empty($data['average']) || empty($data['rank'])) {
                 $data['error'] = 'Please fill in all required fields.';
+                
+                // Fetch additional data needed for the view
+                $data['records'] = $this->schoolModel->getRecords();
+                $data['playerNames'] = $this->userModel->getPlayerNames();
+                
                 $this->view('School/records', $data);
             } else {
+                // Insert record
                 if ($this->schoolModel->insertRecord($data)) {
-                    header('Location: ' . ROOT . '/school/records');
+                    header('Location: ' . URLROOT . '/school/records');
                 } else {
                     $data['error'] = 'Something went wrong. Please try again.';
+                    
+                    // Fetch additional data needed for the view
+                    $data['records'] = $this->schoolModel->getRecords();
+                    $data['playerNames'] = $this->userModel->getPlayerNames();
+                    
                     $this->view('School/records', $data);
                 }
             }
         } else {
-            header('Location: ' . ROOT . '/school/records');
+            header('Location: ' . URLROOT . '/school/records');
         }
     }
-
     public function records() {
         $userId = (int) $_SESSION['user_id'];
         
@@ -126,11 +186,13 @@ class School extends Controller{
         
         $players = $this->userModel->getPlayersName($school_id);
         $records = $this->schoolModel->getAcademicRecordsByPlayerId($school_id);
+        $playerNames = $this->schoolModel->getPlayersNamesBySchoolId($school_id);
     
         // Load the view with fetched data
         $data = [
             'players' => $players,
-            'records' => $records
+            'records' => $records,
+            'playerNames' => $playerNames
         ];
     
         $this->view('school/records', $data);
@@ -151,6 +213,7 @@ class School extends Controller{
             
         $this->view('School/editRecord', $data);
     }
+
 
     public function saveEditedRecord() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -253,33 +316,32 @@ class School extends Controller{
 
     public function approveRequest() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $requestType = htmlspecialchars(trim($_POST['request_type']));
+            $status = htmlspecialchars(trim($_POST['status']));
             $requestId = filter_var($_POST['request_id'], FILTER_VALIDATE_INT);
     
-            if ($this->updateRequestStatus($requestType, $requestId, 'approved')) {
-                $_SESSION['flash_message'] = 'Request approved successfully!';
-            } else {
-                $_SESSION['flash_message'] = 'Failed to approve request.';
+            if (!$requestId || empty($status)) {
+                $_SESSION['flash_message'] = 'Invalid input.';
+                header('Location: ' . ROOT . '/school/requests');
+                exit;
             }
     
-            header('Location: ' . ROOT . '/school/getrequests');
-            exit;
+            if ($this->sportModel->updateRequestStatus($requestId, $status)) {
+                $_SESSION['flash_message'] = 'Request status updated to ' . ucfirst($status) . '!';
+                header('Location: ' . ROOT . '/School/requests');
+                exit;
+            } else {
+                $_SESSION['flash_message'] = 'Failed to update request status.';
+                header('Location: ' . ROOT . '/school/requests');
+ 
+                exit;
+            }
+        } else {
+            // Display the form for GET requests
+            $this->view('School/facilityForm');
         }
     }
 
-    public function declineRequest() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $requestType = htmlspecialchars(trim($_POST['request_type']));
-            $requestId = filter_var($_POST['request_id'], FILTER_VALIDATE_INT);
-    
-            if ($this->updateRequestStatus($requestType, $requestId, 'declined')) {
-                $_SESSION['flash_message'] = 'Request declined successfully!';
-            } else {
-                $_SESSION['flash_message'] = 'Failed to decline request.';
-            }
-    
-            header('Location: ' . ROOT . '/school/getrequests');
-            exit;
+
         }
     }
 
@@ -343,6 +405,8 @@ class School extends Controller{
         }
     }
 
+
+   
     public function scheduleExtra(){
         $this->view('School/scheduleEx');
     }

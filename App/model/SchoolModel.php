@@ -57,6 +57,24 @@ class SchoolModel {
         return $result;
     }
 
+
+    public function getPlayersNamesBySchoolId($school_id) {
+        // Query to get player_id and user_id from player table according to the school_id
+        $query = "SELECT p.player_id, u.user_id, u.firstname, u.lname
+                  FROM user_player p
+                  JOIN user_player up ON p.player_id = up.player_id
+                  JOIN users u ON up.user_id = u.user_id
+                  WHERE p.school_id = :school_id";
+    
+        // Prepare and bind
+        $this->db->query($query);
+        $this->db->bind(':school_id', $school_id);
+    
+        // Execute the query and return the results
+        return $this->db->resultSet();
+    }
+    
+
     /**
      * Get player ID for a specific user
      */
@@ -92,14 +110,15 @@ class SchoolModel {
      * Insert an academic record
      */
     public function insertRecord($data) {
-        $this->db->query("INSERT INTO academic_records (player_id, grade, term, average, rank, notes)
-        VALUES (:player_id, :grade, :term, :average, :rank, :notes)");
+        $this->db->query("INSERT INTO academic_records (school_id,player_id, grade, term, average, rank, additional_notes)
+        VALUES (:school_id, :player_id, :grade, :term, :average, :rank, :notes)");
+        $this->db->bind(':school_id', $data['school_id']);
         $this->db->bind(':player_id', $data['player_id']);
         $this->db->bind(':grade', $data['grade']);
         $this->db->bind(':term', $data['term']);
         $this->db->bind(':average', $data['average']);
         $this->db->bind(':rank', $data['rank']);
-        $this->db->bind(':notes', $data['notes']);
+        $this->db->bind(':notes', $data['additional_notes']);
         return $this->db->execute();
     }
 
@@ -175,7 +194,9 @@ class SchoolModel {
      */
     public function getFacilityRequests($school_id = null) {
         if ($school_id) {
-            $this->db->query("SELECT event_name, event_date, time_from, time_to, facilities_required FROM event_requests WHERE school_id = :school_id");
+
+            $this->db->query("SELECT * FROM event_requests WHERE school_id = :school_id");
+
             $this->db->bind(':school_id', $school_id);
         } else {
             $this->db->query("

@@ -114,6 +114,13 @@ class zoneModel {
         return $this->db->resultset();
     }
 
+    public function getZoneInfo($zone_id){
+        $query="SELECT * from zone WHERE zoneId=:zoneId";
+        $this->db->query($query);
+        $this->db->bind(':zoneId', $zone_id);
+        return $this->db->resultset();
+    }
+
     public function countZonals(){
         $query = "SELECT COUNT(*) as total FROM zone ";
         $this->db->query($query);
