@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -526,29 +527,25 @@
             </div>
 
             <!-- Upcoming Sessions Section -->
-            <div class="dashboard-section">
+                <div class="dashboard-section">
                 <h2>Upcoming Sessions</h2>
                 <div class="appointments-list">
+                <?php if(empty($data['scheduledEvents'])): ?>
                     <div class="appointment-item">
-                        <span class="appointment-date"><i class="fas fa-clock"></i> Nov 30 - 6:30 a.m.</span> 
-                        <span class="appointment-title">Coaching Session 25</span>
+                        <span class="appointment-title">No scheduled events found</span>
                     </div>
-                    <div class="appointment-item">
-                        <span class="appointment-date"><i class="fas fa-clock"></i> Dec 3 - 7:00 a.m.</span> 
-                        <span class="appointment-title">Coaching Session 26</span>
-                    </div>
-                    <div class="appointment-item">
-                        <span class="appointment-date"><i class="fas fa-clock"></i> Dec 7 - 6:30 a.m.</span> 
-                        <span class="appointment-title">Coaching Session 27</span>
-                    </div>
-                    <div class="appointment-item">
-                        <span class="appointment-date"><i class="fas fa-clock"></i> Dec 10 - 7:00 a.m.</span> 
-                        <span class="appointment-title">Coaching Session 28</span>
-                    </div>
-                    <div class="appointment-item">
-                        <span class="appointment-date"><i class="fas fa-clock"></i> Dec 14 - 6:30 a.m.</span> 
-                        <span class="appointment-title">Coaching Session 29</span>
-                    </div>
+                <?php else: ?>
+                    <?php foreach($data['scheduledEvents'] as $event): ?>
+                        <div class="appointment-item">
+                            <span class="appointment-date">
+                                <i class="fas fa-clock"></i> 
+                                <?php echo date('g:i A', strtotime($event->time_from)) . ' - ' . date('g:i A', strtotime($event->time_to)); ?>
+                            </span> 
+                            <span class="appointment-title"><?php echo $event->event_name; ?></span>
+                            <span class="appointment-school"><?php echo $event->school_name; ?></span>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
                 </div>
                 <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAttendance'">
                     <i class="fas fa-clipboard-check"></i> View My Attendance
@@ -560,32 +557,25 @@
                 <h2>Request Schedule Change</h2>
                 <p><i class="fas fa-info-circle"></i> Fill out the form below to request changes to your training schedule</p>
                 <div class="form-container">
-                    <form id="scheduleEditForm" class="schedule-form">
+                    <form id="scheduleEditForm" class="schedule-form" action="<?php echo URLROOT; ?>/student/requestSheuleChange" method="post">
                         <div class="form-group">
-                            <label for="stu_name" class="required-field">Student Name:</label>
-                            <input type="text" id="stu_name" placeholder="Enter your full name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="event_name" class="required-field">Event Name:</label>
-                            <input type="text" id="event_name" placeholder="e.g. Track Practice, Competition" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="event_date" class="required-field">Event Date and Time:</label>
-                            <input type="datetime-local" id="event_date" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="event_location" class="required-field">Event Location:</label>
-                            <input type="text" id="event_location" placeholder="Enter location details" required>
-                        </div>
+                        <label for="event_id">Event Name</label>
+                            <select id="event_id" name="event_id" required>
+                                <option value="">Select Event</option>
+                                <?php foreach($data['events'] as $event): ?>
+                                        <option value="<?php echo $event->event_id; ?>">
+                                        <?php echo $event->event_name; ?>
+                                        </option>
+                                <?php endforeach; ?>
+                            </select>
+                                </div>
                         
                         <div class="form-group">
                             <label for="reschedule_reason" class="required-field">Reason for the Request:</label>
-                            <textarea id="reschedule_reason" placeholder="Please explain why you need to reschedule..." required></textarea>
+                            <textarea id="reschedule_reason" name="reschedule_reason" placeholder="Please explain why you need to reschedule..." required>
+                                <?php echo isset($_POST['reschedule_reason']) ? $_POST['reschedule_reason'] : ''; ?></textarea>
                         </div>
-                            
+                                        
                         <div class="form-buttons">
                             <button type="submit" class="btn">
                                 <i class="fas fa-paper-plane"></i> Submit Request
