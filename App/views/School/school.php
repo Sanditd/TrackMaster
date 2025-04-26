@@ -446,6 +446,7 @@ if (isset($_SESSION['error_message'])) {
         <div class="dashboard-header">
             <h1><i class="fas fa-tachometer-alt"></i> School Dashboard</h1>
             <p><i class="fas fa-user"></i> Welcome, <?php echo $username ?>!</p>
+            <?php print_r($data) ?>
         </div>
 
         <div class="stats-cards">
@@ -551,20 +552,46 @@ if (isset($_SESSION['error_message'])) {
 
             <div class="section upcoming-appointments">
     <h2><i class="fas fa-clock"></i> Extra Class Requests</h2>
-    <div class="appointment">
-        <div class="request-item">
-            <span><i class="fas fa-graduation-cap"></i> Grade 10</span> Kamal Perera
-        </div>
-        <div class="request-item">
-            <span><i class="fas fa-graduation-cap"></i> Grade 11</span> Hashan Jayamal
-        </div>
-    </div>
-    <center>
-        <button class="profile-button" onclick="window.location.href='<?php echo URLROOT ?>/school/scheduleEx'">
-            <i class="fas fa-plus-circle"></i> Schedule Extra Class
-        </button>
-    </center>
+    <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th style="border-bottom: 1px solid #ccc; text-align: left;">Student Name</th>
+            <th style="border-bottom: 1px solid #ccc; text-align: left;">Grade</th>
+            <th style="border-bottom: 1px solid #ccc; text-align: left;">Subject</th>
+            <th style="border-bottom: 1px solid #ccc; text-align: left;">Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($data['extraClassReq'] as $req): ?>
+            <?php
+                $playerName = 'Unknown';
+                $grade = 'N/A';
+                foreach ($data['players'] as $player) {
+                    if ($player->player_id == $req->player_id) {
+                        $playerName = htmlspecialchars($player->firstname . ' ' . $player->lname);
+                        $grade = 'Grade ' . ($player->sport_id == 36 ? '10' : ($player->sport_id == 37 ? '11' : 'N/A'));
+                        break;
+                    }
+                }
+            ?>
+            <tr>
+                <td style="border-bottom: 1px solid #ccc; padding: 8px;"><?= $playerName ?></td>
+                <td style="border-bottom: 1px solid #ccc; padding: 8px;"><?= $grade ?></td>
+                <td style="border-bottom: 1px solid #ccc; padding: 8px;"><?= htmlspecialchars($req->subject_name) ?></td>
+                <td style="border-bottom: 1px solid #ccc; padding: 8px;"><?= htmlspecialchars($req->reason) ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<center>
+                    <button class="profile-button"
+                        onclick="window.location.href='<?php echo URLROOT ?>/school/scheduleEx'">
+                        <i class="fas fa-plus-circle"></i> View Extra Class Requests
+                    </button>
+                </center>
+
 </div>
+
 <div class="section activity-log">
     <h2><i class="fas fa-chart-bar"></i> Study performance</h2>
     
