@@ -37,6 +37,21 @@ if ($userActive[0]->active != 1) {
     exit;
 }
 
+$Success_message = "";
+$Error_message = "";
+
+// Store success message separately
+if (isset($_SESSION['success_message'])) {
+    $Success_message = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
+}
+
+// Store error message separately
+if (isset($_SESSION['error_message'])) {
+    $Error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
+}
+
 ?>
 
 
@@ -50,6 +65,7 @@ if ($userActive[0]->active != 1) {
     <title>Manage Users</title>
     <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
     <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/userManage.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/sportForm.css">
     <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
 </head>
 
@@ -156,6 +172,15 @@ foreach ($data['schools'] as $school) {
 }
 ?>
 
+  <!-- Custom Alert Box -->
+  <div id="customAlertOverlay">
+        <div id="customAlertBox">
+            <h2>Notice</h2>
+            <p id="customAlertMessage"></p>
+            <button onclick="hideCustomAlert()">OK</button>
+        </div>
+    </div>
+
 <div class="admin-container">
     <div class="admin-content">
         <div class="admin-header">
@@ -217,18 +242,18 @@ foreach ($data['schools'] as $school) {
             </div>
         </div>
 
+        <form action="<?php echo ROOT?>/admin/searchUSer" method="post">
         <div class="admin-search-bar">
             <h2 class="admin-search-title">Search Users</h2>
             <div class="admin-search-form">
                 <div class="admin-form-group">
                     <label class="admin-form-label">Search Term</label>
-                    <input type="text" class="admin-form-control" placeholder="Name, Email, ID...">
+                    <input type="text" class="admin-form-control" placeholder="Name" name="search_term" required>
                 </div>
                 <div class="admin-form-group">
                     <label class="admin-form-label">User Type</label>
                     <div class="admin-select-wrapper">
-                        <select class="admin-form-control">
-                            <option value="">All Users</option>
+                        <select class="admin-form-control" name="user_type" placeholder='Select a type' required>
                             <option value="player">Players</option>
                             <option value="coach">Coaches</option>
                             <option value="school">Schools</option>
@@ -238,20 +263,20 @@ foreach ($data['schools'] as $school) {
                 <div class="admin-form-group">
                     <label class="admin-form-label">Zone</label>
                     <div class="admin-select-wrapper">
-                        <select class="admin-form-control">
-                            <option value="">All Zones</option>
+                        <select class="admin-form-control" name="zone_id" placeholder='Select a zone' required>
                             <?php foreach ($data['zones'] as $zone): ?>
-                            <option value="<?php echo $zone->zoneId; ?>"><?php echo $zone->zoneName; ?></option>
+                            <option value="<?php echo $zone->zoneId; ?>" ><?php echo $zone->zoneName; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                 </div>
-                <div class="admin-search-buttons">
+                <div class="admin-search-buttons" style="margin-top:-20px">
                     <button class="admin-btn admin-btn-primary">Search</button>
                     <button class="admin-btn admin-btn-reset">Reset</button>
                 </div>
             </div>
         </div>
+        </form>
 
         <div class="admin-card-container">
             <div class="admin-chart-card">
@@ -557,6 +582,17 @@ foreach ($data['schools'] as $school) {
         });
     });
 </script>
+
+<script id="error-message" type="application/json">
+<?= json_encode(trim($Error_message)); ?>
+</script>
+
+<script id="success-message" type="application/json">
+<?= json_encode(trim($Success_message)); ?>
+</script>
+
+
+<script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
 </body>
 
 </html>

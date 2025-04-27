@@ -63,6 +63,60 @@ if ($userActive[0]->active != 1) {
     <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/notification.css">
     <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
     <script src="<?php echo ROOT?>/Public/js/notification.js"></script>
+    <style>
+        /* Account Dropdown Menu Styles */
+        .account-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .account-menu {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 180px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .account-menu.show {
+            display: block;
+        }
+        
+        .account-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .account-menu ul li {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .account-menu ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .account-menu ul li:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .account-menu ul li a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .account-menu ul li.logout a {
+            color: #e74c3c;
+        }
+    </style>
 </head>
 
 <body>
@@ -145,13 +199,21 @@ if ($userActive[0]->active != 1) {
                         </a>
                     </div>
 
-                    <div class="account-settings">
-                        <a href="#">
+                    <div class="account-settings account-dropdown">
+                        <a href="#" id="accountDropdownToggle">
                             <img src="<?php echo ROOT ?>/public/img/icon/account.png" alt="acc setting"
                                 class="account-icon"
                                 onmouseover="this.src='<?php echo ROOT ?>/public/img/icon/account-hover.png';"
                                 onmouseout="this.src='<?php echo ROOT ?>/public/img/icon/account.png';">
                         </a>
+                        <!-- Account Dropdown Menu -->
+                        <div class="account-menu" id="accountDropdownMenu">
+                            <ul>
+                                <li><a href="<?php echo ROOT ?>/admin/account-settings">Account Settings</a></li>
+                                <li><a href="<?php echo ROOT ?>/admin/activity-log">Activity Log</a></li>
+                                <li class="logout"><a href="<?php echo ROOT ?>/loginController/logout">Logout</a></li>
+                            </ul>
+                        </div>
                     </div>
 
                 </div>
@@ -260,10 +322,26 @@ function isActive($pathPart) {
         </nav>
     </div>
 
-
-
-
-
+    <script>
+    // Script for account dropdown menu
+    document.addEventListener('DOMContentLoaded', function() {
+        const accountToggle = document.getElementById('accountDropdownToggle');
+        const accountMenu = document.getElementById('accountDropdownMenu');
+        
+        // Toggle dropdown when account icon is clicked
+        accountToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            accountMenu.classList.toggle('show');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!accountToggle.contains(e.target) && !accountMenu.contains(e.target)) {
+                accountMenu.classList.remove('show');
+            }
+        });
+    });
+    </script>
 
 </body>
 

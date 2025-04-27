@@ -63,7 +63,7 @@ if (isset($_SESSION['error_message'])) {
     <title>Dashboard</title>
     <!-- <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/form.css"> -->
     <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/navbar.css">
-    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/zoneManage.css">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/sportForm.css">
     <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
 
     <!-- FullCalendar CSS and JS -->

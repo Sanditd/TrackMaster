@@ -434,6 +434,136 @@ class User {
                 ];
             }
         }
+
+        public function findUserByName($fname, $lname){
+            $this->db->query("
+                SELECT *
+                FROM users
+                WHERE firstname = :firstname AND lname = :lname
+            ");
+            $this->db->bind(':firstname', $fname);
+            $this->db->bind(':lname', $lname);
+            return $this->db->single(); // 🔥 only return 1 row
+        }
+        
+
+        public function getPlayerInfo($player_id){
+            $this->db->query("
+                    SELECT *
+                    FROM user_player
+                    WHERE player_id = :playerid
+                ");
+            $this->db->bind(':playerid',$player_id);
+            $row = $this->db->single(); // ✅ get only one row
+        
+            return $row;
+        }
+
+        public function getPlayerZoneId($user_id) {
+            $this->db->query("
+                SELECT zone 
+                FROM user_player
+                WHERE user_id = :user_id
+            ");
+            $this->db->bind(':user_id', $user_id);
+            $row = $this->db->single(); // ✅ get only one row
+        
+            return $row ? $row->zone : null; // ✅ return only the zone value
+        }
+
+        public function getPlayerId($user_id){
+            $this->db->query("
+                SELECT player_id 
+                FROM user_player
+                WHERE user_id = :user_id
+            ");
+            $this->db->bind(':user_id', $user_id);
+            $row = $this->db->single(); // ✅ get only one row
+        
+            return $row ? $row->player_id : null;
+        }
+
+        public function getCoachId($user_id){
+            $this->db->query("
+                SELECT coach_id 
+                FROM user_coach
+                WHERE user_id = :user_id
+            ");
+            $this->db->bind(':user_id', $user_id);
+            $row = $this->db->single(); // ✅ get only one row
+        
+            return $row ? $row->coach_id : null;
+        }
+        
+        public function getCoachInfo($coach_id){
+            $this->db->query("
+                    SELECT *
+                    FROM user_coach
+                    WHERE coach_id = :coach_id
+                ");
+            $this->db->bind(':coach_id',$coach_id);
+            $row = $this->db->single(); // ✅ get only one row
+        
+            return $row;
+        }
+
+        public function getCoachZoneId($user_id) {
+            $this->db->query("
+                SELECT zone 
+                FROM user_coach
+                WHERE user_id = :user_id
+            ");
+            $this->db->bind(':user_id', $user_id);
+            $row = $this->db->single(); // ✅ get only one row
+        
+            return $row ? $row->zone : null; // ✅ return only the zone value
+        }
+
+        public function getSchoolZoneId($user_id) {
+            $this->db->query("
+                SELECT zone 
+                FROM user_school
+                WHERE user_id = :user_id
+            ");
+            $this->db->bind(':user_id', $user_id);
+            $row = $this->db->single(); // ✅ get only one row
+        
+            return $row ? $row->zone : null; // ✅ return only the zone value
+        }
+
+        public function getSchoolId($user_id){
+            $this->db->query("
+                SELECT school_id 
+                FROM user_school
+                WHERE user_id = :user_id
+            ");
+            $this->db->bind(':user_id', $user_id);
+            $row = $this->db->single(); // ✅ get only one row
+        
+            return $row ? $row->school_id : null;
+        }
+
+        public function getSchoolInfor($school_id){
+            $this->db->query("
+                    SELECT *
+                    FROM user_school
+                    WHERE school_id = :school_id
+                ");
+            $this->db->bind(':school_id',$school_id);
+            $row = $this->db->single(); // ✅ get only one row
+        
+            return $row;
+        }
+
+        public function findSchoolByName($name){
+            $this->db->query("
+                SELECT *
+                FROM users
+                WHERE firstname = :firstname
+            ");
+            $this->db->bind(':firstname', $name);
+            return $this->db->single(); // 🔥 only return 1 row
+        }
         
     }
 ?>

@@ -128,5 +128,10 @@ class zoneModel {
         return $result;
     }
 
-    
+    public function getZoneIdName(){
+        $query = "SELECT zoneId, zoneName  FROM zone ";
+        $this->db->query($query);
+        $result = $this->db->resultset();
+        return $result;
+    }
 }
