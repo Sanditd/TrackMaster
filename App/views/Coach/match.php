@@ -145,7 +145,7 @@
 </head>
 <body>
 
-
+<?php require 'CoachNav.php'; ?>
   <div class="performance-container">
     <div class="performance-header">
       <h1><i class="fas fa-cricket"></i> Record Match Performance</h1>

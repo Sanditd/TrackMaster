@@ -995,6 +995,15 @@ public function deleteAchievement($achievementId) {
     }
 }
 
+public function aboutUs() {
+    $data = [];
+    $this->view('coach/aboutUs');
+}
+
+public function help() {
+    $data = [];
+    $this->view('coach/help');
+}
 
 
 }

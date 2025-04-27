@@ -17,6 +17,8 @@
             --transition: all 0.3s ease;
             --success-color: #28a745;
             --error-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
         }
         * {
             margin: 0;
@@ -41,6 +43,7 @@
             color: white;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
+            text-align: center;
         }
         .dashboard-header h1 {
             font-size: 2.2rem;
@@ -107,9 +110,16 @@
             gap: 8px;
             transition: var(--transition);
             margin-top: 15px;
+            text-decoration: none;
         }
         .btn:hover {
             background: #cc8400;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(204, 132, 0, 0.2);
+        }
+        .btn-container {
+            margin-top: 20px;
+            text-align: center;
         }
         .status-counts {
             display: flex;
@@ -240,249 +250,482 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* Team Status */
+        .status-counts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .status-box {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 5px;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .status-box strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        
+        /* Calendar */
+        .calendar-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .calendar-month {
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .calendar-day-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 5px;
+            background: #f0f0f0;
+        }
+        
+        .calendar-day {
+            height: 60px;
+            border: 1px solid #eee;
+            padding: 5px;
+            position: relative;
+        }
+        
+        .calendar-date {
+            font-weight: bold;
+        }
+        
+        .calendar-event-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .practice-indicator {
+            background-color: #4CAF50;
+        }
+        
+        .meeting-indicator {
+            background-color: #2196F3;
+        }
+        
+        .match-indicator {
+            background-color: #F44336;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Upcoming Events List */
+        .upcoming-events-list {
+            margin-top: 20px;
+        }
+        
+        .event-item {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .event-date {
+            min-width: 50px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .event-details {
+            flex: 1;
+        }
+        
+        .event-name {
+            font-weight: bold;
+        }
+        
+        .event-time-location {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        /* ---- ENHANCED MEDICAL ALERTS SECTION ---- */
+        .medical-alerts {
+            margin: 15px 0;
+        }
+        
+        .medical-alert-counter {
+            background: var(--light-color);
+            padding: 12px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            text-align: center;
+            border-left: 4px solid var(--error-color);
+        }
+        
+        .medical-alert-counter span {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--error-color);
+        }
+        
+        .alert-item {
+            display: flex;
+            margin-bottom: 15px;
+            background: #fff;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+        
+        .alert-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .alert-status {
+            width: 8px;
+            background: var(--error-color);
+        }
+        
+        .alert-status.critical {
+            background: var(--error-color);
+        }
+        
+        .alert-status.moderate {
+            background: var(--warning-color);
+        }
+        
+        .alert-status.minor {
+            background: var(--info-color);
+        }
+        
+        .alert-content {
+            padding: 15px;
+            display: flex;
+            flex: 1;
+        }
+        
+        .alert-date {
+            min-width: 50px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary-color);
+            background: rgba(0, 38, 77, 0.05);
+            padding: 8px;
+            border-radius: var(--border-radius);
+            margin-right: 15px;
+            font-size: 0.9rem;
+            height: fit-content;
+            line-height: 1.3;
+        }
+        
+        .alert-date .day {
+            font-size: 1.1rem;
+            display: block;
+        }
+        
+        .alert-date .month {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+        
+        .alert-details {
+            flex: 1;
+        }
+        
+        .player-name {
+            font-weight: bold;
+            font-size: 1.05rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .condition {
+            color: var(--gray-color);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .alert-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .tag-critical {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--error-color);
+        }
+        
+        .tag-moderate {
+            background: rgba(255, 193, 7, 0.1);
+            color: #856404;
+        }
+        
+        .tag-minor {
+            background: rgba(23, 162, 184, 0.1);
+            color: var(--info-color);
+        }
+        
+        .medical-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn-medical {
+            padding: 12px 18px;
+        }
+        
+        .btn-medical-records {
+            background: var(--primary-color);
+        }
+        
+        .btn-medical-records:hover {
+            background: #003b73;
+        }
+        
+        .empty-alert-message {
+            padding: 20px;
+            text-align: center;
+            color: var(--gray-color);
+            background: var(--light-color);
+            border-radius: var(--border-radius);
+            margin: 15px 0;
+        }
+        
+        /* ---- ENHANCED SCHEDULE REQUESTS SECTION ---- */
+        .schedule-requests {
+            margin: 15px 0;
+        }
+        
+        .schedule-counter {
+            background: var(--light-color);
+            padding: 12px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            text-align: center;
+            border-left: 4px solid var(--info-color);
+        }
+        
+        .schedule-counter span {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--info-color);
+        }
+        
+        .request-item {
+            display: flex;
+            margin-bottom: 15px;
+            background: #fff;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+        
+        .request-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .request-status {
+            width: 8px;
+            background: var(--info-color);
+        }
+        
+        .request-status.pending {
+            background: var(--warning-color);
+        }
+        
+        .request-status.approved {
+            background: var(--success-color);
+        }
+        
+        .request-status.denied {
+            background: var(--error-color);
+        }
+        
+        .request-content {
+            padding: 15px;
+            display: flex;
+            flex: 1;
+        }
+        
+        .request-date {
+            min-width: 50px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary-color);
+            background: rgba(0, 38, 77, 0.05);
+            padding: 8px;
+            border-radius: var(--border-radius);
+            margin-right: 15px;
+            font-size: 0.9rem;
+            height: fit-content;
+            line-height: 1.3;
+        }
+        
+        .request-date .day {
+            font-size: 1.1rem;
+            display: block;
+        }
+        
+        .request-date .month {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+        
+        .request-details {
+            flex: 1;
+        }
+        
+        .request-event {
+            font-weight: 500;
+            margin-top: 5px;
+            color: var(--primary-color);
+        }
+        
+        .reason {
+            font-style: italic;
+            color: var(--gray-color);
+            margin-top: 8px;
+            line-height: 1.4;
+            background: rgba(0,0,0,0.02);
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #ddd;
+        }
+        
+        .request-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .tag-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #856404;
+        }
+        
+        .tag-approved {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+        
+        .tag-denied {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--error-color);
+        }
+        
+        .schedule-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn-schedule {
+            padding: 12px 18px;
+        }
+        
+        .btn-schedule-requests {
+            background: var(--info-color);
+        }
+        
+        .btn-schedule-new {
+            background: var(--success-color);
+        }
+        
+        .btn-schedule-requests:hover {
+            background: #138496;
+        }
+        
+        .btn-schedule-new:hover {
+            background: #218838;
+        }
+        
+        .empty-request-message {
+            padding: 20px;
+            text-align: center;
+            color: var(--gray-color);
+            background: var(--light-color);
+            border-radius: var(--border-radius);
+            margin: 15px 0;
+        }
+        
+        /* Action buttons for items */
+        .item-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .item-action-btn {
+            background: var(--light-color);
+            border: none;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--gray-color);
+            transition: var(--transition);
+        }
+        
+        .item-action-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
 
-        /* Dashboard Styles */
-.dashboard-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+        .bottom-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-top: 20px;
 }
 
-.dashboard-header {
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.dashboard-section {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.dashboard-section h2 {
-    margin-top: 0;
-    color: #333;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-}
-
-/* Team Status */
-.status-counts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.status-box {
-    background: #f5f5f5;
-    padding: 10px 15px;
-    border-radius: 5px;
-    flex: 1;
-    min-width: 120px;
-    text-align: center;
-}
-
-.status-box strong {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-}
-
-/* Calendar */
-.calendar-nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 15px 0;
-}
-
-.calendar-month {
-    margin: 0 15px;
-    font-weight: bold;
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    margin-bottom: 15px;
-}
-
-.calendar-day-header {
-    text-align: center;
-    font-weight: bold;
-    padding: 5px;
-    background: #f0f0f0;
-}
-
-.calendar-day {
-    height: 60px;
-    border: 1px solid #eee;
-    padding: 5px;
-    position: relative;
-}
-
-.calendar-date {
-    font-weight: bold;
-}
-
-.calendar-event-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.practice-indicator {
-    background-color: #4CAF50;
-}
-
-.meeting-indicator {
-    background-color: #2196F3;
-}
-
-.match-indicator {
-    background-color: #F44336;
-}
-
-.legend {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* Upcoming Events List */
-.upcoming-events-list {
-    margin-top: 20px;
-}
-
-.event-item {
-    display: flex;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.event-date {
-    min-width: 50px;
-    font-weight: bold;
-    color: #555;
-}
-
-.event-details {
-    flex: 1;
-}
-
-.event-name {
-    font-weight: bold;
-}
-
-.event-time-location {
-    font-size: 0.9em;
-    color: #666;
-}
-
-/* Medical Alerts */
-.medical-alerts {
-    margin: 15px 0;
-}
-
-.alert-item {
-    display: flex;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.alert-date {
-    min-width: 50px;
-    font-weight: bold;
-    color: #555;
-}
-
-.alert-details {
-    flex: 1;
-}
-
-.player-name {
-    font-weight: bold;
-}
-
-.condition {
-    font-size: 0.9em;
-    color: #666;
-}
-
-/* Schedule Requests */
-.schedule-requests {
-    margin: 15px 0;
-}
-
-.request-item {
-    display: flex;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.request-date {
-    min-width: 50px;
-    font-weight: bold;
-    color: #555;
-}
-
-.request-details {
-    flex: 1;
-}
-
-.reason {
-    font-size: 0.9em;
-    color: #666;
-    margin-top: 5px;
-}
-
-/* Stats Boxes */
-.session-stats {
-    display: flex;
-    gap: 15px;
-    margin-top: 15px;
-}
-
-.stat-box {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    background: #f5f5f5;
-    padding: 15px;
-    border-radius: 5px;
-}
-
-.stat-icon {
-    font-size: 24px;
-    margin-right: 15px;
-    color: #555;
-}
-
-.stat-value {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.stat-label {
-    font-size: 14px;
-    color: #666;
-}
-
+.bottom-sections .dashboard-section {
+  flex: 1;
+  min-width: 280px;
+}   
     </style>
 </head>
 <body>
@@ -557,6 +800,9 @@
         </div>
 
         <!-- Session Stats Section -->
+        
+        </div>
+        <div class="bottom-sections">
         <div class="dashboard-section">
             <h2><i class="fas fa-chart-pie"></i> Session Stats</h2>
             <div class="session-stats">
@@ -575,57 +821,68 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Medical History -->
-        <div class="dashboard-section">
-            <h2><i class="fas fa-briefcase-medical"></i> Player Medical History</h2>
-            
-            <?php if (!empty($data['medicalAlerts'])): ?>
-                <div class="medical-alerts">
-                    <?php foreach ($data['medicalAlerts'] as $alert): ?>
-                        <div class="alert-item">
-                            <div class="alert-date"><?= date('M j', strtotime($alert->date)) ?></div>
-                            <div class="alert-details">
-                                <div class="player-name"><?= htmlspecialchars($alert->player_name) ?></div>
-                                <div class="condition"><?= htmlspecialchars($alert->medical_condition) ?></div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
                 </div>
-            <?php else: ?>
-                <p>No recent medical alerts.</p>
-            <?php endif; ?>
-            
-            <center><a href="<?= URLROOT ?>/coach/medicalRecords" class="btn">View All Medical Records <i class="fas fa-arrow-right"></i></a></center>
-        </div>
 
-        <!-- Schedule Change Requests -->
-        <div class="dashboard-section">
-            <h2><i class="fas fa-clock"></i> Schedule Change Requests</h2>
-                
-            <?php if (!empty($data['scheduleRequests'])): ?>
-                <div class="schedule-requests">
-                    <?php foreach ($data['scheduleRequests'] as $request): ?>
-                        <div class="request-item">
-                            <div class="request-date"><?= date('M j', strtotime($request->request_date)) ?></div>
-                            <div class="request-details">
-                                <div class="player-name"><?= htmlspecialchars($request->player_name) ?></div>
-                                <div class="event-name"><?= htmlspecialchars($request->event_name) ?></div>
-                                <div class="reason"><?= htmlspecialchars($request->reason) ?></div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php else: ?>
-                <p>No pending schedule change requests.</p>
-            <?php endif; ?>
-            
-            <center><a href="<?= URLROOT ?>/coach/scheduleRequests" class="btn">View All Requests <i class="fas fa-arrow-right"></i></a></center>
-        </div>
+        <!-- ENHANCED Medical History -->
+        <!-- Player Medical History Section -->
+<div class="dashboard-section">
+  <h2><i class="fas fa-briefcase-medical"></i> Player Medical Updadtes</h2>
 
+  <?php if (!empty($data['medicalAlerts'])): ?>
+    <div class="medical-alerts" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+      <?php foreach ($data['medicalAlerts'] as $alert): ?>
+        <div class="alert-item" style="display: flex; background: rgba(255, 0, 0, 0.02); border: 1px solid #eee; padding: 15px; border-radius: 8px; align-items: center; transition: all 0.3s ease;">
+          <div class="alert-date" style="font-weight: bold; color: #00264d; background: #f8f9fa; padding: 10px; border-radius: 8px; margin-right: 20px; min-width: 70px; text-align: center;">
+            <?= date('M j', strtotime($alert->date)) ?>
+          </div>
+          <div class="alert-details" style="flex: 1;">
+            <div class="player-name" style="font-weight: bold; color: #00264d;"><?= htmlspecialchars($alert->player_name) ?></div>
+            <div class="condition" style="font-size: 0.9rem; color: #666; margin-top: 5px;"><?= htmlspecialchars($alert->medical_condition) ?></div>
+          </div>
+        </div>
+      <?php endforeach; ?>
     </div>
+  <?php else: ?>
+    <p>No recent medical alerts.</p>
+  <?php endif; ?>
+
+  <div style="display: flex; justify-content: center; margin-top: 20px;">
+    <a href="<?= URLROOT ?>/coach/medicalRecords" class="btn" style="padding: 12px 20px; font-size: 1rem; font-weight: bold; text-transform: uppercase;">
+      View All Medical Records <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
 </div>
+
+<!-- Schedule Change Requests Section -->
+<div class="dashboard-section">
+  <h2><i class="fas fa-clock"></i> Schedule Change Requests</h2>
+
+  <?php if (!empty($data['scheduleRequests'])): ?>
+    <div class="schedule-requests" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+      <?php foreach ($data['scheduleRequests'] as $request): ?>
+        <div class="request-item" style="display: flex; background: rgba(0, 102, 255, 0.02); border: 1px solid #eee; padding: 15px; border-radius: 8px; align-items: center; transition: all 0.3s ease;">
+          <div class="request-date" style="font-weight: bold; color: #00264d; background: #f8f9fa; padding: 10px; border-radius: 8px; margin-right: 20px; min-width: 70px; text-align: center;">
+            <?= date('M j', strtotime($request->request_date)) ?>
+          </div>
+          <div class="request-details" style="flex: 1;">
+            <div class="player-name" style="font-weight: bold; color: #00264d;"><?= htmlspecialchars($request->player_name) ?></div>
+            <div class="event-name" style="font-size: 0.95rem; font-weight: 500; color: #ffa500;"><?= htmlspecialchars($request->event_name) ?></div>
+            <div class="reason" style="font-size: 0.85rem; color: #666; margin-top: 8px;"><?= htmlspecialchars($request->reason) ?></div>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  <?php else: ?>
+    <p>No pending schedule change requests.</p>
+  <?php endif; ?>
+
+  <div style="display: flex; justify-content: center; margin-top: 20px;">
+    <a href="<?= URLROOT ?>/coach/scheduleRequests" class="btn" style="padding: 12px 20px; font-size: 1rem; font-weight: bold; text-transform: uppercase;">
+      View All Requests <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
+</div>
+  </div>
 
 <script>
     // Calendar JavaScript remains the same, but we'll enhance it to show real events
