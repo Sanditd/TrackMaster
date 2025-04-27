@@ -31,7 +31,7 @@
             color: var(--dark-color);
         }
 
-        .container {
+        .tcontainer {
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
@@ -256,7 +256,7 @@
 
         /* Responsive Design */
         @media (max-width: 992px) {
-            .container {
+            .tcontainer {
                 grid-template-columns: 1fr;
             }
         }
@@ -299,12 +299,14 @@
 <html><body>
     <?php require 'CoachNav.php'; ?>
 
+    
+
+    <div class="tcontainer">
+
     <div class="dashboard-header">
         <h1><i class="fas fa-calendar-alt"></i> Event Management Dashboard</h1>
         <p>Create, manage and track events for your students and teams</p>
     </div>
-
-    <div class="container">
         <!-- Left Side: Event Creation Form -->
         <div class="form-section">
             <h2><i class="fas fa-plus-circle"></i> Create Event</h2>

@@ -32,10 +32,10 @@
         }
 
         /* Container */
-        .container {
+        .econtainer {
             max-width: 1200px;
             margin: 20px auto;
-            padding: 20px;
+            padding: 30px;
         }
 
         /* Header Section */
@@ -334,7 +334,7 @@
 <body>
     <?php require 'CoachNav.php'; ?>
 
-    <div class="container">
+    <div class="econtainer">
         <div class="team-management-header">
             <h1><i class="fas fa-users-gear"></i> Team Management</h1>
             <p>View, edit, and manage your cricket teams and player lineups</p>
