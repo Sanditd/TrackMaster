@@ -630,8 +630,8 @@ if (isset($_SESSION['error_message'])) {
         <div class="slider">
             <div class="slides">
             <img src="<?php echo ROOT; ?>/public/img/roles/coach.jpeg" alt="Slide 1">
-                <img src="<?php echo ROOT; ?>/public/img/roles/coach.jpeg" alt="Slide 2">
-                <img src="<?php echo ROOT; ?>/public/img/roles/coach.jpeg" alt="Slide 3">
+                <img src="<?php echo ROOT; ?>/public/img/roles/players.jpeg" alt="Slide 2">
+                <img src="< ?php echo ROOT; ?>/public/img/roles/school.jpeg" alt="Slide 3">
             </div>
             <div class="navigation">
                 <button id="prev">❮</button>
