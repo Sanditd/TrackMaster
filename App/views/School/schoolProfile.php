@@ -40,8 +40,7 @@ if (!$user) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- Added Font Awesome -->
 </head>
 <body>
-    <?php require 'navbar.php'; ?>
-    <?php require 'sidebar.php'; ?>
+<?php require 'navbar.php'?>
 
     <div id="main">
         <div class="profile-container">

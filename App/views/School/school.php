@@ -440,13 +440,12 @@ if (isset($_SESSION['error_message'])) {
 
 <body>
     <?php require 'navbar.php'; ?>
-    <?php require 'sidebar.php'; ?>
+    
 
     <div class="dashboard-container">
         <div class="dashboard-header">
             <h1><i class="fas fa-tachometer-alt"></i> School Dashboard</h1>
             <p><i class="fas fa-user"></i> Welcome, <?php echo $username ?>!</p>
-            <?php print_r($data) ?>
         </div>
 
         <div class="stats-cards">

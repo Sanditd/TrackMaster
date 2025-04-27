@@ -42,7 +42,7 @@ if (!$user) {
 <body>
 
 <?php require 'navbar.php'; ?>
-<?php require 'sidebar.php'; ?>
+
         
     
     <div id="main">
