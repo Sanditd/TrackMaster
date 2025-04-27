@@ -1094,7 +1094,17 @@ public function searchUser()
             $this->view('admin/schoolProfile',$data);
         }
 
+        public function accountSetting(){
+            $user_id=$_SESSION['user_id'];
+            $user=$this->userModel->getAdminData($user_id);
 
+            $data=[
+                'user' => $user,
+            ];
+
+            $this->view('admin/accountSetting',$data);
+
+        }
         
 
         }

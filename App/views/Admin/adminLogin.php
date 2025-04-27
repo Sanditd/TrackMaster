@@ -14,23 +14,26 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Check if there's a success message in the session
+$Success_message = "";
+$Error_message = "";
+
+// Store success message separately
 if (isset($_SESSION['success_message'])) {
-    $successMessage = $_SESSION['success_message'];
-    unset($_SESSION['success_message']); // Remove the message after retrieving it
-} else {
-    $successMessage = "";
+    $Success_message = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
 }
 
+// Store error message separately
+
 if (isset($_SESSION['error_message'])) {
-    $successMessage = $_SESSION['error_message'];
-    unset($_SESSION['error_message']); // Remove the message after retrieving it
-} else {
-    $successMessage = "";
+    $Error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
 }
 ?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/sportForm.css">
     <title>TrackMaster Login</title>
     <style>
         :root {
@@ -341,48 +344,6 @@ if (isset($_SESSION['error_message'])) {
             background-color: var(--dark-color);
         }
         
-        /* Custom Alert */
-        #customAlertOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        
-        #customAlertBox {
-            background-color: white;
-            padding: 30px;
-            border-radius: var(--border-radius);
-            width: 400px;
-            text-align: center;
-            box-shadow: var(--box-shadow);
-        }
-        
-        #customAlertBox h2 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        
-        #customAlertBox button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: var(--border-radius);
-            margin-top: 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        #customAlertBox button:hover {
-            background-color: #001a33;
-        }
         
         /* Responsive Styles */
         @media (max-width: 992px) {
@@ -662,7 +623,7 @@ if (isset($_SESSION['error_message'])) {
             
             <div class="or">Or</div>
             <div class="or"><button id="frogetPW-button">Forgot Password</button></div>
-            <div class="or"><a href="<?php echo ROOT ?>/signUpController/selectrole">Register Here</a></div>
+            <div class="or"><a href="<?php echo ROOT ?>/signUpController/adminsignupview">Register Here</a></div>
         </div>
     </div>
 
@@ -769,5 +730,16 @@ if (isset($_SESSION['error_message'])) {
         };
         
     </script>
+
+<script id="error-message" type="application/json">
+<?= json_encode(trim($Error_message)); ?>
+</script>
+
+<script id="success-message" type="application/json">
+<?= json_encode(trim($Success_message)); ?>
+</script>
+
+
+<script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
 </body>
 </html>
