@@ -448,28 +448,7 @@ if (isset($_SESSION['error_message'])) {
             <p><i class="fas fa-user"></i> Welcome, <?php echo $username ?>!</p>
         </div>
 
-        <div class="stats-cards">
-            <div class="card">
-                <i class="fas fa-calendar-day"></i>
-                Upcoming Events<br>
-                <strong>3</strong>
-            </div>
-            <div class="card">
-                <i class="fas fa-clipboard-list"></i>
-                Facility Requests<br>
-                <strong>3</strong>
-            </div>
-            <div class="card">
-                <i class="fas fa-chalkboard-teacher"></i>
-                Session Going on<br>
-                <strong>2</strong>
-            </div>
-            <div class="card">
-                <i class="fas fa-book-open"></i>
-                Extra Classes Requests<br>
-                <strong>2</strong>
-            </div>
-        </div>
+        
 
         <div class="main-content">
             <div class="section recent-clients">
@@ -591,38 +570,9 @@ if (isset($_SESSION['error_message'])) {
 
 </div>
 
-<div class="section activity-log">
-    <h2><i class="fas fa-chart-bar"></i> Study performance</h2>
-    
-       
-            <ul>
-                 
-                 <li>Hashan<span>Average -  25%</span></li>
-                 <li>Dimuth  <span>Average - 30%</span></li>
-       
-            </li>
 
-   
-</div>
 
-<div class="section upcoming-appointments">
-    <h2><i class="fas fa-calendar-check"></i> Upcoming Sessions</h2>
-    <div class="appointment">
-    <span>Jan 31</span> Coaching Session 25<br>
-                    <span>Feb 07</span> Coaching Session 24<br>
-                </div>
-
-                <center>
-                    <button class="profile-button"
-                        onclick="window.location.href='<?php echo URLROOT ?>/school/scheduleEx'">
-                        <i class="fas fa-plus-circle"></i> Schedule Extra Class
-                    </button>
-                </center>
             </div>
-
-
-    </div>
-</div>
 
     </div>
 
