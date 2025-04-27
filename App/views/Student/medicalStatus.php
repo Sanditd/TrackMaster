@@ -405,8 +405,7 @@
     </style>
 </head>
 <body>
-    <?php require 'navbar.php'?>
-    <?php require 'sidebar.php'?>
+<?php require 'navbar.php'?>
     
     <div class="medical-container">
         <div class="medical-header">

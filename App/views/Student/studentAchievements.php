@@ -11,7 +11,6 @@
 <body>
 
 <?php require 'navbar.php'?>
-<?php require 'sidebar.php'?>
 <?php 
     // echo $_SESSION['user_id'];
 if (!isset($_SESSION['user_id'])) {

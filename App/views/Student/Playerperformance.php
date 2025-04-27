@@ -9,7 +9,7 @@
 
 </head>
 <body>
-    <?php require 'navbar.php'; ?>
+<?php require 'navbar.php'?>
     
     <div class="performance-container">
         <div class="performance-header">
