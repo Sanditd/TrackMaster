@@ -110,8 +110,7 @@ if (!$user) {
 </head>
 <body>
 
-<?php require 'navbar.php'; ?>
-<?php require 'sidebar.php'; ?>
+<?php require 'navbar.php'?>
 
 <div class="header">
     <h1><i class="fas fa-school"></i> Update School Facilities</h1>

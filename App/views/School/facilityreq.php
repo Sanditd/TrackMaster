@@ -86,6 +86,9 @@ $facilitiesResult = $conn->query($facilitiesQuery);
     </style>
 </head>
 <body>
+
+<?php require 'navbar.php'?>
+
     <div class="container-fluid">
         <div class="header">
             <h2>Request School Facility</h2>

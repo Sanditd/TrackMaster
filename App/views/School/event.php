@@ -329,14 +329,12 @@ if (!$user) {
 </head>
 
 <body>
-    <?php require 'navbar.php'; ?>
-    <?php require 'sidebar.php'; ?>
+<?php require 'navbar.php'?>
 
     <div class="facilities-container">
         <div class="facilities-header">
             <h1><i class="fas fa-building"></i> Facility Requests</h1>
             <p>Manage and respond to requests for sports facilities and equipment</p>
-            <?php print_r($data)?>
         </div>
 
         <!-- Search and Filter Section -->

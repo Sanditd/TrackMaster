@@ -458,6 +458,15 @@ class School extends Controller{
         header('Location: ' . ROOT . '/school/scheduleEx');
     }
 }
+public function aboutUs() {
+    $data = [];
+    $this->view('school/aboutUs');
+}
+
+public function help() {
+    $data = [];
+    $this->view('school/help');
+}
 
 }
 ?>

@@ -212,8 +212,7 @@
     </style>
 </head>
 <body>
-    <?php require 'navbar.php'; ?>
-    <?php require 'sidebar.php'; ?>
+<?php require 'navbar.php'?>
 
     <div class="profile-container">
         <div class="profile-header">
