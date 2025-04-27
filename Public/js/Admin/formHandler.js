@@ -39,6 +39,7 @@ function hideCustomAlert() {
     document.getElementById('customAlertOverlay').style.display = 'none';
 }
 
+
 function addDynamicField(containerId, fieldHtml) {
     const container = document.getElementById(containerId);
     const newField = document.createElement('div');
@@ -48,38 +49,90 @@ function addDynamicField(containerId, fieldHtml) {
 }
 
 function removeField(element) {
-    element.parentElement.remove();
+    // Get the parent container (input-group)
+    const parentGroup = element.parentElement;
+    
+    // Get the previous sibling which should have the add button
+    const prevSibling = parentGroup.previousElementSibling;
+    
+    // If there's a previous sibling, make sure it has an add button
+    if (prevSibling) {
+        // Check if the previous sibling already has an add button
+        const hasAddBtn = prevSibling.querySelector('.add-btn');
+        
+        // If it doesn't have an add button, add one
+        if (!hasAddBtn) {
+            const addBtn = document.createElement('button');
+            addBtn.className = 'add-btn';
+            
+            // Determine which add function to use based on context or container ID
+            const containerId = parentGroup.parentElement.id;
+            let onclickFunction;
+            
+            if (containerId === 'dynamic-positions-container') {
+                onclickFunction = "addPositionField(this)";
+            } else if (containerId === 'dynamic-types-container') {
+                onclickFunction = "addTypeField(this)";
+            } else if (containerId === 'dynamic-rules-container') {
+                onclickFunction = "addRuleField(this)";
+            } else if (containerId === 'dynamic-games-container') {
+                onclickFunction = "addGameField(this)";
+            } else if (containerId === 'dynamic-weight-container') {
+                onclickFunction = "addWeightField()";
+            }
+            
+            addBtn.setAttribute('onclick', onclickFunction);
+            addBtn.textContent = '➕';
+            prevSibling.appendChild(addBtn);
+        }
+    }
+    
+    // Remove the current field
+    parentGroup.remove();
 }
 
 function addPositionField(element) {
-    addDynamicField('dynamic-positions-container', `
-        <input type="text" name="positions[]" placeholder="Position" required>
+    // Get current field count to create unique ID
+    const fieldCount = document.querySelectorAll('#dynamic-positions-container .input-group').length + 1;
+    
+    // Set the HTML content
+    const fieldHtml = `
+        <input type="text" id="positions-${fieldCount}" name="positions[]" placeholder="Position" required>
         <button class="add-btn" onclick="addPositionField(this)">➕</button>
         <button class="remove-btn" onclick="removeField(this)">❌</button>
-    `);
+    `;
+    
+    // Add the new dynamic field
+    addDynamicField('dynamic-positions-container', fieldHtml);
+    
+    // Remove the add button from the previous field
     element.remove();
 }
 
 function addTypeField(element) {
-    addDynamicField('dynamic-types-container', `
+    const fieldHtml = `
         <input type="text" name="types[]" placeholder="Type" required>
         <button class="add-btn" onclick="addTypeField(this)">➕</button>
         <button class="remove-btn" onclick="removeField(this)">❌</button>
-    `);
+    `;
+    
+    addDynamicField('dynamic-types-container', fieldHtml);
     element.remove();
 }
 
 function addRuleField(element) {
-    addDynamicField('dynamic-rules-container', `
+    const fieldHtml = `
         <textarea name="rules[]" placeholder="Enter a rule" style="width:400%" required></textarea>
         <button class="add-btn" onclick="addRuleField(this)">➕</button>
         <button class="remove-btn" onclick="removeField(this)">❌</button>
-    `);
+    `;
+    
+    addDynamicField('dynamic-rules-container', fieldHtml);
     element.remove();
 }
 
 function addGameField(element) {
-    addDynamicField('dynamic-games-container', `
+    const fieldHtml = `
         <input type="text" name="Gtypes[]" placeholder="Game Type" required>
         <select name="durationType[]" required>
             <option value="T">Time Based</option>
@@ -89,65 +142,20 @@ function addGameField(element) {
         <input type="number" name="duration[]" placeholder="Duration" required>
         <button class="add-btn" onclick="addGameField(this)">➕</button>
         <button class="remove-btn" onclick="removeField(this)">❌</button>
-    `);
+    `;
+    
+    addDynamicField('dynamic-games-container', fieldHtml);
     element.remove();
 }
 
-
 function addWeightField() {
-    const container = document.getElementById("dynamic-weight-container");
-    const index = container.getElementsByClassName("input-group").length + 1;
-
-    const newField = document.createElement("div");
-    newField.classList.add("input-group");
-    newField.innerHTML = `
+    const fieldHtml = `
         <input type="text" name="weightClass[]" placeholder="Enter class name" required>
         <input type="number" name="min[]" placeholder="Minimum" step="0.1" required>
         <input type="number" name="max[]" placeholder="Maximum" step="0.1" required>
         <button type="button" class="add-btn" onclick="addWeightField()">➕</button>
-        <button type="button" class="remove-btn" onclick="removeField(this)">➖</button>
+        <button type="button" class="remove-btn" onclick="removeField(this)">❌</button>
     `;
-
-    container.appendChild(newField);
+    
+    addDynamicField('dynamic-weight-container', fieldHtml);
 }
-
-// Ensure remove button works without breaking add functionality
-function removeField(button) {
-    let parent = button.parentElement;
-    parent.remove();
-}
-
-//vaidate ind sports class names max>min
-document.querySelector("form").addEventListener("submit", function (e) {
-    const classNames = document.getElementsByName("weightClass[]");
-    const minWeights = document.getElementsByName("min[]");
-    const maxWeights = document.getElementsByName("max[]");
-
-    let classSet = new Set();
-    let errorMessages = [];
-
-    for (let i = 0; i < classNames.length; i++) {
-        const className = classNames[i].value.trim();
-        const min = parseFloat(minWeights[i].value);
-        const max = parseFloat(maxWeights[i].value);
-
-        // Check for duplicate class names
-        if (classSet.has(className)) {
-            errorMessages.push(`Duplicate class name found: "${className}"`);
-        } else {
-            classSet.add(className);
-        }
-
-        // Check if max > min
-        if (isNaN(min) || isNaN(max) || max <= min) {
-            errorMessages.push(`Invalid weight range for class "${className}": max must be greater than min.`);
-        }
-    }
-
-    if (errorMessages.length > 0) {
-        e.preventDefault(); // Stop form submission
-        showCustomAlert(errorMessages.join("<br>")); // Use your custom alert
-    }
-});
-
-

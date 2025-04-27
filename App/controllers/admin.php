@@ -16,7 +16,7 @@
         }
 
         public function index(){
-
+            $this->dashboard();
         }
 
         //to load sportCrete.php
@@ -883,9 +883,217 @@
     }
 }
 
+public function searchUser()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $searchTerm = trim($_POST['search_term'] ?? '');
+        $userType = trim($_POST['user_type'] ?? '');
+        $zoneId = trim($_POST['zone_id'] ?? '');
 
+        // Basic validation
+        if (empty($searchTerm)) {
+            $_SESSION['error_message'] = "Please enter a search term.";
+            header("Location: " . ROOT.'/admin/userManage');
+            exit;
+        }
+
+        // Split search term
+        $nameParts = explode(' ', $searchTerm);
+        $firstName = $nameParts[0] ?? '';
+        $lastName = $nameParts[1] ?? '';
+        // $_SESSION['error_message'] = 'firstname: '.$firstName.' '.'lastname :'.$lastName;
+        //     header("Location: " . ROOT.'/admin/userManage');
+        //     exit;
+
+        if (empty($firstName)) {
+            $_SESSION['error_message'] = "First name is required.";
+            header("Location: " . ROOT.'/admin/userManage');
+            exit;
+        }
+
+        if($userType!='school'){
+        // Search user
+        $user = $this->userModel->findUserByName($firstName, $lastName);
+        // $_SESSION['error_message'] = 'User details: ' . print_r($user, true);
+        // header("Location: " . ROOT.'/admin/userManage');
+        // exit;
+        }else{
+            $user = $this->userModel->findSchoolByName($searchTerm);
+        }
+
+
+        if (!$user) {
+            $_SESSION['error_message'] = "User not found with given name.";
+            header("Location: " . ROOT.'/admin/userManage');
+            exit;
+        }
+
+        // Validate user role
+        $userRole = $user->role ?? null;
+        if (!$userRole) {
+            $_SESSION['error_message'] = "User role is missing.";
+            header("Location: " . ROOT.'/admin/userManage');
+            exit;
+        }
+
+        if (!empty($userType) && strtolower($userRole) !== strtolower($userType)) {
+            $_SESSION['error_message'] = "User types does not match";
+            header("Location: " . ROOT.'/admin/userManage');
+            exit;
+        }
 
         
+
+        // Route user based on role
+        switch (strtolower($userRole)) {
+            case 'player':
+                $userZoneId = (int)($this->userModel->getPlayerZoneId($user->user_id) ?? 0);
+                $zoneId = (int)($_POST['zone_id'] ?? 0);
+                // $_SESSION['error_message'] = "db ". $userZoneId. " post ".$zoneId;
+                //     header("Location: " . ROOT.'/admin/userManage');
+                //     exit;
+        
+                if (!empty($zoneId) && $userZoneId !== $zoneId) {
+                    $_SESSION['error_message'] = "User zone does not match.";
+                    header("Location: " . ROOT.'/admin/userManage');
+                    exit;
+                }
+    
+                $this->loadPlayerProfile($user->user_id);
+                break;
+            case 'coach':
+                $userZoneId = (int)($this->userModel->getCoachZoneId($user->user_id) ?? 0);
+                $zoneId = (int)($_POST['zone_id'] ?? 0);
+                //  $_SESSION['error_message'] = "db ". $userZoneId. " post ".$zoneId;
+                //    header("Location: " . ROOT.'/admin/userManage');
+                //     exit;
+
+                if (!empty($zoneId) && $userZoneId !== $zoneId) {
+                    $_SESSION['error_message'] = "User zone does not match.";
+                    header("Location: " . ROOT.'/admin/userManage');
+                    exit;
+                }
+
+                // $_SESSION['error_message'] = "User ".$user->user_id;
+                //     header("Location: " . ROOT.'/admin/userManage');
+                //     exit;
+
+                $this->loadCoachProfile($user->user_id);
+                break;
+            case 'school':
+                $userZoneId = (int)($this->userModel->getSchoolZoneId($user->user_id) ?? 0);
+                $zoneId = (int)($_POST['zone_id'] ?? 0);
+                //  $_SESSION['error_message'] = "db ". $userZoneId. " post ".$zoneId;
+                //    header("Location: " . ROOT.'/admin/userManage');
+                //     exit;
+
+                if (!empty($zoneId) && $userZoneId !== $zoneId) {
+                    $_SESSION['error_message'] = "User zone does not match.";
+                    header("Location: " . ROOT.'/admin/userManage');
+                    exit;
+                }
+
+            // $_SESSION['error_message'] = "User ".$user->user_id;
+            //     header("Location: " . ROOT.'/admin/userManage');
+            //     exit;
+
+            $this->loadSchoolProfile($user->user_id);
+            break;
+            // case 'admin':
+            //     $this->loadAdminProfile($user->userId);
+            //     break;
+            default:
+                $_SESSION['error_message'] = "Unknown user role.";
+                header("Location: " . ROOT.'/admin/userManage');
+                exit;
+        }
+    } else {
+        $_SESSION['error_message'] = "Invalid request method.";
+        header("Location: " . ROOT.'/admin/userManage');
+        exit;
+    }
+}
+
+
+
+        public function loadPlayerProfile($user_id){
+            $school_id=$this->userModel->getPlayerId($user_id);
+
+            if(!$school_id){
+                $_SESSION['error_message']="Unknown Player";
+                header("Location: " . ROOT.'/admin/userManage');
+                exit;
+            }
+
+            $user=$this->userModel->getUserInfo($user_id);
+            $player=$this->userModel->getPlayerInfo($school_id);
+            $activity=$this->activityModel->getUserActivityByUserId($user_id);
+            $zones=$this->zoneModel->getZoneIdName();
+            $sport=$this->sportModel->getSports();
+
+            $data=[
+                'user'=>$user,
+                'player'=>$player,
+                'activity'=>$activity,
+                'zones'=>$zones,
+                'sport'=>$sport,
+            ];
+
+            $this->view('admin/playerProfile',$data);
+        }
+
+        public function loadCoachProfile($user_id){
+            $coach_id=$this->userModel->getCoachId($user_id);
+
+            if(!$coach_id){
+                $_SESSION['error_message']="Unknown Coach z".$user_id;
+                header("Location: " . ROOT.'/admin/userManage');
+                exit;
+            }
+
+            $user=$this->userModel->getUserInfo($user_id);
+            $coach=$this->userModel->getCoachInfo($coach_id);
+            $activity=$this->activityModel->getUserActivityByUserId($user_id);
+            $zones=$this->zoneModel->getZoneIdName();
+            $sport=$this->sportModel->getSports();
+
+            $data=[
+                'user'=>$user,
+                'coach'=>$coach,
+                'activity'=>$activity,
+                'zones'=>$zones,
+                'sport'=>$sport,
+            ];
+
+            $this->view('admin/coachProfile',$data);
+        }
+
+
+        public function loadSchoolProfile($user_id){
+            $school_id=$this->userModel->getSchoolId($user_id);
+
+            if(!$school_id){
+                $_SESSION['error_message']="Unknown School ".$user_id;
+                header("Location: " . ROOT.'/admin/userManage');
+                exit;
+            }
+
+            $user=$this->userModel->getUserInfo($user_id);
+            $school=$this->userModel->getSchoolInfor($school_id);
+            $activity=$this->activityModel->getUserActivityByUserId($user_id);
+            $zones=$this->zoneModel->getZoneIdName();
+            
+
+            $data=[
+                'user'=>$user,
+                'school'=>$school,
+                'activity'=>$activity,
+                'zones'=>$zones,
+            ];
+
+            $this->view('admin/schoolProfile',$data);
+        }
+
 
         
 

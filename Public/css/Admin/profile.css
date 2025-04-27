@@ -1,38 +1,212 @@
-.profile-edit-btn {
-    background-color: #000000;
-    width: 100%;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 30px;
-    display: block;
-    text-align: center;
+/* common.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.profile-content {
-    width: 100%;
-    height: auto;
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.Pcontainer {
+    max-width: 1600px;
+    margin: 0 auto;
     padding: 20px;
+    margin-left: 200px;
+}
+
+.Phead {
+    /* background-color: #2c3e50; */
+    color: rgb(0, 0, 0);
+    padding: 20px 0;
+    margin-bottom: 30px;
+    margin-left: -40px;
+}
+
+header .Pcontainer {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
 }
 
-.profile-content h2 {
-    margin-top: 50px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 36px;
-    font-weight: bold;
-    text-align: center;
-    color: #333;
+
+
+.profile-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: -80px;
+    margin-left: -50px;
 }
 
-.personal-info-content {
+.profile-sidebar {
+    flex: 1;
+    min-width: 300px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.profile-content {
+    flex: 2;
+    min-width: 1100px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     padding: 20px;
+}
+
+.profile-header {
+    padding: 20px;
+    background-color: #3498db;
+    color: white;
+    text-align: center;
+}
+
+.profile-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid white;
+    margin: 0 auto 15px;
+    display: block;
+}
+
+.profile-info {
+    padding: 20px;
+}
+
+.info-group {
+    margin-bottom: 15px;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.info-value {
+    font-size: 16px;
+}
+
+.tab-buttons {
     display: flex;
-    flex-direction: column;
-    align-items: left;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #7f8c8d;
+    transition: all 0.3s;
+}
+
+.tab-button.active {
+    color: #3498db;
+    border-bottom: 2px solid #3498db;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.section-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+
+.experience-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.experience-item:last-child {
+    border-bottom: none;
+}
+
+.experience-title {
+    font-weight: bold;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+.experience-period {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.experience-description {
+    margin-top: 5px;
 }
