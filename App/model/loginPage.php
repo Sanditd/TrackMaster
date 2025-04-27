@@ -217,6 +217,16 @@ public function getAdminActivation($userId){
     $result = $this->db->resultSet();
     return $result;
 }
+public function updateAdminPassword($userId, $newPasswordHash) {
+    $this->db->query("UPDATE admin SET password = :password WHERE admin_id = :userId");
+
+    $this->db->bind(':password', $newPasswordHash);
+    $this->db->bind(':userId', $userId);
+
+    return $this->db->execute();
+}
+
+
 
 }
 

@@ -572,6 +572,14 @@ class User {
             $this->db->bind(':user_id', $user_id);
             return $this->db->resultset();
         }
+
+        public function getAdmin(){
+            $query = "SELECT * FROM admin ";
+            $this->db->query($query);
+            return $this->db->resultset();
+        }
+
+        
         
     }
 ?>
