@@ -181,7 +181,7 @@ foreach ($data['schools'] as $school) {
         </div>
     </div>
 
-<div class="admin-container">
+<div class="admin-container" style="width: 500px;">
     <div class="admin-content">
         <div class="admin-header">
             <h1 class="admin-title">User Management</h1>
