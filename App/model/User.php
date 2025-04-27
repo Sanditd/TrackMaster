@@ -564,6 +564,14 @@ class User {
             $this->db->bind(':firstname', $name);
             return $this->db->single(); // 🔥 only return 1 row
         }
+
+        public function getAdminData($user_id){
+            $query = "SELECT * FROM admin WHERE admin_id = :user_id";
+            
+            $this->db->query($query);
+            $this->db->bind(':user_id', $user_id);
+            return $this->db->resultset();
+        }
         
     }
 ?>

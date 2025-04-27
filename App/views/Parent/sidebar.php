@@ -1,3 +1,61 @@
+<?php
+//Check if session user ID exists
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['error_message']='Invalid Login! Please login again.';
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
+}
+
+$userId = (int) $_SESSION['user_id'];
+$username = (string) $_SESSION['username'];
+
+
+//Load required model file if not already loaded
+ require_once __DIR__ . '/../../model/loginPage.php';
+ // Adjust path as needed
+
+// Create login model instance
+$loginModel = new loginPage();
+
+$user = $loginModel->getUserById($userId);
+
+
+//If user does not exist in DB, destroy session and redirect
+if (!$user) {
+    session_unset();
+    session_destroy();
+    $_SESSION['error_message']='Login Failed! Try Again.';
+    header('Location: ' . ROOT . '/loginController/adminLogin');
+    exit;
+}
+
+//check user account active status
+// if ($userActive[0]->active != 1) {
+//     $_SESSION['error_message'] = 'Login Failed! Try Again.';
+//     session_unset();
+//     session_destroy();
+//     header('Location: ' . ROOT . '/loginController/login');
+//     exit;
+// }
+
+
+$Success_message = "";
+$Error_message = "";
+
+// Store success message separately
+if (isset($_SESSION['success_message'])) {
+    $Success_message = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
+}
+
+// Store error message separately
+if (isset($_SESSION['error_message'])) {
+    $Error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,9 +71,9 @@
         <span class="close" onmouseleave="closeNav()">
         <div class="profile">
             <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture">
-            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">S.THENUWARA</div>
+            <div style="font-size:15px;font-weight:bold;white-space: nowrap;">S. Thenuwara </div>
             <br>
-            <div style="font-size:10px;white-space: nowrap;">Parentr</div>
+            <div style="font-size:10px;white-space: nowrap;">School</div>
             
             <br>
             <hr>
@@ -23,8 +81,9 @@
 
         <nav>
             <ul>
-                <li><a href="<?php echo URLROOT ?>/guardian/dashboard">Dashboard</a></li>
+               <li><a href="<?php echo URLROOT ?>/guardian/dashboard">Dashboard</a></li>
                 <li><a href="<?php echo URLROOT ?>/guardian/parentProfile">My Profile</a></li>
+
                 
             </ul>
         </nav>

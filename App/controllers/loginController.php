@@ -48,13 +48,12 @@ class loginController extends Controller {
                                 session_write_close();
                                     header('Location: ' . URLROOT . '/coach/dashboard');
                                     exit;
-                                break;
+                                
                             case 'player':
-                                case 'player':
                                     session_write_close();
                                     header('Location: ' . URLROOT . '/Student/studentDashboard');
                                     exit;
-                                break;
+                                
                             case 'school':
                             session_write_close();
                             header('Location: ' . URLROOT . '/school/Dashboard');
@@ -71,7 +70,8 @@ class loginController extends Controller {
                         exit;
                     } else {
                         // Redirect to the sign-up page if login fails
-                        header('Location: ' . ROOT . '/loginController/ogin');
+                        $_SESSION['error_message']='Username or Password incorrect';
+                        header('Location: ' . ROOT . '/loginController/login');
                         exit;
 
                     }
@@ -82,19 +82,14 @@ class loginController extends Controller {
 
         
             // Load the login view (HTML)
-            $this->view('/Admin/login', ['error' => $error]);
+            
+            $this->view('/Admin/login',);
 
         }
 
 
         public function adminLogin() {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            } else {
-                session_unset();     // Remove all session variables
-                session_destroy();   // Destroy the session
-                session_start();     // Start a fresh session again
-            }
+           
         
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $username = $_POST['username'] ?? '';
@@ -115,8 +110,8 @@ class loginController extends Controller {
                         exit;
                     }
         
-                    $_SESSION['error_message'] = "Login Failed! Try Again.";
-                    header('Location: ' . ROOT . '/logincontroller/adminLogin');
+                    $_SESSION['error_message'] = "Username or Password incorrect.";
+                    header('Location: ' . ROOT . '/logincontroller/adminLogin?error=1');
                     exit;
                 }
             }

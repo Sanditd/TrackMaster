@@ -285,18 +285,7 @@ if (isset($_SESSION['error_message'])) {
             </table>
         </div>
         
-        <!-- Geographic View -->
-        <div class="map-container">
-            <h3>Geographic Distribution - Zones</h3>
-            <div class="map-display">
-                <?php foreach($data['zones'] as $zone): ?>
-                <div class="zone-marker" 
-                     style="top: <?php echo rand(20, 70); ?>%; left: <?php echo rand(20, 80); ?>%;" 
-                     title="<?php echo $zone->zoneName; ?>: <?php echo $zone->provinceName; ?>, <?php echo $zone->DisName; ?>">
-                </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
+        
         
         <!-- Admin Shortcuts -->
         <div class="shortcuts-container">

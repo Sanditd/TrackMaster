@@ -9,16 +9,14 @@ if (!isset($_SESSION['user_id'])) {
 $userId = (int) $_SESSION['user_id'];
 $username = (string) $_SESSION['username'];
 
-
 //Load required model file if not already loaded
- require_once __DIR__ . '/../../model/loginPage.php';
- // Adjust path as needed
+require_once __DIR__ . '/../../model/loginPage.php';
+// Adjust path as needed
 
 // Create login model instance
 $loginModel = new loginPage();
 
 $user = $loginModel->getUserById($userId);
-
 
 //If user does not exist in DB, destroy session and redirect
 if (!$user) {
@@ -35,336 +33,311 @@ if (!$user) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Profile</title>
-    <link rel="stylesheet" href="../Public/css/School/editSchool.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- Added Font Awesome -->
+    <title>School Profile | TrackMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #00264d;
+            --secondary-color: #ffa500;
+            --light-bg: #f4f4f9;
+            --white: #ffffff;
+            --text-dark: #333;
+            --text-muted: #666;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 38, 77, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+        }
+
+        /* Main Container */
+        .profile-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 20px 25px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-header h1 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .edit-profile-btn {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Profile Content Layout */
+        .profile-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+        }
+
+        /* Profile Sidebar */
+        .profile-sidebar {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+
+        .profile-picture-container {
+            background-color: var(--primary-color);
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: var(--white);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .school-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .school-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .school-type {
+            color: var(--secondary-color);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--text-muted);
+        }
+
+        .contact-item i {
+            min-width: 30px;
+            color: var(--primary-color);
+        }
+
+        /* Detail Cards */
+        .detail-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+            
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .detail-header i {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+
+        .detail-header h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .detail-content {
+            padding: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .info-label {
+            font-weight: 600;
+            min-width: 150px;
+            color: var(--text-dark);
+        }
+
+        .info-value {
+            color: var(--text-muted);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .profile-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .edit-profile-btn {
+                align-self: flex-start;
+            }
+        }
+    </style>
 </head>
 <body>
-<?php require 'navbar.php'?>
+    <?php require 'navbar.php'; ?>
+    <?php require 'sidebar.php'; ?>
 
-    <div id="main">
-        <div class="profile-container">
-            <div class="profile-header">
-                <h1><i class="fas fa-user-circle"></i> School Profile</h1>
-                <a href="<?php echo ROOT?>/School/EditProfile">
-                <button class="edit-profile-btn" onclick="openEditModal()">
-                    <i class="fas fa-edit"></i> Edit Profile
-                </button>
-                </a>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1><i class="fas fa-school"></i> School Profile</h1>
+        
+           
+        </div>
+
+        <div class="profile-content">
+            <!-- Profile Sidebar with School Info -->
+            <div class="profile-sidebar">
+                <div class="profile-picture-container">
+                    <div class="profile-picture">
+                        <img src="/TrackMaster/Public/img/profile.jpeg" alt="School Profile Picture" id="profile-image">
+                    </div>
+                </div>
+                <div class="school-info">
+                    <h2 class="school-name"><?php echo $username ?></h2>
+                    <p class="school-type">School</p>
+
+                    <?php
+                    // Get user info from data
+                    $userInfo = $data['userInfo'][0] ?? null;
+                    if ($userInfo) :
+                    ?>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span><?= $userInfo->email ?></span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span><?= $userInfo->phonenumber ?></span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span><?= $userInfo->address ?></span>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                </div>
             </div>
 
-            <div class="profile-content">
-                <!-- Profile Sidebar -->
-                <div class="profile-sidebar">
-                    <div class="profile-picture-container">
-                        <div class="profile-picture">
-                            <img src="/TrackMaster/Public/img/profile.jpeg" alt="School Profile Picture" id="profile-image">
-                        </div>
-                    </div>
-                    <div class="profile-info">
-                        <h2 class="student-name" id="display-name">Maliyadewa Collage, Kurunagala </h2>
-                        <p class="student-title">School</p>
-                    
-                    </div>
-                </div>
-
+            <!-- School Information Card -->
+            <div>
                 <div class="detail-card">
-        <div class="detail-header">
-            <i class="fas fa-address-card"></i>
-            <h2>School Information</h2>
-        </div>
-        <div class="detail-content">
-    <?php 
-        // Print the user information array
-        $userInfo = $data['userInfo'][0];
-        $schoolInfo = $data['schoolInfo'][0];
-    ?>
-
-    <div class="info-group">
-        <span class="info-icon"><i class="fas fa-envelope"></i></span>
-        <span class="info-text"><strong>Email:</strong> <span id="display-email"><?= $userInfo->email ?></span></span>
-    </div>
-    
-    <div class="info-group">
-        <span class="info-icon"><i class="fab fa-whatsapp"></i></span>
-        <span class="info-text"><strong>Phone:</strong> <span id="display-phone"><?= $userInfo->phonenumber ?></span></span>
-    </div>
-    
-    <div class="info-group">
-        <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
-        <span class="info-text"><strong>Address:</strong> <span id="display-address"><?= $userInfo->address ?></span></span>
-    </div>
-
-    <div class="info-group">
-    <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
-    <span class="info-text">
-        <strong>Zone:</strong>
-        <span id="display-zone"><?= $zoneInfo[0]->zoneName ?? 'Not specified' ?></span>
-    </span>
-</div>
-
-<div class="info-group">
-    <span class="info-icon"><i class="fas fa-globe-asia"></i></span>
-    <span class="info-text">
-        <strong>Province:</strong>
-        <span id="display-province"><?= $zoneInfo[0]->provinceName ?? 'Not specified' ?></span>
-    </span>
-</div>
-
-
-</div>
-
-       
-  
-
-
-
-</div>
-    </div>
-</div>
-</div>
-
-    <!-- Edit Profile Modal -->
-<div id="editProfileModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2><i class="fas fa-school"></i> School Profile › Edit Profile</h2>
-            <button class="close-modal" onclick="closeEditModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <form id="editProfileForm">
-                <div class="profile-form-container">
-                    <div class="left-section"> 
-                        <div class="photo-upload">
-                            <label class="photo-upload-label">
-                                <div class="photo-preview">
-                                    <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture" id="photo-preview-img">
-                                    <div class="photo-preview-overlay">
-                                        <i class="fas fa-camera fa-2x"></i>
-                                    </div>
-                                </div>
-                                <span style="color: var(--primary-color); font-weight: 600;">Change Photo</span>
-                                <input type="file" id="profile-photo" accept="image/*">
-                            </label>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="name"></i> School Name</label>
-                            <input type="text" id="name" value="Maliyadewa Collage, Kurunagala" required>
-                        </div>
-                       
-                        <div class="form-group">
-                            <label for="email"></i> Email</label>
-                            <input type="email" id="email" value="maliyadewaclg@gmail.com" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="phone"></i> Telephone Number</label>
-                            <input type="text" id="phone" value="033-2721456" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="code"></i> School Code</label>
-                            <input type="text" id="code" value="R002" required>
-                        </div>
+                    <div class="detail-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h2>School Information</h2>
                     </div>
+                    <div class="detail-content">
+                        <?php
+                        $schoolInfo = $data['schoolInfo'][0] ?? null;
+                        $zoneInfo = $data['zoneInfo'][0] ?? null;
+                        ?>
 
-                    <div class="right-section">
-                        <div class="form-group">
-                            <label for="address"></i> Address</label>
-                            <input type="text" id="address" value="Maliyadeva College, Negombo Rd, Kurunegala" required>
+                        <div class="info-row">
+                            <div class="info-label">Email:</div>
+                            <div class="info-value" id="display-email"><?= $userInfo->email ?? 'Not specified' ?></div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="zone"></i> Zone</label>
-                            <input type="text" id="zone" value="Kurunagala" required>
+                        <div class="info-row">
+                            <div class="info-label">Phone:</div>
+                            <div class="info-value" id="display-phone"><?= $userInfo->phonenumber ?? 'Not specified' ?></div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="province"></i> Select Province</label>
-                            <select id="province" required>
-                                <option value="central">Central</option>
-                                <option value="eastern">Eastern</option>
-                                <option value="northern">Northern</option>
-                                <option value="southern">Southern</option>
-                                <option value="western">Western</option>
-                                <option value="north-central">North Central</option>
-                                <option value="uva">Uva</option>
-                                <option value="sabaragamuwa">Sabaragamuwa</option>
-                                <option value="north-western" selected>North Western</option>
-                            </select>
-                        </div> 
+                        <div class="info-row">
+                            <div class="info-label">Address:</div>
+                            <div class="info-value" id="display-address"><?= $userInfo->address ?? 'Not specified' ?></div>
+                        </div>
 
-                        <div class="form-group">
-                            <label></i> Facilities Available</label>
-                            <div class="checkbox-container">
-                                <label><input type="checkbox" name="facilities" value="track" checked> Track</label>
-                                <label><input type="checkbox" name="facilities" value="indoor"> Indoor</label>
-                                <label><input type="checkbox" name="facilities" value="ground" checked> Ground</label>
-                                <label><input type="checkbox" name="facilities" value="swimming-pool"> Swimming Pool</label>
-                                <label><input type="checkbox" name="facilities" value="other"> Other</label>
-                            </div>
+                        <div class="info-row">
+                            <div class="info-label">Zone:</div>
+                            <div class="info-value" id="display-zone"><?= $zoneInfo->zoneName ?? 'Not specified' ?></div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="info-label">Province:</div>
+                            <div class="info-value" id="display-province"><?= $zoneInfo->provinceName ?? 'Not specified' ?></div>
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="modal-btn cancel-btn" onclick="closeEditModal()"><i class="fas fa-ban"></i> Cancel</button>
-            <button class="modal-btn save-btn" onclick="saveProfile()"><i class="fas fa-save"></i> Save Changes</button>
+                
+                <!-- You can add additional detail cards here as needed -->
+            </div>
         </div>
     </div>
-</div>    
-<?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 
-    <script>
-        // Modal control functions
-        function openEditModal() {
-            document.getElementById('editProfileModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeEditModal() {
-            document.getElementById('editProfileModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modal when clicking outside the modal content
-        window.onclick = function(event) {
-            const modal = document.getElementById('editProfileModal');
-            if (event.target === modal) {
-                closeEditModal();
-            }
-        };
-
-        // Image preview
-        document.getElementById('profile-photo').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('photo-preview-img').src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Save profile changes
-        function saveProfile() {
-            // Get form values
-            const firstName = document.getElementById('first-name').value;
-            const lastName = document.getElementById('last-name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-            const gender = document.getElementById('gender').value;
-            const birthday = document.getElementById('birthday').value;
-            const school = document.getElementById('school').value;
-            const grade = document.getElementById('grade').value;
-            const guardian = document.getElementById('guardian').value;
-            const bio = document.getElementById('bio').value;
-            
-            // Update display values (this would normally be done after a successful AJAX call)
-            document.getElementById('display-name').textContent = firstName + ' ' + lastName;
-            document.getElementById('display-email').textContent = email;
-            document.getElementById('display-phone').textContent = phone;
-            document.getElementById('display-address').textContent = address;
-            document.getElementById('display-gender').textContent = gender;
-            
-            // Format date for display
-            const birthdayDate = new Date(birthday);
-            const formattedDate = birthdayDate.toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric', 
-                year: 'numeric'
-            });
-            document.getElementById('display-birthday').textContent = formattedDate;
-            
-            document.getElementById('display-school').textContent = school;
-            document.getElementById('display-grade').textContent = grade;
-            document.getElementById('display-guardian').textContent = guardian;
-            document.getElementById('display-bio').textContent = bio;
-            
-            // Update profile image if changed
-            const photoPreviewSrc = document.getElementById('photo-preview-img').src;
-            document.getElementById('profile-image').src = photoPreviewSrc;
-            
-            // In a real applicatio<script>
-    // Modal control functions
-    function openEditModal() {
-        document.getElementById('editProfileModal').style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeEditModal() {
-        document.getElementById('editProfileModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    // Close modal if clicking outside modal content
-    window.onclick = function(event) {
-        const modal = document.getElementById('editProfileModal');
-        if (event.target === modal) {
-            closeEditModal();
-        }
-    };
-
-    // Image preview
-    document.getElementById('profile-photo').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('photo-preview-img').src = e.target.result;
-            }
-            reader.readAsDataURL(file);
-        }
-    });
-
-    // Save profile changes
-    function saveProfile() {
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const code = document.getElementById('code').value;
-        const address = document.getElementById('address').value;
-        const zone = document.getElementById('zone').value;
-        const province = document.getElementById('province').value;
-
-        // Facilities
-        const facilities = [];
-        document.querySelectorAll('input[name="facilities"]:checked').forEach(checkbox => {
-            facilities.push(checkbox.value);
-        });
-
-        // Update displayed values (simulate)
-        document.getElementById('display-name').textContent = name;
-        document.getElementById('display-email').textContent = email;
-        document.getElementById('display-phone').textContent = phone;
-        document.getElementById('display-code').textContent = code;
-        document.getElementById('display-address').textContent = address;
-        document.getElementById('display-zone').textContent = zone;
-        document.getElementById('display-province').textContent = province;
-        document.getElementById('display-facilities').textContent = facilities.join(', ');
-
-        // Update profile image if changed
-        const photoPreviewSrc = document.getElementById('photo-preview-img').src;
-        document.getElementById('profile-image').src = photoPreviewSrc;
-
-        // Simulate save action
-        alert('School profile updated successfully!');
-
-        // Close modal
-        closeEditModal();
-    }
-
-
-            // For demonstration purposes, we'll just show an alert
-            alert('Profile updated successfully!');
-            
-            // Close the modal
-            closeEditModal();
-        }
-    </script>
-    </body>
-    </html>
+    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
+</body>
+</html>
