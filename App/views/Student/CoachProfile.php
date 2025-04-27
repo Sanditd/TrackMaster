@@ -9,7 +9,7 @@
 </head>
 <body>
     <?php require 'navbar.php'?>
-    <?php require 'sidebar.php'?> 
+    
 
     <div class="profile-container">
         <div class="profile-header">

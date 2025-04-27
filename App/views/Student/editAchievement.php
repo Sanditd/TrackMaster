@@ -155,7 +155,7 @@
     </style>
 </head>
 <body>
-
+<?php require 'navbar.php'?>
 <!-- Edit Achievement Modal -->
 <div id="editAchievementModal" class="modal">
     <div class="modal-content">

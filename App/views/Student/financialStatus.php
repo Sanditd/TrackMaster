@@ -9,8 +9,7 @@
 </head>
 <body>
 
-<?php require 'navbar.php'; ?>
-<?php require 'sidebar.php'; ?>
+<?php require 'navbar.php'?>
 
 <div class="dashboard-container">
     <div class="dashboard-header">

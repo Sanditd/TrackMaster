@@ -811,4 +811,14 @@ public function requestExtraClass() {
     }
 }
 
+public function aboutUs() {
+    $data = [];
+    $this->view('student/aboutUs');
+}
+
+public function help() {
+    $data = [];
+    $this->view('student/help');
+}
+
 }

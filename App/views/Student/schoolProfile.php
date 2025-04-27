@@ -9,9 +9,7 @@
 
 </head>
 <body>
-    <?php require 'navbar.php'?>
-    <?php require 'sidebar.php'?> 
-
+<?php require 'navbar.php'?>
     <div class="profile-container">
         <div class="profile-header">
             <h1><i class="fas fa-school"></i> School Profile</h1>
