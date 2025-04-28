@@ -619,7 +619,7 @@ $unreadCount = $NotificationModel->getUserUnreadCount($userId);
     <div id="sidebar" class="sidebar">
         <span class="close" onclick="closeNav()"><i class="fas fa-times"></i></span>
         <div class="profile">
-            <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture">
+            <img src="\TrackMaster\Public\img\users\Screenshot 2025-04-28 093707.png" alt="Profile Picture">
             <div class="profile-details">
                 <div class="profile-name"><?php echo htmlspecialchars($_SESSION['username'] ?? 'Guest'); ?></div>
                 <div class="profile-role">Coach</div>

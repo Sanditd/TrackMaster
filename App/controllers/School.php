@@ -187,7 +187,7 @@ class School extends Controller{
         $school_id = $school_id_obj->school_id;
         
         $players = $this->userModel->getPlayersName($school_id);
-        $records = $this->schoolModel->getAcademicRecordsByPlayerId($school_id);
+        $records = $this->schoolModel->getAcademicRecordsByPlayerId();
         $playerNames = $this->schoolModel->getPlayersNamesBySchoolId($school_id);
     
         // Load the view with fetched data
@@ -210,7 +210,7 @@ class School extends Controller{
             'term' => $record->term,
             'average' => $record->average,
             'rank' => $record->rank,
-            'notes' => $record->notes
+            'notes' => $record->additional_notes
         ];
             
         $this->view('School/editRecord', $data);
@@ -417,7 +417,7 @@ class School extends Controller{
     
         $players = $this->userModel->getPlayersName($school_id);
         $facilityReq= $this->schoolModel->getFacilityRequests($school_id);
-        $extraClassReq= $this->schoolModel->getExtraClassRequests($school_id);
+        $extraClassReq= $this->schoolModel->getExtraClassRequests();
     
         $data = [
             'players' => $players,

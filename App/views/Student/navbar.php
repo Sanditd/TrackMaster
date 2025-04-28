@@ -558,7 +558,7 @@ $unreadCount = $NotificationModel->getUserUnreadCount($userId);
         <nav class="navbar">
             <button class="openbtn" onclick="toggleNav()"><i class="fas fa-bars"></i></button>
             <div class="logo">
-                <img src="/TrackMaster/Public/img/logo.png" alt="TrackMaster Logo">
+                <img src="\TrackMaster\Public\img\users\Screenshot 2025-04-28 115247.png" alt="TrackMaster Logo">
             </div>
             <ul class="nav-links">
                 <li><a href="<?php echo URLROOT ?>/student/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>

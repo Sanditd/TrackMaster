@@ -14,24 +14,26 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Check if there's a success message in the session
+$Success_message = "";
+$Error_message = "";
+
+// Store success message separately
 if (isset($_SESSION['success_message'])) {
-    $successMessage = $_SESSION['success_message'];
-    unset($_SESSION['success_message']); // Remove the message after retrieving it
-} else {
-    $successMessage = "";
+    $Success_message = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
 }
 
+// Store error message separately
 if (isset($_SESSION['error_message'])) {
-    $successMessage = $_SESSION['error_message'];
-    unset($_SESSION['error_message']); // Remove the message after retrieving it
-} else {
-    $successMessage = "";
+    $Error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
 }
 ?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrackMaster Login</title>
+    <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/sportForm.css">
     <style>
         :root {
             --primary-color:rgb(0, 7, 13);
@@ -341,48 +343,7 @@ if (isset($_SESSION['error_message'])) {
             background-color: var(--dark-color);
         }
         
-        /* Custom Alert */
-        #customAlertOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
         
-        #customAlertBox {
-            background-color: white;
-            padding: 30px;
-            border-radius: var(--border-radius);
-            width: 400px;
-            text-align: center;
-            box-shadow: var(--box-shadow);
-        }
-        
-        #customAlertBox h2 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        
-        #customAlertBox button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: var(--border-radius);
-            margin-top: 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        #customAlertBox button:hover {
-            background-color: #001a33;
-        }
         
         /* Responsive Styles */
         @media (max-width: 992px) {
@@ -499,7 +460,7 @@ if (isset($_SESSION['error_message'])) {
 
 #frogetPW-port #login-port-logo img {
     height: 50px;
-}   
+}
 
 #frogetPW-port form div:first-of-type {
     font-size: 22px;
@@ -630,8 +591,8 @@ if (isset($_SESSION['error_message'])) {
         <div class="slider">
             <div class="slides">
             <img src="<?php echo ROOT; ?>/public/img/roles/coach.jpeg" alt="Slide 1">
-                <img src="<?php echo ROOT; ?>/public/img/roles/players.jpeg" alt="Slide 2">
-                <img src="<?php echo ROOT; ?>/public/img/roles/school.jpeg" alt="Slide 3">
+                <img src="<?php echo ROOT; ?>/public/img/roles/coach.jpeg" alt="Slide 2">
+                <img src="<?php echo ROOT; ?>/public/img/roles/coach.jpeg" alt="Slide 3">
             </div>
             <div class="navigation">
                 <button id="prev">❮</button>
@@ -672,7 +633,7 @@ if (isset($_SESSION['error_message'])) {
         <span id="login-port-logo">
         <img src="<?php echo ROOT?>/Public\img\logo-black.png" alt="Logo">
         </span>
-        <form method="POST" action="<?php echo ROOT?>/loginController/userLoginReset">
+        <form method="POST" action="<?php echo ROOT?>/loginController/userLoginReset"  onsubmit="return validatePassword()">
             <div>
                 Reset Your Password
             </div>
@@ -681,12 +642,18 @@ if (isset($_SESSION['error_message'])) {
             </div>
             <div>
                 <input type="email" placeholder="Enter Email Address" name="email" required>
-                <p class="helper-text">We'll send a verification code to this email</p>
+               
             </div>
             <div>
-                <input type="tel" placeholder="Enter Phone Number" name="phone" required>
+                <input type="tel" placeholder="Enter Phone" name="phone" required>
             </div>
-            <button type="submit">Send Reset Link</button>
+            <div>
+                <input type="password" placeholder="Enter New Password" name="password" id="password" required>
+            </div>
+            <div>
+                <input type="password" placeholder="Enter New Password again" name="confirmPassword" id="confirm-password" required>
+            </div>
+            <button type="submit" >Reset Password</button>
         </form>
         <button class="close-popup">Cancel</button>
     </div>
@@ -769,5 +736,15 @@ if (isset($_SESSION['error_message'])) {
         };
         
     </script>
+        <script id="error-message" type="application/json">
+<?= json_encode(trim($Error_message)); ?>
+</script>
+
+<script id="success-message" type="application/json">
+<?= json_encode(trim($Success_message)); ?>
+</script>
+
+
+<script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
 </body>
 </html>

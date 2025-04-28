@@ -105,47 +105,6 @@
   }
   
   /* Button styles */
-  button {
-    cursor: pointer;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-weight: 600;
-    transition: all 0.3s;
-  }
-  
-  button[type="submit"] {
-    background-color: #007BFF;
-    color: white;
-    width: auto !important;
-    min-width: 120px;
-    padding: 12px 30px;
-    margin-top: 20px;
-    font-size: 16px;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #0069d9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
-  }
-  
-  .add-btn {
-    background-color: #e9f4ff;
-    color: #007BFF;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-  }
-  
-  .add-btn:hover {
-    background-color: #d0e6ff;
-  }
   
   /* Headings */
   h3 {

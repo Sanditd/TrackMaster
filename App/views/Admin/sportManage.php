@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<?php echo ROOT?>/Public/css/Admin/zoneManageNew.css">
     <script src="<?php echo ROOT?>/Public/js/Admin/sidebar.js"></script>
     <!-- Chart.js for data visualization -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script> -->
 </head>
 
 <body>
@@ -99,35 +99,7 @@
                     <?php endif; ?>
                 </div>
 
-                <!-- Player Growth Analytics -->
-                <div class="analytics-section card" id="analyticsSection">
-                    <h2>Player Growth Analytics</h2>
-                    <div class="chart-container" id="chartContainer" style="display: none;">
-                        <div class="chart-controls">
-                            <select id="playerTimeframe">
-                                <option value="month">Last Month</option>
-                                <option value="quarter">Last Quarter</option>
-                                <option value="year">Last Year</option>
-                            </select>
-                        </div>
-                        <canvas id="playerGrowthChart"></canvas>
-                    </div>
-                    <div class="no-selection" id="noChartMessage">
-                        <p>Select a sport to view player growth analytics</p>
-                    </div>
-                </div>
-
-                <!-- Gender Distribution Chart -->
-                <div class="analytics-section card">
-                    <h2>Player Gender Distribution</h2>
-                    <div class="chart-container" id="genderChartContainer" style="display: none;">
-                        <canvas id="genderDistributionChart"></canvas>
-                    </div>
-                    <div class="no-selection" id="noGenderChartMessage">
-                        <p>Select a sport to view gender distribution</p>
-                    </div>
-                </div>
-            </div>
+            
 
             <!-- Right Column - Add Sport Only -->
 

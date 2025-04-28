@@ -519,9 +519,6 @@
                     <?php endforeach; ?>
                 <?php endif; ?>
                 </div>
-                <button class="btn" onclick="window.location.href='<?php echo URLROOT ?>/Student/studentAttendance'">
-                    <i class="fas fa-clipboard-check"></i> View My Attendance
-                </button>
             </div>
 
         <div class="main-content">

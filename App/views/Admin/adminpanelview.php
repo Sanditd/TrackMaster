@@ -133,7 +133,7 @@ if (isset($_SESSION['error_message'])) {
     <div class="performance-table">
         <h3>
             Recent Players
-            <span class="view-all">View All</span>
+            
         </h3>
         <table>
             <thead>
@@ -166,7 +166,13 @@ if (isset($_SESSION['error_message'])) {
                         <?php 
                             // Note: We don't have sports data in the provided array
                             // In a real scenario, you would look up the sport name
-                            echo "Sport ID: " . $player->sport_id;
+                            // echo "Sport ID: " . $player->sport_id;
+                            
+                                foreach($data['sports'] as $sport)
+                                if($player->sport_id == $sport->sport_id){
+                                    echo $sport->sport_name;
+                                }
+                            
                         ?>
                     </td>
                     <td>
@@ -206,7 +212,7 @@ if (isset($_SESSION['error_message'])) {
     <div class="performance-table">
         <h3>
             Recent Coaches
-            <span class="view-all">View All</span>
+            
         </h3>
         <table>
             <thead>
@@ -244,7 +250,12 @@ if (isset($_SESSION['error_message'])) {
                         <?php 
                             // Note: We don't have sports data in the provided array
                             // In a real scenario, you would look up the sport name
-                            echo "Sport ID: " . $coach->sport_id; 
+                            // echo "Sport ID: " . $coach->sport_id; 
+                            foreach($data['sports'] as $sport){
+                                if($coach->sport_id == $sport->sport_id){
+                                    echo $sport->sport_name;
+                                }
+                            }
                         ?>
                     </td>
                     <td>
@@ -279,7 +290,7 @@ if (isset($_SESSION['error_message'])) {
     <div class="performance-table">
         <h3>
             Schools
-            <span class="view-all">View All</span>
+            
         </h3>
         <table>
             <thead>
@@ -340,7 +351,7 @@ if (isset($_SESSION['error_message'])) {
     <div class="logs-container">
         <h3>
             Recent Registrations
-            <span class="view-all">View All</span>
+            
         </h3>
         <?php 
         // Sort users by registration date in descending order
