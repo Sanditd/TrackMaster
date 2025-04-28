@@ -4,12 +4,14 @@ class SignUpController extends Controller {
     private $userModel;
     private $zoneModel;
     private $notificationModel;
+    private $schoolModel;
     
 
     public function __construct() {
         $this->userModel = $this->model('User');
         $this->zoneModel =$this->model('zoneModel');
         $this->notificationModel = $this->model('Notification'); 
+        $this->schoolModel = $this->model('SchoolModel'); 
     }
 
     public function index() {
