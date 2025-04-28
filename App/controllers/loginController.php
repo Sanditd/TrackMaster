@@ -268,6 +268,68 @@ class loginController extends Controller {
                 exit;
             }
         }
+
+        Public function userLoginReset(){
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+                $username = $_POST['username'] ?? '';
+                $email = $_POST['email'] ?? '';
+                $phone = $_POST['phone'] ?? '';
+                $newPassword = $_POST['password'] ?? '';
+                $confirmPassword = $_POST['confirmPassword'] ?? '';
+        
+                // Basic validation
+                if (empty($newPassword) || empty($confirmPassword)) {
+                    $_SESSION['error_message'] = 'Please fill in all fields!';
+                    header('Location: ' . ROOT . '/admin/login');
+                    exit;
+                }
+        
+                if ($newPassword !== $confirmPassword) {
+                    $_SESSION['error_message'] = 'New passwords do not match!';
+                    header('Location: ' . ROOT . '/admin/login');
+                    exit;
+                }
+    
+        
+                // Fetch current user
+                $user = $this->login->checkUserByEmail($username, $email, $phone);
+        
+                if (!$user) {
+                    $_SESSION['error_message'] = 'User not found!';
+                    header('Location: ' . ROOT . '/admin/login');
+                    exit;
+                }
+
+                $userId=$user->user_id;
+        
+                // Verify current password
+                // if (!password_verify($currentPassword, $user[0]->password)) {
+                //     $_SESSION['error_message'] = 'Current password is incorrect!';
+                //     header('Location: ' . ROOT . '/admin/accountSetting');
+                //     exit;
+                // }
+        
+                // Hash new password
+                $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+        
+                // Update password in database
+                $result = $this->login->updateUserPassword($userId, $newPasswordHash);
+        
+                if ($result) {
+                    $_SESSION['success_message'] = 'Password reset successfully!';
+                } else {
+                    $_SESSION['error_message'] = 'Failed to update password. Please try again.';
+                }
+        
+                header('Location: ' . ROOT . '/admin/login');
+                exit;
+            } else {
+                $_SESSION['error_message'] = 'Invalid Request!';
+                header('Location: ' . ROOT . '/admin/login');
+                exit;
+            }
+        }
         
 
     }
