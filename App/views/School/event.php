@@ -1,5 +1,4 @@
 <?php
-//Check if session user ID exists
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error_message']='Invalid Login! Please login again.';
     header('Location: ' . ROOT . '/loginController/login');
@@ -10,17 +9,13 @@ $userId = (int) $_SESSION['user_id'];
 $username = (string) $_SESSION['username'];
 
 
-//Load required model file if not already loaded
  require_once __DIR__ . '/../../model/loginPage.php';
- // Adjust path as needed
 
-// Create login model instance
 $loginModel = new loginPage();
 
 $user = $loginModel->getUserById($userId);
 
 
-//If user does not exist in DB, destroy session and redirect
 if (!$user) {
     session_unset();
     session_destroy();
@@ -51,7 +46,6 @@ if (!$user) {
             <p>Manage and respond to requests for sports facilities and equipment</p>
         </div>
 
-        <!-- Search and Filter Section -->
         <div class="search-filter-section">
             <div class="search-box">
                 <i class="fas fa-search"></i>

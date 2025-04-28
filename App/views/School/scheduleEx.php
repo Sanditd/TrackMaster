@@ -1,7 +1,6 @@
 <?php
 
 ?><?php
-//Check if session user ID exists
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error_message']='Invalid Login! Please login again.';
     header('Location: ' . ROOT . '/loginController/login');
@@ -12,17 +11,13 @@ $userId = (int) $_SESSION['user_id'];
 $username = (string) $_SESSION['username'];
 
 
-//Load required model file if not already loaded
  require_once __DIR__ . '/../../model/loginPage.php';
- // Adjust path as needed
 
-// Create login model instance
 $loginModel = new loginPage();
 
 $user = $loginModel->getUserById($userId);
 
 
-//If user does not exist in DB, destroy session and redirect
 if (!$user) {
     session_unset();
     session_destroy();
@@ -48,7 +43,6 @@ if (!$user) {
     <?php require 'sidebar.php'; ?>
     
     <div class="extra-class-container">
-        <!-- First Section - Extra Class Requests -->
         <div class="section-header">
             <h1><i class="fas fa-calendar-plus"></i> Extra Class Requests</h1>
             <p>Review and manage pending requests for extra classes</p>
@@ -118,7 +112,6 @@ if (!$user) {
 
         </div>
 
-        <!-- Second Section - Schedule Extra Class -->
         <div class="section-header">
             <h1><i class="fas fa-calendar-alt"></i> Schedule Extra Class</h1>
             <p>Create a new extra class and select students to attend</p>
@@ -199,7 +192,6 @@ if (!$user) {
     <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
     
     <script>
-        // Add hover effects for table rows
         document.addEventListener('DOMContentLoaded', function() {
             const tableRows = document.querySelectorAll('tbody tr');
             tableRows.forEach(row => {

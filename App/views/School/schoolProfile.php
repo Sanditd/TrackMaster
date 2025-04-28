@@ -1,5 +1,5 @@
 <?php
-//Check if session user ID exists
+
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error_message']='Invalid Login! Please login again.';
     header('Location: ' . ROOT . '/loginController/login');
@@ -9,16 +9,16 @@ if (!isset($_SESSION['user_id'])) {
 $userId = (int) $_SESSION['user_id'];
 $username = (string) $_SESSION['username'];
 
-//Load required model file if not already loaded
-require_once __DIR__ . '/../../model/loginPage.php';
-// Adjust path as needed
 
-// Create login model instance
+require_once __DIR__ . '/../../model/loginPage.php';
+
+
+
 $loginModel = new loginPage();
 
 $user = $loginModel->getUserById($userId);
 
-//If user does not exist in DB, destroy session and redirect
+
 if (!$user) {
     session_unset();
     session_destroy();

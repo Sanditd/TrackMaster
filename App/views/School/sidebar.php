@@ -1,5 +1,4 @@
 <?php
-//Check if session user ID exists
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error_message']='Invalid Login! Please login again.';
     header('Location: ' . ROOT . '/loginController/adminLogin');
@@ -10,17 +9,13 @@ $userId = (int) $_SESSION['user_id'];
 $username = (string) $_SESSION['username'];
 
 
-//Load required model file if not already loaded
  require_once __DIR__ . '/../../model/loginPage.php';
- // Adjust path as needed
 
-// Create login model instance
 $loginModel = new loginPage();
 
 $user = $loginModel->getUserById($userId);
 
 
-//If user does not exist in DB, destroy session and redirect
 if (!$user) {
     session_unset();
     session_destroy();
@@ -29,26 +24,17 @@ if (!$user) {
     exit;
 }
 
-//check user account active status
-// if ($userActive[0]->active != 1) {
-//     $_SESSION['error_message'] = 'Login Failed! Try Again.';
-//     session_unset();
-//     session_destroy();
-//     header('Location: ' . ROOT . '/loginController/login');
-//     exit;
-// }
+
 
 
 $Success_message = "";
 $Error_message = "";
 
-// Store success message separately
 if (isset($_SESSION['success_message'])) {
     $Success_message = $_SESSION['success_message'];
     unset($_SESSION['success_message']);
 }
 
-// Store error message separately
 if (isset($_SESSION['error_message'])) {
     $Error_message = $_SESSION['error_message'];
     unset($_SESSION['error_message']);
@@ -66,7 +52,6 @@ if (isset($_SESSION['error_message'])) {
 </head>
 <body>
 
-    <!-- Side Bar -->
     <div id="sidebar" class="sidebar">
         <span class="close" onmouseleave="closeNav()">
         <div class="profile">
