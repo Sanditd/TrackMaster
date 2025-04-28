@@ -403,7 +403,7 @@ if (!$user) {
         <div class="section-header">
             <h1><i class="fas fa-calendar-plus"></i> Extra Class Requests</h1>
             <p>Review and manage pending requests for extra classes</p>
-            <?php print_r($data)?>
+            
         </div>
 
         <div class="table-section">
@@ -543,6 +543,8 @@ if (!$user) {
         </div>
     </form>
 </div>
+                    </div>
+                    </div>
 
 
     <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>

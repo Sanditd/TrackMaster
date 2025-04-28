@@ -258,23 +258,23 @@ if (!$user) {
            
         </div>
 
+           <?php
+                    // Get user info from data
+                    $userInfo = $data['userInfo'][0] ?? null;
+                    if ($userInfo) :
+                    ?>
+
         <div class="profile-content">
             <!-- Profile Sidebar with School Info -->
             <div class="profile-sidebar">
                 <div class="profile-picture-container">
                     <div class="profile-picture">
-                        <img src="/TrackMaster/Public/img/profile.jpeg" alt="School Profile Picture" id="profile-image">
+                        <img src="<?php echo !empty($userInfo->photo) ? 'data:image/jpeg;base64,'.base64_encode($userInfo->photo) : URLROOT.'/Public/img/profile.jpeg' ?>" alt="School Profile Picture">
                     </div>
                 </div>
                 <div class="school-info">
                     <h2 class="school-name"><?php echo $username ?></h2>
                     <p class="school-type">School</p>
-
-                    <?php
-                    // Get user info from data
-                    $userInfo = $data['userInfo'][0] ?? null;
-                    if ($userInfo) :
-                    ?>
                     <div class="contact-info">
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>

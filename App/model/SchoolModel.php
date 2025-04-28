@@ -212,10 +212,14 @@ class SchoolModel {
     /**
      * Get pending extra class requests
      */
-    public function getExtraClassRequests($school_id) {
+    public function getExtraClassRequests($user_id) {
+
+        $school_id = $this->getSchoolId($user_id)->school_id;
+
         $this->db->query("
-            SELECT * FROM `extra_class_requests`
+            SELECT * FROM extra_class_requests WHERE school_id = :school_id
         ");
+        $this->db->bind(':school_id', $school_id);
         return $this->db->resultSet();
     }
     

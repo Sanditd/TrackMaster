@@ -4,12 +4,14 @@ class SignUpController extends Controller {
     private $userModel;
     private $zoneModel;
     private $notificationModel;
+    private $schoolModel;
     
 
     public function __construct() {
         $this->userModel = $this->model('User');
         $this->zoneModel =$this->model('zoneModel');
         $this->notificationModel = $this->model('Notification'); 
+        $this->schoolModel = $this->model('SchoolModel');
     }
 
     public function index() {
@@ -217,7 +219,7 @@ class SignUpController extends Controller {
     
             // Convert sport name and zone to their respective IDs
             $data['sportName'] = $this->userModel->getSportIdByName($data['sportName']);
-            $data['school'] = $this->schoolModel->findSchoolId($data['school']);
+            
     
             // Validate sport ID
             if (!$data['sportName']) {

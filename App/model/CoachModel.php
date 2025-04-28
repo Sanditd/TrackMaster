@@ -100,7 +100,8 @@ class CoachModel {
                     cs.wickets, 
                     cs.bowling_avg, 
                     cs.bowling_strike_rate, 
-                    cs.economy_rate
+                    cs.economy_rate,
+                    up.player_id
                   FROM 
                     users u
                   JOIN 
@@ -109,7 +110,7 @@ class CoachModel {
                     cricket_stats cs ON up.player_id = cs.player_id
                   WHERE 
                     1=1';
-    
+        
         if ($role) {
             $query .= ' AND cs.role = :role';
         }
@@ -117,13 +118,13 @@ class CoachModel {
             $query .= ' AND u.gender = :gender';
         }
         if ($coachZone) {
-            $query .= ' AND u.zone = :zone';
+            $query .= ' AND up.zone = :zone';  // 🔥 Fix here: up.zone
         }
-    
+        
         if ($role == 'batsman') {
             $query .= ' ORDER BY cs.batting_avg DESC';
         } elseif ($role == 'bowler') {
-            $query .= ' ORDER BY cs.bowling_avg DESC';
+            $query .= ' ORDER BY cs.bowling_avg ASC'; // (lower bowling avg is better)
         }
     
         $this->db->query($query);
@@ -140,6 +141,7 @@ class CoachModel {
     
         return $this->db->resultSet();
     }
+    
     
     public function getPlayerStats($playerIds) {
         $query = 'SELECT  up.player_id, u.firstname, cs.role, u.gender, cs.batting_avg, cs.bowling_avg, cs.matches, cs.strike_rate, cs.fifties, cs.hundreds, cs.wickets, cs.bowling_avg, cs.bowling_strike_rate,  cs.economy_rate
