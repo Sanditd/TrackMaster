@@ -212,8 +212,8 @@ if ($userActive[0]->active != 1) {
                         <div class="account-menu" id="accountDropdownMenu">
                             <ul>
                                 <li><a href="<?php echo ROOT ?>/admin/accountSetting">Account Settings</a></li>
-                                <li><a href="<?php echo ROOT ?>/admin/activity-log">Activity Log</a></li>
-                                <li class="logout"><a href="<?php echo ROOT ?>/loginController/logout">Logout</a></li>
+                                <li><a href="<?php echo ROOT ?>/admin/adminActivity">Activity Log</a></li>
+                                <li class="logout"><a href="<?php echo ROOT ?>/loginController/adminLogout">Logout</a></li>
                             </ul>
                         </div>
                     </div>

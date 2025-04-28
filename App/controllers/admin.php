@@ -40,6 +40,8 @@
             $coaches = $this->userModel->getCoaches();
             $schools = $this->userModel->getSchoolsData();
             $zones = $this->zoneModel->getZonals();
+            $sports = $this->sportModel->getSports();
+
         
             $countUsers = $this->userModel->countAllUsers();
             $countPlayers = $this->userModel->countPlayers();
@@ -59,7 +61,8 @@
                 'countPlayers' => $countPlayers,
                 'countCoaches' => $countCoaches,
                 'countSchools' => $countSchools,
-                'countZones' => $countZones
+                'countZones' => $countZones,
+                'sports' => $sports,
             ];
             $this->view('Admin/adminpanelview',$data);
         }
@@ -77,6 +80,7 @@
             $countCoaches = $this->userModel->countCoaches();
             $countSchools = $this->userModel->countSchools();
             $countZones = $this->zoneModel->countZonals();
+
 
 
         
@@ -1105,6 +1109,19 @@ public function searchUser()
             $this->view('admin/accountSetting',$data);
 
         }
+
+        public function adminActivity(){
+            $admin=$this->userModel->getAdmin();
+            $adminActivity=$this->activityModel->getAdminActivities();
+
+            $data = [
+                'admin' => $admin,
+                'adminActivity' => $adminActivity,
+            ];
+
+            $this->view('admin/adminActivity',$data);
+        }
+
         
 
         }

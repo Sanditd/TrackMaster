@@ -172,8 +172,8 @@ foreach ($data['schools'] as $school) {
 }
 ?>
 
-  <!-- Custom Alert Box -->
-  <div id="customAlertOverlay">
+    <!-- Custom Alert Box -->
+    <div id="customAlertOverlay">
         <div id="customAlertBox">
             <h2>Notice</h2>
             <p id="customAlertMessage"></p>
@@ -181,118 +181,120 @@ foreach ($data['schools'] as $school) {
         </div>
     </div>
 
-<div class="admin-container" style="width: 500px;">
-    <div class="admin-content">
-        <div class="admin-header">
-            <h1 class="admin-title">User Management</h1>
-        </div>
+    <div class="admin-container">
+        <div class="admin-content">
+            <div class="admin-header">
+                <h1 class="admin-title">User Management</h1>
+            </div>
 
-        <div class="admin-cards">
-            <div class="admin-card">
-                <div class="admin-card-icon admin-card-player">
-                    <i class="fas fa-running"></i>
+            <div class="admin-cards">
+                <div class="admin-card">
+                    <div class="admin-card-icon admin-card-player">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <div class="admin-card-info">
+                        <div class="admin-card-title">Total Players</div>
+                        <div class="admin-card-value"><?php echo $totalPlayers; ?></div>
+                        <div class="admin-card-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12.5% from last month</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="admin-card-info">
-                    <div class="admin-card-title">Total Players</div>
-                    <div class="admin-card-value"><?php echo $totalPlayers; ?></div>
-                    <div class="admin-card-change positive">
-                        <i class="fas fa-arrow-up"></i>
-                        <span>12.5% from last month</span>
+                <div class="admin-card">
+                    <div class="admin-card-icon admin-card-coach">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="admin-card-info">
+                        <div class="admin-card-title">Total Coaches</div>
+                        <div class="admin-card-value"><?php echo $totalCoaches; ?></div>
+                        <div class="admin-card-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>5.2% from last month</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-card">
+                    <div class="admin-card-icon admin-card-school">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div class="admin-card-info">
+                        <div class="admin-card-title">Total Schools</div>
+                        <div class="admin-card-value"><?php echo $totalSchools; ?></div>
+                        <div class="admin-card-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>3.7% from last month</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-card">
+                    <div class="admin-card-icon admin-card-zone">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="admin-card-info">
+                        <div class="admin-card-title">Active Zones</div>
+                        <div class="admin-card-value"><?php echo $totalZones; ?></div>
+                        <div class="admin-card-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>2 new zones this month</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="admin-card">
-                <div class="admin-card-icon admin-card-coach">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                <div class="admin-card-info">
-                    <div class="admin-card-title">Total Coaches</div>
-                    <div class="admin-card-value"><?php echo $totalCoaches; ?></div>
-                    <div class="admin-card-change positive">
-                        <i class="fas fa-arrow-up"></i>
-                        <span>5.2% from last month</span>
-                    </div>
-                </div>
-            </div>
-            <div class="admin-card">
-                <div class="admin-card-icon admin-card-school">
-                    <i class="fas fa-school"></i>
-                </div>
-                <div class="admin-card-info">
-                    <div class="admin-card-title">Total Schools</div>
-                    <div class="admin-card-value"><?php echo $totalSchools; ?></div>
-                    <div class="admin-card-change positive">
-                        <i class="fas fa-arrow-up"></i>
-                        <span>3.7% from last month</span>
-                    </div>
-                </div>
-            </div>
-            <div class="admin-card">
-                <div class="admin-card-icon admin-card-zone">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <div class="admin-card-info">
-                    <div class="admin-card-title">Active Zones</div>
-                    <div class="admin-card-value"><?php echo $totalZones; ?></div>
-                    <div class="admin-card-change positive">
-                        <i class="fas fa-arrow-up"></i>
-                        <span>2 new zones this month</span>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <form action="<?php echo ROOT?>/admin/searchUSer" method="post">
-        <div class="admin-search-bar">
-            <h2 class="admin-search-title">Search Users</h2>
-            <div class="admin-search-form">
-                <div class="admin-form-group">
-                    <label class="admin-form-label">Search Term</label>
-                    <input type="text" class="admin-form-control" placeholder="Name" name="search_term" required>
-                </div>
-                <div class="admin-form-group">
-                    <label class="admin-form-label">User Type</label>
-                    <div class="admin-select-wrapper">
-                        <select class="admin-form-control" name="user_type" placeholder='Select a type' required>
-                            <option value="player">Players</option>
-                            <option value="coach">Coaches</option>
-                            <option value="school">Schools</option>
-                        </select>
+            <form action="<?php echo ROOT?>/admin/searchUSer" method="post">
+                <div class="admin-search-bar">
+                    <h2 class="admin-search-title">Search Users</h2>
+                    <div class="admin-search-form">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Search Term</label>
+                            <input type="text" class="admin-form-control" placeholder="Name" name="search_term"
+                                required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">User Type</label>
+                            <div class="admin-select-wrapper">
+                                <select class="admin-form-control" name="user_type" placeholder='Select a type'
+                                    required>
+                                    <option value="player">Players</option>
+                                    <option value="coach">Coaches</option>
+                                    <option value="school">Schools</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Zone</label>
+                            <div class="admin-select-wrapper">
+                                <select class="admin-form-control" name="zone_id" placeholder='Select a zone' required>
+                                    <?php foreach ($data['zones'] as $zone): ?>
+                                    <option value="<?php echo $zone->zoneId; ?>"><?php echo $zone->zoneName; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="admin-search-buttons" style="margin-top:-20px">
+                            <button class="admin-btn admin-btn-primary">Search</button>
+                            <button class="admin-btn admin-btn-reset">Reset</button>
+                        </div>
                     </div>
                 </div>
-                <div class="admin-form-group">
-                    <label class="admin-form-label">Zone</label>
-                    <div class="admin-select-wrapper">
-                        <select class="admin-form-control" name="zone_id" placeholder='Select a zone' required>
-                            <?php foreach ($data['zones'] as $zone): ?>
-                            <option value="<?php echo $zone->zoneId; ?>" ><?php echo $zone->zoneName; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="admin-search-buttons" style="margin-top:-20px">
-                    <button class="admin-btn admin-btn-primary">Search</button>
-                    <button class="admin-btn admin-btn-reset">Reset</button>
-                </div>
-            </div>
-        </div>
-        </form>
+            </form>
 
-        <div class="admin-card-container">
-            <div class="admin-chart-card">
-                <h3 class="admin-chart-title">User Growth Trends</h3>
-                <div class="admin-chart-container">
-                    <canvas id="usersGrowthChart"></canvas>
-                </div>
-            </div>
-            <div class="admin-chart-card">
-                <div class="admin-zone-distribution">
-                    <h3 class="admin-chart-title">Zone Distribution</h3>
-                    <div class="admin-chart-container" style="height: 220px;">
-                        <canvas id="zoneDistributionChart"></canvas>
+            <div class="admin-card-container">
+                <div class="admin-chart-card">
+                    <h3 class="admin-chart-title">User Growth Trends</h3>
+                    <div class="admin-chart-container">
+                        <canvas id="usersGrowthChart"></canvas>
                     </div>
-                    <div class="admin-distribution-legends">
-                        <?php 
+                </div>
+                <div class="admin-chart-card">
+                    <div class="admin-zone-distribution">
+                        <h3 class="admin-chart-title">Zone Distribution</h3>
+                        <div class="admin-chart-container" style="height: 220px;">
+                            <canvas id="zoneDistributionChart"></canvas>
+                        </div>
+                        <div class="admin-distribution-legends">
+                            <?php 
                         $zoneColors = [
                             '34' => '#3498db', // Piliyandala
                             '35' => '#2ecc71', // Kiriella
@@ -330,17 +332,17 @@ foreach ($data['schools'] as $school) {
                             $percentage = $totalZoneUsers > 0 ? round(($count / $totalZoneUsers) * 100) : 0;
                             $color = isset($zoneColors[$zone->zoneId]) ? $zoneColors[$zone->zoneId] : $zoneColors['other'];
                         ?>
-                        <div class="admin-legend-item">
-                            <div class="admin-legend-color" style="background-color: <?php echo $color; ?>;"></div>
-                            <span><?php echo $zone->zoneName; ?> (<?php echo $percentage; ?>%)</span>
+                            <div class="admin-legend-item">
+                                <div class="admin-legend-color" style="background-color: <?php echo $color; ?>;"></div>
+                                <span><?php echo $zone->zoneName; ?> (<?php echo $percentage; ?>%)</span>
+                            </div>
+                            <?php } ?>
                         </div>
-                        <?php } ?>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="admin-tab-nav">
+            <!-- <div class="admin-tab-nav">
             <div class="admin-tab-item active">
                 <i class="fas fa-users admin-tab-icon"></i>All Users
                 <span class="admin-tab-count active"><?php echo $totalUsers; ?></span>
@@ -364,30 +366,26 @@ foreach ($data['schools'] as $school) {
             <?php foreach ($data['zones'] as $zone): ?>
             <div class="admin-zone-filter"><?php echo $zone->zoneName; ?></div>
             <?php endforeach; ?>
-        </div>
+        </div> -->
 
-        <div class="admin-table-wrapper">
-            <div class="admin-table-header">
-                <h3 class="admin-table-title">User List</h3>
-                <div class="admin-table-actions">
-                    <button class="admin-btn admin-btn-primary">
-                        <i class="fas fa-plus"></i> Add User
-                    </button>
+            <div class="admin-table-wrapper">
+                <div class="admin-table-header">
+                    <h3 class="admin-table-title">User List</h3>
+
                 </div>
-            </div>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>User</th>
-                        <th>Type</th>
-                        <th>Zone</th>
-                        <th>Status</th>
-                        <th>Joined Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($data['users'] as $user): 
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Type</th>
+                            <th>Zone</th>
+                            <th>Status</th>
+                            <th>Joined Date</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($data['users'] as $user): 
                         // Determine zone
                         $zoneId = null;
                         if ($user->role === 'player' && isset($playerZoneMap[$user->user_id])) {
@@ -400,63 +398,65 @@ foreach ($data['schools'] as $school) {
                         
                         $zoneName = $zoneId ? getZoneName($zoneId, $data['zones']) : 'N/A';
                     ?>
-                    <tr>
-                        <td>
-                            <div class="admin-table-user">
-                                <div class="admin-table-avatar <?php echo getAvatarClass($user->role); ?>">
-                                    <?php echo getUserInitials($user->firstname, $user->lname); ?>
+                        <tr>
+                            <td>
+                                <div class="admin-table-user">
+                                    <div class="admin-table-avatar <?php echo getAvatarClass($user->role); ?>">
+                                        <?php echo getUserInitials($user->firstname, $user->lname); ?>
+                                    </div>
+                                    <div>
+                                        <div class="admin-table-name">
+                                            <?php echo $user->firstname . ' ' . $user->lname; ?></div>
+                                        <div class="admin-table-email"><?php echo $user->email; ?></div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div class="admin-table-name"><?php echo $user->firstname . ' ' . $user->lname; ?></div>
-                                    <div class="admin-table-email"><?php echo $user->email; ?></div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="admin-badge <?php echo getBadgeClass($user->role); ?></span>
+                            </td>
+                            <td>
+                                <span class="admin-badge <?php echo getBadgeClass($user->role); ?></span>
                         </td>
                         <td><?php echo $zoneName; ?></td>
                         <td>
-                            <span class="admin-badge <?php echo getStatusBadgeClass($user->active); ?></span>
-                        </td>
-                        <td><?php echo $user->regDate; ?></td>
-                        <td>
-                            <button class="admin-action-btn edit"><i class="fas fa-edit"></i></button>
-                            <button class="admin-action-btn delete"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-            <div class="admin-pagination">
-                <div class="admin-pagination-item">
-                    <i class="fas fa-angle-left"></i>
-                </div>
-                <div class="admin-pagination-item active">1</div>
-                <div class="admin-pagination-item">2</div>
-                <div class="admin-pagination-item">
-                    <i class="fas fa-angle-right"></i>
+                            <span class="admin-badge <?= getStatusBadgeClass($user->active); ?>">
+    <?= $user->active == 1 ? 'Active' : 'Inactive'; ?>
+</span>
+
+                            </td>
+                            <td><?php echo $user->regDate; ?></td>
+
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <div class="admin-pagination">
+                    <div class="admin-pagination-item">
+                        <i class="fas fa-angle-left"></i>
+                    </div>
+                    <div class="admin-pagination-item active">1</div>
+                    <div class="admin-pagination-item">2</div>
+                    <div class="admin-pagination-item">
+                        <i class="fas fa-angle-right"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Font Awesome -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-<!-- Chart.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-<script>
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script>
     // User Growth Chart
     const usersGrowthCtx = document.getElementById('usersGrowthChart').getContext('2d');
     const usersGrowthChart = new Chart(usersGrowthCtx, {
         type: 'line',
         data: {
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [
-                {
+            datasets: [{
                     label: 'Players',
-                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, <?php echo $totalPlayers - 1; ?>, <?php echo $totalPlayers; ?>],
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, <?php echo $totalPlayers - 1; ?>,
+                        <?php echo $totalPlayers; ?>
+                    ],
                     borderColor: '#3498db',
                     backgroundColor: 'rgba(52, 152, 219, 0.1)',
                     borderWidth: 2,
@@ -465,7 +465,9 @@ foreach ($data['schools'] as $school) {
                 },
                 {
                     label: 'Coaches',
-                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, <?php echo $totalCoaches - 1; ?>, <?php echo $totalCoaches; ?>],
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, <?php echo $totalCoaches - 1; ?>,
+                        <?php echo $totalCoaches; ?>
+                    ],
                     borderColor: '#2ecc71',
                     backgroundColor: 'rgba(46, 204, 113, 0.1)',
                     borderWidth: 2,
@@ -474,7 +476,9 @@ foreach ($data['schools'] as $school) {
                 },
                 {
                     label: 'Schools',
-                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, <?php echo $totalSchools - 2; ?>, <?php echo $totalSchools; ?>],
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, <?php echo $totalSchools - 2; ?>,
+                        <?php echo $totalSchools; ?>
+                    ],
                     borderColor: '#f39c12',
                     backgroundColor: 'rgba(243, 156, 18, 0.1)',
                     borderWidth: 2,
@@ -509,7 +513,7 @@ foreach ($data['schools'] as $school) {
 
     // Zone Distribution Chart
     const zoneDistributionCtx = document.getElementById('zoneDistributionChart').getContext('2d');
-    
+
     // Calculate zone distribution
     <?php
     $zoneCounts = [];
@@ -543,7 +547,7 @@ foreach ($data['schools'] as $school) {
         $zoneColors[] = $colorPalette[$index % count($colorPalette)];
     }
     ?>
-    
+
     const zoneDistributionChart = new Chart(zoneDistributionCtx, {
         type: 'doughnut',
         data: {
@@ -581,18 +585,18 @@ foreach ($data['schools'] as $school) {
             filter.classList.add('active');
         });
     });
-</script>
+    </script>
 
-<script id="error-message" type="application/json">
-<?= json_encode(trim($Error_message)); ?>
-</script>
+    <script id="error-message" type="application/json">
+    <?= json_encode(trim($Error_message)); ?>
+    </script>
 
-<script id="success-message" type="application/json">
-<?= json_encode(trim($Success_message)); ?>
-</script>
+    <script id="success-message" type="application/json">
+    <?= json_encode(trim($Success_message)); ?>
+    </script>
 
 
-<script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
+    <script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
 </body>
 
 </html>
