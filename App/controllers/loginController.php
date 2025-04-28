@@ -2,9 +2,11 @@
 class loginController extends Controller {
 
     private $login;
+    private $zonalModel;
 
     public function __construct() {
         $this->login = $this->model('loginPage');
+        $this->zonalModel=$this->model('zoneModel');
     }
 
     public function index() {
@@ -27,8 +29,24 @@ class loginController extends Controller {
                 } else {
                     // Attempt to login with the provided credentials
                     $user = $this->login->checkLoginCredentials($username, $password);  
+
                     // If user is found and credentials are correct
                     if ($user) {
+
+                        
+                        if($user->active==0){
+                            $_SESSION['error_message']='User not activate. Contact System Administrator';
+                            header('Location: ' . ROOT . '/loginController/login');
+                            exit;
+                        }
+
+                        if($user->active==2){
+                            $_SESSION['error_message']='Your account rejected by System Admonostrator';
+                            header('Location: ' . ROOT . '/loginController/login');
+                            exit;
+                        }
+
+
                         // Start session and store user information
                         
                         $_SESSION['user_id'] = $user->user_id; // Corrected to object access
@@ -45,7 +63,15 @@ class loginController extends Controller {
                                 $this->view('admin/dashboard');
                                 break;
                             case 'coach':
-                                session_write_close();
+                                    $zone=$this->zonalModel->checkCoachInZone($user->user_id);
+
+                                    if(!$zone){
+                                        $_SESSION['error_message']='You not assign for any sport. Contact System Administrator';
+                                        header('Location: ' . ROOT . '/loginController/login');
+                                        exit;
+                                    }
+                                    
+                                    session_write_close();
                                     header('Location: ' . URLROOT . '/coach/dashboard');
                                     exit;
                                 

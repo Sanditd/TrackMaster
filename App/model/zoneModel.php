@@ -134,4 +134,10 @@ class zoneModel {
         $result = $this->db->resultset();
         return $result;
     }
+
+    public function checkCoachInZone($coach_id){
+        $this->db->query("SELECT * FROM zonal_sports WHERE coach_id=:coach_id");
+        $this->db->bind(':coach_id',$coach_id);
+        return $this->db->single();
+    }
 }

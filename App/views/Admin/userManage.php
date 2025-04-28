@@ -416,9 +416,21 @@ foreach ($data['schools'] as $school) {
                         </td>
                         <td><?php echo $zoneName; ?></td>
                         <td>
-                            <span class="admin-badge <?= getStatusBadgeClass($user->active); ?>">
-    <?= $user->active == 1 ? 'Active' : 'Inactive'; ?>
-</span>
+                        <?php
+$status = 'Unknown';
+$statusClass = 'secondary';
+foreach ($data['users'] as $userLoop) {
+    if ($userLoop->user_id == $school->user_id) {
+        $status = ($userLoop->active == 1) ? 'Active' : 'Inactive';
+        $statusClass = ($userLoop->active == 1) ? 'success' : 'danger';
+        break;
+    }
+}
+?>
+
+<span class=" admin-badge <?= $statusClass; ?>">
+                                    <?= $status; ?>
+                                </span>
 
                             </td>
                             <td><?php echo $user->regDate; ?></td>

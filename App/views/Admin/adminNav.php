@@ -159,8 +159,12 @@ if ($userActive[0]->active != 1) {
                             <div class="notification-list">
                                 <?php if (is_array($notifications)): ?>
                                 <?php foreach ($notifications['notifications'] as $notification): ?>
-                                <div
-                                    class="notification-item <?php echo $notification->active == 1 ? 'active-notification' : ''; ?>">
+                                <div class="notification-item <?php echo $notification->active == 1 ? 'active-notification' : ''; ?>"
+                                    <?php if (in_array($notification->type, ['school_registration', 'admin_registration', 'coach_registration'])): ?>
+                                    data-type="<?php echo htmlspecialchars($notification->type); ?>"
+                                    data-id="<?php echo htmlspecialchars($notification->n_id); ?>"
+                                    onclick="loadViewByType('<?php echo htmlspecialchars($notification->type); ?>', <?php echo htmlspecialchars($notification->n_id); ?>)"
+                                    style="cursor: pointer;" <?php endif; ?>>
                                     <div class="title"><?php echo htmlspecialchars($notification->title); ?></div>
                                     <div class="description"><?php echo htmlspecialchars($notification->description); ?>
                                     </div>
@@ -168,28 +172,58 @@ if ($userActive[0]->active != 1) {
                                         <?php echo date('M j, Y g:i A', strtotime($notification->date)); ?></div>
 
                                     <?php if ($notification->active == 1): ?>
-                                    <form action="<?php echo ROOT ?>/NotificationController/markAsRead" method="POST">
+                                    <form action="<?php echo ROOT ?>/NotificationController/markAsRead" method="POST"
+                                        class="mark-read-form">
                                         <input type="hidden" name="notification_id"
                                             value="<?php echo htmlspecialchars($notification->n_id); ?>">
                                         <input type="hidden" name="redirect_url"
                                             value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
-                                        <button class="mark-read-btn" type="submit">Mark as read</button>
+                                        <button class="mark-read-btn" type="submit"
+                                            onclick="event.stopPropagation();">Mark as read</button>
                                     </form>
-
-                                    <!-- <button class="mark-read-btn" data-id="<?php echo htmlspecialchars($notification->n_id); ?>">Mark as read</button> -->
-
                                     <?php endif; ?>
                                 </div>
                                 <?php endforeach; ?>
-
                                 <?php endif; ?>
-
                             </div>
                             <div class="notification-footer">
                                 <a href="<?php echo ROOT ?>/admin/notification">View all notifications</a>
                             </div>
                         </div>
                     </div>
+
+                    <script>
+                    function loadViewByType(type, notificationId) {
+                        // Prevent default behavior if needed
+                        event.preventDefault();
+
+                        // Map notification types to their respective views
+                        const viewUrls = {
+                            'school registration': '<?php echo ROOT ?>/admin/inactiveUsers',
+                            'Admin registration': '<?php echo ROOT ?>/admin/inactiveUsers',
+                            'coach registration': '<?php echo ROOT ?>/admin/inactiveUsers'
+                        };
+
+                        // Check if the notification type is in our mapping
+                        if (viewUrls[type]) {
+                            // Construct the URL with the notification ID
+                            const url = viewUrls[type] + notificationId;
+
+                            // Navigate to the URL
+                            window.location.href = url;
+
+                            // Also mark the notification as read
+                            fetch('<?php echo ROOT ?>/NotificationController/markAsRead', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: 'notification_id=' + notificationId + '&redirect_url=' +
+                                    encodeURIComponent(url)
+                            });
+                        }
+                    }
+                    </script>
 
                     <div class="account-settings">
                         <a href="#">
@@ -213,7 +247,8 @@ if ($userActive[0]->active != 1) {
                             <ul>
                                 <li><a href="<?php echo ROOT ?>/admin/accountSetting">Account Settings</a></li>
                                 <li><a href="<?php echo ROOT ?>/admin/adminActivity">Activity Log</a></li>
-                                <li class="logout"><a href="<?php echo ROOT ?>/loginController/adminLogout">Logout</a></li>
+                                <li class="logout"><a href="<?php echo ROOT ?>/loginController/adminLogout">Logout</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -310,12 +345,12 @@ function isActive($pathPart) {
                         <span class="menu-text">Notification</span>
                     </a>
                 </li>
-                <li class="<?= isActive('/announcement') ? 'active' : '' ?>" onmouseover="hoverLi(this, true)"
+                <li class="<?= isActive('/inactiveUsers') ? 'active' : '' ?>" onmouseover="hoverLi(this, true)"
                     onmouseout="hoverLi(this, false)">
-                    <a href="#" class="menu-link">
-                        <img src="<?php echo ROOT ?>/public/img/icon/<?= isActive('/announcement') ? 'announcement-hover' : 'announcement' ?>.png"
-                            class="icon" data-icon-name="announcement">
-                        <span class="menu-text">Announcements</span>
+                    <a href="<?php echo ROOT ?>/admin/inactiveUsers" class="menu-link">
+                        <img src="<?php echo ROOT ?>/public/img/icon/<?= isActive('/inactiveUsers') ? 'inactiveUsers-hover' : 'inactiveUsers' ?>.png"
+                            class="icon" data-icon-name="inactiveUsers">
+                        <span class="menu-text">Inactive Users</span>
                     </a>
                 </li>
             </ul>
