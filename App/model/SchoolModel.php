@@ -57,6 +57,23 @@ class SchoolModel {
         return $result;
     }
 
+    public function findSchoolId($school){
+        $this->db->query("SELECT user_id FROM users WHERE firstname = :school");
+        $this->db->bind(':school', $school);
+        $result = $this->db->single();
+    
+        if ($result && isset($result->user_id)) {
+            $user_id = $result->user_id;
+    
+            $this->db->query("SELECT school_id FROM user_school WHERE user_id = :user_id");
+            $this->db->bind(':user_id', $user_id);
+            return $this->db->single();
+        } else {
+            return false; // School name not found, return false or handle properly
+        }
+    }
+    
+
 
     public function getPlayersNamesBySchoolId($school_id) {
         // Query to get player_id and user_id from player table according to the school_id

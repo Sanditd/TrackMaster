@@ -68,7 +68,7 @@ if (isset($_SESSION['error_message'])) {
 
 <body>
 
-<div id="customAlertOverlay">
+    <div id="customAlertOverlay">
         <div id="customAlertBox">
             <h2>Notice</h2>
             <p id="customAlertMessage"></p>
@@ -121,7 +121,7 @@ if (isset($_SESSION['error_message'])) {
                 <div class="input-group">
                     <input type="email" id="email" value="<?php echo htmlspecialchars($data['user'][0]->email); ?>"
                         disabled>
-                        <button class="edit-btn" onclick="enableEdit('username')" title="Email cannot be changed">
+                    <button class="edit-btn" onclick="enableEdit('username')" title="Email cannot be changed">
                         <i>🔒</i>
                     </button>
                 </div>
@@ -134,44 +134,37 @@ if (isset($_SESSION['error_message'])) {
                 <i>🔐</i> Security
             </div>
 
-            <form action="<?php echo ROOT ?>/admin/resetPassword" method="post"  onsubmit="return validatePassword()">
-
-            <div class="form-group">
-                <label for="current-password">Current Password</label>
-                <div class="password-input">
-                    <input type="password" id="current-password">
-                    <button class="toggle-password" onclick="togglePassword('current-password')">
-                        <i>👁️</i>
-                    </button>
+            <form action="<?php echo ROOT ?>/loginController/resetAdminPassword" method="post"
+                onsubmit="return validatePassword()">
+                <div class="form-group">
+                    <label for="current-password">Current Password</label>
+                    <div class="password-input">
+                        <input type="password" id="current-password" name="currentPassword">
+                        <button class="toggle-password"></button>
+                    </div>
                 </div>
-            </div>
 
-            
-
-            <div class="form-group">
-                <label for="new-password">New Password</label>
-                <div class="password-input">
-                    <input type="password" id="password" name="password">
-                    <button class="toggle-password" onclick="togglePassword('new-password')">
-                        <i>👁️</i>
-                    </button>
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <div class="password-input">
+                        <input type="password" id="password" name="password">
+                        <button class="toggle-password"></button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="confirm-password">Confirm New Password</label>
-                <div class="password-input">
-                    <input type="password" id="confirm-password" name="confirm-password">
-                    <button class="toggle-password" onclick="togglePassword('confirm-password')">
-                        <i>👁️</i>
-                    </button>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm New Password</label>
+                    <div class="password-input">
+                        <input type="password" id="confirm-password" name="confirmPassword">
+                        <button class="toggle-password"></button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="save-section">
-                <button class="btn btn-secondary" onclick="resetForm()">Cancel</button>
-                <button class="btn" onclick="saveChanges()">Save Changes</button>
-            </div>
+
+                <div class="save-section">
+                    <button class="btn btn-secondary" onclick="resetForm()">Cancel</button>
+                    <button class="btn" type="submit">Save Changes</button>
+                </div>
         </div>
     </div>
     </form>
@@ -244,22 +237,21 @@ if (isset($_SESSION['error_message'])) {
     }
 
     function logout() {
-    window.location.href = "<?php echo ROOT ?>/loginController/logout";
-}
-
+        window.location.href = "<?php echo ROOT ?>/loginController/adminLogout";
+    }
     </script>
     <script src="<?php echo ROOT?>/Public/js/signUpjs.php"></script>
 
     <script id="error-message" type="application/json">
-<?= json_encode(trim($Error_message)); ?>
-</script>
+    <?= json_encode(trim($Error_message)); ?>
+    </script>
 
-<script id="success-message" type="application/json">
-<?= json_encode(trim($Success_message)); ?>
-</script>
+    <script id="success-message" type="application/json">
+    <?= json_encode(trim($Success_message)); ?>
+    </script>
 
 
-<script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
+    <script src="<?php echo ROOT?>/Public/js/Admin/formHandler.js"></script>
 </body>
 
 </html>

@@ -42,5 +42,13 @@ class activityModel {
         $this->db->bind(':user_id', $userId);
         return $this->db->resultSet();
     }
+
+    public function getAdminActivities() {
+        $query = "SELECT * FROM activity WHERE admin_id IS NOT NULL ORDER BY date DESC";
+        $this->db->query($query);
+        return $this->db->resultSet();
+    }
+    
+    
     
 }

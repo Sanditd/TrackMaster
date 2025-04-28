@@ -40,6 +40,8 @@
             $coaches = $this->userModel->getCoaches();
             $schools = $this->userModel->getSchoolsData();
             $zones = $this->zoneModel->getZonals();
+            $sports = $this->sportModel->getSports();
+
         
             $countUsers = $this->userModel->countAllUsers();
             $countPlayers = $this->userModel->countPlayers();
@@ -59,7 +61,8 @@
                 'countPlayers' => $countPlayers,
                 'countCoaches' => $countCoaches,
                 'countSchools' => $countSchools,
-                'countZones' => $countZones
+                'countZones' => $countZones,
+                'sports' => $sports,
             ];
             $this->view('Admin/adminpanelview',$data);
         }
@@ -77,6 +80,7 @@
             $countCoaches = $this->userModel->countCoaches();
             $countSchools = $this->userModel->countSchools();
             $countZones = $this->zoneModel->countZonals();
+
 
 
         
@@ -1104,6 +1108,110 @@ public function searchUser()
 
             $this->view('admin/accountSetting',$data);
 
+        }
+
+        public function adminActivity(){
+            $admin=$this->userModel->getAdmin();
+            $adminActivity=$this->activityModel->getAdminActivities();
+
+            $data = [
+                'admin' => $admin,
+                'adminActivity' => $adminActivity,
+            ];
+
+            $this->view('admin/adminActivity',$data);
+        }
+
+        public function inactiveUsers(){
+            $user=$this->userModel->inactiveUsers();
+
+            $data=[
+                'user'=>$user
+            ];
+
+            $this->view('admin/inactiveUsers',$data);
+        }
+
+        public function activeUser()
+        {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $userId = $_POST['user_id'];
+                $action = $_POST['action'];
+        
+                // Validate inputs
+                if (!empty($userId) && ($action == '1')) {
+        
+                    // Connect to modelssuming you have a User model
+        
+                    // Update user active status
+                    if($this->userModel->updateActiveStatus($userId, $action)){
+
+                        $activity = [
+                            'act_desc' => 'Active User ' . $userId,
+                            'user_id' => $_SESSION['user_id'],
+                        ];
+                        
+                        $this->activityModel->insertAdminActivity($activity);
+
+                        $_SESSION['error_message']="User Activate";
+                        $this->inactiveUsers();
+                        exit;
+                    }
+                    
+        
+                    // Redirect back to user list or whatever page
+                    $_SESSION['error_message']="User Activate Failed";
+                        $this->inactiveUsers();
+                        exit;// adjust this URL based on your project
+                } else {
+                    // Invalid request
+                    die('Invalid data');
+                }
+            } else {
+                // Not a POST request
+                redirect('admin/users');
+            }
+        }
+
+        public function rejectUser()
+        {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $userId = $_POST['user_id'];
+                $action = $_POST['action'];
+        
+                // Validate inputs
+                if (!empty($userId) && ($action == '2')) {
+        
+                    // Connect to modelssuming you have a User model
+        
+                    // Update user active status
+                    if($this->userModel->updateActiveStatus($userId, $action)){
+
+                        $activity = [
+                            'act_desc' => 'Reject User ' . $userId,
+                            'user_id' => $_SESSION['user_id'],
+                        ];
+                        
+                        $this->activityModel->insertAdminActivity($activity);
+
+                        $_SESSION['error_message']="User Rejected";
+                        $this->inactiveUsers();
+                        exit;
+                    }
+                    
+        
+                    // Redirect back to user list or whatever page
+                    $_SESSION['error_message']="User Reject Failed";
+                        $this->inactiveUsers();
+                        exit;// adjust this URL based on your project
+                } else {
+                    // Invalid request
+                    die('Invalid data');
+                }
+            } else {
+                // Not a POST request
+                redirect('admin/users');
+            }
         }
         
 

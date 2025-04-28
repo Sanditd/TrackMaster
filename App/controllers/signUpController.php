@@ -11,7 +11,9 @@ class SignUpController extends Controller {
         $this->userModel = $this->model('User');
         $this->zoneModel =$this->model('zoneModel');
         $this->notificationModel = $this->model('Notification'); 
+
         $this->schoolModel = $this->model('SchoolModel');
+
     }
 
     public function index() {

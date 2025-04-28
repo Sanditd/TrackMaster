@@ -73,305 +73,314 @@ if (isset($_SESSION['error_message'])) {
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Quick Stats -->
-        <div class="quick-stats">
-            <div class="stat-card">
-                <i class="fas fa-users icon"></i>
-                <span class="label">Total Players</span>
-                <span class="value"><?php echo $data['countPlayers']; ?></span>
-                <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-user-tie icon"></i>
-                <span class="label">Total Coaches</span>
-                <span class="value"><?php echo $data['countCoaches']; ?></span>
-                <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-school icon"></i>
-                <span class="label">Schools</span>
-                <span class="value"><?php echo $data['countSchools']; ?></span>
-                <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-map-marked-alt icon"></i>
-                <span class="label">Zones</span>
-                <span class="value"><?php //echo $data['countZones']; ?></span>
-                <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-user icon"></i>
-                <span class="label">Total Users</span>
-                <span class="value"><?php echo $data['countUsers']; ?></span>
-                <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
-            </div>
+    <!-- Quick Stats -->
+    <div class="quick-stats">
+        <div class="stat-card">
+            <i class="fas fa-users icon"></i>
+            <span class="label">Total Players</span>
+            <span class="value"><?php echo $data['countPlayers']; ?></span>
+            <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
         </div>
-        
-        <!-- Charts -->
-        <div class="charts-container">
-            <div class="chart-card">
-                <h3>Zone Distribution</h3>
-                <div class="chart-container">
-                    <canvas id="pieChart"></canvas>
-                </div>
-            </div>
-            <div class="chart-card">
-                <h3>Schools per Zone</h3>
-                <div class="chart-container">
-                    <canvas id="barChart"></canvas>
-                </div>
-            </div>
-            <div class="chart-card">
-                <h3>User Distribution</h3>
-                <div class="chart-container">
-                    <canvas id="lineChart"></canvas>
-                </div>
-            </div>
+        <div class="stat-card">
+            <i class="fas fa-user-tie icon"></i>
+            <span class="label">Total Coaches</span>
+            <span class="value"><?php echo $data['countCoaches']; ?></span>
+            <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
         </div>
-        
-        <!-- User Tables -->
-        <div class="performance-table">
-            <h3>
-                Recent Players
-                <span class="view-all">View All</span>
-            </h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Sport</th>
-                        <th>School</th>
-                        <th>Zone</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($data['players'] as $player): ?>
-                    <tr>
-                        <td><?php echo $player->user_id; ?> - Find name in users array</td>
-                        <td>Sport ID: <?php echo $player->sport_id; ?></td>
-                        <td>School ID: <?php echo $player->school_id; ?></td>
-                        <td>Zone ID: <?php echo $player->zone; ?></td>
-                        <td><?php echo $player->role; ?></td>
-                        <td><span class="badge badge-<?php echo ($player->statusus == 'Practicing') ? 'success' : 'warning'; ?>"><?php echo $player->statusus; ?></span></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <div class="stat-card">
+            <i class="fas fa-school icon"></i>
+            <span class="label">Schools</span>
+            <span class="value"><?php echo $data['countSchools']; ?></span>
+            <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
         </div>
-
-        <div class="performance-table">
-            <h3>
-                Recent Coaches
-                <span class="view-all">View All</span>
-            </h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Sport</th>
-                        <th>Zone</th>
-                        <th>Type</th>
-                        <th>Contact</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($data['coaches'] as $coach): 
-                        // Find coach details from users array
-                        $coachDetails = null;
-                        foreach($data['users'] as $user) {
-                            if($user->user_id == $coach->user_id) {
-                                $coachDetails = $user;
-                                break;
-                            }
-                        }
-                    ?>
-                    <tr>
-                        <td>
-                            <?php 
-                                if($coachDetails) {
-                                    echo $coachDetails->firstname . ' ' . $coachDetails->lname;
-                                } else {
-                                    echo "User ID: " . $coach->user_id;
-                                }
-                            ?>
-                        </td>
-                        <td>Sport ID: <?php echo $coach->sport_id; ?></td>
-                        <td>
-                            <?php 
-                                $zoneName = "Unknown";
-                                foreach($data['zones'] as $zone) {
-                                    if($zone->zoneId == $coach->zone) {
-                                        $zoneName = $zone->zoneName;
-                                        break;
-                                    }
-                                }
-                                echo $zoneName;
-                            ?>
-                        </td>
-                        <td><?php echo $coach->coach_type; ?></td>
-                        <td><?php echo $coachDetails ? $coachDetails->phonenumber : "N/A"; ?></td>
-                        <td>
-                            <?php if($coachDetails): ?>
-                                <span class="badge badge-<?php echo ($coachDetails->active == 1) ? 'success' : 'danger'; ?>">
-                                    <?php echo ($coachDetails->active == 1) ? 'Active' : 'Inactive'; ?>
-                                </span>
-                            <?php else: ?>
-                                <span class="badge badge-warning">Unknown</span>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <div class="stat-card">
+            <i class="fas fa-map-marked-alt icon"></i>
+            <span class="label">Zones</span>
+            <span class="value"><?php echo $data['countZones'][0]->total; ?></span>
+            <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
         </div>
-
-        <div class="performance-table">
-            <h3>
-                Schools
-                <span class="view-all">View All</span>
-            </h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>School Name</th>
-                        <th>Zone</th>
-                        <th>Province</th>
-                        <th>District</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($data['schools'] as $school): 
-                        // Find zone details
-                        $zoneDetails = null;
-                        foreach($data['zones'] as $zone) {
-                            if($zone->zoneId == $school->zone) {
-                                $zoneDetails = $zone;
-                                break;
-                            }
-                        }
-                    ?>
-                    <tr>
-                        <td><?php echo $school->school_name; ?></td>
-                        <td>
-                            <?php 
-                                echo $zoneDetails ? $zoneDetails->zoneName : "Zone ID: " . $school->zone;
-                            ?>
-                        </td>
-                        <td><?php echo $zoneDetails ? $zoneDetails->provinceName : ($school->province ?: "N/A"); ?></td>
-                        <td><?php echo $zoneDetails ? $zoneDetails->DisName : ($school->district ?: "N/A"); ?></td>
-                        <td>
-                            <?php
-                                // Find school status from users array
-                                $status = "Unknown";
-                                foreach($data['users'] as $user) {
-                                    if($user->user_id == $school->user_id) {
-                                        $status = ($user->active == 1) ? "Active" : "Inactive";
-                                        $statusClass = ($user->active == 1) ? "success" : "danger";
-                                        break;
-                                    }
-                                }
-                            ?>
-                            <span class="badge badge-<?php echo $statusClass ?? 'warning'; ?>">
-                                <?php echo $status; ?>
-                            </span>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-        
-        
-        
-        <!-- Admin Shortcuts -->
-        <div class="shortcuts-container">
-            <div class="shortcut-card">
-                <div class="icon">
-                    <i class="fas fa-user-plus"></i>
-                </div>
-                <div class="label">Add Player</div>
-            </div>
-            <div class="shortcut-card">
-                <div class="icon">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                <div class="label">Add Coach</div>
-            </div>
-            <div class="shortcut-card">
-                <div class="icon">
-                    <i class="fas fa-school"></i>
-                </div>
-                <div class="label">Add School</div>
-            </div>
-            <div class="shortcut-card">
-                <div class="icon">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <div class="label">Manage Zones</div>
-            </div>
-            <div class="shortcut-card">
-                <div class="icon">
-                    <i class="fas fa-futbol"></i>
-                </div>
-                <div class="label">Add Sport</div>
-            </div>
-            <div class="shortcut-card">
-                <div class="icon">
-                    <i class="fas fa-file-export"></i>
-                </div>
-                <div class="label">Export Data</div>
-            </div>
-        </div>
-        
-        <!-- Latest Activity -->
-        <div class="logs-container">
-            <h3>
-                Recent Registrations
-                <span class="view-all">View All</span>
-            </h3>
-            <?php 
-            // Sort users by registration date in descending order
-            $users = $data['users'];
-            usort($users, function($a, $b) {
-                return strtotime($b->regDate) - strtotime($a->regDate);
-            });
-            
-            // Display the 5 most recent registrations
-            $count = 0;
-            foreach($users as $user): 
-                if($count >= 5) break;
-                $count++;
-                
-                // Determine icon based on role
-                $icon = 'fas fa-user';
-                switch($user->role) {
-                    case 'player': $icon = 'fas fa-running'; break;
-                    case 'coach': $icon = 'fas fa-user-tie'; break;
-                    case 'school': $icon = 'fas fa-school'; break;
-                }
-            ?>
-            <div class="log-item">
-                <div class="log-icon">
-                    <i class="<?php echo $icon; ?>"></i>
-                </div>
-                <div class="log-content">
-                    <div class="log-title">
-                        New <?php echo $user->role; ?> registered: 
-                        <?php echo $user->firstname . ' ' . $user->lname; ?>
-                        <?php echo ($user->active == 1) ? 
-                            '<span class="badge badge-success">Active</span>' : 
-                            '<span class="badge badge-danger">Inactive</span>'; ?>
-                    </div>
-                    <div class="log-time"><?php echo $user->regDate; ?></div>
-                </div>
-            </div>
-            <?php endforeach; ?>
+        <div class="stat-card">
+            <i class="fas fa-user icon"></i>
+            <span class="label">Total Users</span>
+            <span class="value"><?php echo $data['countUsers']; ?></span>
+            <span class="change positive"><i class="fas fa-arrow-up"></i> New additions</span>
         </div>
     </div>
+    
+    <!-- Charts -->
+    <div class="charts-container">
+        <div class="chart-card">
+            <h3>Zone Distribution</h3>
+            <div class="chart-container">
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3>Schools per Zone</h3>
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3>User Distribution</h3>
+            <div class="chart-container">
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- User Tables -->
+    <div class="performance-table">
+        <h3>
+            Recent Players
+            <span class="view-all">View All</span>
+        </h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Sport</th>
+                    <th>School</th>
+                    <th>Zone</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($data['players'] as $player): ?>
+                <tr>
+                    <td>
+                        <?php 
+                            // Find player name from users array
+                            $playerName = "Unknown";
+                            foreach($data['users'] as $user) {
+                                if($user->user_id == $player->user_id) {
+                                    $playerName = $user->firstname . ' ' . $user->lname;
+                                    break;
+                                }
+                            }
+                            echo $playerName;
+                        ?>
+                    </td>
+                    <td>
+                        <?php 
+                            // Note: We don't have sports data in the provided array
+                            // In a real scenario, you would look up the sport name
+                            echo "Sport ID: " . $player->sport_id;
+                        ?>
+                    </td>
+                    <td>
+                        <?php 
+                            // Find school name
+                            $schoolName = "Unknown";
+                            foreach($data['schools'] as $school) {
+                                if($school->school_id == $player->school_id) {
+                                    $schoolName = $school->school_name;
+                                    break;
+                                }
+                            }
+                            echo $schoolName;
+                        ?>
+                    </td>
+                    <td>
+                        <?php 
+                            // Find zone name
+                            $zoneName = "Unknown";
+                            foreach($data['zones'] as $zone) {
+                                if($zone->zoneId == $player->zone) {
+                                    $zoneName = $zone->zoneName;
+                                    break;
+                                }
+                            }
+                            echo $zoneName;
+                        ?>
+                    </td>
+                    <td><?php echo $player->role; ?></td>
+                    <td><span class="badge badge-<?php echo ($player->statusus == 'Practicing') ? 'success' : 'warning'; ?>"><?php echo $player->statusus; ?></span></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="performance-table">
+        <h3>
+            Recent Coaches
+            <span class="view-all">View All</span>
+        </h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Sport</th>
+                    <th>Zone</th>
+                    <th>Type</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($data['coaches'] as $coach): 
+                    // Find coach details from users array
+                    $coachDetails = null;
+                    foreach($data['users'] as $user) {
+                        if($user->user_id == $coach->user_id) {
+                            $coachDetails = $user;
+                            break;
+                        }
+                    }
+                ?>
+                <tr>
+                    <td>
+                        <?php 
+                            if($coachDetails) {
+                                echo $coachDetails->firstname . ' ' . $coachDetails->lname;
+                            } else {
+                                echo "Unknown";
+                            }
+                        ?>
+                    </td>
+                    <td>
+                        <?php 
+                            // Note: We don't have sports data in the provided array
+                            // In a real scenario, you would look up the sport name
+                            echo "Sport ID: " . $coach->sport_id; 
+                        ?>
+                    </td>
+                    <td>
+                        <?php 
+                            $zoneName = "Unknown";
+                            foreach($data['zones'] as $zone) {
+                                if($zone->zoneId == $coach->zone) {
+                                    $zoneName = $zone->zoneName;
+                                    break;
+                                }
+                            }
+                            echo $zoneName;
+                        ?>
+                    </td>
+                    <td><?php echo $coach->coach_type; ?></td>
+                    <td><?php echo $coachDetails ? $coachDetails->phonenumber : "N/A"; ?></td>
+                    <td>
+                        <?php if($coachDetails): ?>
+                            <span class="badge badge-<?php echo ($coachDetails->active == 1) ? 'success' : 'danger'; ?>">
+                                <?php echo ($coachDetails->active == 1) ? 'Active' : 'Inactive'; ?>
+                            </span>
+                        <?php else: ?>
+                            <span class="badge badge-warning">Unknown</span>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="performance-table">
+        <h3>
+            Schools
+            <span class="view-all">View All</span>
+        </h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>School Name</th>
+                    <th>Zone</th>
+                    <th>Province</th>
+                    <th>District</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($data['schools'] as $school): 
+                    // Find zone details
+                    $zoneDetails = null;
+                    foreach($data['zones'] as $zone) {
+                        if($zone->zoneId == $school->zone) {
+                            $zoneDetails = $zone;
+                            break;
+                        }
+                    }
+                ?>
+                <tr>
+                    <td><?php echo $school->school_name; ?></td>
+                    <td>
+                        <?php 
+                            echo $zoneDetails ? $zoneDetails->zoneName : "Unknown";
+                        ?>
+                    </td>
+                    <td><?php echo $zoneDetails ? $zoneDetails->provinceName : ($school->province ?: "N/A"); ?></td>
+                    <td><?php echo $zoneDetails ? $zoneDetails->DisName : ($school->district ?: "N/A"); ?></td>
+                    <td>
+                        <?php
+                            // Find school status from users array
+                            $status = "Unknown";
+                            $statusClass = "warning";
+                            foreach($data['users'] as $user) {
+                                if($user->user_id == $school->user_id) {
+                                    $status = ($user->active == 1) ? "Active" : "Inactive";
+                                    $statusClass = ($user->active == 1) ? "success" : "danger";
+                                    break;
+                                }
+                            }
+                        ?>
+                        <span class="badge badge-<?php echo $statusClass; ?>">
+                            <?php echo $status; ?>
+                        </span>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    
+
+    
+    <!-- Latest Activity -->
+    <div class="logs-container">
+        <h3>
+            Recent Registrations
+            <span class="view-all">View All</span>
+        </h3>
+        <?php 
+        // Sort users by registration date in descending order
+        $users = $data['users'];
+        usort($users, function($a, $b) {
+            return strtotime($b->regDate) - strtotime($a->regDate);
+        });
+        
+        // Display the 5 most recent registrations
+        $count = 0;
+        foreach($users as $user): 
+            if($count >= 5) break;
+            $count++;
+            
+            // Determine icon based on role
+            $icon = 'fas fa-user';
+            switch($user->role) {
+                case 'player': $icon = 'fas fa-running'; break;
+                case 'coach': $icon = 'fas fa-user-tie'; break;
+                case 'school': $icon = 'fas fa-school'; break;
+            }
+        ?>
+        <div class="log-item">
+            <div class="log-icon">
+                <i class="<?php echo $icon; ?>"></i>
+            </div>
+            <div class="log-content">
+                <div class="log-title">
+                    New <?php echo $user->role; ?> registered: 
+                    <?php echo $user->firstname . ' ' . $user->lname; ?>
+                    <?php echo ($user->active == 1) ? 
+                        '<span class="badge badge-success">Active</span>' : 
+                        '<span class="badge badge-danger">Inactive</span>'; ?>
+                </div>
+                <div class="log-time"><?php echo $user->regDate; ?></div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+</div>
     
     <script>
         // Prepare data for charts

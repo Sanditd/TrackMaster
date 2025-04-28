@@ -56,7 +56,6 @@ console.log("Schools Data:", schoolsData);
             <img src="../Public/img/logo-black.png" alt="TrackMaster Logo">
         </span> -->
             <h2>Sign Up - Student/Player</h2>
-            //<?php print_r($data['schools']) ?>
 
             <div class="container">
 

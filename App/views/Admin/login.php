@@ -672,7 +672,7 @@ if (isset($_SESSION['error_message'])) {
         <span id="login-port-logo">
         <img src="<?php echo ROOT?>/Public\img\logo-black.png" alt="Logo">
         </span>
-        <form method="POST" action="/resetPasswordController/requestReset">
+        <form method="POST" action="<?php echo ROOT?>/loginController/userLoginReset">
             <div>
                 Reset Your Password
             </div>
