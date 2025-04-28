@@ -39,293 +39,7 @@ if (!$user) {
     <title>Facility Requests | TrackMaster</title>
     <link rel="stylesheet" href="/TrackMaster/Public/css/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-    /* Base Styles */
-    :root {
-        --primary-color: #00264d;
-        --secondary-color: #ffa500;
-        --light-color: #f8f9fa;
-        --dark-color: #333;
-        --gray-color: #666;
-        --border-radius: 8px;
-        --box-shadow: 0 4px 12px rgba(0, 38, 77, 0.1);
-        --transition: all 0.3s ease;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-        background-color: #f4f4f9;
-        color: var(--dark-color);
-    }
-
-    /* Facilities Container */
-    .facilities-container {
-        max-width: 1200px;
-        margin: 20px auto;
-        padding: 20px;
-    }
-
-    /* Header Section */
-    .facilities-header {
-        text-align: center;
-        margin-bottom: 30px;
-        padding: 25px;
-        background: var(--primary-color);
-        color: white;
-        border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
-    }
-
-    .facilities-header h1 {
-        font-size: 2.2rem;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-    }
-
-    .facilities-header p {
-        font-size: 1.1rem;
-        opacity: 0.9;
-        max-width: 700px;
-        margin: 0 auto;
-    }
-
-    /* Facilities Table Section */
-    .facilities-table-section {
-        background: white;
-        border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
-        overflow: hidden;
-        margin-bottom: 30px;
-    }
-
-    .section-header {
-        background: var(--primary-color);
-        color: white;
-        padding: 15px 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .section-header h2 {
-        font-size: 1.4rem;
-        margin: 0;
-    }
-
-    /* Table Styles */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    thead {
-        background-color: rgba(0, 38, 77, 0.05);
-    }
-
-    th,
-    td {
-        padding: 15px;
-        text-align: left;
-        border-bottom: 1px solid #eee;
-    }
-
-    th {
-        font-weight: 600;
-        color: var(--primary-color);
-    }
-
-    th i,
-    td i {
-        margin-right: 8px;
-        color: var(--secondary-color);
-    }
-
-    tr:hover {
-        background-color: rgba(0, 38, 77, 0.02);
-    }
-
-    /* Button Styles */
-    .action-btn {
-        padding: 10px 15px;
-        margin: 0 5px 5px 0;
-        border-radius: var(--border-radius);
-        border: none;
-        font-weight: 500;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        transition: var(--transition);
-        font-size: 0.9rem;
-    }
-
-    .approve-btn {
-        background-color: rgba(40, 167, 69, 0.1);
-        color: #28a745;
-    }
-
-    .approve-btn:hover {
-        background-color: #28a745;
-        color: white;
-    }
-
-    .decline-btn {
-        background-color: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
-    }
-
-    .decline-btn:hover {
-        background-color: #dc3545;
-        color: white;
-    }
-
-    /* Search and Filter Section */
-    .search-filter-section {
-        background: white;
-        border-radius: var(--border-radius);
-        padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: var(--box-shadow);
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        align-items: center;
-    }
-
-    .search-box {
-        flex: 1;
-        min-width: 300px;
-        position: relative;
-    }
-
-    .search-box input {
-        width: 100%;
-        padding: 12px 15px 12px 40px;
-        border: 1px solid #ddd;
-        border-radius: var(--border-radius);
-        font-size: 1rem;
-        transition: var(--transition);
-    }
-
-    .search-box input:focus {
-        border-color: var(--secondary-color);
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
-    }
-
-    .search-box i {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--gray-color);
-    }
-
-    .filter-dropdown {
-        min-width: 200px;
-    }
-
-    .filter-dropdown select {
-        width: 100%;
-        padding: 12px 15px;
-        border: 1px solid #ddd;
-        border-radius: var(--border-radius);
-        font-size: 1rem;
-        transition: var(--transition);
-        background-color: white;
-    }
-
-    .filter-dropdown select:focus {
-        border-color: var(--secondary-color);
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
-    }
-
-    /* Flash Message Styles */
-    .flash-message {
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: var(--border-radius);
-        background-color: rgba(40, 167, 69, 0.1);
-        border-left: 4px solid #28a745;
-        color: #155724;
-        text-align: center;
-    }
-
-    .no-requests {
-        text-align: center;
-        padding: 30px;
-        color: var(--gray-color);
-        font-style: italic;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .facilities-header {
-            padding: 20px 15px;
-        }
-
-        .facilities-header h1 {
-            font-size: 1.8rem;
-        }
-
-        .facilities-header p {
-            font-size: 1rem;
-        }
-
-        th,
-        td {
-            padding: 12px 10px;
-        }
-
-        .action-btn {
-            padding: 8px 12px;
-            font-size: 0.85rem;
-            margin-bottom: 5px;
-        }
-
-        .search-filter-section {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .search-box,
-        .filter-dropdown {
-            min-width: 100%;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .facilities-header h1 {
-            font-size: 1.6rem;
-        }
-
-        th,
-        td {
-            padding: 10px 8px;
-            font-size: 0.9rem;
-        }
-
-        td {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .action-btn {
-            width: 100%;
-            margin-right: 0;
-        }
-    }
-    </style>
+    <link rel="stylesheet" href="../Public/css/school/event.css">
 </head>
 
 <body>
@@ -362,7 +76,6 @@ if (!$user) {
             </div>
         </div>
 
-        <!-- Facilities Table Section -->
         <div class="facilities-table-section">
             <div class="section-header">
                 <h2><i class="fas fa-list"></i> Request List</h2>
@@ -385,7 +98,7 @@ if (!$user) {
 
                         <td>
                             <?php
-                        // Match index with coaches array if exists
+                       
                         $coach = isset($data['coaches'][$index]) ? $data['coaches'][$index] : null;
                         echo $coach ? htmlspecialchars($coach->firstname . ' ' . $coach->lname) : 'N/A';
                     ?>
@@ -435,26 +148,22 @@ if (!$user) {
     <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
 
     <script>
-        // Wait for DOM to be fully loaded
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Get elements
     const requestSearch = document.getElementById('requestSearch');
     const statusFilter = document.getElementById('statusFilter');
     const dateFilter = document.getElementById('dateFilter');
     const requestRows = document.querySelectorAll('tbody tr');
     
-    // Add event listeners for all filter inputs
     requestSearch.addEventListener('input', filterRequests);
     statusFilter.addEventListener('change', filterRequests);
     dateFilter.addEventListener('change', filterRequests);
     
-    // Function to filter requests based on search and filter values
     function filterRequests() {
         const searchTerm = requestSearch.value.toLowerCase();
         const statusValue = statusFilter.value.toLowerCase();
         const dateValue = dateFilter.value;
         
-        // Loop through all request rows
         requestRows.forEach(row => {
             const eventName = row.cells[0].textContent.toLowerCase();
             const coachName = row.cells[1].textContent.toLowerCase();
@@ -463,21 +172,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const statusElement = row.cells[4].querySelector('select');
             const currentStatus = statusElement ? statusElement.value.toLowerCase() : '';
             
-            // Check if row matches search term
             const matchesSearch = eventName.includes(searchTerm) || 
                                  coachName.includes(searchTerm) || 
                                  dateTimeText.includes(searchTerm) || 
                                  facilitiesRequired.includes(searchTerm);
             
-            // Check if row matches status filter
             const matchesStatus = statusValue === '' || currentStatus === statusValue;
             
-            // Check if row matches date filter
             let matchesDate = true;
             if (dateValue !== '') {
                 const eventDate = new Date(dateTimeText.split('(')[0].trim());
                 const today = new Date();
-                today.setHours(0, 0, 0, 0); // Reset time part for comparison
+                today.setHours(0, 0, 0, 0); 
                 
                 const tomorrow = new Date(today);
                 tomorrow.setDate(tomorrow.getDate() + 1);
@@ -510,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            // Show or hide row based on combined filters
+           
             if (matchesSearch && matchesStatus && matchesDate) {
                 row.style.display = '';
             } else {
@@ -518,12 +224,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Show a message if no results found
+      
         const visibleRows = document.querySelectorAll('tbody tr:not([style*="display: none"])');
         const noResultsRow = document.getElementById('no-results-row');
         
         if (visibleRows.length === 0) {
-            // Create no results row if it doesn't exist
+            
             if (!noResultsRow) {
                 const tbody = document.querySelector('tbody');
                 const tr = document.createElement('tr');
@@ -545,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 
     <script>
-    // Simple search functionality
+   
     document.getElementById('requestSearch').addEventListener('keyup', function() {
         const searchTerm = this.value.toLowerCase();
         const rows = document.querySelectorAll('tbody tr');
@@ -564,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add hover effects for table rows
+
     document.addEventListener('DOMContentLoaded', function() {
         const tableRows = document.querySelectorAll('tbody tr');
         tableRows.forEach(row => {

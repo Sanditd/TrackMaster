@@ -22,7 +22,7 @@ class School extends Controller{
         }
     }
     public function index() {
-        $this->view('School/school'); // or whatever default view you want
+        $this->view('School/school');
     }
     public function Dashboard() {
         $userId = (int) $_SESSION['user_id'];
@@ -32,7 +32,7 @@ class School extends Controller{
     
         $players = $this->userModel->getPlayersName($school_id);
         $facilityReq= $this->schoolModel->getFacilityRequests($school_id);
-        $extraClassReq= $this->schoolModel->getExtraClassRequests($school_id);
+        $extraClassReq= $this->schoolModel->getExtraClassRequests($_SESSION['user_id']);
     
         $data = [
             'players' => $players,
@@ -141,7 +141,6 @@ class School extends Controller{
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
     
-            // Get player_id directly from form
             $data = [
                 'school_id' => trim($_POST['school_id']),
                 'player_id' => trim($_POST['player_id']),
@@ -153,23 +152,19 @@ class School extends Controller{
                 'players' => $this->fetchPlayers()
             ];
             
-            // Validate required fields
             if (empty($data['player_id']) || empty($data['grade']) || empty($data['term']) || empty($data['average']) || empty($data['rank'])) {
                 $data['error'] = 'Please fill in all required fields.';
                 
-                // Fetch additional data needed for the view
                 $data['records'] = $this->schoolModel->getRecords();
                 $data['playerNames'] = $this->userModel->getPlayerNames();
                 
                 $this->view('School/records', $data);
             } else {
-                // Insert record
                 if ($this->schoolModel->insertRecord($data)) {
                     header('Location: ' . URLROOT . '/school/records');
                 } else {
                     $data['error'] = 'Something went wrong. Please try again.';
                     
-                    // Fetch additional data needed for the view
                     $data['records'] = $this->schoolModel->getRecords();
                     $data['playerNames'] = $this->userModel->getPlayerNames();
                     
@@ -187,10 +182,9 @@ class School extends Controller{
         $school_id = $school_id_obj->school_id;
         
         $players = $this->userModel->getPlayersName($school_id);
-        $records = $this->schoolModel->getAcademicRecordsByPlayerId($school_id);
+        $records = $this->schoolModel->getAcademicRecordsByPlayerId();
         $playerNames = $this->schoolModel->getPlayersNamesBySchoolId($school_id);
     
-        // Load the view with fetched data
         $data = [
             'players' => $players,
             'records' => $records,
@@ -210,7 +204,7 @@ class School extends Controller{
             'term' => $record->term,
             'average' => $record->average,
             'rank' => $record->rank,
-            'notes' => $record->notes
+            'notes' => $record->additional_notes
         ];
             
         $this->view('School/editRecord', $data);
@@ -221,7 +215,7 @@ class School extends Controller{
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
     
-            // Prepare data
+           
             $data = [
                 'player_id' => trim($_POST['player_id']),
                 'grade' => trim($_POST['grade']),
@@ -231,23 +225,23 @@ class School extends Controller{
                 'notes' => trim($_POST['notes'])
             ];
     
-            // Validate data
+           
             if (empty($data['grade']) || empty($data['term']) || empty($data['average']) || empty($data['rank'])) {
-                // Handle error
+               
                 $data['error'] = 'Please fill in all required fields.';
                 $this->view('School/editRecord', $data);
             } else {
-                // Update record
+                
                 if ($this->schoolModel->updateRecord($data)) {
                     header('Location: ' . URLROOT . '/School/records');
                 } else {
-                    // Handle error
+                  
                     $data['error'] = 'Something went wrong. Please try again.';
                     $this->view('School/editRecord', $data);
                 }
             }
         } else {
-            // If not a POST request, redirect to records page
+           
             header('Location: ' . URLROOT . '/School/records');
         }
     }
@@ -265,11 +259,11 @@ class School extends Controller{
     }
 
     public function facilityForm() {
-        // Check if the form is submitted
+       
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize input data
+         
             $filters = [
-                'facilityType' => FILTER_SANITIZE_STRING,  // Remove FILTER_REQUIRE_ARRAY if not needed
+                'facilityType' => FILTER_SANITIZE_STRING, 
                 'otherFacility' => FILTER_SANITIZE_STRING,
                 'facilityName' => FILTER_SANITIZE_STRING,
                 'location' => FILTER_SANITIZE_STRING,
@@ -283,7 +277,7 @@ class School extends Controller{
     
             $_POST = filter_input_array(INPUT_POST, $filters);
     
-            // Prepare the data to insert into the database
+           
             $data = [
                 'facilityType' => isset($_POST['facilityType']) ? $_POST['facilityType'] : '',
                 'otherFacility' => trim($_POST['otherFacility']),
@@ -297,10 +291,10 @@ class School extends Controller{
                 'remarks' => trim($_POST['remarks']),
             ];
     
-            // Call the model to insert the data
+            
             $result = $this->schoolModel->addFacility($data);
     
-            // Redirect to success or error page based on the result
+      
             if ($result) {
                 $_SESSION['success_message'] = "Facility added successfully!";
                 header('Location: ' . ROOT . '/school/facilityForm');
@@ -311,7 +305,7 @@ class School extends Controller{
                 exit;
             }
         } else {
-            // Display the form for GET requests
+
             $this->view('School/facilityForm');
         }
     }
@@ -338,7 +332,7 @@ class School extends Controller{
                 exit;
             }
         } else {
-            // Display the form for GET requests
+          
             $this->view('School/facilityForm');
         }
     }
@@ -353,18 +347,18 @@ class School extends Controller{
     }
 
     public function extraClassForm() {
-        $userId = $_SESSION['user_id']; // Adjust based on your session key
+        $userId = $_SESSION['user_id'];
     
-        // Load the model to get school info
-        $school = $this->schoolModel->getSchoolByUserId($userId); // Assumes this returns row with school_name
+        
+        $school = $this->schoolModel->getSchoolByUserId($userId); 
     
         $this->view('School/extra_class_form', ['school' => $school]);
     }
 
     public function scheduleExtraClass() {
-        // Check if the form is submitted
+      
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize and validate the form inputs
+           
             $filters = [
                 'players' => FILTER_SANITIZE_STRING,
                 'subject' => FILTER_SANITIZE_STRING,
@@ -375,19 +369,17 @@ class School extends Controller{
             
             $_POST = filter_input_array(INPUT_POST, $filters);
     
-            // Prepare data to insert into the database
+           
             $data = [
-                'players' => isset($_POST['players']) ? implode(',', $_POST['players']) : '', // For multiple players
-                'subject' => trim($_POST['subject']),
+                'players' => isset($_POST['players']) ? implode(',', $_POST['players']) : '', 
                 'description' => trim($_POST['description']),
                 'date' => trim($_POST['date']),
                 'venue' => trim($_POST['venue'])
             ];
     
-            // Call the model method to add the extra class
+            
             $result = $this->schoolModel->addExtraClass($data);
     
-            // Check the result and provide feedback
             if ($result) {
                 $_SESSION['success_message'] = "Extra class scheduled successfully!";
                 header('Location: ' . ROOT . '/school/scheduleExtraClass');
@@ -398,7 +390,7 @@ class School extends Controller{
                 exit;
             }
         } else {
-            // Display the form for GET requests
+            
             $this->view('School/scheduleExtraClass');
         }
     }
@@ -417,7 +409,7 @@ class School extends Controller{
     
         $players = $this->userModel->getPlayersName($school_id);
         $facilityReq= $this->schoolModel->getFacilityRequests($school_id);
-        $extraClassReq= $this->schoolModel->getExtraClassRequests($school_id);
+        $extraClassReq= $this->schoolModel->getExtraClassRequests();
     
         $data = [
             'players' => $players,
@@ -435,25 +427,25 @@ class School extends Controller{
         $action = $_POST['action'] ?? '';
 
         if (empty($requestId) || empty($action)) {
-            // Invalid data
-            redirect('school/requests'); // Or wherever you want to send them back
+          
+            redirect('school/requests'); 
             return;
         }
 
         
             if ($action === 'approve') {
-                // Approve the extra class request
+               
                 $this->schoolModel->updateRequestStatus($requestId, 'approved');
                 flash('request_message', 'Request approved successfully.');
             } elseif ($action === 'decline') {
-                // Decline the extra class request
+                
                 $this->schoolModel->updateRequestStatus($requestId, 'declined');
                 flash('request_message', 'Request declined.');
             }
         
 
-        // After handling, redirect back
-        header('Location: ' . ROOT . '/school/scheduleEx'); // Adjust the redirect as per your page structure
+   
+        header('Location: ' . ROOT . '/school/scheduleEx');
     } else {
         header('Location: ' . ROOT . '/school/scheduleEx');
     }

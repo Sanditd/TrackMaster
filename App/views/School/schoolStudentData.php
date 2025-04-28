@@ -39,8 +39,7 @@ if (!$user) {
     <title>Student Records | TrackMaster</title>
     <link rel="stylesheet" href="/TrackMaster/Public/css/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/TrackMaster/Public/css/school/schoolStudentData.css">
-    
+    <link rel="stylesheet" href="../Public/css/school/schoolStudentData.css">
 </head>
 
 <body>
@@ -106,7 +105,7 @@ foreach ($data['records'] as $record) {
         <td><?= $grade ?></td>
         <td><?= htmlspecialchars($sportName) ?></td>
         <td>
-            <form method="post" action="<?= URLROOT ?>/app/views/school/studentProfile.php">
+            <form method="post" action="<?= URLROOT ?>/Session/setPlayerSession">
                 <input type="hidden" name="player_id" value="<?= $player->player_id ?>">
                 <button type="submit" class="action-btn view-profile-btn">
                     <i class="fas fa-id-card"></i> View Profile
