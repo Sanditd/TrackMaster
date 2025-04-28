@@ -283,9 +283,17 @@ class Coach extends Controller {
                 throw new Exception('Both role and gender filters are required');
             }
             
-            $players = $this->coachModel->filterPlayers($role, $gender);
+            error_log('CoachZone: ' . ($coachZone ?? 'NULL'));
+
+            $coach = $this->coachModel->getCoachDetailsByUserId($_SESSION['user_id']);
+            if (!$coach) {
+                throw new Exception('Coach details not found.');
+            }
+            $coachZone = $coach->zone ?? null;
+            error_log('CoachZone: ' . ($coachZone ?? 'NULL'));
             
-            // If no players with stats found, return empty array to trigger fallback
+            $players = $this->coachModel->filterPlayers($role, $gender, $coachZone);
+            
             if (empty($players)) {
                 echo json_encode(['players' => []]);
                 return;
@@ -295,7 +303,17 @@ class Coach extends Controller {
         } catch (Exception $e) {
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
+
+        error_log('Role: ' . ($role ?? 'NULL') . ', Gender: ' . ($gender ?? 'NULL'));
+
+        error_log('Players fetched: ' . count($players));
+if (!empty($players)) {
+    foreach ($players as $p) {
+        error_log('Player: ' . json_encode($p));
     }
+}
+    }
+    
         
         public function getPlayerStats() {
             $playerIds = $_POST['playerIds'] ?? '';
@@ -766,6 +784,14 @@ public function deleteScheduledEvent($eventId) {
 // Add these methods to your Coach controller
 
 public function loadPlayers() {
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+
+    // Important: clean output
+    ob_clean();   // <-- clear any accidental output buffering
+    header('Content-Type: application/json');
+
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
         return;
@@ -773,19 +799,25 @@ public function loadPlayers() {
 
     try {
         $teamId = isset($_POST['team_id']) ? $_POST['team_id'] : null;
+
+        error_log('✅ Players loaded successfully');
+
         $players = $this->coachModel->getPlayersForAttendance($_SESSION['user_id'], $teamId);
-        
+
         echo json_encode([
             'status' => 'success',
             'players' => $players
         ]);
     } catch (Exception $e) {
+        error_log('Load Players Error: ' . $e->getMessage());
         echo json_encode([
             'status' => 'error',
             'message' => $e->getMessage()
         ]);
     }
 }
+
+
 
 public function saveAttendance() {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

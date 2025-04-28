@@ -32,7 +32,7 @@ class School extends Controller{
     
         $players = $this->userModel->getPlayersName($school_id);
         $facilityReq= $this->schoolModel->getFacilityRequests($school_id);
-        $extraClassReq= $this->schoolModel->getExtraClassRequests($school_id);
+        $extraClassReq= $this->schoolModel->getExtraClassRequests($_SESSION['user_id']);
     
         $data = [
             'players' => $players,
