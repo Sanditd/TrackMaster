@@ -979,7 +979,6 @@ public function getPlayersForAttendance($coachId, $teamId = null) {
                 up.player_id, 
                 u.firstname, 
                 u.lname, 
-                u.photo,
                 up.role,
                 cs.role as player_role
             FROM user_player up
@@ -997,7 +996,6 @@ public function getPlayersForAttendance($coachId, $teamId = null) {
                 up.player_id, 
                 u.firstname, 
                 u.lname, 
-                u.photo,
                 up.role,
                 cs.role as player_role
             FROM user_player up
@@ -1010,8 +1008,14 @@ public function getPlayersForAttendance($coachId, $teamId = null) {
         $this->db->bind(':zone', $coach->zone);
     }
     
-    return $this->db->resultSet();
+    $players = $this->db->resultSet();
+
+    error_log('Fetched players: ' . print_r($players, true));  // <- This logs into XAMPP php_error_log
+
+    return $players;
 }
+
+
 public function createAttendanceSession($data) {
     $this->db->query('
     INSERT INTO attendance_sessions 
@@ -1068,7 +1072,6 @@ public function searchPlayerAttendance($searchTerm, $coachId) {
             u.user_id,
             u.firstname,
             u.lname,
-            u.photo,
             up.role,
             up.school_id,
             us.school_name

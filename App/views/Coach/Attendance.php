@@ -777,6 +777,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     // Reset button state
                     this.innerHTML = '<i class="fas fa-sync-alt"></i> Load Players';
                     
