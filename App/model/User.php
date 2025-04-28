@@ -579,7 +579,20 @@ class User {
             return $this->db->resultset();
         }
 
+        public function inactiveUsers(){
+            $query = "SELECT * FROM users WHERE active = '0' ";
+            $this->db->query($query);
+            return $this->db->resultset();
+        }
         
-        
+        public function updateActiveStatus($userId, $action)
+        {
+            $this->db->query("UPDATE users SET active = :active WHERE user_id = :user_id");
+            $this->db->bind(':active', $action);
+            $this->db->bind(':user_id', $userId);
+            return $this->db->execute();
+        }
+
+
     }
 ?>

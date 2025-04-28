@@ -334,45 +334,7 @@ if (isset($_SESSION['error_message'])) {
         </table>
     </div>
     
-    <!-- Admin Shortcuts -->
-    <div class="shortcuts-container">
-        <div class="shortcut-card">
-            <div class="icon">
-                <i class="fas fa-user-plus"></i>
-            </div>
-            <div class="label">Add Player</div>
-        </div>
-        <div class="shortcut-card">
-            <div class="icon">
-                <i class="fas fa-user-tie"></i>
-            </div>
-            <div class="label">Add Coach</div>
-        </div>
-        <div class="shortcut-card">
-            <div class="icon">
-                <i class="fas fa-school"></i>
-            </div>
-            <div class="label">Add School</div>
-        </div>
-        <div class="shortcut-card">
-            <div class="icon">
-                <i class="fas fa-map-marker-alt"></i>
-            </div>
-            <div class="label">Manage Zones</div>
-        </div>
-        <div class="shortcut-card">
-            <div class="icon">
-                <i class="fas fa-futbol"></i>
-            </div>
-            <div class="label">Add Sport</div>
-        </div>
-        <div class="shortcut-card">
-            <div class="icon">
-                <i class="fas fa-file-export"></i>
-            </div>
-            <div class="label">Export Data</div>
-        </div>
-    </div>
+
     
     <!-- Latest Activity -->
     <div class="logs-container">
