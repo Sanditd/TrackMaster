@@ -3,10 +3,12 @@ class loginController extends Controller {
 
     private $login;
     private $zonalModel;
+    private $userModel;
 
     public function __construct() {
         $this->login = $this->model('loginPage');
         $this->zonalModel=$this->model('zoneModel');
+        $this->userModel=$this->model('user');
     }
 
     public function index() {
@@ -63,7 +65,8 @@ class loginController extends Controller {
                                 $this->view('admin/dashboard');
                                 break;
                             case 'coach':
-                                    $zone=$this->zonalModel->checkCoachInZone($user->user_id);
+                                    $coach_id=$this->userModel->getCoachId($user->user_id);
+                                    $zone=$this->zonalModel->checkCoachInZone($coach_id);
 
                                     if(!$zone){
                                         $_SESSION['error_message']='You not assign for any sport. Contact System Administrator';

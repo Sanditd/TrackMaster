@@ -142,9 +142,10 @@ class SchoolModel {
     /**
      * Get academic records by school ID
      */
-    public function getAcademicRecordsByPlayerId($school_id) {
-        $this->db->query("SELECT * from academic_records WHERE school_id = :school_id");
-        $this->db->bind(':school_id', $school_id);
+    public function getAcademicRecordsByPlayerId() {
+     
+
+        $this->db->query("SELECT * from academic_records");
         return $this->db->resultSet();   
     }
     
@@ -153,7 +154,7 @@ class SchoolModel {
      */
     public function getRecordByPlayerId($player_id) {
         $this->db->query("
-            SELECT ar.grade, ar.term, ar.average, ar.rank, ar.notes, u.firstname
+            SELECT ar.grade, ar.term, ar.average, ar.rank, ar.additional_notes, u.firstname
             FROM academic_records ar
             JOIN user_player up ON ar.player_id = up.player_id
             JOIN users u ON up.user_id = u.user_id
@@ -167,7 +168,7 @@ class SchoolModel {
      * Update an academic record
      */
     public function updateRecord($data) {
-        $this->db->query("UPDATE academic_records SET grade = :grade, term = :term, average = :average, rank = :rank, notes = :notes WHERE player_id = :player_id");
+        $this->db->query("UPDATE academic_records SET grade = :grade, term = :term, average = :average, rank = :rank, additional_notes = :notes WHERE player_id = :player_id");
         $this->db->bind(':grade', $data['grade']);
         $this->db->bind(':term', $data['term']);
         $this->db->bind(':average', $data['average']);
@@ -229,14 +230,14 @@ class SchoolModel {
     /**
      * Get pending extra class requests
      */
-    public function getExtraClassRequests($user_id) {
+    public function getExtraClassRequests() {
 
-        $school_id = $this->getSchoolId($user_id)->school_id;
+        
 
         $this->db->query("
-            SELECT * FROM extra_class_requests WHERE school_id = :school_id
+            SELECT * FROM extra_class_requests
         ");
-        $this->db->bind(':school_id', $school_id);
+       
         return $this->db->resultSet();
     }
     

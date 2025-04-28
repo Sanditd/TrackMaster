@@ -91,12 +91,10 @@ if (isset($_SESSION['error_message'])) {
         <div class="profile-container">
             <div class="profile-sidebar">
                 <div class="profile-header">
-                    <?php if(!empty($data['user'][0]->photo)): ?>
-                    <img src="<?php echo $data['user'][0]->photo; ?>" alt="Player Photo" class="profile-photo">
-                    <?php else: ?>
-                    <img src="<?php echo ROOT?>/Public/images/placeholder-profile.jpg" alt="Player Photo"
-                        class="profile-photo">
-                    <?php endif; ?>
+                <?php if (!empty($data['user'][0]->photo)): ?>
+    <img src="data:image/jpeg;base64,<?php echo base64_encode($data['user'][0]->photo); ?>" alt="Player Photo" class="profile-photo">
+<?php endif; ?>
+
                     <h2><?php echo $data['user'][0]->firstname . ' ' . $data['user'][0]->lname; ?></h2>
                     <p><?php echo ucfirst($data['user'][0]->role); ?></p>
                 </div>
