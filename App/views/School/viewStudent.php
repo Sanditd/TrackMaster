@@ -1,123 +1,100 @@
-<?php
-//Check if session user ID exists
-if (!isset($_SESSION['user_id'])) {
-    $_SESSION['error_message']='Invalid Login! Please login again.';
-    header('Location: ' . ROOT . '/loginController/login');
-    exit;
-}
-
-$userId = (int) $_SESSION['user_id'];
-$username = (string) $_SESSION['username'];
-
-
-//Load required model file if not already loaded
- require_once __DIR__ . '/../../model/loginPage.php';
- // Adjust path as needed
-
-// Create login model instance
-$loginModel = new loginPage();
-
-$user = $loginModel->getUserById($userId);
-
-
-//If user does not exist in DB, destroy session and redirect
-if (!$user) {
-    session_unset();
-    session_destroy();
-    $_SESSION['error_message']='Login Failed! Try Again.';
-    header('Location: ' . ROOT . '/loginController/login');
-    exit;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Profile</title>
-    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/profile.css">
+    <title>School Profile | TrackMaster</title>
+    <link rel="stylesheet" href="/TrackMaster/Public/css/Student/studentProfile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
 <body>
-
-<?php require 'navbar.php'; ?>
-
-        
-    
-    <div id="main">
-        
-    <div class="container">
-        <div class="header">
-            <h2>Student Profile</h2>
-           
-            </a>
+<?php require 'navbar.php'?>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1><i class="fas fa-school"></i> School Profile</h1>
         </div>
-        <div class="profile-form">
-            <div class="left-section">
-                <div class="profile-picture">
-                    <img src="/TrackMaster/Public/img/profile.jpeg" alt="Profile Picture">
-                </div>
-                <div class="input-group">
-                    <label for="first-name">First Name</label>
-                    <input type="text" id="first-name" value="Eraji" readonly>
-                </div>
-                <div class="input-group">
-                    <label for="last-name">Last Name</label>
-                    <input type="text" id="last-name" value="Thenuwara" readonly>
-                </div>
-                <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" value="thenuwara@gmail.com" readonly>
-                </div>
-                <div class="input-group">
-                    <label for="phone">WhatsApp Number</label>
-                    <input type="text" id="phone" value="0712345678" readonly>
-                </div>
-                <div class="input-group">
-                    <label for="address">Address</label>
-                    <input type="text" id="address" value="55/4A, Pirivena Road, Ratmalana" readonly>
-                </div>
-                <div class="input-group">
-                    <label for="gender">Gender</label>
-                    <select id="gender" disabled>
-                        <option selected>Female</option>
-                        <option>    Male</option>
-                    </select>
-                </div>
 
-                <div class="input-group">
-                    <label for="birthday">Birthday</label>
-                    <input type="date" id="birthday" value="2008-01-16" readonly>
+        <div class="profile-content">
+            <!-- Profile Sidebar -->
+            <div class="profile-sidebar">
+                <div class="profile-picture-container">
+                    <div class="profile-picture">
+                        <img src="<?php echo URLROOT . '/Public/img/profile.jpeg' ?>" alt="School Profile Picture">
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <h2 class="school-name"><?php echo htmlspecialchars($school->school_name ?? 'School Name'); ?></h2>
+                    <p class="school-type"><?php echo htmlspecialchars($school->zoneName ?? 'Zone Name'); ?></p>
+                    
+                    <div class="info-group">
+                        <span class="info-icon"><i class="fas fa-envelope"></i></span>
+                        <span class="info-text"><?php echo htmlspecialchars($school->email ?? 'Not specified'); ?></span>
+                    </div>
+                    
+                    <div class="info-group">
+                        <span class="info-icon"><i class="fas fa-phone"></i></span>
+                        <span class="info-text"><?php echo htmlspecialchars($school->phonenumber ?? 'Not specified'); ?></span>
+                    </div>
+                    
+                    <div class="info-group">
+                        <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
+                        <span class="info-text"><?php echo htmlspecialchars($school->address ?? 'Not specified'); ?></span>
+                    </div>
                 </div>
             </div>
 
-            <div class="right-section">
-                
-                <div class="input-group">
-                    <label for="description">Bio</label>
-                    <textarea id="description" rows="16" readonly >🏃‍♂️When I’m not on the track, you’ll probably find me relaxing with a smoothie or jamming to my favorite playlist. My motto is "Hard work beats talent when talent doesn’t work hard," and it’s what keeps me striving for greatness every day! 🚀</textarea>               
-                </div>
-                
-                <div class="input-group">
-                    <label for="School">School</label>
-                    <input type="text" id="school" value="Maliyadeva Balika Vidyalaya" readonly>
+            <!-- Profile Details -->
+            <div class="profile-details">
+                <!-- School Information -->
+                <div class="detail-card">
+                    <div class="detail-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h2>School Information</h2>
+                    </div>
+                    <div class="detail-content">
+                        <div class="info-group">
+                            <span class="info-icon"><i class="fas fa-map"></i></span>
+                            <span class="info-text"><strong>Zone:</strong> <?php echo htmlspecialchars($school->zoneName ?? 'Not specified'); ?></span>
+                        </div>
+                        
+                        <div class="info-group">
+                            <span class="info-icon"><i class="fas fa-globe-asia"></i></span>
+                            <span class="info-text"><strong>Province:</strong> <?php echo htmlspecialchars($school->province ?? 'Not specified'); ?></span>
+                        </div>
+                        
+                        <div class="info-group">
+                            <span class="info-icon"><i class="fas fa-city"></i></span>
+                            <span class="info-text"><strong>District:</strong> <?php echo htmlspecialchars($school->district ?? 'Not specified'); ?></span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="input-group">
-                    <label for="Grade">Grade</label>
-                    <input type="text" id="grade" value="11 - A" readonly>
+                <!-- Facilities -->
+                <div class="detail-card">
+                    <div class="detail-header">
+                        <i class="fas fa-dumbbell"></i>
+                        <h2>Sports Facilities</h2>
+                    </div>
+                    <div class="detail-content">
+                        <p>The school has the following sports facilities available:</p>
+                        <div class="facilities-list">
+                            <?php if (!empty($school->facilities)): ?>
+                                <?php foreach ($school->facilities as $facility): ?>
+                                    <div class="facility-item">
+                                        <i class="fas fa-check"></i>
+                                        <?php echo htmlspecialchars($facility); ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>No facilities information available.</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
-           
-
-
             </div>
         </div>
     </div>
-
-    </div>
-
-    <?php require 'C:/xampp/htdocs/TrackMaster/App/views/footer.php'; ?>
-
+    <?php require 'footer.php'?>
 </body>
 </html>

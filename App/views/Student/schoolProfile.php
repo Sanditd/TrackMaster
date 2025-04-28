@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="profile-info">
-                    <h2 class="school-name"><?php echo htmlspecialchars($school->school_name ?? 'School Name'); ?></h2>
+                    <h2 class="school-name"><?php echo htmlspecialchars($player->school_name ?? 'School Name'); ?></h2>
                     <p class="school-type"><?php echo htmlspecialchars($school->zoneName ?? 'Zone Name'); ?></p>
                     
                     <div class="info-group">
