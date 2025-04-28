@@ -8,94 +8,139 @@
  
 </head>
 <body>
-<?php include 'navbar.php'?>
-<?php include 'sidebar.php'?>
+
+<?php require 'navbar.php'; ?>
 
     <div class="dashboard-container">
         <div class="dashboard-header">
-            <h1>Parent Dashboard</h1>
+            <h1>Guardian Dashboard</h1>
             <p>Welcome, Mr Thenuwara </p>
         </div>
 
-        <div class="main-content">
-            <div class="section recent-clients">
+<div class="main-content">
+<div class="section attended-appointments ">
                    <h2>Player Profile</h2>
                 <ul>
                    <div class="profile">
-                    <li><strong>Name:</strong> Eraji Thenuwara</li>
-                    <li><strong>Grade:</strong> 11</li>
-                    <li><strong>School:</strong> Maliyadeva Collage, Kurunagala </li>
+                    <li><strong>Name:</strong> Kusal Mendis</li>
+                    <li><strong>Grade:</strong> 4</li>
+                    <li><strong>School:</strong> lac</li>
                     <li><strong>Sport:</strong> Cricket 
                 </div>
               
                 </ul>
             </div>
-
-            <div class="section activity-log">
-                <h2>Current Medical Status</h2>
-                <ul>
-                    <li><strong> Medical Conditions : </strong>None</li>
-                    <li><strong> Medication : </strong>None</li>
-                    <li><strong> Allergies : </strong>None</li>
-                    <li><strong> Blood Type : </strong>A+</li>
-                    <li><strong> Emergency Contact : </strong> 0712345678</li>
-                   
-                </ul>
-                
-            </div>
-
+</div> 
 
 
        <div class="section attended-appointments ">
- <h2>Recently Attended Sessions</h2>
-                <div class="appointment">
-                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
-                    <span>Nov 15 - 6.30 a.m.</span> Coaching Session 24<br>
-                  
-                 </div>
-                
+ <h2>Player Performance</h2>
+                 
+    <div class="performance-container">
+        <div class="performance-header">
+      
+  
+        </div>
+        
+        <!-- Player Info Section -->
+        <div class="player-info-section">
+            <div class="player-avatar">
+                <?php if (isset($data['player']) && !empty($data['player']->photo)): ?>
+                    <img src="<?= URLROOT ?>/public/Uploads/<?= htmlspecialchars($data['player']->photo) ?>" 
+                         alt="Player Photo" 
+                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                <?php else: ?>
+                    <i class="fas fa-user"></i>
+                <?php endif; ?>
             </div>
-
-
-            <div class="section upcoming-appointments">
-                <h2>Upcoming Sessions</h2>
-                <div class="appointment">
-                    <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                    <span>Nov 30 - 6.30 a.m.</span> Coaching Session 25<br>
-                  
+            <div class="player-details">
+                <h2>
+                    <?php echo isset($data['player']) ? htmlspecialchars($data['player']->firstname . ' ' . ($data['player']->lname ?? '')) : 'N/A'; ?>
+                </h2>
+                <span class="player-role">
+                    <i class="fas fa-running"></i> 
+                    <?= !empty($data['player']->role) ? htmlspecialchars($data['player']->role) : 'Player' ?>
+                </span>
+                <div class="player-meta">
+                    <div class="player-meta-item">
+                        <i class="fas fa-id-card"></i> ID: <?= isset($data['player']) ? $data['player']->user_id : 'N/A' ?>
+                    </div>
+                    <?php if (isset($data['player']) && !empty($data['player']->age)): ?>
+                        <div class="player-meta-item">
+                            <i class="fas fa-birthday-cake"></i> Age: <?= $data['player']->age ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (isset($data['stats']) && !empty($data['stats']->matches)): ?>
+                        <div class="player-meta-item">
+                            <i class="fas fa-trophy"></i> Matches: <?= $data['stats']->matches ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
-               
+                <div class="quick-stats">
+                    <?php if (isset($data['stats']) && isset($data['stats']->runs)): ?>
+                        <div class="stat-item">
+                            <span class="stat-value"><?= $data['stats']->runs ?></span>
+                            <span class="stat-label">Total Runs</span>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (isset($data['stats']) && isset($data['stats']->wickets)): ?>
+                        <div class="stat-item">
+                            <span class="stat-value"><?= $data['stats']->wickets ?></span>
+                            <span class="stat-label">Wickets</span>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (isset($data['stats']) && isset($data['stats']->batting_avg)): ?>
+                        <div class="stat-item">
+                            <span class="stat-value"><?= number_format($data['stats']->batting_avg, 2) ?></span>
+                            <span class="stat-label">Batting Avg</span>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
-
-            <div class="section coach-rating">
-    <h2>Actions</h2>
-    <center><div class="button-container">
-    <div class="left-buttons">
-    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/viewStudent'">View Student Profile</button>
-    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/viewSchool'">View School Profile</button>
-    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/viewCoach'">View Coach Profile</button>
-</div>
-<div class="right-buttons">
-    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/studentAch'">View Student Achievements</button>
-    <button onclick="window.location.href='<?php echo URLROOT ?>/guardian/studentRec'">View Student Records</button>
-    <button onclick="window.location.href='<?php echo URLROOT ?>/Student/PlayerPerformance'">View Student Performance</button>
         </div>
-    </div></center>
-</div>
+                    </div>
+                    </div>
+                
+                    
+                    <div class="section attended-appointments ">
+ <h2>Attendance History</h2>
+                 
+    <div class="performance-container">
+        <div class="performance-header">
 
-
-<div class="section activity-log">
-    <h2>Financial Status</h2>
-    <ul>
-        <li><strong> Financial Aid Status : </strong>Recieve Funds</li>
-        <li><strong> Registration Number : </strong>24/M/90</li>
-        <li><strong>Registration Date : </strong>2024-01-01</li>
+    <!-- Player Attendance History Section -->
+    <div class="player-attendance-history" id="playerAttendanceHistory">
+        <div class="history-header">
+         
+        </div>
+        
+        <div class="history-stats"></div>
+        
+        <div style="overflow-x: auto; margin-top: 20px;">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th width="25%">Date</th>
+                        <th width="25%">Session Type</th>
+                        <th width="25%">Location</th>
+                        <th width="25%">Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
        
-    </ul>              
-    
+    </div>
 </div>
 
-        </div>
+         
+                    </div>
+                    </div>
+        
+
+
+       
+            
 
         
     </div>

@@ -6,8 +6,8 @@
 }
 
 body {
-    background-color: #f4f4f9; 
-    color: #333; 
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 .dashboard-container {
@@ -18,62 +18,76 @@ body {
 
 .dashboard-header {
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* Increased for better spacing */
     background-color: #00264d;
     color: #fff;
-    padding: 15px;
+    padding: 20px; /* Slightly increased for better padding */
     border-radius: 8px;
 }
+
+.dashboard-header h1 {
+    font-size: 24px; /* Consistent header size */
+    margin-bottom: 5px;
+}
+
+.dashboard-header p {
+    font-size: 16px;
+    color: #e0e0e0; /* Lighter color for contrast */
+}
+
 .main-content {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
     gap: 20px;
-    justify-content: space-around;
+    justify-content: space-between; /* Better distribution */
 }
 
 .section {
-    background-color: #ffffff; 
-    color: #333; 
+    background-color: #ffffff;
+    color: #333;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    flex: 1; /* Allow sections to grow equally */
+    min-width: 300px; /* Minimum width for smaller screens */
 }
+
 .profile-button {
     background-color: #ffa500;
     color: white;
     border: none;
-    padding: 5px 15px;
+    padding: 8px 16px; /* Adjusted for better appearance */
     border-radius: 5px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px; /* Slightly larger for readability */
     font-weight: bold;
-    position: absolute; 
-    right: 10px;
-    top: 10px; 
+    position: relative; /* Changed from absolute to avoid misalignment */
+    margin-left: auto; /* Push to the right */
+    display: block;
     transition: all 0.3s ease-in-out;
 }
 
 h2 {
     font-size: 18px;
-    margin-bottom: 10px;
-    color: #00264d; 
-    border-bottom: 2px solid #ffa500; 
+    margin-bottom: 15px; /* Increased for spacing */
+    color: #00264d;
+    border-bottom: 2px solid #ffa500;
     display: inline-block;
-    padding-bottom: 3px;
+    padding-bottom: 5px; /* Slightly increased */
 }
-
 
 .dashboard-container ul {
     list-style: none;
-    padding-left: 15px;
+    padding: 0; /* Removed left padding for cleaner alignment */
 }
 
 .dashboard-container li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-size: 14px;
-    position: relative;
-    padding-left: 10px;
+    padding-left: 20px; /* Adjusted for bullet alignment */
     color: #555;
+    position: relative;
 }
 
 .dashboard-container li::before {
@@ -82,112 +96,135 @@ h2 {
     left: 0;
     color: #ffa500;
     font-size: 18px;
+    line-height: 22px; /* Align bullet with text */
 }
 
 span {
-    float: right;
-    color: #888; 
+    float: none; /* Removed float for better control */
+    color: #888;
     font-size: 12px;
+    display: inline-block; /* Inline-block for alignment */
 }
 
-
-.edit-button {
-    background-color: #ffa500; 
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
+.profile {
+    position: relative; /* Ensure profile button aligns correctly */
 }
 
-.appointment {
+.performance-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.player-info-section {
+    display: flex;
+    align-items: flex-start; /* Align items at the top */
+    gap: 20px;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+.player-avatar {
+    width: 100px; /* Fixed size for consistency */
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.player-details {
+    flex: 1; /* Take remaining space */
+}
+
+.player-details h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.player-role {
+    display: block;
     font-size: 14px;
     color: #555;
     margin-bottom: 10px;
 }
 
-.appointment span {
-    font-weight: bold;
-    color: #ffa500; 
+.player-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
 }
 
-
-.fee-rating {
-    background-color: white;
-    color: #333;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.player-meta-item {
+    font-size: 14px;
+    color: #555;
 }
 
-.fee-rating ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.quick-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.fee-rating li {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.fee-rating strong {
-    color: #00264d; 
-}
-
-.fee-rating input[type="number"] {
-    font-size: 16px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100px;
-    box-sizing: border-box;
-}
-
-.fee-rating button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #ffa500;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.fee-rating button:hover {
-    background-color:  #ffa500;
-}
-
-.fee-rating p {
-    font-size: 22px;
-    font-weight: bold;
-    color: #f39c12;
+.stat-item {
     text-align: center;
-    margin-top: 10px;
-    letter-spacing: 1px;
+    flex: 1;
+    min-width: 80px;
 }
 
+.stat-value {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #00264d;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #888;
+}
+
+.player-attendance-history {
+    margin-top: 20px;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.history-table th,
+.history-table td {
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.history-table th {
+    background-color: #f4f4f9;
+    color: #00264d;
+    font-weight: bold;
+}
+
+.history-table td {
+    color: #555;
+}
 
 .recent-cli ul,
 .activity-log ul,
 .quick-session ul {
     list-style: none;
-    padding-left: 15px;
+    padding: 0;
 }
 
 .recent-cli li,
 .activity-log li,
 .quick-session li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-size: 14px;
-    position: relative;
-    padding-left: 10px;
+    padding-left: 20px;
     color: #555;
+    position: relative;
 }
 
 .recent-cli li::before,
@@ -198,46 +235,13 @@ span {
     left: 0;
     color: #ffa500;
     font-size: 18px;
+    line-height: 22px;
 }
 
-.recent-cli span,
-.activity-log span,
-.quick-session span {
-    float: right;
-    color: #888; 
-    font-size: 12px;
-}
 .coach-rating {
     font-size: 22px;
     font-weight: bold;
-    color: #f39c12; 
+    color: #f39c12;
     text-align: center;
-    margin-top: 10px;
-}
-
-.coach-rating {
-    padding: 20px;
-}
-
-.button-container {
-    width: 80%;
-    display: flex;
-    justify-content: space-around;
-}
-
-.left-buttons, .right-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-button {
-    padding: 10px;
-    background-color: #f39c12;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    margin-top: 15px;
 }
