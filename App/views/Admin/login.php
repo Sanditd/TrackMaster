@@ -633,7 +633,7 @@ if (isset($_SESSION['error_message'])) {
         <span id="login-port-logo">
         <img src="<?php echo ROOT?>/Public\img\logo-black.png" alt="Logo">
         </span>
-        <form method="POST" action="<?php echo ROOT?>/loginController/userLoginReset">
+        <form method="POST" action="<?php echo ROOT?>/loginController/userLoginReset"  onsubmit="return validatePassword()">
             <div>
                 Reset Your Password
             </div>
@@ -642,12 +642,18 @@ if (isset($_SESSION['error_message'])) {
             </div>
             <div>
                 <input type="email" placeholder="Enter Email Address" name="email" required>
-                <p class="helper-text">We'll send a verification code to this email</p>
+               
             </div>
             <div>
-                <input type="tel" placeholder="Enter Phone Number" name="phone" required>
+                <input type="tel" placeholder="Enter Phone" name="phone" required>
             </div>
-            <button type="submit">Send Reset Link</button>
+            <div>
+                <input type="password" placeholder="Enter New Password" name="password" id="password" required>
+            </div>
+            <div>
+                <input type="password" placeholder="Enter New Password again" name="confirmPassword" id="confirm-password" required>
+            </div>
+            <button type="submit" >Reset Password</button>
         </form>
         <button class="close-popup">Cancel</button>
     </div>

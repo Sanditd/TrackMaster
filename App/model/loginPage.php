@@ -154,6 +154,23 @@ require_once __DIR__ . '/../libraries/Database.php';
         return ($result) ? true : false;
     }
 
+    public function checkUserByEmail($username, $email, $phone){
+        $this->db->query("SELECT * FROM users WHERE username = :username AND email = :email AND phonenumber = :phone");
+        $this->db->bind(':email', $email);
+        $this->db->bind(':phone', $phone);
+        $this->db->bind(':username', $username);
+        return $this->db->single();
+    }
+
+    public function updateUserPassword($userId, $newPasswordHash) {
+        $this->db->query("UPDATE users SET password = :password WHERE user_id = :userId");
+    
+        $this->db->bind(':password', $newPasswordHash);
+        $this->db->bind(':userId', $userId);
+    
+        return $this->db->execute();
+    }
+
 
 public function getUserByUsername($username) {
     // Prepare the SQL query to get user details by username
