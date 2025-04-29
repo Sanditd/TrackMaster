@@ -21,7 +21,8 @@
         <div class="player-info-section">
             <div class="player-avatar">
                 <?php if (isset($data['player']) && !empty($data['player']->photo)): ?>
-                    <img src="<?= URLROOT ?>/public/Uploads/<?= htmlspecialchars($data['player']->photo) ?>" 
+                   
+                    <img src="<?php echo !empty($player->photo) ? 'data:image/jpeg;base64,'.base64_encode($player->photo) : URLROOT.'/Public/img/profile.jpeg' ?>" 
                          alt="Player Photo" 
                          style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                 <?php else: ?>

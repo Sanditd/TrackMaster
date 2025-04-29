@@ -1,6 +1,4 @@
 <?php
-print_r($data)
-?><?php
 //Check if session user ID exists
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error_message']='Invalid Login! Please login again.';
