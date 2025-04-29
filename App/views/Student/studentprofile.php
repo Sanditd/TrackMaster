@@ -24,11 +24,12 @@
             <div class="profile-content">
                 <!-- Profile Sidebar -->
                 <div class="profile-sidebar">
-                    <div class="profile-picture-container">
-                        <div class="profile-picture">
-                            <img src="<?php echo !empty($data['user']->photo) ? URLROOT . '/Uploads/' . $data['user']->photo : URLROOT . '/img/profile.jpeg'; ?>" alt="Student Profile Picture" id="profile-image">
-                        </div>
+                <div class="profile-picture-container">
+                    <div class="profile-picture">
+                        <img src="<?php echo !empty($user->photo) ? 'data:image/jpeg;base64,'.base64_encode($user->photo) : URLROOT.'/Public/img/profile.jpeg' ?>" alt="Coach Profile Picture">
                     </div>
+                </div>
+
                     <div class="profile-info">
                         <h2 class="student-name" id="display-name"><?php echo htmlspecialchars($data['user']->firstname . ' ' . $data['user']->lname); ?></h2>
                         <p class="student-title">Student Athlete</p>
