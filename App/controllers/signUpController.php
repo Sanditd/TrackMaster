@@ -621,7 +621,7 @@ class SignUpController extends Controller {
                 ];
                 
                 // Call only once
-                $this->notificationModel->sendAdminNotification($notification);
+                $this->notificationModel->createAdminNotification($notification);
 
     
                 // Redirect to login with success message

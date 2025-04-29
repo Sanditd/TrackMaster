@@ -550,7 +550,10 @@ class Student extends Controller {
     }
 
     public function schoolProfile() {
-        $data = [];
+        
+        $data = [
+
+        ];
         $this->view('Student/schoolProfile');
     }
 

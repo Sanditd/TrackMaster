@@ -784,39 +784,54 @@ public function deleteScheduledEvent($eventId) {
 // Add these methods to your Coach controller
 
 public function loadPlayers() {
-    if (!isset($_SESSION)) {
+    // Always start session
+    if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
 
-    // Important: clean output
-    ob_clean();   // <-- clear any accidental output buffering
     header('Content-Type: application/json');
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
-        return;
-    }
-
     try {
-        $teamId = isset($_POST['team_id']) ? $_POST['team_id'] : null;
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            throw new Exception('Invalid request method');
+        }
 
-        error_log('✅ Players loaded successfully');
+        if (!isset($_SESSION['user_id'])) {
+            throw new Exception('User not logged in');
+        }
+
+        $teamId = isset($_POST['team_id']) ? $_POST['team_id'] : null;
+        
+        // Debug: Log the received team ID
+        error_log("Loading players for team ID: " . $teamId . " for user ID: " . $_SESSION['user_id']);
 
         $players = $this->coachModel->getPlayersForAttendance($_SESSION['user_id'], $teamId);
 
+        if (empty($players)) {
+            error_log("No players found for team/user");
+            echo json_encode([
+                'status' => 'success',
+                'players' => [],
+                'message' => 'No players found'
+            ]);
+            return;
+        }
+
+        error_log('✅ Players loaded successfully: ' . count($players) . ' players found');
+        
         echo json_encode([
             'status' => 'success',
             'players' => $players
         ]);
     } catch (Exception $e) {
-        error_log('Load Players Error: ' . $e->getMessage());
+        error_log('❌ Load Players Error: ' . $e->getMessage());
         echo json_encode([
             'status' => 'error',
-            'message' => $e->getMessage()
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString() // Only for debugging, remove in production
         ]);
     }
 }
-
 
 
 public function saveAttendance() {
