@@ -307,14 +307,18 @@
         <h1><i class="fas fa-calendar-alt"></i> Event Management Dashboard</h1>
         <p>Create, manage and track events for your students and teams</p>
     </div>
-        <!-- Left Side: Event Creation Form -->
+        
         <div class="form-section">
             <h2><i class="fas fa-plus-circle"></i> Create Event</h2>
             <form action="<?php echo URLROOT; ?>/coach/createEventRequest" method="post">
                 <label for="event_name">Event Name:</label>
-                <input type="text" id="event_name" name="event_name" placeholder="Enter event name" required
+                <input type="text" id="event_name" name="event_name" placeholder="Enter event name" required 
                     value="<?php echo isset($_POST['event_name']) ? $_POST['event_name'] : ''; ?>">
                 <span class="error"><?php echo isset($data['event_name_err']) ? $data['event_name_err'] : ''; ?></span>
+
+                <label for ="event_name">No of Players</label>
+                <input type = "number"  id = "no_players" name = "no_players" placeholder= "Enter no of players participating" required min="1" max="50"
+                <?php echo isset($_POST['no_players']) ? $_POST['no_players'] : ''; ?>>
 
                 <label for="school_id">Venue (School):</label>
                 <select id="school_id" name="school_id" required>
@@ -349,7 +353,6 @@
             </form>
         </div>
 
-        <!-- Right Side: Event List and Created Events Table -->
         <div class="table-section">
             <div class="table-card">
                 <h2><i class="fas fa-list-alt"></i> Event Requests</h2>
@@ -360,6 +363,7 @@
                     <thead>
                         <tr>
                             <th>Event Name</th>
+                            <th>No of Players</th>
                             <th>Date</th>
                             <th>Time</th>
                             <th>Venue</th>
@@ -376,6 +380,7 @@
                             <?php foreach($data['eventRequests'] as $request): ?>
                                 <tr>
                                     <td><?php echo $request->event_name; ?></td>
+                                    <td><?php echo $request->no_players; ?></td>
                                     <td><?php echo date('M j, Y', strtotime($request->event_date)); ?></td>
                                     <td><?php echo date('g:i A', strtotime($request->time_from)) . ' - ' . date('g:i A', strtotime($request->time_to)); ?></td>
                                     <td><?php echo $request->school_name; ?></td>

@@ -14,7 +14,7 @@ class Coach extends Controller {
         $this->activityModel =$this->model('activityModel');
         $this->notificationModel =$this->model('Notification');    }
 
-    // Default method if none is specified
+    
     public function index() {
         $this->Dashboard();
     }
@@ -32,19 +32,19 @@ class Coach extends Controller {
             return;
         }
     
-        // Get team status counts
+      
         $teamStatus = $this->coachModel->getTeamStatusCounts($coach->coach_id);
         
-        // Get upcoming events (next 30 days)
+        
         $upcomingEvents = $this->coachModel->getUpcomingEvents($coach->coach_id);
         
-        // Get session stats
+       
         $sessionStats = $this->coachModel->getSessionStats($coach->coach_id);
         
-        // Get recent medical alerts
+        
         $medicalAlerts = $this->coachModel->getRecentMedicalAlerts($coach->coach_id);
         
-        // Get pending schedule change requests
+      
         $scheduleRequests = $this->coachModel->getPendingScheduleRequests($coach->coach_id);
         
         $data = [
@@ -61,14 +61,14 @@ class Coach extends Controller {
 
     public function attendance() 
 {
-    // Get coach's sport and zone
+   
     $coach = $this->coachModel->getCoachDetailsByUserId($_SESSION['user_id']);
     
     if (!$coach) {
-        // Handle error - coach not found
+
     }
 
-    // Get teams for this coach's sport and zone
+   
     $teams = $this->coachModel->getTeamsBySportAndZone($coach->sport_id, $coach->zone);
 
     $data = [
@@ -84,13 +84,13 @@ class Coach extends Controller {
     }
 
     public function viewProfile() {
-        // Check if user is logged in
+       
         if (!isset($_SESSION['user_id'])) {
             redirect('users/login');
         }
     
         try {
-            // Get coach details from database
+          
             $coach = $this->coachModel->getCoachDetails($_SESSION['user_id']);
             
             $data = [
@@ -106,12 +106,12 @@ class Coach extends Controller {
 
 
     public function performanceTracking() {
-        // Get coach's sport ID
+   
         $sportId = $this->coachModel->getCoachSportId($_SESSION['user_id']);
         
-        if ($sportId === 36) { // Cricket
+        if ($sportId === 36) { 
             $this->view('Coach/PerformanceTracking');
-        } else { // Athletics or other sports
+        } else { 
             $this->view('Coach/A_PerformanceTracking');
         }
     }
@@ -119,12 +119,10 @@ class Coach extends Controller {
 
 
     public function editProfile() {
-        // Check if user is logged in
         if (!isset($_SESSION['user_id'])) {
             redirect('users/login');
         }
     
-        // Get coach data from database
         $coach = $this->coachModel->getCoachDetais($_SESSION['user_id']);
     
         $data = [
@@ -135,20 +133,17 @@ class Coach extends Controller {
     }
     
     public function updateProfile() {
-        // Check if user is logged in
         if (!isset($_SESSION['user_id'])) {
             header('Location: ' . URLROOT . '/users/login');
             exit();
         }
     
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize POST data for PHP 8.1+
             $_POST = filter_input_array(INPUT_POST, FILTER_DEFAULT);
             foreach ($_POST as $key => $value) {
                 $_POST[$key] = htmlspecialchars(trim($value));
             }
     
-            // Initialize data array
             $data = [
                 'user_id' => $_SESSION['user_id'],
                 'firstname' => $_POST['first_name'] ?? '',
@@ -168,7 +163,6 @@ class Coach extends Controller {
                 'email_err' => ''
             ];
     
-            // Validate required fields
             if (empty($data['firstname'])) {
                 $data['firstname_err'] = 'Please enter first name';
             }
@@ -179,25 +173,25 @@ class Coach extends Controller {
                 $data['email_err'] = 'Please enter a valid email';
             }
     
-            // Handle file upload
+            
             if (!empty($_FILES['profile_image']['name'])) {
-                // Check if file is an image
+              
                 $file_info = getimagesize($_FILES['profile_image']['tmp_name']);
                 if ($file_info !== false) {
-                    // Read the file content
+                  
                     $photo = file_get_contents($_FILES['profile_image']['tmp_name']);
                     $data['photo'] = $photo;
                 } else {
-                    // Set flash message directly in session
+                  
                     $_SESSION['profile_error'] = 'Please upload a valid image file';
                     header('Location: ' . URLROOT . '/coach/editProfile');
                     exit();
                 }
             }
     
-            // Make sure there are no errors
+        
             if (empty($data['firstname_err']) && empty($data['email_err'])) {
-                // Update profile
+           
                 if ($this->coachModel->updateCoachProfile($data)) {
                     $_SESSION['profile_message'] = 'Profile updated successfully';
                     header('Location: ' . URLROOT . '/coach/viewProfile');
@@ -206,7 +200,7 @@ class Coach extends Controller {
                     die('Something went wrong');
                 }
             } else {
-                // Load view with errors
+             
                 $this->view('Coach/EditProfile', $data);
             }
         } else {
@@ -238,7 +232,7 @@ class Coach extends Controller {
         
         
     public function createTeam() {
-        // Check if user is logged in
+      
         if (!isset($_SESSION['user_id'])) {
             echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
             return;
@@ -247,14 +241,13 @@ class Coach extends Controller {
         $teamName = $_POST['teamName'] ?? '';
         $numPlayers = $_POST['numPlayers'] ?? 0;
         
-        // Validate input
+      
         if (empty($teamName) || $numPlayers <= 0) {
             echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
             return;
         }
     
         try {
-            // Create team with coach's sport ID
             $teamId = $this->coachModel->createTeam($teamName, $numPlayers, $_SESSION['user_id']);
             
             if ($teamId) {
@@ -355,26 +348,23 @@ if (!empty($players)) {
                 return;
             }
         
-            // Call the model to delete the team
             $result = $this->coachModel->deleteTeam($teamId);
         
             if ($result) {
                 header('Location: ' . ROOT . '/Coach/teamManagement');
-                exit; // Redirect back to the team management page
+                exit;
             } else {
                 echo 'Error: Failed to delete the team.';
             }
         }
 
         public function editTeam($teamId) {
-            // Load team details
             $team = $this->coachModel->getTeamById($teamId);
         
             if (!$team) {
                 die('Team not found');
             }
         
-            // Check if there are extra players
             $players = $this->coachModel->getPlayerssByTeamId($teamId);
             $extraPlayers = [];
             if (count($players) > $team->number_of_players) {
@@ -400,10 +390,8 @@ if (!empty($players)) {
                 die('Team not found');
             }
         
-            // Update the team
             $this->coachModel->updateTeam($teamId, $teamName, $numberOfPlayers);
         
-            // Check if the number of players exceeds the updated limit
             $players = $this->coachModel->getPlayerssByTeamId($teamId);
             if (count($players) > $numberOfPlayers) {
                 $extraPlayers = array_slice($players, $numberOfPlayers);
@@ -428,7 +416,6 @@ if (!empty($players)) {
 
 
         public function match() {
-            // Debug: Check if session exists and user_id is set
             if (!isset($_SESSION['user_id'])) {
                 die('User not logged in - Session user_id not found');
             }
@@ -452,12 +439,10 @@ if (!empty($players)) {
         }
 
         public function saveMatch() {
-    // Validate input
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         redirect('coach/match');
     }
 
-    // Sanitize POST data
     $data = [
         'team_id' => trim($_POST['myteam']),
         'opponent_team' => trim($_POST['opponent']),
@@ -474,13 +459,11 @@ if (!empty($players)) {
         'player_performances' => isset($_POST['players']) ? $_POST['players'] : []
     ];
 
-    // Validate required fields
     if (empty($data['team_id']) || empty($data['opponent_team']) || empty($data['match_date']) || empty($data['result'])) {
         flash('match_error', 'Please fill in all required fields');
         redirect('coach/match');
     }
 
-    // Save match data
     $matchId = $this->coachModel->saveMatchData($data);
 
     if ($matchId && !empty($data['player_performances'])) {
@@ -496,14 +479,14 @@ if (!empty($players)) {
 }
 
 public function getPlayersForCoach() {
-    // Check if user is logged in and is a coach
+   
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
         return;
     }
 
     try {
-        // Get players for the current coach's sport and zone
+       
         $players = $this->coachModel->getPlayersByCoachZone($_SESSION['user_id']);
         
         header('Content-Type: application/json');
@@ -521,19 +504,15 @@ public function getPlayersForCoach() {
 }
 
 public function playerPerformance($playerId = null) {
-    // If no player ID provided, redirect to selection
     if (!$playerId) {
         redirect('coach/performanceTracking');
     }
 
     try {
-        // Get player details
         $player = $this->coachModel->getPlayerDetails($playerId);
         
-        // Get player stats
         $stats = $this->coachModel->getPlayerStatsById($playerId);
         
-        // Get recent performances
         $performances = $this->coachModel->getPlayerRecentPerformances($playerId);
 
         $achievements = $this->coachModel->getPlayerAchievements($playerId);
@@ -554,14 +533,12 @@ public function playerPerformance($playerId = null) {
 
 
 public function getTeamsForCoach() {
-    // Check if user is logged in and is a coach
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
         return;
     }
 
     try {
-        // Get teams for the current coach's sport and zone
         $teams = $this->coachModel->getTeamsByCoach($_SESSION['user_id']);
         
         header('Content-Type: application/json');
@@ -579,25 +556,21 @@ public function getTeamsForCoach() {
 }
 
 public function teamperformance($teamId = null) {
-    // If no team ID provided, redirect to selection
     if (!$teamId) {
         redirect('coach/performanceTracking');
     }
 
     try {
-        // Get team details
         $team = $this->coachModel->getTeamDetails($teamId);
         
-        // Get team stats
         $stats = $this->coachModel->getTeamStats($teamId);
         
-        // Get recent matches (last 5)
         $recentMatches = $this->coachModel->getTeamRecentMatches($teamId, 5);
         
-        // Get all matches for the team
+       
         $allMatches = $this->coachModel->getTeamMatches($teamId);
         
-        // Calculate recent form (last 5 matches)
+       
         $recentForm = $this->coachModel->getTeamRecentForm($teamId, 5);
         
         $data = [
@@ -616,12 +589,11 @@ public function teamperformance($teamId = null) {
 }
 
 public function eventManagement() {
-    // Check if user is logged in
     if (!isset($_SESSION['user_id'])) {
         redirect('users/login');
     }
 
-    // Get event requests and scheduled events
+    
     $eventRequests = $this->coachModel->getEventRequests($_SESSION['user_id']);
     $scheduledEvents = $this->coachModel->getScheduledEvents($_SESSION['user_id']);
     $schools = $this->coachModel->getSchoolsForDropdown($_SESSION['user_id']);
@@ -638,7 +610,7 @@ public function eventManagement() {
 public function createEventRequest() {
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Get the coach_id for this user
+       
         $coachData = $this->coachModel->getCoachByUserId($_SESSION['user_id']);
 
         if (!$coachData || !isset($coachData->coach_id)) {
@@ -646,10 +618,11 @@ public function createEventRequest() {
             redirect('coach/eventManagement');
         }
 
-        // Sanitize POST data
+      
         $_POST = filter_input_array(INPUT_POST, [
             'school_id' => FILTER_SANITIZE_SPECIAL_CHARS,
             'event_name' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'no_players' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'event_date' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'time_from' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'time_to' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
@@ -660,6 +633,7 @@ public function createEventRequest() {
             'coach_id' => $coachData->coach_id,
             'school_id' => trim($_POST['school_id']),
             'event_name' => trim($_POST['event_name']),
+            'no_players' => trim($_POST['no_players']),
             'event_date' => trim($_POST['event_date']),
             'time_from' => trim($_POST['time_from']),
             'time_to' => trim($_POST['time_to']),
@@ -667,13 +641,18 @@ public function createEventRequest() {
             'event_name_err' => '',
             'event_date_err' => '',
             'time_from_err' => '',
-            'time_to_err' => ''
+            'time_to_err' => '',
+            'no_players_err' => ''
         ];
 
-        // Validate data
+       
         if (empty($data['event_name'])) {
             $data['event_name_err'] = 'Please enter event name';
         }
+
+
+
+
         if (empty($data['event_date'])) {
             $data['event_date_err'] = 'Please select date';
         } elseif (strtotime($data['event_date']) < strtotime('today')) {
@@ -688,7 +667,7 @@ public function createEventRequest() {
             $data['time_to_err'] = 'End time must be after start time';
         }
 
-        // Make sure errors are empty
+    
         if (empty($data['event_name_err']) && empty($data['event_date_err']) && 
             empty($data['time_from_err']) && empty($data['time_to_err'])) {
             
@@ -715,7 +694,7 @@ public function createEventRequest() {
                 die('Something went wrong');
             }
         } else {
-            // Load view with errors
+         
             $this->view('Coach/EventManagement', $data);
         }
     } else {
@@ -781,10 +760,10 @@ public function deleteScheduledEvent($eventId) {
     }
 }
 
-// Add these methods to your Coach controller
+
 
 public function loadPlayers() {
-    // Always start session
+    
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -802,7 +781,7 @@ public function loadPlayers() {
 
         $teamId = isset($_POST['team_id']) ? $_POST['team_id'] : null;
         
-        // Debug: Log the received team ID
+    
         error_log("Loading players for team ID: " . $teamId . " for user ID: " . $_SESSION['user_id']);
 
         $players = $this->coachModel->getPlayersForAttendance($_SESSION['user_id'], $teamId);
@@ -828,7 +807,7 @@ public function loadPlayers() {
         echo json_encode([
             'status' => 'error',
             'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString() // Only for debugging, remove in production
+            'trace' => $e->getTraceAsString() 
         ]);
     }
 }
@@ -848,7 +827,7 @@ public function saveAttendance() {
         }
     
         $coach_id = $coach->coach_id;
-        // First save the session
+        
         $sessionData = [
            'coach_id' => $coach_id,
           'team_id' => !empty($_POST['team_id']) ? $_POST['team_id'] : null,
@@ -865,7 +844,7 @@ public function saveAttendance() {
            throw new Exception('Failed to create attendance session');
        }
 
-       // Save each player's attendance
+       
        $attendanceData = json_decode($_POST['attendance_data'], true);
        $successCount = 0;
        
@@ -887,7 +866,7 @@ public function saveAttendance() {
            }
        }
 
-       // Set proper JSON header
+    
        header('Content-Type: application/json');
        echo json_encode([
            'status' => 'success',
@@ -960,7 +939,7 @@ public function getAchievement($achievementId) {
 
 public function saveAchievement() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Sanitize input
+        
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         
         $data = [
@@ -975,7 +954,7 @@ public function saveAchievement() {
             'date_err' => ''
         ];
         
-        // Validate
+        
         if (empty($data['place'])) {
             $data['place_err'] = 'Please enter the achievement';
         }
@@ -986,10 +965,10 @@ public function saveAchievement() {
             $data['date_err'] = 'Please select the date';
         }
         
-        // Make sure errors are empty
+       
         if (empty($data['place_err']) && empty($data['level_err']) && empty($data['date_err'])) {
             if (empty($data['achievement_id'])) {
-                // Add new achievement
+            
                 if ($this->coachModel->addAchievement($data)) {
                     flash('achievement_message', 'Achievement added successfully');
                     redirect('coach/playerPerformance/' . $data['player_id']);
@@ -997,7 +976,7 @@ public function saveAchievement() {
                     die('Something went wrong');
                 }
             } else {
-                // Update existing achievement
+               
                 if ($this->coachModel->updateAchievement($data)) {
                     flash('achievement_message', 'Achievement updated successfully');
                     redirect('coach/playerPerformance/' . $data['player_id']);
@@ -1006,7 +985,7 @@ public function saveAchievement() {
                 }
             }
         } else {
-            // Load view with errors
+        
             $this->view('Coach/PlayerPerformance', $data);
         }
     } else {
