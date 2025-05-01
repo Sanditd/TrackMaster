@@ -14,7 +14,7 @@ class CoachModel {
         $coachData = $this->db->single();
         
         if (!$coachData || !isset($coachData->coach_id)) {
-            return []; // Return empty array if coach not found
+            return []; 
         }
     
         $this->db->query('
@@ -41,7 +41,6 @@ class CoachModel {
     }
 
     public function createTeam($name, $numPlayers, $userId) {
-        // First get the coach's sport ID and zone
         $this->db->query('SELECT sport_id, zone FROM user_coach WHERE user_id = :userId');
         $this->db->bind(':userId', $userId);
         $coach = $this->db->single();
@@ -57,7 +56,6 @@ class CoachModel {
         $sportId = $coach->sport_id;
         $zone = $coach->zone;
     
-        // Check if team name already exists for this sport
         $this->db->query('SELECT team_id FROM team WHERE sport_id = :sportId AND team_name = :name');
         $this->db->bind(':sportId', $sportId);
         $this->db->bind(':name', $name);
@@ -66,7 +64,6 @@ class CoachModel {
             throw new Exception('A team with this name already exists for your sport');
         }
     
-        // Create the team and include the zone
         $query = 'INSERT INTO team (sport_id, team_name, number_of_players, zone) 
                   VALUES (:sportId, :name, :numPlayers, :zone)';
         
@@ -118,13 +115,13 @@ class CoachModel {
             $query .= ' AND u.gender = :gender';
         }
         if ($coachZone) {
-            $query .= ' AND up.zone = :zone';  // 🔥 Fix here: up.zone
+            $query .= ' AND up.zone = :zone';  
         }
         
         if ($role == 'batsman') {
             $query .= ' ORDER BY cs.batting_avg DESC';
         } elseif ($role == 'bowler') {
-            $query .= ' ORDER BY cs.bowling_avg ASC'; // (lower bowling avg is better)
+            $query .= ' ORDER BY cs.bowling_avg ASC'; 
         }
     
         $this->db->query($query);
@@ -162,7 +159,7 @@ class CoachModel {
         $this->db->bind(':playerId', $playerId);
        
         if (!$this->db->execute()) {
-            error_log("Database Error: " . $this->db->error()); // Log the database error
+            error_log("Database Error: " . $this->db->error()); 
             return false;
         }
     
@@ -174,12 +171,12 @@ class CoachModel {
         try {
             $this->db->beginTransaction();
     
-            // Delete associated players in the cricket_team table
+           
             $this->db->query('DELETE FROM cricket_team WHERE team_id = :teamId');
             $this->db->bind(':teamId', $teamId);
             $this->db->execute();
     
-            // Delete the team from the team table
+           
             $this->db->query('DELETE FROM team WHERE team_id = :teamId');
             $this->db->bind(':teamId', $teamId);
             $this->db->execute();
@@ -262,7 +259,6 @@ class CoachModel {
              :team_runs_conceded, :team_wickets_taken, :team_overs_bowled, :team_catches_taken)
         ');
     
-        // Bind values
         $this->db->bind(':team_id', $data['team_id']);
         $this->db->bind(':opponent_team', $data['opponent_team']);
         $this->db->bind(':match_date', $data['match_date']);
@@ -276,7 +272,7 @@ class CoachModel {
         $this->db->bind(':team_overs_bowled', $data['team_overs_bowled']);
         $this->db->bind(':team_catches_taken', $data['team_catches_taken']);
     
-        // Execute
+        
         if ($this->db->execute()) {
             return $this->db->lastInsertId();
         } else {
@@ -294,7 +290,6 @@ class CoachModel {
              :wickets_taken, :overs_bowled, :runs_conceded, :catches)
         ');
     
-        // Bind values
         $this->db->bind(':match_id', $matchId);
         $this->db->bind(':player_id', $performance['player_id']);
         $this->db->bind(':runs_scored', $performance['runs'] ?? 0);
@@ -306,7 +301,7 @@ class CoachModel {
         $this->db->bind(':runs_conceded', $performance['runsConceded'] ?? 0);
         $this->db->bind(':catches', $performance['catches'] ?? 0);
     
-        // Execute
+        
         return $this->db->execute();
     }
     
@@ -314,12 +309,11 @@ class CoachModel {
     public function updateCricketStats($performance) {
         $playerId = $performance['player_id'];
     
-        // Check if a cricket_stats row exists
         $this->db->query("SELECT * FROM cricket_stats WHERE player_id = :player_id");
         $this->db->bind(':player_id', $playerId);
         $existing = $this->db->single();
     
-        // Extract stats from performance
+        
         $runs = $performance['runs'] ?? 0;
         $balls = $performance['ballsFaced'] ?? 0;
         $fours = $performance['fours'] ?? 0;
@@ -328,11 +322,10 @@ class CoachModel {
         $overs = $performance['oversBowled'] ?? 0.0;
         $runsConceded = $performance['runsConceded'] ?? 0;
     
-        // If no existing stats, insert new
         if (!$existing) {
             $strikeRate = $balls > 0 ? ($runs / $balls) * 100 : 0.00;
             $economy = $overs > 0 ? $runsConceded / $overs : 0.00;
-            $battingAverage = $runs; // 1 inning, not out handling later
+            $battingAverage = $runs; 
             $bowlingAverage = $wickets > 0 ? $runsConceded / $wickets : 0;
             $bowlingStrikeRate = $wickets > 0 ? ($overs * 6) / $wickets : 0;
             
@@ -359,7 +352,7 @@ class CoachModel {
             $this->db->bind(':bbf', $wickets > 0 ? "$wickets/$runsConceded" : '0/0');
             $this->db->execute();
         } else {
-            // Update existing stats
+           
             $matches = $existing->matches + 1;
             $innings = $existing->innings + 1;
             $newRuns = $existing->runs + $runs;
@@ -385,7 +378,7 @@ class CoachModel {
 
 
     
-            $totalBallsBowled = $totalOvers * 6 + ($overs * 6); // assuming 6 balls per over
+            $totalBallsBowled = $totalOvers * 6 + ($overs * 6); 
             $battingAverage = $innings > 0 ? $newRuns / $innings : 0;
             $bowlingAverage = $totalWickets > 0 ? ($existing->economy_rate * $existing->innings * 6 + $runsConceded) / $totalWickets : 0;
             $bowlingStrikeRate = $totalWickets > 0 ? $totalBallsBowled / $totalWickets : 0;
@@ -428,7 +421,7 @@ class CoachModel {
     }
     
     public function getPlayersByCoachZone($coachId) {
-        // First get coach's sport and zone
+      
         $this->db->query('SELECT sport_id, zone FROM user_coach WHERE user_id = :coachId');
         $this->db->bind(':coachId', $coachId);
         $coach = $this->db->single();
@@ -437,7 +430,7 @@ class CoachModel {
             throw new Exception('Coach record not found');
         }
     
-        // Get players with same sport and zone, including those without stats
+       
         $this->db->query('
             SELECT 
                 up.player_id, 
@@ -521,7 +514,7 @@ class CoachModel {
     }
 
     public function getTeamsByCoach($coachId) {
-        // First get coach's sport and zone
+      
         $this->db->query('SELECT sport_id, zone FROM user_coach WHERE user_id = :coachId');
         $this->db->bind(':coachId', $coachId);
         $coach = $this->db->single();
@@ -530,7 +523,7 @@ class CoachModel {
             throw new Exception('Coach record not found');
         }
     
-        // Get teams with same sport and zone
+      
         $this->db->query('
             SELECT 
                 t.team_id, 
@@ -568,7 +561,6 @@ class CoachModel {
         $this->db->bind(':teamId', $teamId);
         $stats = $this->db->single();
         
-        // Calculate win percentage
         if ($stats->total_matches > 0) {
             $stats->win_percentage = round(($stats->wins / $stats->total_matches) * 100, 1);
         } else {
@@ -656,7 +648,6 @@ class CoachModel {
     }
 
     public function getCoachDetails($userId) {
-        // Get basic user info
         $this->db->query('
             SELECT 
                 u.user_id, u.firstname, u.lname, u.phonenumber, 
@@ -671,7 +662,6 @@ class CoachModel {
             throw new Exception('Coach not found');
         }
     
-        // Get coach-specific info
         $this->db->query('
             SELECT 
                 uc.coach_type, uc.educational_qualifications,
@@ -685,10 +675,8 @@ class CoachModel {
         $this->db->bind(':userId', $userId);
         $coachDetails = $this->db->single();
     
-        // Merge the data
         $coachData = (object) array_merge((array) $coach, (array) $coachDetails);
     
-        // Format qualifications and experiences as arrays
         if (!empty($coachData->educational_qualifications)) {
             $coachData->educational_qualifications = explode(',', $coachData->educational_qualifications);
         } else {
@@ -717,11 +705,11 @@ class CoachModel {
     }
 
     public function updateCoachProfile($data) {
-        // Start transaction
+        
         $this->db->beginTransaction();
     
         try {
-            // Update users table
+          
             $userQuery = 'UPDATE users SET 
                           firstname = :firstname,
                           lname = :lname,
@@ -731,7 +719,7 @@ class CoachModel {
                           gender = :gender,
                           dob = :dob';
             
-            // Add photo if provided
+           
             if (!empty($data['photo'])) {
                 $userQuery .= ', photo = :photo';
             }
@@ -754,7 +742,6 @@ class CoachModel {
             
             $this->db->execute();
     
-            // Update user_coach table
             $coachQuery = 'UPDATE user_coach SET
                             bio = :bio,
                             educational_qualifications = :educational_qualifications,
@@ -772,11 +759,9 @@ class CoachModel {
             $this->db->bind(':user_id', $data['user_id']);
             $this->db->execute();
     
-            // Commit transaction
             $this->db->commit();
             return true;
         } catch (Exception $e) {
-            // Rollback on error
             $this->db->rollBack();
             error_log("Error updating coach profile: " . $e->getMessage());
             return false;
@@ -784,7 +769,7 @@ class CoachModel {
     }
     
     public function getCoachDetais($userId) {
-        // Get basic user info
+       
         $this->db->query('
             SELECT 
                 u.user_id, u.firstname, u.lname, u.phonenumber, 
@@ -799,7 +784,6 @@ class CoachModel {
             throw new Exception('Coach not found');
         }
     
-        // Get coach-specific info
         $this->db->query('
             SELECT 
                 uc.coach_type, uc.educational_qualifications,
@@ -813,13 +797,11 @@ class CoachModel {
         $this->db->bind(':userId', $userId);
         $coachDetails = $this->db->single();
     
-        // Merge the data
         return (object) array_merge((array) $coach, (array) $coachDetails);
     }
 
     
     public function getSchoolsForDropdown($userId) {
-        // First get the coach's zone from user_coach table
         $this->db->query('
             SELECT uc.zone 
             FROM user_coach uc
@@ -830,10 +812,10 @@ class CoachModel {
         $coachZone = $this->db->single();
         
         if (!$coachZone || !$coachZone->zone) {
-            return []; // Return empty array if coach or zone not found
+            return []; 
         }
         
-        // Get schools in the same zone
+        
         $this->db->query('
             SELECT school_id, school_name 
             FROM user_school 
@@ -846,16 +828,16 @@ class CoachModel {
 
 
     public function getEventRequests($userId) {
-        // First get the coach ID for this user
+       
         $this->db->query('SELECT coach_id FROM user_coach WHERE user_id = :user_id');
         $this->db->bind(':user_id',     $userId);
         $coachData = $this->db->single();
         
         if (!$coachData || !isset($coachData->coach_id)) {
-            return []; // Return empty array if coach not found
+            return [];
         }
         
-        // Now get the event requests using the coach_id
+       
         $this->db->query('
             SELECT er.*, us.school_name 
             FROM event_requests er
@@ -868,16 +850,14 @@ class CoachModel {
     }   
     
     public function getScheduledEvents($userId) {
-        // First get the coach ID for this user
         $this->db->query('SELECT coach_id FROM user_coach WHERE user_id = :user_id');
         $this->db->bind(':user_id', $userId);
         $coachData = $this->db->single();
         
         if (!$coachData || !isset($coachData->coach_id)) {
-            return []; // Return empty array if coach not found
+            return []; 
         }
         
-        // Now get the scheduled events using the coach_id
         $this->db->query('
             SELECT se.*, us.school_name 
             FROM scheduled_events se
@@ -894,14 +874,15 @@ class CoachModel {
 public function createEventRequest($data) {
     $this->db->query('
         INSERT INTO event_requests 
-        (coach_id, school_id, event_name, event_date, time_from, time_to, facilities_required)
+        (coach_id, school_id, event_name, no_players, event_date, time_from, time_to, facilities_required)
         VALUES 
-        (:coach_id, :school_id, :event_name, :event_date, :time_from, :time_to, :facilities_required)
+        (:coach_id, :school_id, :event_name, :no_players, :event_date, :time_from, :time_to, :facilities_required)
     ');
     
     $this->db->bind(':coach_id', $data['coach_id']);
     $this->db->bind(':school_id', $data['school_id']);
     $this->db->bind(':event_name', $data['event_name']);
+    $this->db->bind(':no_players', $data['no_players']);
     $this->db->bind(':event_date', $data['event_date']);
     $this->db->bind(':time_from', $data['time_from']);
     $this->db->bind(':time_to', $data['time_to']);
@@ -960,10 +941,8 @@ public function getCoachByUserId($userId) {
     return $this->db->single();
 }
 
-// Add these methods to your CoachModel class
 
 public function getPlayersForAttendance($coachId, $teamId = null) {
-    // First get coach's sport and zone
     $this->db->query('SELECT sport_id, zone FROM user_coach WHERE user_id = :coach_id');
     $this->db->bind(':coach_id', $coachId);
     $coach = $this->db->single();
@@ -973,7 +952,6 @@ public function getPlayersForAttendance($coachId, $teamId = null) {
     }
     
     if ($teamId) {
-        // Get players from specific team
         $this->db->query('
             SELECT 
                 up.player_id, 
@@ -990,7 +968,6 @@ public function getPlayersForAttendance($coachId, $teamId = null) {
         ');
         $this->db->bind(':team_id', $teamId);
     } else {
-        // Get all players in coach's zone and sport
         $this->db->query('
             SELECT 
                 up.player_id, 
@@ -1010,7 +987,7 @@ public function getPlayersForAttendance($coachId, $teamId = null) {
     
     $players = $this->db->resultSet();
 
-    error_log('Fetched players: ' . print_r($players, true));  // <- This logs into XAMPP php_error_log
+    error_log('Fetched players: ' . print_r($players, true)); 
 
     return $players;
 }
@@ -1056,7 +1033,6 @@ public function recordPlayerAttendance($sessionId, $playerId, $status, $arrivalT
 }
 
 public function searchPlayerAttendance($searchTerm, $coachId) {
-    // First get coach's sport and zone to ensure we only search their players
     $this->db->query('SELECT sport_id, zone FROM user_coach WHERE user_id = :coach_id');
     $this->db->bind(':coach_id', $coachId);
     $coach = $this->db->single();
@@ -1065,7 +1041,7 @@ public function searchPlayerAttendance($searchTerm, $coachId) {
         throw new Exception('Coach not found');
     }
     
-    // Search players by name or ID
+   
     $this->db->query('
         SELECT 
             up.player_id,
@@ -1094,7 +1070,6 @@ public function searchPlayerAttendance($searchTerm, $coachId) {
         return null;
     }
     
-    // Get attendance history
     $this->db->query('
         SELECT 
             pa.*,
@@ -1114,7 +1089,6 @@ public function searchPlayerAttendance($searchTerm, $coachId) {
     $this->db->bind(':player_id', $player->player_id);
     $attendanceHistory = $this->db->resultSet();
     
-    // Calculate stats
     $this->db->query('
         SELECT 
             COUNT(*) as total_sessions,
@@ -1159,15 +1133,12 @@ public function getCoachSportId($user_id) {
     
     $this->db->bind(':user_id', $user_id);
     
-    // Execute the query and fetch the single result
     $result = $this->db->single();
     
-    // Return the sport_id if found, or null if not
     return $result ? $result->sport_id : null;
 }
 
 public function getTeamStatusCounts($coachId) {
-    // First get coach's sport and zone
     $this->db->query('SELECT sport_id, zone FROM user_coach WHERE coach_id = :coach_id');
     $this->db->bind(':coach_id', $coachId);
     $coach = $this->db->single();
@@ -1176,7 +1147,6 @@ public function getTeamStatusCounts($coachId) {
         return [];
     }
     
-    // Get player status counts
     $this->db->query('
         SELECT 
             COUNT(*) as total_players,
@@ -1237,7 +1207,6 @@ public function getUpcomingEvents($coachId, $days = 30) {
 
 
 public function getSessionStats($coachId) {
-    // Training sessions count
     $this->db->query('
         SELECT COUNT(*) as training_sessions
         FROM attendance_sessions
@@ -1247,7 +1216,6 @@ public function getSessionStats($coachId) {
     $this->db->bind(':coach_id', $coachId);
     $training = $this->db->single();
     
-    // Match sessions count
     $this->db->query('
         SELECT COUNT(*) as matches_played
         FROM matches m
@@ -1265,7 +1233,7 @@ public function getSessionStats($coachId) {
 }
 
 public function getRecentMedicalAlerts($coachId) {
-    // First get coach's sport and zone
+    
     $this->db->query('SELECT sport_id, zone FROM user_coach WHERE coach_id = :coach_id');
     $this->db->bind(':coach_id', $coachId);
     $coach = $this->db->single();
@@ -1273,8 +1241,7 @@ public function getRecentMedicalAlerts($coachId) {
     if (!$coach) {
         return [];
     }
-    
-    // Get recent medical alerts (last 30 days)
+   
     $this->db->query('
         SELECT 
             mh.id,
